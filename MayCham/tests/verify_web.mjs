@@ -16,15 +16,19 @@ assert.match(html, /id="module-content"/, 'index.html phải có #module-content
 // 1.1. Kiểm tra tích hợp KaTeX trong index.html
 assert.match(html, /katex(\.min)?\.css/, 'index.html phải nhúng KaTeX CSS');
 assert.match(html, /katex(\.min)?\.js/, 'index.html phải nhúng KaTeX JS');
+assert.match(html, /<script[^>]*defer[^>]*src="app\.js"/, 'app.js trong index.html phải có thuộc tính defer để đồng bộ với KaTeX');
 
 // 1.2. Kiểm tra CSS định kiểu inline code nền đen than #1C1B18
 assert.match(css, /p code[^{]*\{[^}]*background:\s*(var\(--code-bg\)|#1C1B18)/s, 'Inline code p code phải dùng nền đen #1C1B18');
 assert.doesNotMatch(css, /p code[^{]*\{[^}]*background:\s*#E5E0D3/s, 'Inline code không được dùng nền kem cũ #E5E0D3');
+assert.match(css, /\.analogy-box code/, 'styles.css phải định kiểu nền đen cho .analogy-box code');
 
 // 1.3. Kiểm tra nhãn thảo luận, triggerMathRender và làm sạch macro mũi tên trong app.js
 assert.doesNotMatch(js, /hỏi học sinh trước khi bấm/i, 'app.js không được chứa chữ "Hỏi học sinh trước khi bấm"');
 assert.match(js, /triggerMathRender/, 'app.js phải có hàm triggerMathRender');
 assert.doesNotMatch(js, /\$\\rightarrow\$/, 'app.js không được chứa macro $\\rightarrow$ thô');
+assert.match(js, /left:\s*['"]\$\$['"]/, 'triggerMathRender phải dùng delimiter display math là $$ thay vì 24');
+assert.match(js, /DOMContentLoaded.*triggerMathRender/, 'app.js phải đăng ký triggerMathRender khi DOMContentLoaded');
 
 // 1.4. Kiểm tra cấu trúc Module 1 mới: Phần cứng, OS, Shell, PATH, Compiler, File .exe, F9
 const mod1Raw = js.match(/id:\s*['"]m1['"][\s\S]*?(?=id:\s*['"]m2['"])/)?.[0] || '';

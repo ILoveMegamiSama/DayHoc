@@ -37,11 +37,11 @@ done
 g++ -std=c++14 -Wall -Werror -DBUG_QUEN_CLOSE=1 -DBUG_SEED_TRONG_HAM=1 "$BASE/Win_CodeBlocks/00_Template_MayCham/MAYCHAM.cpp" -o "$TMP_DIR/t1.bin"
 g++ -std=c++14 -Wall -Werror -DBUG_QUEN_SORT=1 -DBUG_SAI_LR=1 -DBUG_TEST_YEU=1 "$BASE/Win_CodeBlocks/02_TruyVanDoan_TestManh/MAYCHAM.cpp" -o "$TMP_DIR/t2.bin"
 
-# Chạy thực tế bản AllInOne để chắc chắn trả về kết quả chạy
+# Chạy thực tế bản AllInOne để chắc chắn trả về kết quả chạy (chạy trong TMP_DIR để tránh ghi file rác ra repo)
 g++ -std=c++14 "$BASE/Web_USACO_IDE/MAXSUB_AllInOne.cpp" -o "$TMP_DIR/maxsub_aio"
-"$TMP_DIR/maxsub_aio" | grep -q "CORRECT"
+(cd "$TMP_DIR" && "$TMP_DIR/maxsub_aio" | grep -q "CORRECT")
 
 g++ -std=c++14 "$BASE/Web_USACO_IDE/QUERY_AllInOne.cpp" -o "$TMP_DIR/query_aio"
-"$TMP_DIR/query_aio" | grep -q "CORRECT"
+(cd "$TMP_DIR" && "$TMP_DIR/query_aio" | grep -q "CORRECT")
 
 echo "ALL C++ FILES COMPILED AND VERIFIED SUCCESSFULLY"

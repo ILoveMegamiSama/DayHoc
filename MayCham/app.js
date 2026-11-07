@@ -1824,6 +1824,7 @@ window.highlightCpp = highlightCpp;
     const newEl = wrapper.firstElementChild;
     oldEl.replaceWith(newEl);
     bindSandboxEvents(newEl);
+    triggerMathRender(newEl);
   }
 
   function renderMainContent() {
@@ -1974,12 +1975,13 @@ window.highlightCpp = highlightCpp;
   }
 
   
-  function triggerMathRender() {
-    if (typeof renderMathInElement === 'function' && typeof document !== 'undefined' && document.body) {
+  function triggerMathRender(targetEl) {
+    const el = targetEl || (typeof document !== 'undefined' ? document.body : null);
+    if (typeof renderMathInElement === 'function' && el) {
       try {
-        renderMathInElement(document.body, {
+        renderMathInElement(el, {
           delimiters: [
-            { left: '24', right: '24', display: true },
+            { left: '$$', right: '$$', display: true },
             { left: '$', right: '$', display: false }
           ],
           throwOnError: false
@@ -1990,6 +1992,13 @@ window.highlightCpp = highlightCpp;
     }
   }
   window.triggerMathRender = triggerMathRender;
+
+  if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => triggerMathRender());
+  }
+  if (typeof window !== 'undefined') {
+    window.addEventListener('load', () => triggerMathRender());
+  }
 
   function renderAll() {
     renderNav();

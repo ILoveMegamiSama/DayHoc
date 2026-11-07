@@ -21,6 +21,11 @@ assert.match(html, /katex(\.min)?\.js/, 'index.html phải nhúng KaTeX JS');
 assert.match(css, /p code[^{]*\{[^}]*background:\s*(var\(--code-bg\)|#1C1B18)/s, 'Inline code p code phải dùng nền đen #1C1B18');
 assert.doesNotMatch(css, /p code[^{]*\{[^}]*background:\s*#E5E0D3/s, 'Inline code không được dùng nền kem cũ #E5E0D3');
 
+// 1.3. Kiểm tra nhãn thảo luận, triggerMathRender và làm sạch macro mũi tên trong app.js
+assert.doesNotMatch(js, /hỏi học sinh trước khi bấm/i, 'app.js không được chứa chữ "Hỏi học sinh trước khi bấm"');
+assert.match(js, /triggerMathRender/, 'app.js phải có hàm triggerMathRender');
+assert.doesNotMatch(js, /\$\\rightarrow\$/, 'app.js không được chứa macro $\\rightarrow$ thô');
+
 // 2. Nạp app.js trong môi trường giả lập DOM tối giản để kiểm tra MODULES_DATA & highlightCpp
 const sandbox = {
   window: {},

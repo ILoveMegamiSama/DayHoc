@@ -155,7 +155,7 @@ const MODULES_DATA = [
                 <td><strong>Tại sao?</strong></td>
                 <td>Giúp ta theo dõi tiến độ chấm trực tiếp trên cửa sổ Console.</td>
                 <td>Chỉ cần thêm 2 dòng ở đầu bài thi, mọi lệnh <code>cin/cout</code> bên dưới tự động đọc/ghi file mà không phải sửa tên biến.</td>
-                <td>Sinh 100 test trong vòng lặp: mở file <code>.inp</code> $\rightarrow$ ghi test $\rightarrow$ gọi <code>inp.close()</code> để xả Buffer ngay, mà không làm hỏng <code>cout</code> của màn hình!</td>
+                <td>Sinh 100 test trong vòng lặp: mở file <code>.inp</code> → ghi test → gọi <code>inp.close()</code> để xả Buffer ngay, mà không làm hỏng <code>cout</code> của màn hình!</td>
               </tr>
             </tbody>
           </table>
@@ -391,13 +391,13 @@ int main() {
             <div class="concept-card">
               <h4>Bước tìm 1: Tìm ngay tại "Phòng đang đứng" <span class="concept-tag">Working Directory</span></h4>
               <p>Khi nhận lệnh tên một chương trình (ví dụ <code>system("BAI1.exe")</code>), <code>cmd.exe</code> sẽ nhìn ngay vào <strong>thư mục hiện tại nơi <code>MAYCHAM.exe</code> đang đứng</strong>.</p>
-              <p>$\rightarrow$ Vì vậy, nếu bạn đặt <code>MAYCHAM.cpp</code>, <code>BAI1.cpp</code>, <code>BAI1_TRAU.cpp</code> trong <strong>cùng 1 thư mục</strong> và bấm Build (F9), cả 3 file <code>.exe</code> sẽ nằm cạnh nhau và gọi thấy nhau ngay lập tức!</p>
+              <p>→ Vì vậy, nếu bạn đặt <code>MAYCHAM.cpp</code>, <code>BAI1.cpp</code>, <code>BAI1_TRAU.cpp</code> trong <strong>cùng 1 thư mục</strong> và bấm Build (F9), cả 3 file <code>.exe</code> sẽ nằm cạnh nhau và gọi thấy nhau ngay lập tức!</p>
             </div>
             <div class="concept-card">
               <h4>Bước tìm 2: Tra "Sổ tay danh bạ hệ thống" (<code>PATH</code>) <span class="concept-tag">System PATH</span></h4>
               <p>Nếu tìm ở thư mục hiện tại không thấy, Windows mới lật một cuốn sổ tay tên là <strong><code>PATH</code></strong> (chứa danh sách các thư mục vip của hệ thống như <code>C:\\Windows\\System32</code>).</p>
               <ul>
-                <li>Chương trình <code>fc.exe</code> có sẵn trong <code>C:\\Windows\\System32</code> $\rightarrow$ gọi ở đâu cũng chạy được!</li>
+                <li>Chương trình <code>fc.exe</code> có sẵn trong <code>C:\\Windows\\System32</code> → gọi ở đâu cũng chạy được!</li>
                 <li>Ngược lại, khi cài <strong>Code::Blocks</strong>, bộ dịch <code>g++.exe</code> nằm sâu trong <code>C:\\Program Files\\CodeBlocks\\MinGW\\bin</code> nhưng bộ cài Code::Blocks <strong>không tự ghi địa chỉ này vào sổ tay <code>PATH</code></strong>! Vì thế ta không gọi <code>system("g++ ...")</code> trong code mà bấm <strong>Build (F9)</strong> trực tiếp trên Code::Blocks.</li>
               </ul>
             </div>
@@ -421,8 +421,8 @@ int main() {
               <h4>2. Giá trị trả về của <code>system("fc /w ...")</code> <span class="concept-tag">0 = Giống nhau!</span></h4>
               <p>Trong hệ điều hành, con số trả về của một lệnh mang ý nghĩa <strong>"Số lỗi phát hiện được" (Exit Code)</strong>:</p>
               <ul>
-                <li>Trả về <strong><code>0</code></strong>: Không có lỗi / Không có khác biệt nào $\rightarrow$ <strong>2 file GIỐNG HỆT NHAU (CORRECT)!</strong></li>
-                <li>Trả về <strong><code>!= 0</code></strong> (khác 0): Phát hiện sự khác biệt $\rightarrow$ <strong>2 file KHÁC NHAU (WRONG)!</strong></li>
+                <li>Trả về <strong><code>0</code></strong>: Không có lỗi / Không có khác biệt nào → <strong>2 file GIỐNG HỆT NHAU (CORRECT)!</strong></li>
+                <li>Trả về <strong><code>!= 0</code></strong> (khác 0): Phát hiện sự khác biệt → <strong>2 file KHÁC NHAU (WRONG)!</strong></li>
               </ul>
             </div>
             <div class="concept-card">
@@ -666,14 +666,14 @@ int main() {
             <div class="concept-card">
               <h4>1. Máy tính có biết "ngẫu nhiên" thật không? <span class="concept-tag">Giả ngẫu nhiên</span></h4>
               <p>Câu trả lời là <strong>KHÔNG</strong>! Máy tính là cỗ máy toán học chính xác tuyệt đối. Để tạo ra dãy số trông có vẻ ngẫu nhiên, nó dùng một dây chuyền công thức toán học bắt đầu từ một con số đầu vào gọi là <strong>Hạt giống (Seed)</strong>.</p>
-              <p><strong>Quy luật sắt đá:</strong> Nếu bạn đưa vào <strong>cùng 1 Hạt giống (Seed)</strong> $\rightarrow$ dây chuyền sẽ nhả ra <strong>dãy số giống hệt nhau 100%</strong>!</p>
+              <p><strong>Quy luật sắt đá:</strong> Nếu bạn đưa vào <strong>cùng 1 Hạt giống (Seed)</strong> → dây chuyền sẽ nhả ra <strong>dãy số giống hệt nhau 100%</strong>!</p>
             </div>
             <div class="concept-card">
               <h4>2. Cái bẫy của <code>time(0)</code> (Tính theo GIÂY) <span class="concept-tag">Lỗi trùng 50 test</span></h4>
               <p>Hàm <code>time(0)</code> trả về số giây tính từ năm 1970 — tức là <strong>phải hết 1 giây đồng hồ nó mới nhảy thêm 1 đơn vị</strong>.</p>
               <ul>
                 <li>Trong khi đó, vòng lặp máy chấm chạy 50 test chỉ mất khoảng <code>0.1 giây</code>!</li>
-                <li>Nếu bạn khởi tạo bộ sinh số bên trong hàm <code>generate()</code> với <code>time(0)</code>, cả 50 lần gọi hàm đều diễn ra trong cùng 1 giây $\rightarrow$ nhận cùng 1 Seed $\rightarrow$ <strong>sinh ra 50 file <code>.inp</code> giống hệt nhau từng con số!</strong></li>
+                <li>Nếu bạn khởi tạo bộ sinh số bên trong hàm <code>generate()</code> với <code>time(0)</code>, cả 50 lần gọi hàm đều diễn ra trong cùng 1 giây → nhận cùng 1 Seed → <strong>sinh ra 50 file <code>.inp</code> giống hệt nhau từng con số!</strong></li>
               </ul>
             </div>
             <div class="concept-card">
@@ -966,7 +966,7 @@ int main() {
               <p>Là chương trình giải bài toán bằng cách <strong>ngây thơ nhất, vét cạn mọi trường hợp</strong> ($O(N^2), O(N^3), O(2^N)$):</p>
               <ul>
                 <li><strong>Ưu tiên duy nhất:</strong> Chắc chắn đúng 100% với $N$ nhỏ, code càng ngắn gọn càng ít chỗ sai càng tốt.</li>
-                <li><strong>File đọc/ghi:</strong> Đọc <code>NAME.inp</code> $\rightarrow$ Ghi ra <strong><code>NAME.ans</code></strong> (Answer - Đáp án chuẩn).</li>
+                <li><strong>File đọc/ghi:</strong> Đọc <code>NAME.inp</code> → Ghi ra <strong><code>NAME.ans</code></strong> (Answer - Đáp án chuẩn).</li>
               </ul>
             </div>
             <div class="concept-card">
@@ -974,7 +974,7 @@ int main() {
               <p>Là chương trình dùng thuật toán thông minh ($O(N), O(N \log N)$, Quy hoạch động, Tham lam, Chặt nhị phân...) để lấy trọn điểm:</p>
               <ul>
                 <li><strong>Rủi ro:</strong> Rất dễ dính lỗi xét thiếu trường hợp biên, tràn số, sai chỉ số mảng.</li>
-                <li><strong>File đọc/ghi:</strong> Đọc <code>NAME.inp</code> $\rightarrow$ Ghi ra <strong><code>NAME.out</code></strong> (Output bài thi).</li>
+                <li><strong>File đọc/ghi:</strong> Đọc <code>NAME.inp</code> → Ghi ra <strong><code>NAME.out</code></strong> (Output bài thi).</li>
               </ul>
             </div>
             <div class="concept-card">
@@ -1004,7 +1004,7 @@ int main() {
           <div class="analogy-box">
             <strong>QUY TẮC SỐNG CÒN TRÊN CODE::BLOCKS (90% HỌC SINH MỚI ĐỀU MẮC):</strong><br/>
             Lệnh <code>system("BAI1.exe")</code> trong Máy Chấm gọi <strong>file thực thi <code>BAI1.exe</code> trên ổ cứng</strong> chứ KHÔNG tự động biên dịch file mã nguồn <code>BAI1.cpp</code>!<br/>
-            $\Rightarrow$ <strong>Mỗi khi bạn sửa bất kỳ dòng code nào trong <code>BAI1.cpp</code> hoặc <code>BAI1_TRAU.cpp</code>, bạn BẮT BUỘC phải chuyển qua tab đó bấm Build (F9) để cập nhật lại file <code>.exe</code> mới, rồi mới quay sang tab <code>MAYCHAM.cpp</code> bấm Run!</strong>
+            ⇒ <strong>Mỗi khi bạn sửa bất kỳ dòng code nào trong <code>BAI1.cpp</code> hoặc <code>BAI1_TRAU.cpp</code>, bạn BẮT BUỘC phải chuyển qua tab đó bấm Build (F9) để cập nhật lại file <code>.exe</code> mới, rồi mới quay sang tab <code>MAYCHAM.cpp</code> bấm Run!</strong>
           </div>
         `
       }
@@ -1257,7 +1257,7 @@ int main() {
               <h4>Cạm bẫy 1: Sinh Test Vi Phạm Cấu Trúc Đề Bài <span class="concept-tag">Invalid Test</span></h4>
               <p>Đề bài có 2 ràng buộc cứng mà nếu hàm <code>generate()</code> của bạn không tuân thủ, chính máy chấm sẽ tạo ra "đề bài lỗi":</p>
               <ul>
-                <li><strong>Ràng buộc 1 (Mảng tăng dần):</strong> Nếu bạn chỉ <code>inp &lt;&lt; Rand(1, 10)</code> mà quên lưu vào mảng rồi gọi <strong><code>sort(a + 1, a + n + 1)</code></strong> trước khi in, mảng trong file <code>.inp</code> sẽ lộn xộn $\rightarrow$ Chặt nhị phân trong code Full chạy sai bét dù code Full viết đúng!</li>
+                <li><strong>Ràng buộc 1 (Mảng tăng dần):</strong> Nếu bạn chỉ <code>inp &lt;&lt; Rand(1, 10)</code> mà quên lưu vào mảng rồi gọi <strong><code>sort(a + 1, a + n + 1)</code></strong> trước khi in, mảng trong file <code>.inp</code> sẽ lộn xộn → Chặt nhị phân trong code Full chạy sai bét dù code Full viết đúng!</li>
                 <li><strong>Ràng buộc 2 (Đoạn $1 \le L \le R \le N$):</strong> Nếu viết ngây thơ <code>int L = Rand(1, n), R = Rand(1, n);</code>, sẽ có lúc sinh ra $L = 8, R = 3$ ($L > R$) làm sập chương trình! Cách viết chuẩn: <strong><code>int L = Rand(1, n); int R = Rand(L, n);</code></strong> (hoặc <code>if (L &gt; R) swap(L, R);</code>).</li>
               </ul>
             </div>
@@ -1743,7 +1743,7 @@ window.highlightCpp = highlightCpp;
         (d) => `
         <div class="discussion-card">
           <div class="discussion-header">
-            <span class="discussion-label">💬 Câu hỏi tương tác trên lớp (Hỏi học sinh trước khi bấm)</span>
+            <span class="discussion-label">💬 Câu hỏi thảo luận trên lớp</span>
             <button class="btn-reveal" data-reveal="${d.id}">👁 Hiện câu trả lời & Giải thích</button>
           </div>
           <div class="discussion-question">${d.question}</div>
@@ -1864,9 +1864,28 @@ window.highlightCpp = highlightCpp;
     }
   }
 
+  
+  function triggerMathRender() {
+    if (typeof renderMathInElement === 'function' && typeof document !== 'undefined' && document.body) {
+      try {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '24', right: '24', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false
+        });
+      } catch (err) {
+        console.warn('KaTeX render error:', err);
+      }
+    }
+  }
+  window.triggerMathRender = triggerMathRender;
+
   function renderAll() {
     renderNav();
     renderMainContent();
+    triggerMathRender();
   }
 
   window.addEventListener('keydown', (e) => {

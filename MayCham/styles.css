@@ -105,6 +105,27 @@ html, body {
   color: var(--ink);
 }
 
+.theme-toggle-btn {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--surface-card);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* Module Tabs */
 .module-nav {
   display: grid;
@@ -263,6 +284,12 @@ html, body {
 
 .concept-card h4 .concept-title {
   flex: 1;
+}
+
+.concept-card h4 .concept-title code {
+  font-size: 0.85em;
+  padding: 1px 5px;
+  vertical-align: baseline;
 }
 
 .concept-tag {
@@ -663,14 +690,35 @@ li code,
   font-size: 11.5px;
 }
 
-/* C++ Syntax Highlighting inside Dark Cream-Charcoal Block */
+/* C++ & Shell Syntax Highlighting (IDE Theme on Dark Background) */
 .hl-kw { color: #F28B66; font-weight: 600; }
 .hl-type { color: #8AB4F8; }
+.hl-fn { color: #79C0FF; font-weight: 600; }
 .hl-str { color: #A8DAB5; }
 .hl-num { color: #FCC934; }
+.hl-flag { color: #FFB454; font-weight: 600; }
+.hl-cmd { color: #4EC9B0; font-weight: 700; }
+.hl-file { color: #64B5F6; }
 .hl-cmt { color: #8A8479; font-style: italic; }
 .hl-macro { color: #F6AD55; font-weight: 600; }
-.hl-fn { color: #E8EAED; font-weight: 600; }
+
+/* Chế độ Nền Kem Đậm (#E5E0D3) dự phòng cho inline code xen giữa text */
+body.inline-code-cream code:not(pre code) {
+  background: #E5E0D3 !important;
+  color: #181816 !important;
+  border-color: #C8C2B5 !important;
+}
+body.inline-code-cream code:not(pre code) .hl-kw,
+body.inline-code-cream code:not(pre code) .hl-type,
+body.inline-code-cream code:not(pre code) .hl-fn,
+body.inline-code-cream code:not(pre code) .hl-str,
+body.inline-code-cream code:not(pre code) .hl-num,
+body.inline-code-cream code:not(pre code) .hl-flag,
+body.inline-code-cream code:not(pre code) .hl-cmd,
+body.inline-code-cream code:not(pre code) .hl-file {
+  color: #181816 !important;
+  font-weight: 600;
+}
 
 /* Output Pane */
 .output-pane {

@@ -18,10 +18,15 @@ assert.match(html, /katex(\.min)?\.css/, 'index.html phải nhúng KaTeX CSS');
 assert.match(html, /katex(\.min)?\.js/, 'index.html phải nhúng KaTeX JS');
 assert.match(html, /<script[^>]*defer[^>]*src="app\.js"/, 'app.js trong index.html phải có thuộc tính defer để đồng bộ với KaTeX');
 
-// 1.2. Kiểm tra CSS định kiểu inline code nền đen than #1C1B18
+// 1.2. Kiểm tra CSS định kiểu inline code nền đen than #1C1B18 & màu cú pháp IDE
 assert.match(css, /p code[^{]*\{[^}]*background:\s*(var\(--code-bg\)|#1C1B18)/s, 'Inline code p code phải dùng nền đen #1C1B18');
-assert.doesNotMatch(css, /p code[^{]*\{[^}]*background:\s*#E5E0D3/s, 'Inline code không được dùng nền kem cũ #E5E0D3');
+assert.doesNotMatch(css, /p code[^{]*\{[^}]*background:\s*#E5E0D3/s, 'Mặc định p code không được dùng nền kem cũ #E5E0D3');
 assert.match(css, /\.analogy-box code/, 'styles.css phải định kiểu nền đen cho .analogy-box code');
+assert.match(css, /\.hl-flag/, 'styles.css phải có class định kiểu cờ lệnh .hl-flag');
+assert.match(css, /\.hl-cmd/, 'styles.css phải có class định kiểu lệnh CLI .hl-cmd');
+assert.match(css, /\.hl-file/, 'styles.css phải có class định kiểu file .hl-file');
+assert.match(css, /body\.inline-code-cream code:not\(pre code\)/, 'styles.css phải hỗ trợ chế độ nền kem đậm dự phòng');
+assert.match(html, /id="btn-toggle-inline-theme"/, 'index.html phải có nút chuyển đổi giao diện inline code');
 
 // 1.3. Kiểm tra nhãn thảo luận, triggerMathRender và làm sạch macro mũi tên trong app.js
 assert.doesNotMatch(js, /hỏi học sinh trước khi bấm/i, 'app.js không được chứa chữ "Hỏi học sinh trước khi bấm"');
@@ -79,6 +84,27 @@ vm.runInContext(js, sandbox);
 const modules = sandbox.window.MODULES_DATA;
 assert.equal(Array.isArray(modules), true, 'MODULES_DATA phải là mảng');
 assert.equal(modules.length, 5, 'Phải có đúng 5 Module bài giảng');
+
+// 2.1. Kiểm tra bộ highlight cú pháp inline code phong cách IDE
+const hl = sandbox.window.highlightInlineCodeSnippet;
+assert.equal(typeof hl, 'function', 'highlightInlineCodeSnippet phải được export ra window');
+
+const sampleCli = hl('g++ -O2 -static BAI1.cpp -o BAI1.exe');
+assert.ok(sampleCli.includes('class="hl-cmd"'), 'Lệnh g++ phải có class hl-cmd');
+assert.ok(sampleCli.includes('class="hl-flag"'), 'Cờ -O2 / -static phải có class hl-flag');
+assert.ok(sampleCli.includes('class="hl-file"'), 'File .cpp / .exe phải có class hl-file');
+
+const sampleStream = hl('ofstream inp("BAI1.inp");');
+assert.ok(sampleStream.includes('class="hl-type"'), 'ofstream phải có class hl-type');
+assert.ok(sampleStream.includes('class="hl-str"'), '"BAI1.inp" phải có class hl-str');
+
+const sampleRand = hl('return l + (rd() % (r - l + 1));');
+assert.ok(sampleRand.includes('class="hl-kw"'), 'return phải có class hl-kw');
+assert.ok(sampleRand.includes('class="hl-fn"'), 'rd() phải có class hl-fn');
+assert.ok(sampleRand.includes('class="hl-num"'), '1 phải có class hl-num');
+
+const sampleDll = hl('libstdc++-6.dll');
+assert.ok(sampleDll.includes('class="hl-file"'), 'libstdc++-6.dll phải có class hl-file');
 
 // 3. Kiểm tra từng module: lý thuyết, thảo luận, mọi tổ hợp công tắc sandbox, và quiz
 for (const mod of modules) {

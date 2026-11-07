@@ -69,6 +69,65 @@ function highlightCpp(rawCode, changedLines = []) {
     .join('\n');
 }
 
+function highlightInlineCodeSnippet(codeHtml) {
+  let s = String(codeHtml || '');
+  const tokens = [];
+  function addToken(html) {
+    const id = `__INL_TOK_${tokens.length}__`;
+    tokens.push(html);
+    return id;
+  }
+
+  // 1. Chuỗi ký tự (String & Char literals): "..." hoặc '...'
+  s = s.replace(/"([^"]*)"/g, (m) => addToken(`<span class="hl-str">${m}</span>`));
+  s = s.replace(/'([^']*)'/g, (m) => addToken(`<span class="hl-str">${m}</span>`));
+
+  // 2. Cờ biên dịch & cờ lệnh shell: -O2, -static, -Wall, -o, -std=c++14, -static-libstdc++, /w
+  s = s.replace(/(^|[\s(])(\/(?:w))\b/g, (m, p1, p2) => p1 + addToken(`<span class="hl-flag">${p2}</span>`));
+  s = s.replace(/(^|[\s(])(-[a-zA-Z0-9_\-\+]+)\b/g, (m, p1, p2) => p1 + addToken(`<span class="hl-flag">${p2}</span>`));
+
+  // 3. Lệnh hệ thống & Shell (g++, python, cmd.exe, etc.)
+  s = s.replace(/(^|[\s(])(g\+\+)(?=[\s.,:;()]|$)/g, (m, p1, p2) => p1 + addToken(`<span class="hl-cmd">${p2}</span>`));
+  s = s.replace(/\b(python|cmd\.exe|cmd|bash|sh|zsh|fc|diff|Code::Blocks)\b/g, (m) => addToken(`<span class="hl-cmd">${m}</span>`));
+
+  // 4. File thực thi, mã nguồn & thư viện (.exe, .cpp, .inp, .out, .ans, .dll, .bin, .o)
+  s = s.replace(/\b([a-zA-Z0-9_\-\+]+\.(?:exe|cpp|inp|out|ans|dll|bin|o))\b/g, (m) => addToken(`<span class="hl-file">${m}</span>`));
+  s = s.replace(/(^|[\s(])(\.(?:exe|cpp|inp|out|ans|dll|bin))\b/g, (m, p1, p2) => p1 + addToken(`<span class="hl-file">${p2}</span>`));
+
+  // 5. Kiểu dữ liệu C++ & Thư viện STL chuẩn
+  s = s.replace(/\b(long\s+long|int|long|bool|char|string|vector|ofstream|ifstream|mt19937|mt19937_64|uniform_int_distribution|chrono::steady_clock|steady_clock|chrono|cin|cout|stdin|stdout|NULL)\b/g, (m) => addToken(`<span class="hl-type">${m}</span>`));
+
+  // 6. Từ khóa điều khiển (Keywords)
+  s = s.replace(/\b(return|for|while|if|else|using|namespace|std|auto|const|void|break|continue|true|false)\b/g, (m) => addToken(`<span class="hl-kw">${m}</span>`));
+
+  // 7. Tên hàm (có dấu mở ngoặc ( hoặc đi kèm sau dấu chấm .)
+  s = s.replace(/\b(system|freopen|Rand|rd|sort|swap|max|min|lower_bound|upper_bound|time|srand|rand|close|exit|assert|now|time_since_epoch|count|main)\b(?=\s*\()/g, (m) => addToken(`<span class="hl-fn">${m}</span>`));
+  s = s.replace(/\.(close|count|now|time_since_epoch)\b/g, (m, p1) => '.' + addToken(`<span class="hl-fn">${p1}</span>`));
+
+  // 8. Hằng số số nguyên (Numbers)
+  s = s.replace(/\b(\d+(?:LL)?)\b/g, (m) => addToken(`<span class="hl-num">${m}</span>`));
+
+  // Khôi phục token
+  for (let i = 0; i < tokens.length; i++) {
+    s = s.replace(`__INL_TOK_${i}__`, tokens[i]);
+  }
+  return s;
+}
+
+function highlightAllInlineCode(root) {
+  if (typeof document === 'undefined') return;
+  const container = root || document.getElementById('module-content');
+  if (!container) return;
+  const codes = container.querySelectorAll('code');
+  codes.forEach((codeEl) => {
+    if (codeEl.closest('pre') || codeEl.closest('.code-display') || codeEl.getAttribute('data-hl-done')) {
+      return;
+    }
+    codeEl.innerHTML = highlightInlineCodeSnippet(codeEl.innerHTML);
+    codeEl.setAttribute('data-hl-done', 'true');
+  });
+}
+
 const MODULES_DATA = [
   // ============================================================================
   // MODULE 1: NỀN TẢNG HỆ THỐNG: PHẦN CỨNG, OS, SHELL, PATH, COMPILER & PHÍM F9
@@ -1662,6 +1721,8 @@ int main() {
 
 window.MODULES_DATA = MODULES_DATA;
 window.highlightCpp = highlightCpp;
+window.highlightInlineCodeSnippet = highlightInlineCodeSnippet;
+window.highlightAllInlineCode = highlightAllInlineCode;
 
 // ============================================================================
 // BỘ ĐIỀU KHIỂN GIAO DIỆN TƯƠNG TÁC TRÊN TRÌNH DUYỆT
@@ -1971,6 +2032,9 @@ window.highlightCpp = highlightCpp;
     // Gắn sự kiện Sandbox
     bindSandboxEvents(contentEl);
 
+    // Tô màu cú pháp toàn bộ inline code xen kẽ giữa văn bản (phong cách IDE)
+    highlightAllInlineCode(contentEl);
+
     // Gắn sự kiện chọn đáp án Quiz
     contentEl.querySelectorAll('[data-quiz-q]').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -2051,5 +2115,47 @@ window.highlightCpp = highlightCpp;
     }
   });
 
+  function initInlineThemeToggle() {
+    if (typeof document === 'undefined') return;
+    const btn = document.getElementById('btn-toggle-inline-theme');
+    const label = document.getElementById('inline-theme-label');
+    if (!btn) return;
+
+    let savedTheme = null;
+    try {
+      if (typeof localStorage !== 'undefined') {
+        savedTheme = localStorage.getItem('inlineCodeTheme');
+      }
+    } catch (_) {}
+
+    if (savedTheme === 'cream') {
+      document.body.classList.add('inline-code-cream');
+      if (label) label.textContent = 'Nền Kem Đậm';
+    } else {
+      document.body.classList.remove('inline-code-cream');
+      if (label) label.textContent = 'Nền Đen IDE';
+    }
+
+    btn.addEventListener('click', () => {
+      const isCream = document.body.classList.toggle('inline-code-cream');
+      if (isCream) {
+        if (label) label.textContent = 'Nền Kem Đậm';
+        try {
+          if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('inlineCodeTheme', 'cream');
+          }
+        } catch (_) {}
+      } else {
+        if (label) label.textContent = 'Nền Đen IDE';
+        try {
+          if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('inlineCodeTheme', 'dark');
+          }
+        } catch (_) {}
+      }
+    });
+  }
+
+  initInlineThemeToggle();
   renderAll();
 })();

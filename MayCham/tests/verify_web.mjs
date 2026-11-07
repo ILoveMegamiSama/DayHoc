@@ -13,6 +13,14 @@ assert.doesNotMatch(css, /violet|lavender|#8b5cf6|#a855f7/i, 'Không được d�
 assert.match(html, /id="module-nav"/, 'index.html phải có #module-nav');
 assert.match(html, /id="module-content"/, 'index.html phải có #module-content');
 
+// 1.1. Kiểm tra tích hợp KaTeX trong index.html
+assert.match(html, /katex(\.min)?\.css/, 'index.html phải nhúng KaTeX CSS');
+assert.match(html, /katex(\.min)?\.js/, 'index.html phải nhúng KaTeX JS');
+
+// 1.2. Kiểm tra CSS định kiểu inline code nền đen than #1C1B18
+assert.match(css, /p code[^{]*\{[^}]*background:\s*(var\(--code-bg\)|#1C1B18)/s, 'Inline code p code phải dùng nền đen #1C1B18');
+assert.doesNotMatch(css, /p code[^{]*\{[^}]*background:\s*#E5E0D3/s, 'Inline code không được dùng nền kem cũ #E5E0D3');
+
 // 2. Nạp app.js trong môi trường giả lập DOM tối giản để kiểm tra MODULES_DATA & highlightCpp
 const sandbox = {
   window: {},

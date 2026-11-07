@@ -71,64 +71,412 @@ function highlightCpp(rawCode, changedLines = []) {
 
 const MODULES_DATA = [
   // ============================================================================
-  // MODULE 1: DỮ LIỆU NẰM Ở ĐÂU & 3 CƠ CHẾ NHẬP XUẤT
+  // MODULE 1: NỀN TẢNG HỆ THỐNG: PHẦN CỨNG, OS, SHELL, PATH, COMPILER & PHÍM F9
   // ============================================================================
   {
     id: 'm1',
     number: 'Module 01',
-    shortTitle: 'RAM, Ổ Cứng & Nhập Xuất',
-    title: 'Dữ Liệu Nằm Ở Đâu? & Bản Chất 3 Cơ Chế Nhập Xuất C++',
-    lead: 'Hiểu từ gốc cho người mới bắt đầu: Byte là gì, sự khác biệt giữa RAM (Bàn làm việc) và Ổ cứng (Tủ hồ sơ), cơ chế Buffer ("Chiếc xe tải gom hàng") và tại sao máy chấm bắt buộc phải kết hợp cả cin/cout, freopen lẫn ofstream.',
+    shortTitle: 'Phần Cứng, OS, PATH & F9',
+    title: 'Nền Tảng Hệ Thống: Phần Cứng, OS, Shell, PATH, Compiler & Bản Chất Phím F9',
+    lead: 'Hiểu tận gốc máy tính hoạt động như thế nào: Bit & Byte là gì, RAM (Bàn làm việc) vs Ổ cứng (Tủ hồ sơ), Hệ điều hành & Shell (cmd vs sh), bí mật biến môi trường PATH, dòng chảy từ Code C++ qua Trình biên dịch tạo file .exe, và chuyện gì thực sự xảy ra khi bạn bấm F9 trong Code::Blocks.',
     sections: [
       {
         num: '1.1',
-        heading: 'Góc nhìn cho người mới: Byte, RAM (Bàn làm việc) và Ổ cứng (Tủ hồ sơ)',
+        heading: 'Phần cứng cốt lõi: Bit, Byte, RAM (Bàn làm việc) và Ổ cứng (Tủ hồ sơ)',
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Byte là gì? <span class="concept-tag">Đơn vị dữ liệu</span></h4>
-              <p>Hãy tưởng tượng mỗi <strong>1 Byte</strong> là một ô giấy nhỏ chứa đúng <strong>1 ký tự</strong> (ví dụ chữ cái <code>'A'</code>, chữ số <code>'5'</code>, dấu cách <code>' '</code>, hoặc dấu xuống dòng <code>'\\n'</code>).</p>
+              <h4>1. Bit & Byte là gì? <span class="concept-tag">Đơn vị dữ liệu</span></h4>
+              <p>Máy tính chỉ là những mạch điện bật/tắt:</p>
               <ul>
-                <li>Khi bạn mở file <code>BAI1.inp</code> thấy ghi số <code>100</code>, máy tính thực chất lưu 3 byte ký tự: <code>'1'</code>, <code>'0'</code>, <code>'0'</code>.</li>
-                <li>File <strong>0 byte</strong> nghĩa là tờ giấy trắng tinh, chưa có bất kỳ chữ hay số nào bên trong.</li>
+                <li><strong>1 Bit:</strong> Là 1 công tắc bóng đèn: <code>0</code> (tắt) hoặc <code>1</code> (bật).</li>
+                <li><strong>1 Byte = 8 Bit:</strong> Là một ô giấy nhỏ chứa đúng <strong>1 ký tự</strong> (ví dụ: chữ cái <code>'A'</code>, số <code>'5'</code>, dấu cách <code>' '</code>, hoặc xuống dòng <code>'\\n'</code>).</li>
+                <li>Khi mở file <code>BAI1.inp</code> thấy số <code>100</code>, đĩa cứng thực chất lưu 3 byte ký tự: <code>'1'</code>, <code>'0'</code>, <code>'0'</code>. File <strong>0 byte</strong> nghĩa là tờ giấy trắng tinh, chưa ghi ký tự nào!</li>
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. RAM — "Bàn làm việc cá nhân" <span class="concept-tag">Bộ nhớ tạm</span></h4>
+              <h4>2. RAM — "Bàn làm việc tốc độ cao" <span class="concept-tag">Bộ nhớ tạm</span></h4>
               <p>Mọi biến bạn khai báo trong C++ như <code>int n;</code>, <code>long long a[1000];</code> đều nằm trên <strong>RAM</strong>:</p>
               <ul>
-                <li><strong>Tốc độ cực nhanh:</strong> CPU lấy dữ liệu trên bàn làm việc chỉ mất vài phần tỷ giây.</li>
-                <li><strong>Mất sạch khi tắt:</strong> Chương trình chạy xong hoặc mất điện là bàn làm việc được dọn sạch.</li>
-                <li><strong>Cách ly tuyệt đối:</strong> Mỗi chương trình (<code>MAYCHAM.exe</code>, <code>BAI1.exe</code>) ngồi ở một phòng riêng, <strong>không thể nhìn thấy biến trên RAM của nhau</strong>!</li>
+                <li><strong>Tốc độ cực nhanh:</strong> CPU lấy dữ liệu trên bàn làm việc chỉ mất vài phần tỷ giây (nanosecond).</li>
+                <li><strong>Mất sạch khi tắt:</strong> Tắt máy hoặc tắt chương trình là bàn làm việc bị xóa trắng.</li>
+                <li><strong>Cách ly tuyệt đối:</strong> Hệ điều hành nhốt mỗi tiến trình trong một căn phòng riêng. <code>MAYCHAM.exe</code> và <code>BAI1.exe</code> <strong>không thể đọc trực tiếp biến trên RAM của nhau</strong>!</li>
               </ul>
             </div>
             <div class="concept-card">
               <h4>3. Ổ cứng (Disk) — "Tủ hồ sơ chung" <span class="concept-tag">Lưu trữ File</span></h4>
-              <p>Các file <code>BAI1.inp</code>, <code>BAI1.out</code>, <code>BAI1.ans</code> nằm trên <strong>Ổ cứng (SSD/HDD)</strong>:</p>
+              <p>Các file mã nguồn <code>BAI1.cpp</code> và file dữ liệu <code>BAI1.inp</code>, <code>BAI1.out</code> nằm trên <strong>Ổ cứng (SSD/HDD)</strong>:</p>
               <ul>
-                <li><strong>Bền vững:</strong> Chương trình tắt đi thì file vẫn nằm nguyên trong thư mục.</li>
-                <li><strong>Cầu nối giao tiếp:</strong> Vì <code>MAYCHAM.exe</code> không thể truyền trực tiếp mảng <code>a[]</code> trong RAM cho <code>BAI1.exe</code>, nó phải ghi đề bài ra tờ giấy <code>BAI1.inp</code> trong Tủ hồ sơ (Ổ cứng) để <code>BAI1.exe</code> mở ra đọc!</li>
+                <li><strong>Lưu trữ bền vững:</strong> Tắt máy thì file vẫn nằm nguyên trong thư mục.</li>
+                <li><strong>Cầu nối giao tiếp:</strong> Vì <code>MAYCHAM.exe</code> không thể truyền biến RAM cho <code>BAI1.exe</code>, nó bắt buộc phải ghi đề bài ra tờ giấy <code>BAI1.inp</code> cất vào Tủ hồ sơ (Ổ cứng) để <code>BAI1.exe</code> mở ra đọc!</li>
               </ul>
             </div>
-          </div>
-          <div class="analogy-box">
-            <strong>Ẩn dụ "Chiếc xe tải gom hàng" (Buffer / Bộ đệm):</strong><br/>
-            Đi từ Bàn làm việc (RAM) xuống Tủ hồ sơ (Ổ cứng) rất xa và tốn sức. Vì thế, khi bạn viết lệnh ghi file <code>inp &lt;&lt; n;</code>, C++ <strong>chưa ghi xuống ổ cứng ngay đâu!</strong> Nó xếp tạm số <code>n</code> lên một thùng xe tải chờ trên RAM gọi là <strong>Buffer (Bộ đệm)</strong>. Chiếc xe tải này chỉ chịu chạy xuống ổ cứng khi: (1) Thùng xe đầy (thường vài nghìn byte), (2) Chương trình kết thúc hẳn, hoặc (3) Bạn ra lệnh đóng cửa xe bằng <strong><code>inp.close()</code></strong>!
           </div>
         `
       },
       {
         num: '1.2',
+        heading: 'Hệ điều hành (OS) & Shell (Giao diện dòng lệnh CLI vs GUI)',
+        html: `
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>1. Hệ điều hành (OS) là ai? <span class="concept-tag">Người quản lý tối cao</span></h4>
+              <p>Hệ điều hành (Windows, Linux, macOS) là người toàn quyền chỉ huy phần cứng máy tính: cấp phát RAM, quản lý các file trên ổ cứng, và điều phối CPU chạy chương trình nào trước, chương trình nào sau.</p>
+            </div>
+            <div class="concept-card">
+              <h4>2. GUI vs Shell (CLI) <span class="concept-tag">Giao tiếp với OS</span></h4>
+              <ul>
+                <li><strong>GUI (Giao diện đồ họa):</strong> Người dùng dùng chuột bấm đúp vào icon, menu, cửa sổ.</li>
+                <li><strong>Shell (Dòng lệnh CLI):</strong> Cổng giao tiếp bằng văn bản. Bạn gõ một câu lệnh chữ rồi bấm <code>Enter</code>, Shell nhận lệnh, chuyển cho OS thực thi và in kết quả ra màn hình.</li>
+                <li>Trên <strong>Windows:</strong> Trợ lý dòng lệnh là <code>cmd.exe</code> (Command Prompt) hoặc PowerShell.</li>
+                <li>Trên <strong>Linux:</strong> Trợ lý dòng lệnh là <code>sh</code>, <code>bash</code>, hoặc <code>zsh</code>.</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>3. Vì sao coder phải hiểu Shell? <span class="concept-tag">Tự động hóa</span></h4>
+              <p>Chương trình C++ <code>MAYCHAM.exe</code> <strong>không có bàn tay để cầm chuột click đúp</strong> vào <code>BAI1.exe</code>! Cách duy nhất để máy chấm gọi bài thi chạy là gửi lệnh dạng chữ cho Shell của hệ điều hành thông qua lệnh <code>system("BAI1.exe")</code>.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        num: '1.3',
+        heading: 'Biến môi trường PATH — Sổ danh bạ tìm kiếm của Shell',
+        html: `
+          <div class="analogy-box">
+            <strong>Câu đố thực tế:</strong> Tại sao khi mở cửa sổ đen <code>cmd</code>, bạn gõ lệnh <code>python</code> hoặc <code>fc</code> thì máy tính hiểu ngay, nhưng nếu gõ <code>g++</code> trên máy học sinh cài Code::Blocks thì lại báo lỗi: <code>'g++' is not recognized as an internal or external command</code>?
+          </div>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>Bước 1: Tìm tại "Thư mục hiện tại" <span class="concept-tag">Working Directory</span></h4>
+              <p>Khi bạn gõ tên một chương trình (ví dụ <code>BAI1.exe</code>), Shell sẽ nhìn ngay vào <strong>thư mục bạn đang đứng</strong>.</p>
+              <p>→ Vì vậy, nếu bạn để <code>MAYCHAM.cpp</code>, <code>BAI1.cpp</code>, <code>BAI1_TRAU.cpp</code> trong <strong>cùng 1 thư mục</strong>, các file <code>.exe</code> sinh ra sẽ nằm cạnh nhau và gọi thấy nhau ngay lập tức!</p>
+            </div>
+            <div class="concept-card">
+              <h4>Bước 2: Lật sổ danh bạ hệ thống (<code>PATH</code>) <span class="concept-tag">System PATH</span></h4>
+              <p>Nếu tìm ở thư mục hiện tại không thấy, Shell mới lật cuốn sổ danh bạ tên là <strong><code>PATH</code></strong> (chứa danh sách các thư mục hệ thống như <code>C:\\Windows\\System32</code>).</p>
+              <ul>
+                <li>Lệnh <code>fc.exe</code> (so file) nằm sẵn trong <code>System32</code> (đã có trong PATH) → gõ ở đâu cũng chạy!</li>
+                <li>Ngược lại, khi cài <strong>Code::Blocks</strong>, trình biên dịch <code>g++.exe</code> nằm sâu trong <code>C:\\Program Files\\CodeBlocks\\MinGW\\bin</code> nhưng bộ cài <strong>không tự ghi địa chỉ này vào sổ tay <code>PATH</code></strong>! Vì thế cmd không tìm thấy <code>g++</code> nếu bạn chưa tự thêm vào PATH.</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        num: '1.4',
+        heading: 'Trình biên dịch (Compiler) & Dòng chảy mã máy: Code C++ → File .exe (Windows) / Binary (Linux)',
+        html: `
+          <div class="diagram-box">[File Code .cpp] (Ký tự văn bản: int main()...)
+       |
+       v (Trình biên dịch g++ nhận lệnh, kiểm tra cú pháp, dịch sang mã máy 0 & 1)
+[Bộ mã máy nhị phân CPU hiểu được]
+       |
+       +---> Trên Windows: Đóng gói định dạng PE -> File "BAI1.exe" (Hệ điều hành cấp RAM & chạy)
+       +---> Trên Linux:   Đóng gói định dạng ELF -> File binary "./BAI1" (Có cờ chmod +x)</div>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>1. CPU chỉ hiểu "Mã máy nhị phân" <span class="concept-tag">0 và 1</span></h4>
+              <p>CPU là con chip điện tử, nó không biết đọc chữ <code>cout &lt;&lt; "Hello"</code>. CPU chỉ hiểu các dòng lệnh nhị phân thô gọi là <strong>Machine Code (Mã máy)</strong>.</p>
+            </div>
+            <div class="concept-card">
+              <h4>2. Trình biên dịch (Compiler: g++) <span class="concept-tag">Người dịch thuật</span></h4>
+              <p>Bản chất <code>g++.exe</code> là một chương trình dịch thuật: nó đọc file văn bản <code>.cpp</code>, phân tích cú pháp, tối ưu thuật toán (cờ <code>-O2</code>), và chuyển toàn bộ thành mã máy nhị phân.</p>
+            </div>
+            <div class="concept-card">
+              <h4>3. Tại sao phải là file <code>.exe</code> trên Windows? <span class="concept-tag">Định dạng PE / ELF</span></h4>
+              <p>Hệ điều hành cần biết: Chương trình này cần bao nhiêu RAM? Bắt đầu chạy từ dòng byte nào? Vì vậy:</p>
+              <ul>
+                <li><strong>Windows:</strong> Đóng gói theo chuẩn <strong>PE (Portable Executable)</strong> có đuôi <code>.exe</code>. Windows nhìn đuôi <code>.exe</code> và cấu trúc PE để nạp mã máy vào RAM cho CPU chạy.</li>
+                <li><strong>Linux:</strong> Đóng gói theo chuẩn <strong>ELF</strong>, không cần đuôi mở rộng, kèm cờ quyền thực thi (executable permission).</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        num: '1.5',
+        heading: 'Giải mã phím F9 (Build & Run) trong Code::Blocks — Sau cánh gà IDE làm gì?',
+        html: `
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>Bản chất của Code::Blocks <span class="concept-tag">IDE là gì?</span></h4>
+              <p><strong>Code::Blocks không phải là trình biên dịch!</strong> Code::Blocks chỉ là một trình soạn thảo văn bản thông minh (Editor) tích hợp nút bấm để gọi ngầm trình biên dịch <code>g++.exe</code>.</p>
+            </div>
+            <div class="concept-card">
+              <h4>3 bước bí mật khi bấm F9 (Build and Run) <span class="concept-tag">Quy trình F9</span></h4>
+              <ol>
+                <li><strong>Bước 1 (Lưu file):</strong> Ghi những dòng chữ bạn vừa gõ trên RAM xuống file <code>BAI1.cpp</code> trên ổ cứng.</li>
+                <li><strong>Bước 2 (Biên dịch):</strong> Gọi ngầm lệnh: <code>g++ -Wall -O2 BAI1.cpp -o BAI1.exe</code> để dịch ra file <code>BAI1.exe</code> mới nhất.</li>
+                <li><strong>Bước 3 (Thực thi):</strong> Ra lệnh cho OS mở một cửa sổ console <code>cmd.exe</code> và chạy <code>BAI1.exe</code> vừa tạo.</li>
+              </ol>
+            </div>
+            <div class="concept-card">
+              <h4>Cảnh báo lỗi kinh điển khi chấm Stress Test! <span class="concept-tag">Quên F9</span></h4>
+              <p>Nếu bạn sửa thuật toán trong <code>BAI1.cpp</code> nhưng <strong>quên bấm Build lại (F9)</strong> mà chạy luôn <code>MAYCHAM.exe</code>, Hệ điều hành vẫn sẽ nạp file <strong><code>BAI1.exe</code> cũ từ 10 phút trước</strong> lên RAM để chạy! Kết quả chấm sẽ hoàn toàn sai lệch so với code bạn đang nhìn trên màn hình.</p>
+            </div>
+          </div>
+        `
+      }
+    ],
+    discussions: [
+      {
+        id: 'd1_1',
+        question: 'Câu hỏi thảo luận 1: Tại sao trong cửa sổ cmd trên Windows, ta gõ lệnh fc thì máy chạy được ngay ở bất kỳ thư mục nào, nhưng gõ g++ trên máy vừa cài Code::Blocks lại có thể báo lỗi "\'g++\' is not recognized"?',
+        answer: 'Vì lệnh <code>fc.exe</code> nằm sẵn trong thư mục hệ thống <code>C:\\Windows\\System32</code> (đã được Windows ghi sẵn vào sổ tay danh bạ <code>PATH</code>). Còn khi bạn cài Code::Blocks, file <code>g++.exe</code> nằm sâu trong <code>C:\\Program Files\\CodeBlocks\\MinGW\\bin</code> nhưng bộ cài mặc định <strong>không tự thêm địa chỉ này vào biến PATH</strong> của Windows! Shell tra danh bạ không thấy nên báo lỗi.'
+      },
+      {
+        id: 'd1_2',
+        question: 'Câu hỏi thảo luận 2: Một bạn sửa code trong BAI1.cpp từ thuật toán O(N^2) sang O(N), bấm Save (Ctrl+S) rồi mở MAYCHAM.exe lên chạy luôn. Hỏi máy chấm sẽ chạy thuật toán nào của BAI1?',
+        answer: 'Máy chấm vẫn chạy <strong>thuật toán cũ O(N^2)</strong>! Vì bạn mới chỉ lưu file chữ <code>BAI1.cpp</code> trên ổ cứng, chưa bấm <strong>Build (F9)</strong> để trình biên dịch <code>g++</code> dịch lại thành file mã máy <code>BAI1.exe</code> mới. File <code>BAI1.exe</code> trên ổ cứng vẫn là phiên bản cũ từ lần bấm F9 trước đó!'
+      }
+    ],
+    sandboxes: [
+      {
+        id: 'sb1_1',
+        title: 'Phòng thí nghiệm 1: Dòng chảy từ Code C++ → Biên dịch g++ → File .exe & Giải mã phím F9',
+        desc: 'Thử nghiệm sự khác biệt giữa bấm F9 biên dịch, quên bấm F9 (chạy file .exe cũ còn sót), và gọi trực tiếp g++ từ dòng lệnh Shell.',
+        toggles: [
+          {
+            key: 'action',
+            label: '1. Thao tác của Lập trình viên',
+            options: [
+              { value: 'f9', text: 'Bấm F9: Biên dịch và chạy file .exe mới nhất (Chuẩn)', kind: 'ok' },
+              { value: 'no_build', text: 'Sửa code nhưng quên F9: Chạy file .exe cũ còn sót (Lỗi)', kind: 'bug' },
+              { value: 'cli', text: 'Dòng lệnh CLI: Gõ trực tiếp g++ trong Shell', kind: 'ok' }
+            ]
+          },
+          {
+            key: 'env',
+            label: '2. Môi trường Hệ điều hành',
+            options: [
+              { value: 'win', text: 'Windows (Code::Blocks + cmd.exe + BAI1.exe)' },
+              { value: 'linux', text: 'Linux (Arch Linux + sh/bash + ./BAI1)' }
+            ]
+          }
+        ],
+        build(state) {
+          const act = state.action;
+          const isWin = state.env === 'win';
+          const exeName = isWin ? 'BAI1.exe' : 'BAI1';
+          const runCmd = isWin ? 'BAI1.exe' : './BAI1';
+
+          let code = `#include <iostream>
+using namespace std;
+
+#define NAME "BAI1"
+
+int main() {
+    // Flow: Code C++ -> Biên dịch g++ -> File thực thi (.exe / binary)
+    long long n = 10;
+    cout << "Chay thanh cong bai toan: " << NAME << "\\n";
+    cout << "Du lieu thu nghiem N = " << n << "\\n";
+    return 0;
+}`;
+
+          if (act === 'f9') {
+            return {
+              code,
+              changedLines: [7, 8, 9],
+              statusOk: true,
+              statusText: 'CHUẨN: Đã bấm F9 Build & Run, tạo file ' + exeName + ' mới nhất từ code .cpp hiện tại!',
+              console: isWin
+                ? `-------------- Build: Debug in BAI1 (compiler: GNU GCC Compiler)---------------
+g++.exe -Wall -O2 -c D:\\Code\\BAI1.cpp -o obj\\Debug\\BAI1.o
+g++.exe -o bin\\Debug\\BAI1.exe obj\\Debug\\BAI1.o
+Output file is bin\\Debug\\BAI1.exe with size 78.42 KB
+Process terminated with status 0 (0 minute(s), 0 second(s))
+0 error(s), 0 warning(s)
+
+Chay thanh cong bai toan: BAI1
+Du lieu thu nghiem N = 10
+
+Process returned 0 (0x0)   execution time : 0.015 s
+Press any key to continue.`
+                : `$ g++ -O2 BAI1.cpp -o BAI1
+$ ./BAI1
+Chay thanh cong bai toan: BAI1
+Du lieu thu nghiem N = 10`,
+              files: {
+                inp: `BAI1.cpp: Cập nhật lúc 15:30 (Khớp 100% với file thực thi)`,
+                out: `${exeName}: Tạo mới lúc 15:30 (Mã máy nhị phân mới nhất)`,
+                ans: isWin ? 'Định dạng PE (Windows x64)' : 'Định dạng ELF (Linux x86_64)'
+              }
+            };
+          } else if (act === 'no_build') {
+            return {
+              code,
+              changedLines: [8],
+              statusOk: false,
+              statusText: 'LỖI QUÊN BẤM F9: Sửa code .cpp nhưng không biên dịch, máy tính vẫn chạy file ' + exeName + ' cũ từ lần chạy trước!',
+              console: `[CẢNH BÁO: Code BAI1.cpp vừa sửa lúc 15:30 nhưng KHÔNG bấm Build F9!]
+Hệ điều hành vẫn nạp file ${exeName} cũ (tạo lúc 15:15) từ ổ cứng lên RAM để chạy!
+Chay thanh cong bai toan: BAI1 (Phien ban cu!)
+Du lieu thu nghiem N = 5  <-- KẾT QUẢ CỦA CODE CŨ (chưa có dòng N = 10)!`,
+              files: {
+                inp: `BAI1.cpp: Cập nhật lúc 15:30 (Chứa N = 10)`,
+                out: `${exeName}: Tạo từ lúc 15:15 (Vẫn là mã máy cũ chứa N = 5!)`,
+                ans: 'CẢNH BÁO: File thực thi không khớp với mã nguồn C++ hiện tại!'
+              }
+            };
+          } else {
+            return {
+              code,
+              changedLines: [1, 2, 3],
+              statusOk: true,
+              statusText: 'DÒNG LỆNH CLI: Biên dịch thủ công qua Shell ' + (isWin ? 'cmd.exe' : 'bash'),
+              console: isWin
+                ? `C:\\ThiHSG\\BAI1> g++ -O2 BAI1.cpp -o BAI1.exe
+C:\\ThiHSG\\BAI1> BAI1.exe
+Chay thanh cong bai toan: BAI1
+Du lieu thu nghiem N = 10
+C:\\ThiHSG\\BAI1>`
+                : `$ g++ -O2 BAI1.cpp -o BAI1
+$ ./BAI1
+Chay thanh cong bai toan: BAI1
+Du lieu thu nghiem N = 10`,
+              files: {
+                inp: `BAI1.cpp: Đọc trực tiếp bởi trình biên dịch g++`,
+                out: `${exeName}: Tạo thành công trong cùng thư mục làm việc`,
+                ans: `Lệnh gọi: ${runCmd}`
+              }
+            };
+          }
+        }
+      }
+    ],
+    quiz: [
+      {
+        q: '1. Tại sao hai chương trình MAYCHAM.exe và BAI1.exe không thể trực tiếp đọc biến trong RAM của nhau mà phải trao đổi qua file trên ổ cứng?',
+        options: [
+          'Vì RAM của máy tính quá nhỏ không đủ chỗ chứa 2 chương trình cùng lúc',
+          'Vì Hệ điều hành cách ly bộ nhớ RAM của mỗi tiến trình để đảm bảo an toàn, chương trình này không được tự tiện truy cập vùng nhớ của chương trình khác',
+          'Vì biến trong C++ chỉ tồn tại khi được ghi xuống ổ cứng',
+          'Vì CPU chỉ cho phép một chương trình được dùng RAM trong một ngày'
+        ],
+        correct: 1,
+        explain: 'Hệ điều hành áp dụng cơ chế bảo vệ bộ nhớ ảo (Virtual Memory Isolation): mỗi tiến trình được cấp một không gian địa chỉ riêng biệt và không thể can thiệp vào RAM của tiến trình khác. Vì thế chúng phải giao tiếp qua các file trên ổ cứng (.inp, .out).'
+      },
+      {
+        q: '2. Khi bạn mở cửa sổ cmd trên Windows và gõ một lệnh, Shell sẽ tìm kiếm file thực thi theo thứ tự nào?',
+        options: [
+          'Tìm trên mạng Internet trước, sau đó tìm trong thùng rác',
+          'Tìm trong thư mục hiện tại trước; nếu không thấy mới tra cứu danh sách thư mục trong biến môi trường PATH',
+          'Tìm trong biến PATH trước, nếu không thấy thì không bao giờ tìm ở thư mục hiện tại',
+          'Chỉ tìm kiếm trong ổ đĩa C:\\'
+        ],
+        correct: 1,
+        explain: 'Trên Windows, cmd.exe trước hết kiểm tra xem file có nằm ngay trong thư mục đang đứng (Working Directory) hay không. Nếu không có, nó mới tra cứu trong biến môi trường PATH.'
+      },
+      {
+        q: '3. Bản chất của file có đuôi .exe trên hệ điều hành Windows là gì?',
+        options: [
+          'Là file văn bản chứa nguyên văn mã nguồn C++ mà bạn đã viết',
+          'Là file nén ZIP chứa các hình ảnh của phần mềm',
+          'Là file nhị phân đóng gói theo định dạng PE (Portable Executable) chứa mã máy mà CPU có thể thực thi trực tiếp khi được OS nạp vào RAM',
+          'Là một tập lệnh chỉ chạy được khi có phần mềm Code::Blocks đang mở'
+        ],
+        correct: 2,
+        explain: 'File .exe là file nhị phân theo định dạng PE (Portable Executable). Nó chứa mã máy (Machine code) và các thông tin cần thiết để Windows nạp vào RAM và chỉ định CPU bắt đầu thực thi.'
+      },
+      {
+        q: '4. Khi lập trình trên Code::Blocks, điều gì thực sự xảy ra đằng sau hậu trường khi bạn nhấn phím F9 (Build and Run)?',
+        options: [
+          'Code::Blocks tự biến thành hệ điều hành để chạy trực tiếp từng dòng code C++',
+          'Code::Blocks gửi code lên máy chủ của Google để chấm điểm',
+          'Code::Blocks lưu file .cpp, gọi ngầm trình biên dịch g++ dịch mã sang file .exe, rồi ra lệnh cho OS mở console chạy file .exe đó',
+          'Code::Blocks chỉ mở file .cpp dưới dạng xem trước mà không làm gì khác'
+        ],
+        correct: 2,
+        explain: 'Code::Blocks là một IDE (Môi trường phát triển tích hợp). Khi bấm F9, nó lưu file, gọi g++ biên dịch mã nguồn thành file thực thi .exe, và gọi OS khởi chạy file .exe trong cửa sổ console.'
+      }
+    ]
+  },
+
+  // ============================================================================
+  // MODULE 2: BẢN CHẤT CƠ CHẾ LUỒNG (STREAM), BUFFER & 3 CƠ CHẾ NHẬP XUẤT C++
+  // ============================================================================
+  {
+    id: 'm2',
+    number: 'Module 02',
+    shortTitle: 'Cơ Chế Luồng & Nhập Xuất File',
+    title: 'Bản Chất Cơ Chế Luồng (Stream), Buffer & 3 Cơ Chế Nhập Xuất C++',
+    lead: 'Hiểu từ gốc dòng chảy dữ liệu: Luồng (Stream) là gì, cơ chế Buffer ("Chiếc xe tải gom hàng"), giải phẫu từ gốc lệnh ofstream (o-f-stream), phân biệt cin/cout vs freopen vs ofstream, và tại sao quên .close() lại sinh ra file rỗng 0 byte.',
+    sections: [
+      {
+        num: '2.1',
+        heading: 'Cơ chế Luồng (Stream) trong C++: Mô hình đường ống nước dữ liệu',
+        html: `
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>1. Khái niệm "Luồng" (Stream) <span class="concept-tag">Đường ống nước</span></h4>
+              <p>Trong C++, dữ liệu không bay nhảy tự do. Nó chảy tuần tự qua các <strong>"Đường ống dẫn dữ liệu" (gọi là Stream)</strong> kết nối giữa bộ nhớ RAM và thế giới bên ngoài:</p>
+              <ul>
+                <li><strong><code>cin</code> (Standard Input):</strong> Đường ống hút nước từ Bàn phím vào các biến trên RAM thông qua toán tử <code>&gt;&gt;</code>.</li>
+                <li><strong><code>cout</code> (Standard Output):</strong> Đường ống bơm nước từ RAM ra Màn hình console thông qua toán tử <code>&lt;&lt;</code>.</li>
+                <li><strong><code>ifstream</code> & <code>ofstream</code>:</strong> Các đường ống chuyên dụng nối thẳng giữa RAM và file trên Ổ cứng.</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>2. Cơ chế Buffer ("Thùng chứa tạm / Xe tải gom hàng") <span class="concept-tag">Tối ưu tốc độ</span></h4>
+              <p>Mỗi lần chọc xuống ổ cứng ghi dữ liệu tốn hàng triệu chu kỳ CPU. Vì vậy, C++ đặt một <strong>thùng chứa tạm trên RAM gọi là Buffer</strong> ở miệng mỗi luồng:</p>
+              <ul>
+                <li>Khi viết <code>inp &lt;&lt; n &lt;&lt; "\\n";</code>, dữ liệu <strong>chưa nằm trên ổ cứng ngay!</strong> Nó đang nằm trong thùng xe tải Buffer trên RAM.</li>
+                <li>Xe tải chỉ chạy xuống ổ cứng xả hàng khi: (1) Thùng đầy, (2) Chương trình kết thúc, hoặc (3) Bạn chủ động đóng van bằng <strong><code>inp.close()</code></strong>!</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>3. Hậu quả khi quên <code>inp.close()</code> trong Máy Chấm <span class="concept-tag">Lỗi kẹt Buffer</span></h4>
+              <p>Trong máy chấm, sau khi sinh test xong ta gọi ngay <code>system("BAI1.exe")</code>. Nếu quên <code>inp.close()</code>, dữ liệu test vẫn nằm kẹt trên Buffer RAM của <code>MAYCHAM.exe</code>. Khi <code>BAI1.exe</code> mở file ra đọc sẽ thấy một <strong>file 0 byte (trắng tinh)</strong> và chạy ra kết quả rác!</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        num: '2.2',
+        heading: 'Giải nghĩa cú pháp & Ý nghĩa từ gốc lệnh ofstream (o-f-stream)',
+        html: `
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>1. Ý nghĩa từng chữ trong <code>ofstream</code> <span class="concept-tag">Mnemonic</span></h4>
+              <ul>
+                <li><code>o</code> = <strong>Output</strong> (Xuất dữ liệu từ RAM ra ngoài).</li>
+                <li><code>f</code> = <strong>File</strong> (Tệp tin trên đĩa cứng).</li>
+                <li><code>stream</code> = <strong>Stream</strong> (Luồng dữ liệu / Đường ống).</li>
+                <li>→ <strong><code>ofstream</code> = "Luồng xuất dữ liệu vào tệp tin"</strong>.</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>2. Cú pháp khai báo & Ghi dữ liệu <span class="concept-tag">Cú pháp chuẩn</span></h4>
+              <ul>
+                <li><code>ofstream inp("BAI1.inp");</code>: Mở một đường ống mới cắm vào file <code>BAI1.inp</code>, đặt tên đường ống là <code>inp</code>.</li>
+                <li><code>inp &lt;&lt; n &lt;&lt; "\\n";</code>: Đẩy dữ liệu vào đường ống <code>inp</code> (y hệt như cách dùng <code>cout &lt;&lt;</code>).</li>
+                <li><code>inp.close();</code>: Đóng van đường ống, ép trút cạn sạch Buffer xuống đĩa cứng và trả lại file cho hệ điều hành.</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>3. Tương ứng: <code>ifstream</code> <span class="concept-tag">Input File Stream</span></h4>
+              <ul>
+                <li><code>i</code> = <strong>Input</strong> (Hút dữ liệu từ ngoài vào RAM).</li>
+                <li><code>f</code> = <strong>File</strong> (Tệp tin).</li>
+                <li><code>ifstream doc("BAI1.inp");</code>: Luồng đọc dữ liệu từ file vào biến (dùng toán tử <code>doc &gt;&gt; a[i];</code>).</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        num: '2.3',
         heading: 'So sánh bản chất 3 cơ chế Nhập Xuất trong C++',
         html: `
-          <div class="diagram-box">[Bàn phím (stdin)] ----&gt; cin                 cout ----&gt; [Màn hình đen (stdout)]
+          <div class="diagram-box">[Bàn phím (stdin)] ----> cin                 cout ----> [Màn hình đen (stdout)]
                           |                    |
         (Nếu gọi freopen: Bẻ cứng ống dẫn của cin/cout cắm thẳng vào File!)
                           v                    v
                     [BAI1.inp]            [BAI1.out]
 
         (Nếu dùng ifstream / ofstream: Tạo ống dẫn RIÊNG, giữ nguyên cin/cout cho màn hình!)
-        ofstream inp("BAI1.inp") ----&gt; [BAI1.inp]   (còn cout vẫn in ra Màn hình đen!)</div>
+        ofstream inp("BAI1.inp") ----> [BAI1.inp]   (còn cout vẫn in ra Màn hình đen!)</div>
           <table class="comp-table">
             <thead>
               <tr>
@@ -141,7 +489,7 @@ const MODULES_DATA = [
             <tbody>
               <tr>
                 <td><strong>Bản chất</strong></td>
-                <td>Đọc từ bàn phím (<code>stdin</code>), in ra màn hình console (<code>stdout</code>). <em>(Lưu ý: <code>scanf/printf</code> của C cũng dùng chung luồng này nhưng ta chỉ dùng <code>cin/cout</code>).</em></td>
+                <td>Đọc từ bàn phím (<code>stdin</code>), in ra màn hình console (<code>stdout</code>).</td>
                 <td>Bẻ thẳng "ống nước" toàn cục của <code>stdin</code> / <code>stdout</code> vào file trên ổ cứng.</td>
                 <td>Tạo một biến đối tượng mới (như <code>ofstream inp</code>) nối riêng với file, không đụng chạm tới <code>cin/cout</code>.</td>
               </tr>
@@ -164,20 +512,20 @@ const MODULES_DATA = [
     ],
     discussions: [
       {
-        id: 'd1_1',
+        id: 'd2_1',
         question: 'Câu hỏi thảo luận 1: Tại sao trong hàm generate() của Máy Chấm, nếu ta dùng freopen("BAI1.inp", "w", stdout) rồi dùng cout để in đề bài, thì khi chạy Máy Chấm màn hình đen lại tối thui không hiện dòng "Test 1: CORRECT!" nào?',
         answer: 'Vì <code>freopen(..., "w", stdout)</code> đã bẻ vĩnh viễn ống dẫn <code>stdout</code> (vốn nối với màn hình đen) cắm thẳng vào file <code>BAI1.inp</code>! Từ giây phút đó trở đi, mọi lệnh <code>cout &lt;&lt; "Test 1: CORRECT!"</code> ở hàm <code>compare()</code> đều bị ghi đè thẳng vào trong file <code>BAI1.inp</code> chứ không còn đường nào ra màn hình nữa!'
       },
       {
-        id: 'd1_2',
+        id: 'd2_2',
         question: 'Câu hỏi thảo luận 2: Chuyện gì xảy ra nếu bạn mở ofstream inp("BAI1.inp") ở ngoài hàm main(), ghi dữ liệu xong mà KHÔNG gọi inp.close(), rồi gọi ngay system("BAI1.exe")?',
         answer: 'Do dữ liệu sinh ra ít (chỉ vài chục byte), nó vẫn đang nằm chờ trên "chiếc xe tải Buffer" ở trong RAM của <code>MAYCHAM.exe</code> chứ chưa được đổ xuống ổ cứng. Khi <code>BAI1.exe</code> mở <code>BAI1.inp</code> trên ổ cứng ra đọc, nó sẽ thấy một <strong>file trắng trơn (0 byte)</strong> và chạy ra kết quả rác!'
       }
     ],
     sandboxes: [
       {
-        id: 'sb1_1',
-        title: 'Phòng thí nghiệm 1: Cơ chế Buffer (.close()) & Sự khác biệt giữa ofstream và freopen',
+        id: 'sb2_1',
+        title: 'Phòng thí nghiệm 2: Cơ chế Buffer (.close()) & Sự khác biệt giữa ofstream và freopen',
         desc: 'Hãy thử gạt công tắc để xem điều gì xảy ra với Màn hình Console và bên trong file BAI1.inp khi chạy Máy Chấm.',
         toggles: [
           {
@@ -185,15 +533,15 @@ const MODULES_DATA = [
             label: '1. Cách ghi file BAI1.inp',
             options: [
               { value: 'ofstream', text: 'Dùng ofstream inp (Chuẩn)', kind: 'ok' },
-              { value: 'freopen', text: 'Dùng freopen stdout (Lỗi)', kind: 'bug' }
+              { value: 'freopen', text: 'Dùng freopen stdout (Lỗi bẻ mất console)', kind: 'bug' }
             ]
           },
           {
             key: 'closeMode',
             label: '2. Lệnh đóng luồng cuối generate()',
             options: [
-              { value: 'closed', text: 'Có gọi inp.close() (Chuẩn)', kind: 'ok' },
-              { value: 'unclosed', text: 'Biến toàn cục quên .close() (Lỗi kẹt Buffer)', kind: 'bug' }
+              { value: 'closed', text: 'Có gọi inp.close() (Chuẩn xả Buffer)', kind: 'ok' },
+              { value: 'unclosed', text: 'Quên inp.close() (Lỗi kẹt Buffer 0 byte)', kind: 'bug' }
             ]
           }
         ],
@@ -248,14 +596,14 @@ int main() {
               code,
               changedLines: changed,
               statusOk: false,
-              statusText: 'LỖI NGHIÊM TRỌNG: Màn hình Console tối đen vì stdout đã bị freopen bẻ vào file BAI1.inp!',
-              console: `[Cửa sổ đen cmd.exe trống trơn - không có bất kỳ dòng chữ nào hiện ra!]`,
+              statusText: 'LỖI NGHIÊM TRỌNG: Màn hình console bị câm hoàn toàn vì freopen đã bẻ stdout cắm vào file!',
+              console: `(Màn hình Console đen ngòm hoàn toàn, không hiện bất kỳ chữ "CORRECT" nào!)
+Lý do: Lệnh freopen("BAI1.inp", "w", stdout) đã cướp mất màn hình console. Toàn bộ chữ in ra bị ghi đè vào file .inp!`,
               files: {
                 inp: `5\n2 -1 4 -3 5\nTest 2: CORRECT!\n`,
                 out: `7\n`,
                 ans: `7\n`
-              },
-              explain: 'Hãy bấm sang tab "BAI1.inp" ở khung bên phải! Bạn sẽ thấy dòng chữ "Test 2: CORRECT!" đáng lẽ phải in ra màn hình thì lại bị tống thẳng vào cuối file đề bài BAI1.inp!'
+              }
             };
           }
 
@@ -264,424 +612,109 @@ int main() {
               code,
               changedLines: changed,
               statusOk: false,
-              statusText: 'LỖI KẸT BUFFER: Thời điểm BAI1.exe chạy, file BAI1.inp trên ổ cứng vẫn đang rỗng (0 byte)!',
+              statusText: 'LỖI KẸT BUFFER: Quên inp.close(), file .inp trên ổ cứng bị 0 byte!',
               console: `Test 1: WRONG! (BAI1.exe đọc phải file rỗng vì Buffer chưa xả xuống ổ cứng!)\nTest 2: WRONG!`,
               files: {
-                inp: `[Trống rỗng 0 byte tại thời điểm BAI1.exe mở file ra đọc! Dữ liệu vẫn nằm lơ lửng trên RAM của MAYCHAM.exe]`,
+                inp: `(FILE TRẮNG 0 BYTE - Dữ liệu vẫn còn kẹt trong RAM của MAYCHAM!)`,
                 out: `0 (Kết quả rác do không đọc được N)\n`,
                 ans: `7\n`
-              },
-              explain: 'Vì biến inp mở ở toàn cục và không gọi inp.close(), chiếc xe tải Buffer thấy mới có hơn chục ký tự nên chưa chịu chạy xuống ổ cứng. Khi BAI1.exe mở BAI1.inp ra đọc thì tờ giấy vẫn trắng tinh!'
+              }
             };
           }
 
           return {
             code,
-            changedLines: [6, 9],
+            changedLines: [],
             statusOk: true,
-            statusText: 'CHUẨN XÁC: inp.close() đẩy trọn vẹn đề bài xuống ổ cứng, còn cout vẫn in kết quả ra màn hình Console!',
+            statusText: 'CHUẨN: Dùng ofstream và có inp.close(), Buffer được xả ngay xuống ổ cứng!',
             console: `Comparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 1: CORRECT!\nComparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 2: CORRECT!`,
             files: {
               inp: `5\n2 -1 4 -3 5\n`,
               out: `7\n`,
               ans: `7\n`
-            },
-            explain: 'ofstream inp tạo đường ống riêng để ghi file BAI1.inp và đóng lại sạch sẽ bằng inp.close(), trong khi cout của máy chấm vẫn nối với màn hình đen bình thường.'
+            }
           };
         }
       }
     ],
     quiz: [
       {
-        q: 'Câu 1: Tại sao chương trình MAYCHAM.exe không thể truyền trực tiếp mảng a[] trong bộ nhớ của nó sang cho chương trình BAI1.exe?',
+        q: '1. Từ "ofstream" trong C++ được viết tắt từ cụm từ tiếng Anh nào?',
         options: [
-          'Vì mảng a[] nằm trên RAM riêng của MAYCHAM.exe; hai chương trình .exe độc lập không thể đọc vùng RAM của nhau mà phải giao tiếp qua File trên ổ cứng.',
-          'Vì ngôn ngữ C++ không cho phép khai báo mảng trong file MAYCHAM.cpp.',
-          'Vì biến trên RAM chạy chậm hơn rất nhiều so với file trên ổ cứng.',
-          'Vì Code::Blocks chỉ cho phép mở 1 file .cpp tại một thời điểm.'
-        ],
-        correct: 0,
-        explain: 'Chính xác! Mỗi tiến trình (.exe) có không gian bộ nhớ RAM cách ly hoàn toàn. Muốn gửi dữ liệu từ Máy Chấm sang Bài Làm, bắt buộc phải ghi xuống ổ cứng (.inp).'
-      },
-      {
-        q: 'Câu 2: Vai trò thực sự của câu lệnh inp.close() ở cuối hàm generate() là gì?',
-        options: [
-          'Để xóa file .inp khỏi ổ cứng sau khi sinh test xong.',
-          'Để ép bộ đệm (Buffer) trên RAM đổ toàn bộ dữ liệu vừa sinh xuống file .inp trên ổ cứng ngay lập tức trước khi gọi BAI1.exe vào đọc.',
-          'Để biên dịch lại file BAI1.cpp thành BAI1.exe.',
-          'Để đổi tên file .inp thành file .out.'
+          'Offline Format Stream (Luồng định dạng ngoại tuyến)',
+          'Output File Stream (Luồng xuất dữ liệu vào tệp tin)',
+          'Open Fast Stream (Mở luồng tốc độ cao)',
+          'Operating File System (Hệ thống tệp tin điều hành)'
         ],
         correct: 1,
-        explain: 'Chuẩn xác! Nếu không đóng luồng bằng inp.close() (hoặc kết thúc phạm vi biến ofstream), dữ liệu có thể còn nằm trong Buffer RAM khiến BAI1.exe đọc phải file rỗng.'
+        explain: 'ofstream là viết tắt của Output File Stream (o = Output, f = File, stream = Luồng dữ liệu), chuyên dùng để ghi dữ liệu từ RAM xuống file trên ổ cứng.'
       },
       {
-        q: 'Câu 3: Trong bộ 3 file của một bài toán (MAYCHAM.cpp, BAI1.cpp, BAI1_TRAU.cpp), ta phân chia cách dùng freopen và ofstream như thế nào là chuẩn nhất?',
+        q: '2. Cơ chế Buffer (Bộ đệm) của luồng dữ liệu trong C++ được tạo ra nhằm mục đích gì?',
         options: [
-          'Dùng freopen cho cả 3 file.',
-          'Dùng ofstream trong hàm generate() của MAYCHAM.cpp; còn dùng freopen ở đầu hàm main() của BAI1.cpp và BAI1_TRAU.cpp.',
-          'Dùng freopen trong MAYCHAM.cpp; còn dùng ofstream trong BAI1.cpp.',
-          'Không cần dùng file nào cả, chỉ cần dùng cin và cout.'
+          'Để làm chậm chương trình giúp học sinh dễ đọc code',
+          'Để gom dữ liệu tạm thời trên RAM tốc độ cao trước khi ghi một mẻ lớn xuống ổ cứng, giúp giảm tải số lần truy xuất đĩa đắt đỏ',
+          'Để mã hóa dữ liệu tránh bị hacker đọc trộm',
+          'Để tự động sửa lỗi tràn số kiểu int'
         ],
         correct: 1,
-        explain: 'Rất chuẩn! BAI1.cpp và BAI1_TRAU.cpp chỉ chạy 1 lần mỗi test nên dùng freopen ở đầu main() là gọn nhất; còn MAYCHAM.cpp phải vừa ghi file .inp nhiều lần vừa in thông báo ra màn hình nên phải dùng ofstream.'
+        explain: 'Truy xuất ổ cứng chậm hơn RAM hàng nghìn lần. Buffer gom dữ liệu thành một lô (batch) trên RAM rồi mới ghi xuống ổ cứng một lần khi đầy hoặc khi gặp lệnh close().'
       },
       {
-        q: 'Câu 4: Dòng lệnh ios_base::sync_with_stdio(false); cin.tie(NULL); đặt ở đầu hàm main() có tác dụng gì?',
+        q: '3. Tại sao trong hàm sinh test generate() của Máy Chấm, ta KHÔNG NÊN dùng freopen("BAI1.inp", "w", stdout) mà nên dùng ofstream inp("BAI1.inp")?',
         options: [
-          'Tự động sinh số ngẫu nhiên cho chương trình.',
-          'Ngắt đồng bộ giữa luồng C++ (cin/cout) và luồng C (scanf/printf), giúp tốc độ đọc ghi của cin/cout nhanh ngang ngửa scanf/printf.',
-          'Tự động đóng mọi file trên ổ cứng.',
-          'So sánh hai file .out và .ans.'
+          'Vì freopen chạy chậm hơn ofstream 10 lần',
+          'Vì freopen sẽ bẻ vĩnh viễn luồng stdout ra file .inp, khiến các thông báo "Test: CORRECT" in bằng cout sau đó bị ghi đè vào file .inp thay vì hiện lên màn hình',
+          'Vì Code::Blocks cấm hoàn toàn lệnh freopen',
+          'Vì freopen chỉ dùng được trên hệ điều hành Linux'
         ],
         correct: 1,
-        explain: 'Đúng vậy! Nhờ 2 dòng này, bạn hoàn toàn yên tâm chỉ dùng cin/cout và freopen mà không bao giờ phải bận tâm đến scanf/printf nữa.'
+        explain: 'freopen bẻ hướng toàn cục luồng stdout của hệ thống. Nếu bẻ vào .inp thì toàn bộ thông báo in ra màn hình bằng cout sau đó cũng bị ghi tọt vào file .inp, làm hỏng cả màn hình lẫn file test!'
+      },
+      {
+        q: '4. Lệnh inp.close() của đối tượng ofstream có tác dụng gì quan trọng nhất?',
+        options: [
+          'Xóa vĩnh viễn file trên ổ cứng',
+          'Đóng đường ống, ép xả sạch mọi dữ liệu còn sót lại trên Buffer xuống đĩa cứng và trả lại file cho OS để tiến trình khác vào đọc ngay',
+          'Đổi tên file thành .bak',
+          'Tắt màn hình máy tính để tiết kiệm pin'
+        ],
+        correct: 1,
+        explain: 'inp.close() khóa van luồng dữ liệu, ép trút toàn bộ dữ liệu đang gom trong Buffer trên RAM xuống ổ cứng, đảm bảo file trên ổ cứng có đầy đủ dữ liệu ngay trước khi chương trình khác vào đọc.'
       }
     ]
   },
 
   // ============================================================================
-  // MODULE 2: LỆNH HỆ THỐNG, SHELL (cmd vs sh), PATH & fc /w + exit(0)
-  // ============================================================================
-  {
-    id: 'm2',
-    number: 'Module 02',
-    shortTitle: 'Hệ Điều Hành, PATH & fc /w',
-    title: 'Lệnh Hệ Thống system(), Shell (cmd vs sh), Đường Dẫn PATH & So File Kết Quả',
-    lead: 'Giải thích từ gốc: cmd.exe và sh là ai, tại sao Windows và Linux lại nói hai "ngôn ngữ lệnh" khác nhau, bí mật của biến môi trường PATH khi cài Code::Blocks, và cách dùng fc /w kết hợp exit(0) để bắt tận tay dòng kết quả sai.',
-    sections: [
-      {
-        num: '2.1',
-        heading: 'Shell (cmd.exe vs sh) là gì? Tại sao Windows và Linux lại khác nhau?',
-        html: `
-          <div class="concept-grid">
-            <div class="concept-card">
-              <h4>1. Tại sao cần tới <code>cmd</code> và <code>sh</code>? <span class="concept-tag">Người trợ lý chữ</span></h4>
-              <p>Bình thường, bạn dùng chuột bấm đúp vào biểu tượng trên màn hình (Giao diện đồ họa - GUI) để mở phần mềm. Nhưng chương trình C++ <code>MAYCHAM.exe</code> <strong>không có bàn tay để cầm chuột click đúp</strong>!</p>
-              <p>Khi bạn gọi hàm <code>system("lệnh")</code>, chương trình C++ sẽ nhờ <strong>"Người trợ lý nhận lệnh bằng chữ" (gọi là Shell)</strong> của Hệ điều hành chạy hộ câu lệnh đó, chờ chạy xong rồi mới làm việc tiếp.</p>
-            </div>
-            <div class="concept-card">
-              <h4>2. Nhánh Windows (Học sinh dùng Code::Blocks) <span class="concept-tag">Gốc MS-DOS</span></h4>
-              <ul>
-                <li><strong>Người trợ lý:</strong> <code>cmd.exe</code> (Command Prompt).</li>
-                <li><strong>Đuôi file chạy:</strong> Bắt buộc là <code>.exe</code> (ví dụ: <code>BAI1.exe</code>).</li>
-                <li><strong>Dấu ngăn cách thư mục:</strong> Dấu gạch chéo ngược <code>\\</code> (ví dụ: <code>D:\\Code\\BAI1.exe</code>).</li>
-                <li><strong>Lệnh so sánh 2 file:</strong> <code>fc /w BAI1.out BAI1.ans</code> (<em>File Compare</em>).</li>
-              </ul>
-            </div>
-            <div class="concept-card">
-              <h4>3. Nhánh Linux (Arch Linux & Máy chấm thi Online) <span class="concept-tag">Gốc UNIX</span></h4>
-              <ul>
-                <li><strong>Người trợ lý:</strong> <code>sh</code> hoặc <code>bash</code>.</li>
-                <li><strong>Gọi file chạy:</strong> Phải có <code>./</code> ở đầu để chỉ "ngay thư mục này" và không có đuôi <code>.exe</code>: <code>./BAI1</code>.</li>
-                <li><strong>Dấu ngăn cách thư mục:</strong> Dấu gạch chéo xuôi <code>/</code>.</li>
-                <li><strong>Lệnh so sánh 2 file:</strong> <code>diff -w BAI1.out BAI1.ans</code> (<em>Difference</em>).</li>
-              </ul>
-            </div>
-          </div>
-        `
-      },
-      {
-        num: '2.2',
-        heading: 'Đường dẫn (Path) và Biến môi trường PATH trên Windows + Code::Blocks',
-        html: `
-          <div class="analogy-box">
-            <strong>Câu hỏi thực tế:</strong> Tại sao trong <code>MAYCHAM.cpp</code> trên Windows, ta gõ <code>system("fc /w ...")</code> thì máy hiểu ngay, nhưng nếu gõ <code>system("g++ BAI1.cpp -o BAI1.exe")</code> thì máy của học sinh cài Code::Blocks lại báo lỗi đỏ lòm: <code>'g++' is not recognized as an internal or external command</code>?
-          </div>
-          <div class="concept-grid">
-            <div class="concept-card">
-              <h4>Bước tìm 1: Tìm ngay tại "Phòng đang đứng" <span class="concept-tag">Working Directory</span></h4>
-              <p>Khi nhận lệnh tên một chương trình (ví dụ <code>system("BAI1.exe")</code>), <code>cmd.exe</code> sẽ nhìn ngay vào <strong>thư mục hiện tại nơi <code>MAYCHAM.exe</code> đang đứng</strong>.</p>
-              <p>→ Vì vậy, nếu bạn đặt <code>MAYCHAM.cpp</code>, <code>BAI1.cpp</code>, <code>BAI1_TRAU.cpp</code> trong <strong>cùng 1 thư mục</strong> và bấm Build (F9), cả 3 file <code>.exe</code> sẽ nằm cạnh nhau và gọi thấy nhau ngay lập tức!</p>
-            </div>
-            <div class="concept-card">
-              <h4>Bước tìm 2: Tra "Sổ tay danh bạ hệ thống" (<code>PATH</code>) <span class="concept-tag">System PATH</span></h4>
-              <p>Nếu tìm ở thư mục hiện tại không thấy, Windows mới lật một cuốn sổ tay tên là <strong><code>PATH</code></strong> (chứa danh sách các thư mục vip của hệ thống như <code>C:\\Windows\\System32</code>).</p>
-              <ul>
-                <li>Chương trình <code>fc.exe</code> có sẵn trong <code>C:\\Windows\\System32</code> → gọi ở đâu cũng chạy được!</li>
-                <li>Ngược lại, khi cài <strong>Code::Blocks</strong>, bộ dịch <code>g++.exe</code> nằm sâu trong <code>C:\\Program Files\\CodeBlocks\\MinGW\\bin</code> nhưng bộ cài Code::Blocks <strong>không tự ghi địa chỉ này vào sổ tay <code>PATH</code></strong>! Vì thế ta không gọi <code>system("g++ ...")</code> trong code mà bấm <strong>Build (F9)</strong> trực tiếp trên Code::Blocks.</li>
-              </ul>
-            </div>
-          </div>
-        `
-      },
-      {
-        num: '2.3',
-        heading: 'Giải phẫu lệnh fc /w, Giá trị trả về ngược đời và Tuyệt chiêu exit(0)',
-        html: `
-          <div class="concept-grid">
-            <div class="concept-card">
-              <h4>1. Tại sao phải có cờ <code>/w</code> trong <code>fc /w</code>? <span class="concept-tag">White space</span></h4>
-              <p>Trong thi đấu C++, in ra <code>"15 "</code> (dư 1 dấu cách cuối dòng) và <code>"15"</code> đều được tính là <strong>ĐÚNG (Accepted)</strong>.</p>
-              <ul>
-                <li>Nếu chỉ viết <code>fc BAI1.out BAI1.ans</code>: nó soi từng byte một, thấy dư 1 dấu cách cũng báo <strong>SAI OAN</strong>!</li>
-                <li>Khi thêm <code>/w</code> (<em>compress white space</em>): nó tự động bỏ qua khoảng trắng thừa ở đầu/cuối dòng và gộp nhiều khoảng trắng liên tiếp thành 1.</li>
-              </ul>
-            </div>
-            <div class="concept-card">
-              <h4>2. Giá trị trả về của <code>system("fc /w ...")</code> <span class="concept-tag">0 = Giống nhau!</span></h4>
-              <p>Trong hệ điều hành, con số trả về của một lệnh mang ý nghĩa <strong>"Số lỗi phát hiện được" (Exit Code)</strong>:</p>
-              <ul>
-                <li>Trả về <strong><code>0</code></strong>: Không có lỗi / Không có khác biệt nào → <strong>2 file GIỐNG HỆT NHAU (CORRECT)!</strong></li>
-                <li>Trả về <strong><code>!= 0</code></strong> (khác 0): Phát hiện sự khác biệt → <strong>2 file KHÁC NHAU (WRONG)!</strong></li>
-              </ul>
-            </div>
-            <div class="concept-card">
-              <h4>3. Tại sao dùng <code>exit(0)</code> trong hàm <code>void compare()</code>? <span class="concept-tag">Giữ hiện trường</span></h4>
-              <p>Khi ta tách riêng hàm <code>void compare()</code>:</p>
-              <ul>
-                <li>Nếu gặp test sai, chính lệnh <code>fc /w</code> sẽ tự động in đoạn khác nhau (<code>***** BAI1.out ... ***** BAI1.ANS ...</code>) thẳng lên cửa sổ Console.</li>
-                <li>Ngay lúc đó, ta gọi <strong><code>exit(0);</code></strong> để <strong>dừng toàn bộ chương trình lập tức từ trong hàm con</strong>! Cửa sổ Console của Code::Blocks sẽ dừng lại ngay dưới cụm <code>*****</code> để bạn nhìn thấy ngay đáp án lệch nhau thế nào, đồng thời giữ nguyên file <code>BAI1.inp</code> gây lỗi không bị vòng lặp sau ghi đè!</li>
-              </ul>
-            </div>
-          </div>
-        `
-      }
-    ],
-    discussions: [
-      {
-        id: 'd2_1',
-        question: 'Câu hỏi thảo luận 1: Một bạn học sinh viết trong hàm void compare() như sau: if (system("fc /w BAI1.out BAI1.ans") != 0) { cout << "WRONG!"; return; }. Hỏi điều gì sẽ xảy ra khi máy chấm bắt được test sai ở Test thứ 3?',
-        answer: 'Vì <code>compare()</code> có kiểu trả về là <code>void</code>, lệnh <code>return;</code> chỉ thoát khỏi hàm <code>compare()</code> rồi quay lại vòng lặp <code>for</code> trong <code>main()</code> để <strong>chạy tiếp Test 4, Test 5... đến hết Test 100</strong>! Hậu quả là file <code>BAI1.inp</code> làm sai ở Test 3 bị Test 4 ghi đè mất tích luôn! Phải dùng <strong><code>exit(0);</code></strong> mới dừng hẳn toàn bộ chương trình ngay tại Test 3.'
-      },
-      {
-        id: 'd2_2',
-        question: 'Câu hỏi thảo luận 2: Tại sao trên máy Windows của học sinh, gọi system("BAI1.exe") thì chạy được, còn trên máy Arch Linux của thầy giáo phải gọi system("./BAI1")?',
-        answer: 'Vì trên Windows, <code>cmd.exe</code> tự động tìm file <code>.exe</code> ngay tại thư mục hiện tại. Còn trên Linux (<code>sh</code>/<code>bash</code>), vì lý do bảo mật, nó <strong>không tự tìm trong thư mục hiện tại</strong> trừ khi ta viết rõ <code>./</code> (nghĩa là "ngay tại thư mục này") ở đằng trước tên file!'
-      }
-    ],
-    sandboxes: [
-      {
-        id: 'sb2_1',
-        title: 'Phòng thí nghiệm 2: Lệnh so sánh file (fc /w vs diff -w), Exit Code và Lệnh dừng exit(0)',
-        desc: 'Giả sử ở Test 2, thuật Full in ra "15" còn thuật Trâu in ra "12 " (hoặc ở Test 1 cả hai cùng in ra "10" nhưng thuật Trâu dư 1 dấu cách cuối dòng). Hãy bật/tắt các công tắc để xem kết quả trên màn hình Console!',
-        toggles: [
-          {
-            key: 'osMode',
-            label: '1. Hệ điều hành',
-            options: [
-              { value: 'win', text: 'Windows (Code::Blocks - fc)', kind: 'ok' },
-              { value: 'linux', text: 'Arch Linux (diff)', kind: 'ok' }
-            ]
-          },
-          {
-            key: 'flagW',
-            label: '2. Cờ bỏ qua khoảng trắng thừa',
-            options: [
-              { value: 'with_w', text: 'Có /w (hoặc -w) (Chuẩn)', kind: 'ok' },
-              { value: 'no_w', text: 'Quên /w (Báo sai oan vì dấu cách)', kind: 'bug' }
-            ]
-          },
-          {
-            key: 'stopMode',
-            label: '3. Kiểm tra & Dừng trong compare()',
-            options: [
-              { value: 'exit0', text: '!= 0 và gọi exit(0) (Chuẩn)', kind: 'ok' },
-              { value: 'invert', text: 'Viết nhầm == 0 (Ngược logic)', kind: 'bug' },
-              { value: 'return_only', text: 'Dùng return; thay vì exit(0) (Mất test sai)', kind: 'bug' }
-            ]
-          }
-        ],
-        build(state) {
-          const isWin = state.osMode === 'win';
-          const hasW = state.flagW === 'with_w';
-          const stop = state.stopMode;
-
-          const runFullCmd = isWin ? 'system(NAME ".exe");' : 'system("./" NAME);';
-          const runTrauCmd = isWin ? 'system(NAME "_TRAU.exe");' : 'system("./" NAME "_TRAU");';
-          const cmpCmd = isWin
-            ? `system("fc ${hasW ? '/w ' : ''}" NAME ".out " NAME ".ans")`
-            : `system("diff ${hasW ? '-w ' : ''}" NAME ".out " NAME ".ans")`;
-
-          const op = stop === 'invert' ? '== 0' : '!= 0';
-          const stopLine =
-            stop === 'exit0'
-              ? '        exit(0); // Dừng toàn bộ chương trình, giữ lại phần ***** trên Console!'
-              : stop === 'return_only'
-              ? '        return;  // LỖI: Chỉ thoát hàm compare(), vòng lặp main vẫn chạy tiếp đè mất .inp!'
-              : '        exit(0);';
-
-          const code = `#include <bits/stdc++.h>
-using namespace std;
-#define NAME "BAI1"
-
-void generate() {
-    ofstream inp(NAME ".inp");
-    inp << 4 << "\\n1 2 3 4\\n";
-    inp.close();
-}
-
-void compare(int iTest) {
-    if (${cmpCmd} ${op}) {
-        cout << "Test " << iTest << ": WRONG!\\n";
-${stopLine}
-    }
-    cout << "Test " << iTest << ": CORRECT!\\n";
-}
-
-int main() {
-    for (int iTest = 1; iTest <= 3; iTest++) {
-        generate();
-        ${runFullCmd}
-        ${runTrauCmd}
-        compare(iTest);
-    }
-    return 0;
-}`;
-
-          if (!hasW) {
-            return {
-              code,
-              changedLines: [6],
-              statusOk: false,
-              statusText: 'BÁO SAI OAN Ở TEST 1: Cả 2 file đều ra đáp án 10, nhưng thiếu cờ /w nên bị bắt lỗi dư 1 dấu cách cuối dòng!',
-              console: isWin
-                ? `Comparing files BAI1.out and BAI1.ANS\n***** BAI1.out\n10\n***** BAI1.ANS\n10 \n*****\nTest 1: WRONG!\n\nProcess returned 0 (0x0)   execution time : 0.042 s\nPress any key to continue.`
-                : `1c1\n< 10\n---\n> 10 \nTest 1: WRONG!`,
-              files: {
-                inp: `4\n1 2 3 4\n`,
-                out: `10\n`,
-                ans: `10 \n`
-              },
-              explain: 'Ở Test 1, BAI1.out in "10" còn BAI1.ans in "10 " (dư 1 dấu cách). Nếu quên cờ /w (Windows) hoặc -w (Linux), lệnh so sánh sẽ báo khác biệt ngay dù kết quả toán học hoàn toàn đúng!'
-            };
-          }
-
-          if (stop === 'invert') {
-            return {
-              code,
-              changedLines: [6],
-              statusOk: false,
-              statusText: 'LỖI NGƯỢC LOGIC (== 0): Ngay ở Test 1 hai file GIỐNG HỆT NHAU (trả về 0) thì máy chấm lại hô WRONG!',
-              console: isWin
-                ? `Comparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 1: WRONG!\n\nProcess returned 0 (0x0)`
-                : `Test 1: WRONG!`,
-              files: {
-                inp: `4\n1 2 3 4\n`,
-                out: `10\n`,
-                ans: `10 \n`
-              },
-              explain: 'Hãy nhìn dòng "FC: no differences encountered" (Không có sự khác biệt nào -> trả về 0). Vì bạn viết if (system(...) == 0), máy chấm thấy trả về 0 lại tưởng là sai và báo WRONG ngay ở test đúng!'
-            };
-          }
-
-          if (stop === 'return_only') {
-            return {
-              code,
-              changedLines: [8],
-              statusOk: false,
-              statusText: 'LỖI MẤT HIỆN TRƯỜNG: Phát hiện WRONG ở Test 2 nhưng dùng return; nên máy chạy tiếp Test 3 và ghi đè mất file BAI1.inp của Test 2!',
-              console: isWin
-                ? `Comparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 1: CORRECT!\nComparing files BAI1.out and BAI1.ANS\n***** BAI1.out\n15\n***** BAI1.ANS\n12\n*****\nTest 2: WRONG!\nComparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 3: CORRECT!`
-                : `Test 1: CORRECT!\n1c1\n< 15\n---\n> 12\nTest 2: WRONG!\nTest 3: CORRECT!`,
-              files: {
-                inp: `3\n5 5 5\n(Đây là dữ liệu của Test 3! Dữ liệu gây lỗi ở Test 2 đã bị ghi đè mất sạch!)`,
-                out: `15\n`,
-                ans: `15\n`
-              },
-              explain: 'Vì dùng return; trong hàm void compare(), chương trình không dừng lại ở Test 2 mà chạy tiếp sang Test 3. Khi bạn mở file BAI1.inp ra xem thì nó đã bị thay bằng dữ liệu của Test 3 mất rồi!'
-            };
-          }
-
-          return {
-            code,
-            changedLines: [6, 8, 16, 17],
-            statusOk: true,
-            statusText: 'HOẠT ĐỘNG CHUẨN XÁC: Bắt đúng lỗi ở Test 2, hiển thị rõ dòng khác nhau ***** trên Console và dừng ngay bằng exit(0)!',
-            console: isWin
-              ? `Comparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 1: CORRECT!\nComparing files BAI1.out and BAI1.ANS\n***** BAI1.out\n15\n***** BAI1.ANS\n12\n*****\nTest 2: WRONG!\n\nProcess returned 0 (0x0)   execution time : 0.085 s\nPress any key to continue.`
-              : `Test 1: CORRECT!\n1c1\n< 15\n---\n> 12\nTest 2: WRONG!`,
-            files: {
-              inp: `5\n-2 7 -1 8 -5\n(Giữ nguyên vẹn hiện trường đề bài của Test 2 để bạn mở ra debug!)`,
-              out: `15\n`,
-              ans: `12\n`
-            },
-            explain: 'Nhờ lệnh exit(0) đặt ngay sau khi fc /w trả về != 0, bạn vừa nhìn thấy ngay trên cửa sổ đen: BAI1.out ra 15 trong khi BAI1.ANS ra 12, vừa giữ nguyên được file BAI1.inp của Test 2!'
-          };
-        }
-      }
-    ],
-    quiz: [
-      {
-        q: 'Câu 1: Khi hai file BAI1.out và BAI1.ans có nội dung GIỐNG HỆT NHAU (không tính khoảng trắng thừa), lệnh system("fc /w BAI1.out BAI1.ans") sẽ trả về giá trị nào?',
-        options: [
-          'Trả về 1 (True)',
-          'Trả về 0 (Không có sự khác biệt nào)',
-          'Trả về -1',
-          'Trả về số dòng của file'
-        ],
-        correct: 1,
-        explain: 'Chuẩn xác! Quy ước Exit Code của hệ điều hành: 0 nghĩa là thành công / không có khác biệt; khác 0 (!= 0) mới là có sự khác biệt.'
-      },
-      {
-        q: 'Câu 2: Tại sao khi cài Code::Blocks trên Windows, ta không nên dùng lệnh system("g++ BAI1.cpp -o BAI1.exe") bên trong máy chấm của học sinh?',
-        options: [
-          'Vì Windows cấm chạy trình biên dịch C++.',
-          'Vì bộ cài Code::Blocks thường không tự thêm thư mục chứa g++.exe vào biến môi trường PATH của Windows, nên cmd.exe sẽ báo không tìm thấy lệnh g++.',
-          'Vì lệnh system() chỉ gọi được lệnh fc chứ không gọi được file .exe.',
-          'Vì g++ chỉ có trên Linux.'
-        ],
-        correct: 1,
-        explain: 'Đúng vậy! Thay vì phải chỉnh biến môi trường PATH phức tạp trong phòng thi, học sinh chỉ cần mở tab BAI1.cpp và BAI1_TRAU.cpp bấm Build (F9) để tạo sẵn file .exe trong cùng thư mục.'
-      },
-      {
-        q: 'Câu 3: Trong hàm void compare(), tại sao khi phát hiện test sai ta dùng lệnh exit(0); thay vì lệnh return;?',
-        options: [
-          'Vì hàm void không cho phép viết chữ return;.',
-          'Vì return; chỉ thoát khỏi hàm compare() rồi lại chạy tiếp vòng lặp test kế tiếp trong main() làm ghi đè mất file .inp gây lỗi; còn exit(0); dừng toàn bộ chương trình ngay lập tức.',
-          'Vì exit(0); giúp tự động sửa lỗi trong code Full.',
-          'Vì exit(0); xóa hết các file .out và .ans.'
-        ],
-        correct: 1,
-        explain: 'Hoàn toàn chính xác! exit(0) kết thúc toàn bộ tiến trình ngay lập tức, giữ nguyên cả thông báo ***** của fc /w trên màn hình đen lẫn file .inp gây lỗi trên ổ cứng.'
-      },
-      {
-        q: 'Câu 4: Tương ứng với cặp lệnh system("BAI1.exe") và system("fc /w BAI1.out BAI1.ans") trên Windows, khi chuyển sang Arch Linux ta viết như thế nào?',
-        options: [
-          'system("BAI1") và system("fc -w BAI1.out BAI1.ans")',
-          'system("./BAI1") và system("diff -w BAI1.out BAI1.ans")',
-          'system("/BAI1.exe") và system("cmp BAI1.out BAI1.ans")',
-          'system("run BAI1") và system("diff /w BAI1.out BAI1.ans")'
-        ],
-        correct: 1,
-        explain: 'Chính xác! Trên Linux ta gọi thực thi tại thư mục hiện tại bằng "./BAI1" và so sánh bỏ qua khoảng trắng bằng "diff -w".'
-      }
-    ]
-  },
-
-  // ============================================================================
-  // MODULE 3: SINH SỐ NGẪU NHIÊN (mt19937, mt19937_64 vs rand())
+  // MODULE 3: LỆNH HỆ THỐNG system(), SHELL CON, MÃ THOÁT & SO FILE fc /w
   // ============================================================================
   {
     id: 'm3',
     number: 'Module 03',
-    shortTitle: 'Random & mt19937',
-    title: 'Sinh Số Ngẫu Nhiên Hiện Đại: mt19937, mt19937_64 & Những Cái Bẫy Chết Người Của Seed',
-    lead: 'Tại sao máy tính không biết "tung xúc xắc" thật, tại sao rand() trên Windows chỉ sinh được số tới 32767, lỗi đặt hạt giống time(0) trong hàm làm 50 test sinh ra giống hệt nhau, và cách viết hàm Rand(l, r) chuẩn cho kiểu long long.',
+    shortTitle: 'Lệnh Hệ Thống & So File',
+    title: 'Lệnh Hệ Thống system(), Shell Con, Mã Thoát & So File fc /w',
+    lead: 'Điều khiển tiến trình từ C++: Bản chất hàm system() là nhờ OS mở Shell con, quy ước mã thoát 0 vs khác 0, giải phẫu lệnh so file fc /w (Windows) vs diff -w (Linux), và kỹ thuật exit(0) giữ nguyên hiện trường test sai.',
     sections: [
       {
         num: '3.1',
-        heading: 'Bản chất số ngẫu nhiên trong máy tính (PRNG) và Hạt giống (Seed)',
+        heading: 'Hàm system() trong C++: Cầu nối ra lệnh cho Hệ điều hành',
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Máy tính có biết "ngẫu nhiên" thật không? <span class="concept-tag">Giả ngẫu nhiên</span></h4>
-              <p>Câu trả lời là <strong>KHÔNG</strong>! Máy tính là cỗ máy toán học chính xác tuyệt đối. Để tạo ra dãy số trông có vẻ ngẫu nhiên, nó dùng một dây chuyền công thức toán học bắt đầu từ một con số đầu vào gọi là <strong>Hạt giống (Seed)</strong>.</p>
-              <p><strong>Quy luật sắt đá:</strong> Nếu bạn đưa vào <strong>cùng 1 Hạt giống (Seed)</strong> → dây chuyền sẽ nhả ra <strong>dãy số giống hệt nhau 100%</strong>!</p>
+              <h4>1. system() hoạt động như thế nào? <span class="concept-tag">Nhờ Shell con</span></h4>
+              <p>Chương trình C++ không thể tự ý tạo tiến trình mới. Khi bạn viết <code>system("BAI1.exe");</code>:</p>
+              <ol>
+                <li>Chương trình <code>MAYCHAM.exe</code> tạm dừng lại.</li>
+                <li>Hệ điều hành mở một <strong>Shell con ngầm (cmd.exe hoặc sh)</strong>.</li>
+                <li>Shell con thực thi lệnh <code>BAI1.exe</code>, đợi nó chạy xong.</li>
+                <li>Shell con đóng lại và gửi trả lại <strong>Mã thoát (Exit Code)</strong> cho C++ tiếp tục chạy.</li>
+              </ol>
             </div>
             <div class="concept-card">
-              <h4>2. Cái bẫy của <code>time(0)</code> (Tính theo GIÂY) <span class="concept-tag">Lỗi trùng 50 test</span></h4>
-              <p>Hàm <code>time(0)</code> trả về số giây tính từ năm 1970 — tức là <strong>phải hết 1 giây đồng hồ nó mới nhảy thêm 1 đơn vị</strong>.</p>
+              <h4>2. Khác biệt cú pháp giữa Windows và Linux <span class="concept-tag">Môi trường</span></h4>
               <ul>
-                <li>Trong khi đó, vòng lặp máy chấm chạy 50 test chỉ mất khoảng <code>0.1 giây</code>!</li>
-                <li>Nếu bạn khởi tạo bộ sinh số bên trong hàm <code>generate()</code> với <code>time(0)</code>, cả 50 lần gọi hàm đều diễn ra trong cùng 1 giây → nhận cùng 1 Seed → <strong>sinh ra 50 file <code>.inp</code> giống hệt nhau từng con số!</strong></li>
-              </ul>
-            </div>
-            <div class="concept-card">
-              <h4>3. Giải pháp chuẩn: Global + <code>steady_clock</code> <span class="concept-tag">Chuẩn C++14+</span></h4>
-              <p>Ta khắc phục triệt để bằng 2 nguyên tắc:</p>
-              <ul>
-                <li><strong>Nguyên tắc 1:</strong> Khai báo bộ sinh <code>mt19937_64 rd(...)</code> ở <strong>Toàn cục (Global - ngoài mọi hàm)</strong> để gieo hạt giống đúng 1 lần khi bật chương trình.</li>
-                <li><strong>Nguyên tắc 2:</strong> Dùng <code>chrono::steady_clock::now().time_since_epoch().count()</code> (đồng hồ đếm theo phần tỷ giây - nanosecond) thay cho <code>time(0)</code>.</li>
+                <li><strong>Windows (Học sinh):</strong> Gọi <code>system("BAI1.exe");</code> (cmd tự tìm ở thư mục hiện tại). Lệnh so file là <code>fc /w BAI1.out BAI1.ans</code>.</li>
+                <li><strong>Linux (Giáo viên / Online Judge):</strong> Phải có <code>./</code> ở đầu: <code>system("./BAI1");</code>. Lệnh so file là <code>diff -w BAI1.out BAI1.ans</code>.</li>
               </ul>
             </div>
           </div>
@@ -689,44 +722,50 @@ int main() {
       },
       {
         num: '3.2',
-        heading: 'So sánh rand() cổ điển vs mt19937 (32-bit) vs mt19937_64 (64-bit)',
+        heading: 'Quy ước Mã thoát (Exit Code): 0 = Giống nhau, != 0 = Phát hiện khác biệt',
         html: `
-          <table class="comp-table">
-            <thead>
-              <tr>
-                <th>Công cụ</th>
-                <th>Giới hạn số lớn nhất sinh ra</th>
-                <th>Chuyện gì xảy ra khi cần sinh số <code>long long</code> (tới $10^{18}$)?</th>
-                <th>Khuyên dùng</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong><code>rand()</code></strong> (C cổ điển)</td>
-                <td>Trên Windows (Code::Blocks): <strong><code>RAND_MAX = 32767</code></strong> ($2^{15}-1$).</td>
-                <td>Không bao giờ sinh trực tiếp được số $> 32767$! Kể cả mảng $N = 10^5$ cũng không sinh nổi!</td>
-                <td><strong>Tuyệt đối bỏ!</strong></td>
-              </tr>
-              <tr>
-                <td><strong><code>mt19937</code></strong> (32-bit)</td>
-                <td>$2^{32} - 1 \approx$ <strong>$4.29 \times 10^9$</strong> (kiểu <code>unsigned int</code>).</td>
-                <td>Nếu dùng công thức chia dư <code>l + rd() % (r - l + 1)</code>, số sinh ra <strong>không bao giờ vượt quá 4.29 tỷ</strong>! (Trừ khi bọc qua <code>uniform_int_distribution&lt;long long&gt;</code>).</td>
-                <td>Đủ cho kiểu <code>int</code> ($\le 2 \times 10^9$).</td>
-              </tr>
-              <tr>
-                <td><strong><code>mt19937_64</code></strong> (64-bit)</td>
-                <td>$2^{64} - 1 \approx$ <strong>$1.84 \times 10^{19}$</strong> (kiểu <code>unsigned long long</code>).</td>
-                <td>Phủ kín toàn bộ miền <code>long long</code> từ $-9 \times 10^{18}$ đến $9 \times 10^{18}$ cả khi dùng chia dư lẫn dùng <code>uniform_int_distribution</code>!</td>
-                <td><strong>Chuẩn mực tốt nhất!</strong></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="analogy-box">
-            <strong>Hai cách viết hàm <code>Rand(long long l, long long r)</code> với <code>mt19937_64</code>:</strong><br/>
-            - <strong>Cách 1 (Chuẩn & an toàn tuyệt đối, không bao giờ lo tràn số khi $r - l + 1$ lớn):</strong><br/>
-              <code>long long Rand(long long l, long long r) { return uniform_int_distribution&lt;long long&gt;(l, r)(rd); }</code><br/>
-            - <strong>Cách 2 (Ngắn gọn, dễ nhớ trong phòng thi khi $r - l + 1 \le 10^{18}$):</strong><br/>
-              <code>long long Rand(long long l, long long r) { return l + rd() % (r - l + 1); }</code> <em>(Lưu ý: bắt buộc <code>rd</code> phải là <code>mt19937_64</code> thì <code>rd()</code> mới trả về số 64-bit!).</em>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>1. Quy ước quốc tế của Hệ điều hành <span class="concept-tag">Exit Code</span></h4>
+              <p>Mọi chương trình khi kết thúc đều trả về một con số nguyên cho OS:</p>
+              <ul>
+                <li>Trả về <strong><code>0</code></strong>: Hoàn thành êm đẹp, không gặp lỗi nào.</li>
+                <li>Trả về <strong><code>!= 0</code></strong> (khác 0): Báo hiệu có lỗi hoặc gặp điều kiện bất thường.</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>2. Lệnh so file <code>fc</code> và <code>diff</code> trả về gì? <span class="concept-tag">Quy ước so sánh</span></h4>
+              <ul>
+                <li>Nếu 2 file <strong>GIỐNG HỆT NHAU</strong>: Lệnh trả về <strong><code>0</code></strong> (Số lỗi = 0 → Test ĐÚNG!).</li>
+                <li>Nếu 2 file <strong>CÓ KHÁC BIỆT</strong>: Lệnh trả về <strong><code>!= 0</code></strong> (Phát hiện lỗi → Test SAI!).</li>
+                <li>→ Vì vậy điều kiện bắt test sai trong C++ là: <code>if (system("fc /w BAI1.out BAI1.ans") != 0)</code>!</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        num: '3.3',
+        heading: 'Giải phẫu lệnh fc /w, cờ whitespace và Tuyệt chiêu exit(0) giữ hiện trường',
+        html: `
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>1. Tại sao phải có cờ <code>/w</code> trong <code>fc /w</code>? <span class="concept-tag">White space</span></h4>
+              <p>Trong thi đấu, in <code>"10 "</code> (dư 1 dấu cách cuối) hay <code>"10\\r\\n"</code> (xuống dòng Windows) đều được tính là <strong>Accepted</strong>.</p>
+              <ul>
+                <li>Nếu không có <code>/w</code>: <code>fc</code> soi từng byte một và báo <strong>SAI OAN</strong>!</li>
+                <li>Khi thêm <code>/w</code>: Tự động bỏ qua khoảng trắng thừa đầu/cuối dòng và gộp nhiều dấu cách liên tiếp.</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>2. Tuyệt chiêu <code>exit(0)</code> trong <code>void compare()</code> <span class="concept-tag">Giữ hiện trường</span></h4>
+              <p>Khi tách hàm con <code>void compare()</code>:</p>
+              <ul>
+                <li>Nếu gặp test sai, <code>fc /w</code> tự in đoạn khác nhau (<code>***** BAI1.out ... ***** BAI1.ANS ...</code>) lên console.</li>
+                <li>Ngay sau đó, ta gọi <strong><code>exit(0);</code></strong> để <strong>dừng toàn bộ chương trình ngay lập tức</strong>!</li>
+                <li>Console dừng lại ngay tại chỗ sai để học sinh nhìn thấy ngay đáp án lệch nhau, và file <code>BAI1.inp</code> gây lỗi được bảo toàn nguyên vẹn trên đĩa, không bị vòng lặp sau ghi đè!</li>
+              </ul>
+            </div>
           </div>
         `
       }
@@ -734,255 +773,214 @@ int main() {
     discussions: [
       {
         id: 'd3_1',
-        question: 'Câu hỏi thảo luận 1: Đề bài cho N <= 100,000. Một bạn học sinh trên Windows dùng hàm int n = rand() % 100000 + 1; để sinh kích thước mảng. Hỏi giá trị N lớn nhất mà máy chấm của bạn đó thực sự sinh ra được là bao nhiêu?',
-        answer: 'Chỉ là <strong>32,768</strong>! Vì trên Windows (MinGW / Code::Blocks), hàm <code>rand()</code> chỉ trả về số nguyên từ <code>0</code> đến <code>RAND_MAX = 32767</code>. Khi lấy một số $\le 32767$ đem chia lấy dư cho <code>100000</code> rồi cộng 1, kết quả không bao giờ vượt quá <code>32768</code>! Bạn đó tưởng đã test được với $N = 10^5$ nhưng thực chất chưa bao giờ chạm tới!'
+        question: 'Câu hỏi thảo luận 1: Một bạn viết hàm void compare() như sau: if (system("fc /w BAI1.out BAI1.ans") != 0) { cout << "WRONG!\\n"; return; }. Hỏi điều gì sẽ xảy ra khi máy chấm gặp test sai ở Test 3?',
+        answer: 'Vì hàm <code>compare()</code> trả về <code>void</code>, lệnh <code>return;</code> chỉ thoát khỏi hàm con rồi vòng lặp <code>for</code> trong <code>main()</code> lại <strong>chạy tiếp Test 4, Test 5...</strong> Hậu quả là file <code>BAI1.inp</code> làm sai ở Test 3 bị Test 4 ghi đè mất tích luôn! Bắt buộc phải dùng <strong><code>exit(0);</code></strong> mới dừng hẳn toàn bộ chương trình ngay tại Test 3.'
       },
       {
         id: 'd3_2',
-        question: 'Câu hỏi thảo luận 2: Tại sao nếu khai báo mt19937 rd(chrono::steady_clock::now().time_since_epoch().count()); ở BÊN NGOÀI hàm generate() (toàn cục) thì mỗi lần gọi generate() nó lại sinh ra số mới, còn nếu đặt dòng đó ở BÊN TRONG hàm generate() thì lại rất nguy hiểm?',
-        answer: 'Khi đặt ở <strong>toàn cục (bên ngoài)</strong>, máy tính chỉ gieo hạt giống (Seed) đúng 1 lần lúc bắt đầu chạy <code>MAYCHAM.exe</code>; mỗi lần gọi <code>rd()</code> tiếp theo sẽ lấy con số kế tiếp trong dây chuyền toán học nên luôn khác nhau. Ngược lại, nếu đặt ở <strong>bên trong hàm <code>generate()</code></strong>, mỗi vòng lặp nó lại đập đi xây lại bộ sinh mới (và nếu dùng <code>time(0)</code> thì gieo lại đúng hạt giống cũ), vừa chậm vừa làm trùng test!'
+        question: 'Câu hỏi thảo luận 2: Tại sao khi so sánh kết quả ta luôn luôn phải thêm cờ /w (trên Windows) hoặc -w (trên Linux)?',
+        answer: 'Vì cờ <code>/w</code> (compress white space) hướng dẫn lệnh so sánh bỏ qua các khoảng trắng thừa ở đầu/cuối dòng và không phân biệt ký tự xuống dòng Windows (<code>\\r\\n</code>) với Linux (<code>\\n</code>). Nếu không có cờ này, chỉ cần code Trâu in dư một dấu cách cuối dòng là máy chấm báo sai oan dù đáp số đúng.'
       }
     ],
     sandboxes: [
       {
         id: 'sb3_1',
-        title: 'Phòng thí nghiệm 3A (Code độc lập): Demo lỗi đặt Seed trong hàm generate() vs Toàn cục',
-        desc: 'Đoạn code dưới đây hoàn chỉnh 100% — bạn có thể bấm "Chạy thử" ngay trên web hoặc bấm "Copy Code hiện tại" dán thẳng vào USACO IDE / Code::Blocks để cho học sinh xem 5 test sinh ra giống hệt nhau!',
+        title: 'Phòng thí nghiệm 3: Lệnh so file fc /w, cờ whitespace và Cơ chế dừng exit(0)',
+        desc: 'Thử nghiệm điều gì xảy ra khi code Trâu in dư một dấu cách cuối dòng, hoặc khi viết ngược logic điều kiện kiểm tra exit code.',
         toggles: [
           {
-            key: 'seedPos',
-            label: '1. Vị trí khai báo mt19937 & Seed',
+            key: 'os',
+            label: '1. Hệ điều hành',
             options: [
-              { value: 'global_steady', text: 'Toàn cục (Global) + steady_clock (Chuẩn)', kind: 'ok' },
-              { value: 'local_time0', text: 'Đặt trong generate() + time(0) (Lỗi trùng 100% test)', kind: 'bug' }
+              { value: 'win', text: 'Windows (fc /w)' },
+              { value: 'linux', text: 'Linux (diff -w)' }
             ]
           },
           {
-            key: 'engineType',
-            label: '2. Bộ sinh số & Miền giá trị',
+            key: 'ws',
+            label: '2. Cờ bỏ qua khoảng trắng',
             options: [
-              { value: 'mt64_large', text: 'mt19937_64 sinh số [-10^15, 10^15] (Chuẩn)', kind: 'ok' },
-              { value: 'mt32_mod', text: 'mt19937 (32-bit) dùng % 10^15 (Bị cắt ngọn 4.29 tỷ)', kind: 'bug' },
-              { value: 'c_rand', text: 'rand() cổ điển trên Windows (Kẹt ở 32767)', kind: 'bug' }
+              { value: 'with_w', text: 'Có cờ /w (Bỏ qua dấu cách thừa - Chuẩn)', kind: 'ok' },
+              { value: 'no_w', text: 'Thiếu cờ /w (Soi từng byte - Sai oan)', kind: 'bug' }
+            ]
+          },
+          {
+            key: 'exitLogic',
+            label: '3. Điều kiện bắt lỗi và lệnh dừng',
+            options: [
+              { value: 'correct', text: 'if (system(...) != 0) + exit(0) (Chuẩn)', kind: 'ok' },
+              { value: 'invert', text: 'if (system(...) == 0) (Ngược logic)', kind: 'bug' },
+              { value: 'return_only', text: 'Dùng return; thay vì exit(0); (Ghi đè test lỗi)', kind: 'bug' }
             ]
           }
         ],
         build(state) {
-          const isBadSeed = state.seedPos === 'local_time0';
-          const eng = state.engineType;
-          const changed = [];
+          const isWin = state.os === 'win';
+          const withW = state.ws === 'with_w';
+          const logic = state.exitLogic;
+          const cmpCmd = isWin ? (withW ? 'fc /w BAI1.out BAI1.ans' : 'fc BAI1.out BAI1.ans') : (withW ? 'diff -w BAI1.out BAI1.ans' : 'diff BAI1.out BAI1.ans');
+          const op = logic === 'invert' ? '== 0' : '!= 0';
+          const exitStmt = logic === 'return_only' ? 'return; // Lỗi: Vòng for vẫn chạy tiếp ghi đè test!' : 'exit(0); // Chuẩn: Dừng ngay bảo toàn test lỗi!';
 
           let code = `#include <bits/stdc++.h>
 using namespace std;
-`;
-          if (!isBadSeed) {
-            if (eng === 'mt64_large') {
-              code += `// CHUẨN: Khai báo toàn cục (Global) 1 lần duy nhất với steady_clock
-mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
+#define NAME "BAI1"
 
-long long Rand(long long l, long long r) {
-    return uniform_int_distribution<long long>(l, r)(rd);
-}
-`;
-              changed.push(4, 6, 7);
-            } else if (eng === 'mt32_mod') {
-              code += `// CẢNH BÁO: Dùng mt19937 (32-bit) kết hợp phép chia dư % cho số lớn
-mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
-
-long long Rand(long long l, long long r) {
-    return l + rd() % (r - l + 1); // rd() tối đa chỉ ~ 4.29 * 10^9!
-}
-`;
-              changed.push(4, 7);
-            } else {
-              code += `// LỖI CỔ ĐIỂN: Dùng rand() của C (Trên Windows RAND_MAX = 32767)
-long long Rand(long long l, long long r) {
-    return l + rand() % (r - l + 1); // rand() tối đa chỉ 32767!
-}
-`;
-              changed.push(4, 5);
-            }
-          }
-
-          code += `
-void generate(int iTest) {`;
-          if (isBadSeed) {
-            code += `
-    // LỖI CHÍ MẠNG: Khởi tạo lại mt19937 với time(0) ở mỗi lần gọi hàm!
-    mt19937_64 rd(time(0));
-    cout << "Test " << iTest << ": ";
-    for (int i = 1; i <= 4; i++) {
-        cout << (1 + rd() % 100) << " ";
+void compare(int iTest) {
+    if (system("${cmpCmd}") ${op}) {
+        cout << "Test " << iTest << ": WRONG!\\n";
+        ${exitStmt}
     }
-    cout << "\\n";`;
-            changed.push(5, 6);
-          } else {
-            code += `
-    cout << "Test " << iTest << ": ";
-    for (int i = 1; i <= 3; i++) {
-        cout << Rand(1, 1000000000000000LL) << " ";
-    }
-    cout << "\\n";`;
-          }
-          code += `
+    cout << "Test " << iTest << ": CORRECT!\\n";
 }
 
 int main() {
-    for (int iTest = 1; iTest <= 5; iTest++) {
-        generate(iTest);
+    for (int iTest = 1; iTest <= 100; iTest++) {
+        // ... generate() & system(NAME ".exe") ...
+        compare(iTest);
     }
     return 0;
 }`;
 
-          if (isBadSeed) {
+          if (!withW) {
             return {
               code,
-              changedLines: changed,
+              changedLines: [6],
               statusOk: false,
-              statusText: 'LỖI TRÙNG LẶP TEST: Cả 5 test chạy trong cùng 1 giây nên nhận cùng Seed time(0) -> Sinh ra 5 dãy số giống hệt nhau!',
-              console: `Test 1: 42 87 15 93 \nTest 2: 42 87 15 93 \nTest 3: 42 87 15 93 \nTest 4: 42 87 15 93 \nTest 5: 42 87 15 93 `,
+              statusText: 'BÁO SAI OAN: Code Trâu in ra "10 " (dư 1 dấu cách), thiếu /w nên fc báo sai từng byte!',
+              console: isWin
+                ? `Comparing files BAI1.out and BAI1.ANS\n***** BAI1.out\n10\n***** BAI1.ANS\n10 \n*****\nTest 1: WRONG!\n(Process stopped by exit(0))`
+                : `1c1\n< 10\n---\n> 10 \nTest 1: WRONG!`,
               files: {
-                inp: `4\n42 87 15 93\n(Mọi vòng lặp từ Test 1 đến Test 5 đều ghi đè đúng 4 con số này vào file .inp!)`,
-                out: `237\n`,
-                ans: `237\n`
-              },
-              explain: 'Bạn có thể bấm nút "Copy Code hiện tại" và dán sang USACO IDE bấm Run ngay! Bạn sẽ thấy cả 5 dòng in ra 4 con số giống hệt nhau không sai một chữ số nào!'
+                inp: `4\n1 2 3 4\n`,
+                out: `10\n`,
+                ans: `10 \n`
+              }
             };
           }
 
-          if (eng === 'c_rand') {
+          if (logic === 'invert') {
             return {
               code,
-              changedLines: changed,
+              changedLines: [6],
               statusOk: false,
-              statusText: 'LỖI TRẦN 32767 (Windows): Yêu cầu sinh số tới 10^15 nhưng không có số nào vượt quá 32768!',
-              console: `Test 1: 42 18468 6335 \nTest 2: 26501 19170 15725 \nTest 3: 11479 29359 26963 \nTest 4: 24465 5706 28146 \nTest 5: 23282 16828 9962 `,
+              statusText: 'NGƯỢC LOGIC: system() == 0 nghĩa là 2 file GIỐNG NHAU, nhưng bạn lại báo WRONG!',
+              console: `Comparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 1: WRONG! (Ngược đời: 2 file giống hệt nhau lại báo WRONG và dừng chương trình!)`,
               files: {
-                inp: `3\n23282 16828 9962\n`,
-                out: `50072\n`,
-                ans: `50072\n`
-              },
-              explain: 'Dù truyền r = 10^15 vào hàm Rand(1, 10^15), nhưng trên Windows rand() chỉ trả về số <= 32767. Do đó nếu code Full của bạn bị lỗi tràn kiểu int (quên dùng long long), máy chấm dùng rand() sẽ KHÔNG BAO GIỜ phát hiện ra!'
+                inp: `4\n1 2 3 4\n`,
+                out: `10\n`,
+                ans: `10\n`
+              }
             };
           }
 
-          if (eng === 'mt32_mod') {
+          if (logic === 'return_only') {
             return {
               code,
-              changedLines: changed,
+              changedLines: [8],
               statusOk: false,
-              statusText: 'LỖI CẮT NGỌN 32-BIT: Dùng mt19937 thường + phép chia dư % khiến số sinh ra không bao giờ vượt quá 4.29 tỷ!',
-              console: `Test 1: 3891024112 918273645 4102938471 \nTest 2: 1209384756 3998172635 2847561920 \nTest 3: 4019283746 192837465 3102938475 \nTest 4: 2891029384 4291029381 847561029 \nTest 5: 1928374650 3748291023 2109283746 `,
+              statusText: 'CẢNH BÁO: Dùng return; khiến vòng for chạy tiếp đến Test 100, file test lỗi bị ghi đè mất!',
+              console: `Comparing files BAI1.out and BAI1.ANS\n***** BAI1.out\n15\n***** BAI1.ANS\n20\n*****\nTest 1: WRONG!\nComparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 2: CORRECT!\n...\nTest 100: CORRECT! (Mất sạch hiện trường của Test 1!)`,
               files: {
-                inp: `3\n1928374650 3748291023 2109283746\n`,
-                out: `7785949419\n`,
-                ans: `7785949419\n`
-              },
-              explain: 'Vì mt19937 (không có _64) chỉ sinh số 32-bit tối đa là 4,294,967,295 (~4.29 * 10^9). Khi lấy rd() % 10^15, kết quả vẫn chỉ loanh quanh vài tỷ chứ không bao giờ chạm tới 10^15!'
+                inp: `10\n1 2 3 ... (Test 100 đã ghi đè lên Test 1)`,
+                out: `55\n`,
+                ans: `55\n`
+              }
             };
           }
 
           return {
             code,
-            changedLines: changed,
+            changedLines: [],
             statusOk: true,
-            statusText: 'CHUẨN MỰC: mt19937_64 toàn cục + steady_clock sinh số 64-bit phân bố đều tới 10^15 ở mọi test!',
-            console: `Test 1: 849201928374651 129384756102938 991827364519283 \nTest 2: 451928374650192 738291029384756 192837465091827 \nTest 3: 618293049586712 910293847561029 384756192039485 \nTest 4: 293847561029384 847561920394857 564738291029384 \nTest 5: 719283746501928 102938475610293 884756192039481 `,
+            statusText: 'CHUẨN: Có cờ /w và dùng exit(0) dừng ngay khi phát hiện sai khác!',
+            console: `Comparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 1: CORRECT!\nComparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 2: CORRECT!\n... Chấm tiếp tục đến khi phát hiện lỗi ...`,
             files: {
-              inp: `3\n719283746501928 102938475610293 884756192039481\n`,
-              out: `1706978414151702\n`,
-              ans: `1706978414151702\n`
-            },
-            explain: 'Khởi tạo mt19937_64 ở ngoài hàm main() kết hợp uniform_int_distribution<long long> giúp mỗi test đều có dữ liệu hoàn toàn mới và đạt tới tận 10^15 (bắt gọn mọi lỗi tràn số int)!'
+              inp: `4\n1 2 3 4\n`,
+              out: `10\n`,
+              ans: `10 \n`
+            }
           };
         }
       }
     ],
     quiz: [
       {
-        q: 'Câu 1: Trên hệ điều hành Windows (với trình biên dịch MinGW đi kèm Code::Blocks), hàm rand() cổ điển trả về số nguyên lớn nhất (RAND_MAX) là bao nhiêu?',
+        q: '1. Khi gọi system("fc /w BAI1.out BAI1.ans") trên Windows, giá trị trả về bằng 0 có ý nghĩa gì?',
         options: [
-          '32,767 (tức 2^15 - 1)',
-          '2,147,483,647 (tức 2^31 - 1)',
-          '10^18',
-          'Không có giới hạn'
+          'Chương trình fc bị lỗi không chạy được',
+          'Hai file kết quả hoàn toàn GIỐNG NHAU (Accepted)',
+          'Hai file kết quả KHÁC NHAU (Wrong Answer)',
+          'File BAI1.out bị rỗng 0 byte'
+        ],
+        correct: 1,
+        explain: 'Theo quy ước của hệ điều hành, giá trị trả về (exit code) bằng 0 đại diện cho việc không có lỗi hay khác biệt nào được tìm thấy. Tức là hai file giống hệt nhau.'
+      },
+      {
+        q: '2. Tại sao phải thêm cờ /w trong câu lệnh fc /w của Windows?',
+        options: [
+          'Để ghi đè kết quả lên màn hình',
+          'Để nén file kết quả thành file zip',
+          'Để bỏ qua khoảng trắng thừa và ký tự xuống dòng khác nhau giữa Windows và Linux',
+          'Để chạy lệnh với quyền Administrator'
+        ],
+        correct: 2,
+        explain: 'Cờ /w (compress white space) giúp bỏ qua dấu cách thừa ở đầu/cuối dòng và không phân biệt \\r\\n với \\n, đúng với quy chế chấm thi lập trình thi đấu.'
+      },
+      {
+        q: '3. Trong hàm void compare(), nếu phát hiện test sai ta phải gọi lệnh nào để bảo vệ hiện trường file .inp?',
+        options: [
+          'return;',
+          'break;',
+          'continue;',
+          'exit(0);'
+        ],
+        correct: 3,
+        explain: 'Lệnh exit(0); lập tức kết thúc toàn bộ chương trình từ bất kỳ hàm con nào, ngăn vòng lặp for chạy tiếp và giữ nguyên file .inp gây lỗi trên ổ cứng.'
+      },
+      {
+        q: '4. Sự khác biệt khi chạy file thực thi trên Windows so với Linux qua hàm system() là gì?',
+        options: [
+          'Windows bắt buộc đuôi .exe (ví dụ system("BAI1.exe")), còn Linux yêu cầu đường dẫn ./ ở trước (ví dụ system("./BAI1"))',
+          'Windows không cho phép chạy file qua system()',
+          'Linux bắt buộc file phải có đuôi .exe',
+          'Cả hai hệ điều hành đều bắt buộc viết system("run BAI1")'
         ],
         correct: 0,
-        explain: 'Chính xác! RAND_MAX trên Windows chỉ là 32767, khiến hàm rand() hoàn toàn vô dụng khi cần sinh test lớn trong lập trình thi đấu.'
-      },
-      {
-        q: 'Câu 2: Chuyện gì sẽ xảy ra nếu ta đặt dòng mt19937 rd(time(0)); ở BÊN TRONG hàm void generate()?',
-        options: [
-          'Chương trình không biên dịch được.',
-          'Vì time(0) chỉ đổi giá trị mỗi giây 1 lần, các test chạy trong cùng 1 giây sẽ nhận cùng một hạt giống (Seed) và sinh ra bộ test giống hệt nhau.',
-          'Số ngẫu nhiên sinh ra sẽ luôn bằng 0.',
-          'Máy chấm sẽ chạy nhanh gấp đôi.'
-        ],
-        correct: 1,
-        explain: 'Chuẩn xác! Trong 1 giây máy chấm chạy được hàng chục test, nên nếu khởi tạo lại với time(0) trong hàm generate(), hàng chục test liên tiếp sẽ y hệt nhau.'
-      },
-      {
-        q: 'Câu 3: Sự khác biệt cốt lõi giữa mt19937 và mt19937_64 là gì?',
-        options: [
-          'mt19937 chỉ chạy được trên Windows, còn mt19937_64 chỉ chạy được trên Linux.',
-          'mt19937 sinh số nguyên không dấu 32-bit (tối đa ~4.29 * 10^9), còn mt19937_64 sinh số nguyên không dấu 64-bit (tối đa ~1.84 * 10^19, phủ trọn kiểu long long).',
-          'mt19937_64 sinh ra 64 số cùng một lúc.',
-          'Không có sự khác biệt nào.'
-        ],
-        correct: 1,
-        explain: 'Đúng vậy! Khi dùng công thức chia lấy dư l + rd() % (r - l + 1) cho kiểu long long, bắt buộc phải dùng mt19937_64.'
-      },
-      {
-        q: 'Câu 4: Đâu là cách khai báo bộ sinh số ngẫu nhiên và hàm Rand(l, r) chuẩn nhất cho Template Máy Chấm?',
-        options: [
-          'Đặt srand(time(0)) bên trong hàm generate() và dùng rand().',
-          'Khai báo mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count()); ở toàn cục (ngoài main) và viết hàm Rand(long long l, long long r).',
-          'Khai báo mt19937 rd(1); bên trong vòng lặp for.',
-          'Không cần khởi tạo hạt giống (Seed) cho mt19937.'
-        ],
-        correct: 1,
-        explain: 'Hoàn hảo! Khai báo toàn cục với steady_clock đảm bảo mỗi lần chạy và mỗi test trong vòng lặp đều sinh ra dữ liệu ngẫu nhiên độc lập.'
+        explain: 'Trên Windows, cmd tự tìm file .exe ở thư mục hiện tại. Trên Linux, vì lý do an toàn, Shell bắt buộc phải chỉ rõ ./ (ngay thư mục này) và file binary không có đuôi .exe.'
       }
     ]
   },
 
   // ============================================================================
-  // MODULE 4: THUẬT TRÂU, THUẬT FULL, TEMPLATE MÁY CHẤM & TỔ CHỨC FILE KỲ THI
+  // MODULE 4: SINH SỐ NGẪU NHIÊN: mt19937_64, SEED THỜI GIAN & HÀM RAND DỄ NHỚ
   // ============================================================================
   {
     id: 'm4',
     number: 'Module 04',
-    shortTitle: 'Template & Tổ Chức Thi',
-    title: 'Thuật Trâu vs Thuật Full, Template Máy Chấm Chuẩn & Tổ Chức Thư Mục Trong Phòng Thi',
-    lead: 'Cách phối hợp bộ 3 file (NAME.cpp, NAME_TRAU.cpp, MAYCHAM.cpp), bí quyết dùng #define NAME để đổi tên bài trong 1 giây, và quy trình 4 bước thao tác trên Code::Blocks để không bao giờ dính lỗi chấm nhầm file .exe cũ.',
+    shortTitle: 'Random & mt19937_64',
+    title: 'Sinh Số Ngẫu Nhiên: mt19937_64, Seed Thời Gian & Hàm Rand Dễ Nhớ',
+    lead: 'Vứt bỏ hàm rand() cổ điển: Giới hạn 32767 trên Windows, giải mã cú pháp hiện đại mt19937_64 và chrono::steady_clock, định hình hàm Rand(l, r) chia dư dễ nhớ làm chuẩn trong phòng thi, và bẫy đặt sai vị trí hạt giống.',
     sections: [
       {
         num: '4.1',
-        heading: 'Triết lý Đối chiếu: Thuật Trâu (NAME_TRAU) và Thuật Full (NAME)',
+        heading: 'Tại sao phải vứt bỏ rand() và srand(time(0)) trên Windows?',
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Thuật Trâu (<code>NAME_TRAU.cpp</code>) <span class="concept-tag">Chân lý đúng đắn</span></h4>
-              <p>Là chương trình giải bài toán bằng cách <strong>ngây thơ nhất, vét cạn mọi trường hợp</strong> ($O(N^2), O(N^3), O(2^N)$):</p>
+              <h4>1. Giới hạn <code>RAND_MAX = 32767</code> <span class="concept-tag">Quá bé</span></h4>
+              <p>Trên Windows (MinGW / Code::Blocks), hàm <code>rand()</code> chỉ trả về số tối đa là <strong>32,767</strong> ($2^{15}-1$).</p>
               <ul>
-                <li><strong>Ưu tiên duy nhất:</strong> Chắc chắn đúng 100% với $N$ nhỏ, code càng ngắn gọn càng ít chỗ sai càng tốt.</li>
-                <li><strong>File đọc/ghi:</strong> Đọc <code>NAME.inp</code> → Ghi ra <strong><code>NAME.ans</code></strong> (Answer - Đáp án chuẩn).</li>
+                <li>Bạn muốn sinh mảng $N = 100,000$ phần tử? <code>rand()</code> không sinh nổi!</li>
+                <li>Bạn muốn sinh số nguyên lớn $10^9$ hay $10^{18}$? <code>rand()</code> hoàn toàn bất lực!</li>
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Thuật Full (<code>NAME.cpp</code>) <span class="concept-tag">Đối tượng cần kiểm tra</span></h4>
-              <p>Là chương trình dùng thuật toán thông minh ($O(N), O(N \log N)$, Quy hoạch động, Tham lam, Chặt nhị phân...) để lấy trọn điểm:</p>
+              <h4>2. Cái bẫy của <code>time(0)</code> <span class="concept-tag">Trùng hạt giống</span></h4>
+              <p>Máy tính sinh số ngẫu nhiên dựa vào <strong>Hạt giống (Seed)</strong>. Cùng seed → sinh ra dãy số y hệt nhau!</p>
               <ul>
-                <li><strong>Rủi ro:</strong> Rất dễ dính lỗi xét thiếu trường hợp biên, tràn số, sai chỉ số mảng.</li>
-                <li><strong>File đọc/ghi:</strong> Đọc <code>NAME.inp</code> → Ghi ra <strong><code>NAME.out</code></strong> (Output bài thi).</li>
-              </ul>
-            </div>
-            <div class="concept-card">
-              <h4>3. Mẹo <code>#define NAME "BAI1"</code> <span class="concept-tag">Nối chuỗi tự động C++</span></h4>
-              <p>Trong C++, khi bạn viết hai chuỗi hằng cạnh nhau như <code>"BAI1" ".inp"</code>, trình biên dịch tự động ghép chúng thành <code>"BAI1.inp"</code>!</p>
-              <ul>
-                <li>Nhờ đặt <code>#define NAME "BAI1"</code> ở dòng đầu tiên, mọi lệnh bên dưới chỉ cần viết <code>NAME ".inp"</code>, <code>NAME ".out"</code>, <code>NAME "_TRAU.exe"</code>.</li>
-                <li>Khi chuyển sang làm Bài 2 trong phòng thi, bạn <strong>chỉ cần sửa đúng 1 chữ</strong> thành <code>#define NAME "BAI2"</code> là xong!</li>
+                <li>Hàm <code>time(0)</code> chỉ nhảy số <strong>mỗi giây 1 lần</strong>.</li>
+                <li>Máy chấm chạy 50 test trong 1 giây. Nếu đặt <code>srand(time(0))</code> bên trong hàm <code>generate()</code>, cả 50 test đều nhận chung 1 hạt giống và sinh ra 50 file <code>.inp</code> giống hệt nhau!</li>
               </ul>
             </div>
           </div>
@@ -990,21 +988,61 @@ int main() {
       },
       {
         num: '4.2',
-        heading: 'Cách tổ chức thư mục trong kỳ thi & Quy trình 4 bước trên Code::Blocks',
+        heading: 'Giải nghĩa cú pháp hiện đại: mt19937_64 và chrono::steady_clock',
         html: `
-          <div class="diagram-box">D:\\ThiHSG_Tinh\\
-  ├── BAI1\\
-  │     ├── BAI1.cpp         --(Bấm Build F9)--&gt; BAI1.exe        (Đọc BAI1.inp -&gt; Xuất BAI1.out)
-  │     ├── BAI1_TRAU.cpp    --(Bấm Build F9)--&gt; BAI1_TRAU.exe   (Đọc BAI1.inp -&gt; Xuất BAI1.ans)
-  │     ├── MAYCHAM.cpp      --(Build &amp; Run)--&gt; MAYCHAM.exe     (Sinh BAI1.inp -&gt; Gọi 2 file .exe -&gt; fc /w)
-  │     ├── BAI1.inp         (Tự động được sinh ra bởi MAYCHAM.exe)
-  │     ├── BAI1.out         (Tự động được sinh ra bởi BAI1.exe)
-  │     └── BAI1.ans         (Tự động được sinh ra bởi BAI1_TRAU.exe)
-  └── BAI2\\ ...</div>
-          <div class="analogy-box">
-            <strong>QUY TẮC SỐNG CÒN TRÊN CODE::BLOCKS (90% HỌC SINH MỚI ĐỀU MẮC):</strong><br/>
-            Lệnh <code>system("BAI1.exe")</code> trong Máy Chấm gọi <strong>file thực thi <code>BAI1.exe</code> trên ổ cứng</strong> chứ KHÔNG tự động biên dịch file mã nguồn <code>BAI1.cpp</code>!<br/>
-            ⇒ <strong>Mỗi khi bạn sửa bất kỳ dòng code nào trong <code>BAI1.cpp</code> hoặc <code>BAI1_TRAU.cpp</code>, bạn BẮT BUỘC phải chuyển qua tab đó bấm Build (F9) để cập nhật lại file <code>.exe</code> mới, rồi mới quay sang tab <code>MAYCHAM.cpp</code> bấm Run!</strong>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>1. <code>mt19937_64</code> là gì? <span class="concept-tag">Mersenne Twister</span></h4>
+              <ul>
+                <li><code>mt</code> = <strong>Mersenne Twister</strong> (thuật toán sinh số ngẫu nhiên cực mạnh phát minh năm 1997, chu kỳ siêu dài $2^{19937}-1$).</li>
+                <li><code>19937</code> = Số mũ nguyên tố Mersenne.</li>
+                <li><code>_64</code> = Sinh số nguyên không dấu <strong>64-bit</strong> (tối đa $\approx 1.84 \times 10^{19}$), phủ kín toàn bộ miền giá trị của kiểu <code>long long</code>!</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>2. <code>chrono::steady_clock</code> <span class="concept-tag">Thần thời gian</span></h4>
+              <ul>
+                <li><code>chrono</code> = Thư viện thời gian độ chính xác cao của C++11 (bắt nguồn từ thần thời gian Chronos).</li>
+                <li><code>steady_clock</code> = Chiếc đồng hồ chạy đều đơn điệu, không bao giờ bị giật lùi.</li>
+                <li><code>time_since_epoch().count()</code> = Đếm từng tích tắc <strong>nanosecond (phần tỷ giây)</strong> tính từ ngày 01/01/1970 làm hạt giống độc nhất, chạy nghìn test trong 1 giây vẫn nhận 1000 hạt giống khác nhau!</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        num: '4.3',
+        heading: 'Hàm Rand(l, r) dễ nhớ hàng đầu trong phòng thi',
+        html: `
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>1. Cú pháp chia dư dễ nhớ (Khuyên dùng trong phòng thi) <span class="concept-tag">Ưu tiên số 1</span></h4>
+              <pre><code>mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
+
+long long Rand(long long l, long long r) {
+    return l + (rd() % (r - l + 1));
+}</code></pre>
+              <p><strong>Giải thích trực quan:</strong></p>
+              <ul>
+                <li><code>rd()</code> bốc ra một số nguyên ngẫu nhiên cực lớn.</li>
+                <li><code>rd() % (r - l + 1)</code>: Lấy phần dư cho độ dài đoạn $[l, r]$, ra một số trong đoạn $[0, r - l]$.</li>
+                <li>Cộng thêm <code>l</code>: Tịnh tiến từ $[0, r - l]$ thành đúng đoạn $[l, r]$! Cực kỳ dễ nhớ, không sợ gõ sai tên kiểu trong phòng thi.</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>2. Cú pháp mở rộng chuẩn C++ (Phân phối đều tuyệt đối) <span class="concept-tag">Mở rộng</span></h4>
+              <pre><code>long long Rand(long long l, long long r) {
+    return uniform_int_distribution&lt;long long&gt;(l, r)(rd);
+}</code></pre>
+              <ul>
+                <li><code>uniform</code>: Phân phối đều (mọi số trong đoạn có xác suất xuất hiện ngang nhau, không lệch modulo).</li>
+                <li><code>int_distribution&lt;long long&gt;</code>: Phân phối số nguyên kiểu <code>long long</code>.</li>
+              </ul>
+            </div>
+            <div class="concept-card">
+              <h4>3. Vị trí đặt biến <code>rd</code> <span class="concept-tag">Bắt buộc toàn cục</span></h4>
+              <p>Biến <code>rd</code> <strong>bắt buộc phải khai báo ở ngoài hàm (Global)</strong> một lần duy nhất ở đầu chương trình. Nếu đặt trong hàm <code>generate()</code> hay trong hàm <code>Rand()</code> thì mỗi lần gọi hàm lại bị reset lại bộ quay số!</p>
+            </div>
           </div>
         `
       }
@@ -1012,270 +1050,354 @@ int main() {
     discussions: [
       {
         id: 'd4_1',
-        question: 'Câu hỏi thảo luận 1: Sau khi viết xong BAI1.cpp, bạn copy toàn bộ code sang tạo file BAI1_TRAU.cpp rồi sửa phần thuật toán thành thuật Trâu, nhưng quên sửa dòng freopen(NAME ".out", "w", stdout); ở đầu hàm main() của BAI1_TRAU.cpp. Hỏi khi chạy Máy Chấm sẽ xảy ra hiện tượng kỳ lạ gì?',
-        answer: 'Cả <code>BAI1.exe</code> lẫn <code>BAI1_TRAU.exe</code> đều ghi kết quả đè vào cùng file <code>BAI1.out</code>! Còn file <code>BAI1.ans</code> thì không tồn tại (hoặc vẫn chứa kết quả cũ từ bài trước). Kết quả là lệnh <code>fc /w BAI1.out BAI1.ans</code> sẽ báo lỗi <code>cannot find the file BAI1.ans</code> hoặc so sánh sai hoàn toàn! <strong>Nhớ kỹ: Code Trâu bắt buộc phải xuất ra đuôi <code>.ans</code>!</strong>'
+        question: 'Câu hỏi thảo luận 1: Tại sao trên Code::Blocks (Windows), khi bạn viết Rand(1, 1000000) bằng hàm rand() % 1000000, số sinh ra không bao giờ vượt quá 32,767?',
+        answer: 'Vì trên Windows (MinGW), hằng số <code>RAND_MAX</code> chỉ bằng <strong>32,767</strong>! Bản thân hàm <code>rand()</code> không thể sinh ra số nào lớn hơn 32,767, nên phép chia dư <code>% 1000000</code> giữ nguyên số đó, không thể nào chạm tới mốc 1 triệu!'
       },
       {
         id: 'd4_2',
-        question: 'Câu hỏi thảo luận 2: Máy chấm vừa bắt được WRONG ở Test 14. Bạn mở BAI1.cpp ra sửa lỗi xong, rồi lập tức bấm Run ở tab MAYCHAM.cpp (mà quên bấm Build ở tab BAI1.cpp). Tại sao máy chấm vẫn tiếp tục báo WRONG với đúng lỗi cũ?',
-        answer: 'Vì bạn chỉ mới sửa văn bản trong <code>BAI1.cpp</code>, còn file <code>BAI1.exe</code> nằm trên ổ cứng vẫn là phiên bản cũ chứa lỗi từ trước! Khi <code>MAYCHAM.exe</code> gọi <code>system("BAI1.exe")</code>, nó vẫn chạy cái file <code>.exe</code> cũ đó. Phải bấm <strong>Build (Ctrl + F9)</strong> ở tab <code>BAI1.cpp</code> trước!'
+        question: 'Câu hỏi thảo luận 2: Tại sao công thức return l + (rd() % (r - l + 1)); kết hợp mt19937_64 lại là cú pháp ưu tiên số 1 trong phòng thi?',
+        answer: 'Vì công thức này chỉ gồm 1 dòng toán học cơ bản (chia dư độ dài rồi cộng dồn mốc xuất phát), rất dễ thuộc lòng và gõ cực nhanh dưới áp lực thi cử, mà vẫn an toàn tuyệt đối với số 64-bit nhờ bộ sinh <code>mt19937_64</code>.'
       }
     ],
     sandboxes: [
       {
         id: 'sb4_1',
-        title: 'Phòng thí nghiệm 4: Toàn bộ Template Máy Chấm Chuẩn & Các lỗi vận hành trong phòng thi',
-        desc: 'Đây là khung Template chuẩn chỉnh nhất để bạn Copy về dùng. Hãy thử bật các lỗi vận hành thường gặp khi đi thi để xem hiện tượng trên Console.',
+        title: 'Phòng thí nghiệm 4A: Cái bẫy vị trí đặt Hạt giống (Seed) và time(0) vs steady_clock',
+        desc: 'Mô phỏng chuyện gì xảy ra khi đặt khởi tạo seed bên trong hàm sinh test so với đặt toàn cục ở ngoài hàm.',
         toggles: [
           {
-            key: 'envTarget',
-            label: '1. Môi trường xuất Template',
+            key: 'seedPos',
+            label: '1. Vị trí đặt bộ sinh ngẫu nhiên',
             options: [
-              { value: 'win', text: 'Học sinh: Windows (Code::Blocks)', kind: 'ok' },
-              { value: 'linux', text: 'Giáo viên: Arch Linux', kind: 'ok' }
-            ]
-          },
-          {
-            key: 'trauExt',
-            label: '2. File xuất trong BAI1_TRAU.cpp',
-            options: [
-              { value: 'ans', text: 'freopen(NAME ".ans", "w", stdout) (Chuẩn)', kind: 'ok' },
-              { value: 'out_dup', text: 'Copy quên sửa thành .ans (Vẫn để .out)', kind: 'bug' }
-            ]
-          },
-          {
-            key: 'buildState',
-            label: '3. Thao tác Build trên Code::Blocks',
-            options: [
-              { value: 'built', text: 'Đã Build (F9) cả BAI1.exe & BAI1_TRAU.exe', kind: 'ok' },
-              { value: 'no_exe', text: 'Chưa bấm Build BAI1_TRAU.cpp ra .exe', kind: 'bug' }
+              { value: 'global', text: 'Khai báo Toàn cục (Global) ở ngoài hàm (Chuẩn)', kind: 'ok' },
+              { value: 'local_time', text: 'Khai báo Cục bộ trong hàm + time(0) (Lỗi trùng seed)', kind: 'bug' }
             ]
           }
         ],
         build(state) {
-          const isWin = state.envTarget === 'win';
-          const wrongExt = state.trauExt === 'out_dup';
-          const noExe = state.buildState === 'no_exe';
-
-          const runFull = isWin ? 'system(NAME ".exe");' : 'system("./" NAME);';
-          const runTrau = isWin ? 'system(NAME "_TRAU.exe");' : 'system("./" NAME "_TRAU");';
-          const cmpLine = isWin
-            ? 'if (system("fc /w " NAME ".out " NAME ".ans") != 0)'
-            : 'if (system("diff -w " NAME ".out " NAME ".ans") != 0)';
-
-          const code = `#include <bits/stdc++.h>
-#include <cassert>
+          const isGlobal = state.seedPos === 'global';
+          let code = `#include <bits/stdc++.h>
 using namespace std;
-
-#define NAME "BAI1"
-const int NTEST = 100;
-
+`;
+          if (isGlobal) {
+            code += `// Khởi tạo TOÀN CỤC một lần duy nhất với đồng hồ nano-giây:
 mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
 
 long long Rand(long long l, long long r) {
-    assert(l <= r);
-    return uniform_int_distribution<long long>(l, r)(rd);
+    return l + (rd() % (r - l + 1));
 }
 
 void generate() {
-    ofstream inp(NAME ".inp");
-    int n = Rand(5, 10);
-    inp << n << "\\n";
-    for (int i = 1; i <= n; i++) {
-        inp << Rand(-20, 20) << (i == n ? "" : " ");
-    }
-    inp << "\\n";
-    inp.close();
+    cout << Rand(1, 100) << " " << Rand(1, 100) << "\\n";
+}
+`;
+          } else {
+            code += `long long Rand(long long l, long long r) {
+    // LỖI CHÍ MẠNG: Khởi tạo hạt giống time(0) mỗi lần gọi hàm!
+    mt19937 rd(time(0)); 
+    return l + (rd() % (r - l + 1));
 }
 
-void compare(int iTest) {
-    ${cmpLine} {
-        cout << "Test " << iTest << ": WRONG!\\n";
-        exit(0);
-    }
-    cout << "Test " << iTest << ": CORRECT!\\n";
+void generate() {
+    cout << Rand(1, 100) << " " << Rand(1, 100) << "\\n";
 }
-
-int main() {
-    for (int iTest = 1; iTest <= NTEST; iTest++) {
+`;
+          }
+          code += `int main() {
+    for (int t = 1; t <= 3; t++) {
+        cout << "--- Test " << t << " ---\\n";
         generate();
-        ${runFull}
-        ${runTrau}
-        compare(iTest);
     }
     return 0;
 }`;
 
-          if (noExe) {
+          if (isGlobal) {
             return {
               code,
-              changedLines: [38],
-              statusOk: false,
-              statusText: 'LỖI QUÊN BUILD .EXE: Hệ điều hành không tìm thấy file BAI1_TRAU.exe trong thư mục!',
-              console: isWin
-                ? `'BAI1_TRAU.exe' is not recognized as an internal or external command,\noperable program or batch file.\nFC: cannot open BAI1.ANS - No such file or directory\nTest 1: WRONG!`
-                : `sh: line 1: ./BAI1_TRAU: No such file or directory\ndiff: BAI1.ans: No such file or directory\nTest 1: WRONG!`,
+              changedLines: [3, 4, 6],
+              statusOk: true,
+              statusText: 'CHUẨN: Khởi tạo toàn cục, 3 test sinh ra hoàn toàn khác nhau!',
+              console: `--- Test 1 ---\n83 14\n--- Test 2 ---\n47 92\n--- Test 3 ---\n19 65\n\nProcess returned 0 (0x0)`,
               files: {
-                inp: `6\n-4 12 -3 8 -10 5\n`,
-                out: `17\n`,
-                ans: `[Không tồn tại file BAI1.ans vì BAI1_TRAU.exe chưa được tạo ra!]`
-              },
-              explain: 'Khi thấy thông báo "\'BAI1_TRAU.exe\' is not recognized...", nghĩa là bạn mới chỉ lưu file BAI1_TRAU.cpp chứ chưa bấm Build (F9) để dịch nó ra file chạy .exe!'
+                inp: `Test 1: 83 14\nTest 2: 47 92\nTest 3: 19 65\n`,
+                out: `Mỗi test đều có dữ liệu mới`,
+                ans: `Hạt giống steady_clock biến thiên theo nanosecond`
+              }
             };
-          }
-
-          if (wrongExt) {
+          } else {
             return {
               code,
-              changedLines: [27, 38],
+              changedLines: [3, 4],
               statusOk: false,
-              statusText: 'LỖI COPY NHẦM ĐUÔI FILE: BAI1_TRAU.cpp vẫn ghi vào BAI1.out nên không có file BAI1.ans để so sánh!',
-              console: isWin
-                ? `FC: cannot open BAI1.ANS - No such file or directory\nTest 1: WRONG!\n\nProcess returned 0 (0x0)`
-                : `diff: BAI1.ans: No such file or directory\nTest 1: WRONG!`,
+              statusText: 'LỖI TRÙNG SEED: time(0) chưa kịp đổi giây, cả 3 test in ra 2 số y hệt nhau!',
+              console: `--- Test 1 ---\n42 42\n--- Test 2 ---\n42 42\n--- Test 3 ---\n42 42\n\n(CẢNH BÁO: Vì chạy trong cùng 1 giây, time(0) trả về cùng 1 số. Cả 3 test sinh ra y hệt nhau!)`,
               files: {
-                inp: `6\n-4 12 -3 8 -10 5\n`,
-                out: `17 (Bị BAI1_TRAU.exe ghi đè lên BAI1.out!)\n`,
-                ans: `[Không tồn tại file BAI1.ans do trong BAI1_TRAU.cpp bạn viết nhầm freopen(NAME ".out", "w", stdout)]`
-              },
-              explain: 'Đây là lỗi cực kỳ phổ biến khi copy khung code từ bài Full sang bài Trâu: quên đổi chữ ".out" thành ".ans" ở dòng freopen của file _TRAU.cpp!'
+                inp: `--- Test 1 ---\n42 42\n--- Test 2 ---\n42 42\n--- Test 3 ---\n42 42\n`,
+                out: `Dữ liệu bị trùng lặp hoàn toàn`,
+                ans: `Lỗi khởi tạo hạt giống bên trong hàm`
+              }
             };
           }
+        }
+      },
+      {
+        id: 'sb4_2',
+        title: 'Phòng thí nghiệm 4B: So sánh tầm với kiểu số: rand() vs mt19937_64 với Hàm Rand Dễ Nhớ',
+        desc: 'Thử nghiệm sinh số nguyên lớn trong đoạn [1, 10^12] bằng hàm Rand chia dư dễ nhớ so với hàm rand() cổ điển.',
+        toggles: [
+          {
+            key: 'genMethod',
+            label: '1. Phương pháp sinh ngẫu nhiên',
+            options: [
+              { value: 'mt64_modulo', text: 'mt19937_64 + Chia dư dễ nhớ l + rd() % (r - l + 1) (Chuẩn)', kind: 'ok' },
+              { value: 'mt64_dist', text: 'mt19937_64 + uniform_int_distribution (Mở rộng)', kind: 'ok' },
+              { value: 'classic_rand', text: 'rand() % (r - l + 1) cổ điển (Lỗi chặn ngọn 32767)', kind: 'bug' }
+            ]
+          }
+        ],
+        build(state) {
+          const method = state.genMethod;
+          let code = `#include <bits/stdc++.h>
+using namespace std;
+`;
+          if (method === 'mt64_modulo') {
+            code += `mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
 
-          return {
-            code,
-            changedLines: [5, 15, 26, 37, 38],
-            statusOk: true,
-            statusText: 'TEMPLATE HOÀN HẢO: Chạy mượt mà 100 test, sẵn sàng copy vào thư mục thi của bạn!',
-            console: isWin
-              ? `Comparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 1: CORRECT!\nComparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 2: CORRECT!\n...\nComparing files BAI1.out and BAI1.ANS\nFC: no differences encountered\nTest 100: CORRECT!`
-              : `Test 1: CORRECT!\nTest 2: CORRECT!\n...\nTest 100: CORRECT!`,
-            files: {
-              inp: `6\n-4 12 -3 8 -10 5\n`,
-              out: `17\n`,
-              ans: `17\n`
-            },
-            explain: 'Bạn có thể bấm nút "Copy Code hiện tại" ở góc trên để lưu ngay khung MAYCHAM.cpp chuẩn này vào máy!'
-          };
+// Hàm Rand chia dư dễ nhớ trong phòng thi:
+long long Rand(long long l, long long r) {
+    return l + (rd() % (r - l + 1));
+}
+
+int main() {
+    long long L = 1, R = 1000000000000LL; // 10^12
+    cout << "Sinh so trong doan [1, 10^12]:\\n";
+    for (int i = 1; i <= 3; i++) cout << Rand(L, R) << "\\n";
+    return 0;
+}`;
+            return {
+              code,
+              changedLines: [4, 5, 6],
+              statusOk: true,
+              statusText: 'CHUẨN: mt19937_64 kết hợp chia dư dễ nhớ sinh mượt mà số 10^12!',
+              console: `Sinh so trong doan [1, 10^12]:\n849201948201\n194820194820\n918274019284\n\nProcess returned 0 (0x0)`,
+              files: {
+                inp: `849201948201\n194820194820\n918274019284\n`,
+                out: `Số nguyên 64-bit phủ kín toàn miền long long`,
+                ans: `Công thức: l + (rd() % (r - l + 1))`
+              }
+            };
+          } else if (method === 'mt64_dist') {
+            code += `mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
+
+// Cú pháp mở rộng chuẩn C++ (phân phối đều tuyệt đối):
+long long Rand(long long l, long long r) {
+    return uniform_int_distribution<long long>(l, r)(rd);
+}
+
+int main() {
+    long long L = 1, R = 1000000000000LL; // 10^12
+    cout << "Sinh so trong doan [1, 10^12]:\\n";
+    for (int i = 1; i <= 3; i++) cout << Rand(L, R) << "\\n";
+    return 0;
+}`;
+            return {
+              code,
+              changedLines: [4, 5, 6],
+              statusOk: true,
+              statusText: 'CHUẨN: uniform_int_distribution phân phối đều tuyệt đối cho kiểu long long.',
+              console: `Sinh so trong doan [1, 10^12]:\n719284019283\n382019482019\n501928401928\n\nProcess returned 0 (0x0)`,
+              files: {
+                inp: `719284019283\n382019482019\n501928401928\n`,
+                out: `Phân phối đều chuẩn thư viện <random>`,
+                ans: `uniform_int_distribution<long long>`
+              }
+            };
+          } else {
+            code += `long long Rand(long long l, long long r) {
+    // LỖI: rand() trên Windows chỉ trả về tối đa 32767!
+    return l + (rand() % (r - l + 1));
+}
+
+int main() {
+    srand(time(0));
+    long long L = 1, R = 1000000000000LL; // 10^12
+    cout << "Sinh so trong doan [1, 10^12]:\\n";
+    for (int i = 1; i <= 3; i++) cout << Rand(L, R) << "\\n";
+    return 0;
+}`;
+            return {
+              code,
+              changedLines: [3],
+              statusOk: false,
+              statusText: 'LỖI RAND_MAX: rand() bị chặn cứng dưới 32767, không thể chạm tới 10^12!',
+              console: `Sinh so trong doan [1, 10^12]:\n14829\n28401\n5921\n\n(CẢNH BÁO: Tất cả số sinh ra đều bé hơn 32,767!)`,
+              files: {
+                inp: `14829\n28401\n5921\n`,
+                out: `Số sinh ra bị kẹt dưới 32767`,
+                ans: `Hạn chế của thư viện C cổ điển`
+              }
+            };
+          }
         }
       }
     ],
     quiz: [
       {
-        q: 'Câu 1: Trong C++, khi viết #define NAME "MAXSUB" ở đầu chương trình, biểu thức chuỗi NAME "_TRAU.exe" sẽ được trình biên dịch hiểu thành gì?',
+        q: '1. Hằng số RAND_MAX trên hệ điều hành Windows khi dùng Code::Blocks có giá trị là bao nhiêu?',
         options: [
-          'Báo lỗi biên dịch vì thiếu dấu cộng (+).',
-          'Tự động nối 2 chuỗi hằng đứng cạnh nhau thành "MAXSUB_TRAU.exe".',
-          'Hiển thị chữ "NAME_TRAU.exe".',
-          'Xóa mất chữ MAXSUB.'
+          '32,767 (tức 2^15 - 1)',
+          '2,147,483,647 (tức 2^31 - 1)',
+          'Vô hạn',
+          '1,000,000'
         ],
-        correct: 1,
-        explain: 'Chính xác! C/C++ có tính năng tự động ghép các chuỗi hằng đặt cạnh nhau (String Literal Concatenation), giúp bạn chỉ cần đổi #define NAME ở 1 dòng duy nhất.'
+        correct: 0,
+        explain: 'Trên Windows (MinGW), RAND_MAX chỉ bằng 32767. Không thể dùng rand() để sinh mảng 10^5 phần tử hay các số lớn hơn 32767.'
       },
       {
-        q: 'Câu 2: Trong 3 file của một bài toán (BAI1.cpp, BAI1_TRAU.cpp, MAYCHAM.cpp), quy ước tên file nhập/xuất chuẩn xác là gì?',
+        q: '2. Tại sao ta nên dùng chrono::steady_clock thay vì time(0) để làm hạt giống (seed) cho mt19937_64?',
         options: [
-          'BAI1.cpp xuất ra BAI1.ans; BAI1_TRAU.cpp xuất ra BAI1.out.',
-          'MAYCHAM.cpp xuất đề vào BAI1.inp; BAI1.cpp đọc BAI1.inp và xuất ra BAI1.out; BAI1_TRAU.cpp đọc BAI1.inp và xuất ra BAI1.ans.',
-          'Cả BAI1.cpp và BAI1_TRAU.cpp đều xuất ra BAI1.out.',
-          'MAYCHAM.cpp đọc từ BAI1.inp.'
+          'Vì steady_clock đếm theo nanosecond (phần tỷ giây), còn time(0) chỉ đổi giá trị mỗi giây 1 lần nên dễ làm các test sinh ra giống hệt nhau khi chạy nhanh',
+          'Vì steady_clock viết ngắn hơn time(0)',
+          'Vì time(0) không được C++ hỗ trợ nữa',
+          'Vì steady_clock tự động sắp xếp mảng'
         ],
-        correct: 1,
-        explain: 'Chuẩn xác! .inp là Input (do máy chấm sinh), .out là Output của thuật Full, còn .ans là Answer của thuật Trâu.'
+        correct: 0,
+        explain: 'time(0) tính theo giây nên nếu chạy 100 test trong 1 giây sẽ nhận cùng 1 seed. steady_clock đếm theo nanosecond đảm bảo mỗi tích tắc đều nhận seed mới.'
       },
       {
-        q: 'Câu 3: Khi chạy MAYCHAM.exe trên Windows xuất hiện thông báo lỗi: "\'BAI1_TRAU.exe\' is not recognized as an internal or external command", nguyên nhân là gì?',
+        q: '3. Công thức nào sau đây là cú pháp hàm Rand(l, r) chia dư dễ nhớ và an toàn cho kiểu số 64-bit?',
         options: [
-          'Code thuật Trâu bị sai kết quả.',
-          'Bạn chưa bấm Build (F9) file BAI1_TRAU.cpp để tạo ra file chạy BAI1_TRAU.exe (hoặc lưu file không cùng thư mục với MAYCHAM.exe).',
-          'Bạn quên gọi inp.close().',
-          'Máy tính bị hết RAM.'
+          'return l + (rd() % (r - l + 1));',
+          'return rd() % r;',
+          'return l + rd();',
+          'return (l + r) / 2;'
         ],
-        correct: 1,
-        explain: 'Đúng vậy! Phải đảm bảo cả 3 file nằm chung 1 thư mục và đã bấm Build (F9) cho cả BAI1.cpp lẫn BAI1_TRAU.cpp trước khi chạy MAYCHAM.cpp.'
+        correct: 0,
+        explain: 'l + (rd() % (r - l + 1)) lấy phần dư cho độ dài đoạn [0, r - l] rồi cộng tịnh tiến từ l, tạo thành số ngẫu nhiên trong đoạn [l, r].'
       },
       {
-        q: 'Câu 4: Mục tiêu quan trọng nhất khi viết code cho file NAME_TRAU.cpp là gì?',
+        q: '4. Biến bộ sinh ngẫu nhiên mt19937_64 rd(...) nên được đặt ở vị trí nào trong mã nguồn?',
         options: [
-          'Phải chạy nhanh dưới 1 giây với N = 10^6.',
-          'Phải dùng thuật toán càng phức tạp càng tốt.',
-          'Phải đơn giản, rõ ràng và đảm bảo ĐÚNG TUYỆT ĐỐI 100% với N nhỏ để làm thước đo chuẩn đối chiếu với thuật Full.',
-          'Không được dùng vòng lặp for.'
+          'Bên trong vòng lặp for sinh test',
+          'Khai báo toàn cục (Global) ở ngoài hàm một lần duy nhất',
+          'Bên trong hàm Rand(l, r)',
+          'Đặt ở cuối chương trình sau lệnh return 0;'
         ],
-        correct: 2,
-        explain: 'Hoàn toàn chính xác! Thuật Trâu là "trọng tài", nếu trọng tài mà viết phức tạp dẫn đến sai thì máy chấm sẽ mất tác dụng.'
+        correct: 1,
+        explain: 'Đặt toàn cục giúp bộ sinh ngẫu nhiên duy trì trạng thái liên tục qua các lần gọi hàm, tránh việc bị reset seed gây trùng lặp dữ liệu.'
       }
     ]
   },
 
   // ============================================================================
-  // MODULE 5: THỰC HÀNH SINH TEST CÓ CẤU TRÚC & ĐỘ MẠNH CỦA TEST (TEST STRENGTH)
+  // MODULE 5: TỔ CHỨC TEMPLATE MÁY CHẤM HOÀN CHỈNH & NGHỆ THUẬT TẠO TEST MẠNH
   // ============================================================================
   {
     id: 'm5',
     number: 'Module 05',
-    shortTitle: 'Sinh Test & Độ Mạnh Test',
-    title: 'Thực Hành Sinh Test Có Cấu Trúc Đặc Biệt & Nghệ Thuật Tạo "Test Mạnh"',
-    lead: 'Tại sao sinh ngẫu nhiên ngây thơ Rand(1, 10^9) thường tạo ra "test rác" không bắt được lỗi nào? Thực hành trên bài Đoạn Con Tổng Lớn Nhất (MAXSUB) và bài Truy Vấn Trên Mảng Tăng Dần (QUERY) để nắm vững cách sinh test đúng ràng buộc và ép lộ bug.',
+    shortTitle: 'Template & Sinh Test Mạnh',
+    title: 'Tổ Chức Template Máy Chấm Hoàn Chỉnh & Nghệ Thuật Tạo Test Mạnh',
+    lead: 'Gộp toàn bộ kiến thức vào thực chiến: Khung chuẩn MAYCHAM.cpp, phối hợp Thuật Trâu (.ans) vs Thuật Full (.out), tổ chức thư mục thi đấu và nghệ thuật tạo test bẫy (MAXSUB và QUERY).',
     sections: [
       {
         num: '5.1',
-        heading: 'Khởi động với Bài 1 (MAXSUB): Tại sao khi chấm thử chỉ nên sinh N từ 5 đến 10?',
+        heading: 'Mô hình máy chấm 3 file & Khung sườn MAYCHAM.cpp chuẩn',
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>Đề bài 1: Đoạn con có tổng lớn nhất (<code>MAXSUB</code>)</h4>
-              <p>Cho mảng $N$ số nguyên $A_1, A_2, \dots, A_N$ ($N \le 2 \times 10^5, |A_i| \le 10^9$). Tìm tổng lớn nhất của một đoạn con liên tiếp khác rỗng.</p>
+              <h4>1. Mô hình 3 file trong kỳ thi <span class="concept-tag">Tổ chức</span></h4>
               <ul>
-                <li><strong>Thuật Trâu ($O(N^2)$):</strong> 2 vòng <code>for</code> duyệt mọi cặp đầu mút $(L, R)$.</li>
-                <li><strong>Thuật Full ($O(N)$):</strong> Thuật toán Kadane hoặc Mảng cộng dồn.</li>
+                <li><strong><code>BAI1.cpp</code> (Thuật Full):</strong> Đọc <code>BAI1.inp</code> → Ghi ra <strong><code>BAI1.out</code></strong>. Thuật toán tối ưu ($O(N), O(N \\log N)$).</li>
+                <li><strong><code>BAI1_TRAU.cpp</code> (Thuật Trâu):</strong> Đọc <code>BAI1.inp</code> → Ghi ra <strong><code>BAI1.ans</code></strong>. Thuật toán ngây thơ duyệt cạn nhưng <strong>chắc chắn đúng 100%</strong>.</li>
+                <li><strong><code>MAYCHAM.cpp</code> (Người trọng tài):</strong> Sinh test bằng <code>ofstream</code>, gọi 2 file <code>.exe</code> bằng <code>system()</code>, so sánh bằng <code>fc /w</code>, dừng lại ngay bằng <code>exit(0)</code> khi thấy lỗi!</li>
               </ul>
             </div>
             <div class="concept-card">
-              <h4>Nguyên tắc vàng: Sinh $N$ nhỏ (<code>Rand(5, 10)</code>) trước! <span class="concept-tag">Dễ tìm lỗi</span></h4>
-              <p>Nhiều bạn mới viết máy chấm hay sinh ngay <code>n = Rand(1000, 10000)</code>. Đó là sai lầm vì 2 lý do:</p>
-              <ul>
-                <li><strong>Lý do 1 (Tốc độ):</strong> Với $N = 10$, 1 giây máy chấm chạy được hàng chục test; còn $N = 10^4$ thì thuật Trâu chạy 1 test đã mất cả giây!</li>
-                <li><strong>Lý do 2 (Debug bằng mắt):</strong> Khi máy chấm dừng lại ở <code>WRONG!</code>, mở file <code>.inp</code> thấy chỉ có <strong>5 con số</strong> (ví dụ: <code>-4 -2 -9 -1 -5</code>), bạn nhẩm bằng mắt 3 giây là phát hiện ra ngay code Full của mình bị sai khi mảng toàn số âm! Nếu mảng có 10,000 số thì bạn không thể nào nhìn ra lỗi!</li>
-              </ul>
+              <h4>2. Khung sườn hoàn chỉnh với hàm Rand dễ nhớ <span class="concept-tag">MAYCHAM.cpp</span></h4>
+              <pre><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define NAME "BAI1"
+const int NUM_TESTS = 100;
+
+mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
+long long Rand(long long l, long long r) {
+    return l + (rd() % (r - l + 1));
+}
+
+void generate() {
+    ofstream inp(NAME ".inp");
+    // Sinh dữ liệu test ở đây...
+    inp.close();
+}
+
+void compare(int iTest) {
+    #ifdef _WIN32
+        string cmd = "fc /w " NAME ".out " NAME ".ans";
+    #else
+        string cmd = "diff -w " NAME ".out " NAME ".ans";
+    #endif
+    if (system(cmd.c_str()) != 0) {
+        cout &lt;&lt; "Test " &lt;&lt; iTest &lt;&lt; ": WRONG!\\n";
+        exit(0);
+    }
+    cout &lt;&lt; "Test " &lt;&lt; iTest &lt;&lt; ": CORRECT!\\n";
+}
+
+int main() {
+    for (int iTest = 1; iTest &lt;= NUM_TESTS; iTest++) {
+        generate();
+        system(NAME ".exe");
+        system(NAME "_TRAU.exe");
+        compare(iTest);
+    }
+    return 0;
+}</code></pre>
             </div>
           </div>
         `
       },
       {
         num: '5.2',
-        heading: 'Trọng tâm Bài 2 (QUERY): Test có cấu trúc đặc biệt & Bẫy "Test Yếu"',
+        heading: 'Nghệ thuật sinh test mạnh: Bài 1 - Đoạn con có tổng lớn nhất (MAXSUB)',
         html: `
-          <div class="analogy-box">
-            <strong>Đề bài 2 (<code>QUERY</code> - Đếm số lần xuất hiện trên đoạn của mảng tăng dần):</strong><br/>
-            Cho mảng $A$ gồm $N$ số nguyên <strong>đã được sắp xếp tăng dần</strong> ($A_1 \le A_2 \le \dots \le A_N$, $|A_i| \le 10^9$) và $Q$ truy vấn. Mỗi truy vấn cho 3 số nguyên $L, R, X$ ($1 \le L \le R \le N$), yêu cầu đếm xem giá trị $X$ xuất hiện bao nhiêu lần trong đoạn từ $A[L]$ đến $A[R]$.<br/>
-            - <strong>Code Trâu (<code>QUERY_TRAU.cpp</code>):</strong> Duyệt <code>for (int i = L; i &lt;= R; i++) if (a[i] == x) cnt++;</code> ($O(N \times Q)$).<br/>
-            - <strong>Code Full (<code>QUERY.cpp</code>):</strong> Dùng chặt nhị phân <code>upper_bound</code> trừ <code>lower_bound</code> trên đoạn $[L, R]$ ($O(Q \log N)$).
-          </div>
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>Cạm bẫy 1: Sinh Test Vi Phạm Cấu Trúc Đề Bài <span class="concept-tag">Invalid Test</span></h4>
-              <p>Đề bài có 2 ràng buộc cứng mà nếu hàm <code>generate()</code> của bạn không tuân thủ, chính máy chấm sẽ tạo ra "đề bài lỗi":</p>
+              <h4>1. Đề bài MAXSUB <span class="concept-tag">Bài toán cơ bản</span></h4>
+              <p>Cho mảng $N$ số nguyên ($N \\le 2 \\times 10^5, |A_i| \\le 10^9$). Tìm đoạn con liên tiếp có tổng lớn nhất.</p>
               <ul>
-                <li><strong>Ràng buộc 1 (Mảng tăng dần):</strong> Nếu bạn chỉ <code>inp &lt;&lt; Rand(1, 10)</code> mà quên lưu vào mảng rồi gọi <strong><code>sort(a + 1, a + n + 1)</code></strong> trước khi in, mảng trong file <code>.inp</code> sẽ lộn xộn → Chặt nhị phân trong code Full chạy sai bét dù code Full viết đúng!</li>
-                <li><strong>Ràng buộc 2 (Đoạn $1 \le L \le R \le N$):</strong> Nếu viết ngây thơ <code>int L = Rand(1, n), R = Rand(1, n);</code>, sẽ có lúc sinh ra $L = 8, R = 3$ ($L > R$) làm sập chương trình! Cách viết chuẩn: <strong><code>int L = Rand(1, n); int R = Rand(L, n);</code></strong> (hoặc <code>if (L &gt; R) swap(L, R);</code>).</li>
+                <li>Thuật Trâu: $O(N^2)$ duyệt 2 vòng for.</li>
+                <li>Thuật Full: $O(N)$ dùng thuật toán Kadane.</li>
               </ul>
             </div>
             <div class="concept-card">
-              <h4>Cạm bẫy 2: Sinh Ngẫu Nhiên Ngây Thơ Tạo Ra "Test Cực Yếu" <span class="concept-tag">Weak Test</span></h4>
-              <p>Thử tưởng tượng bạn thấy đề bài ghi $|A_i|, |X| \le 10^9$, thế là trong <code>generate()</code> bạn viết:</p>
-              <p><code>a[i] = Rand(1, 1000000000);</code> và <code>x = Rand(1, 1000000000);</code></p>
+              <h4>2. Nguyên tắc vàng: Sinh N nhỏ trước! <span class="concept-tag">N = 5..10</span></h4>
+              <p>Đừng vội sinh $N = 100,000$!</p>
               <ul>
-                <li><strong>Hậu quả:</strong> Chọn 10 con số ngẫu nhiên trong 1 tỷ số, xác suất để số $X$ trùng với một số trong mảng $A$ chỉ là $\frac{10}{10^9} = 0.000001\%$!</li>
-                <li>Chạy 1,000 test thì cả 1,000 test đều có đáp án là <strong><code>0</code> (không tìm thấy)</strong>! Nếu code Full của bạn viết sai hoàn toàn công thức tính độ dài đoạn tìm thấy, nó vẫn vượt qua 1,000 test của máy chấm ngon lành rồi vào phòng thi nhận 0 điểm!</li>
+                <li>Thuật Trâu $O(N^2)$ chạy $N = 10^5$ sẽ bị đứng hình (TLA).</li>
+                <li>Khi máy chấm báo <code>WRONG!</code> ở mảng 5 số, bạn nhẩm tay 30 giây là tìm ra bug. Nếu mảng 100.000 số thì chịu chết không biết lỗi ở đâu!</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        num: '5.3',
+        heading: 'Nghệ thuật sinh test bẫy: Bài 2 - Truy vấn mảng tăng dần (QUERY)',
+        html: `
+          <div class="concept-grid">
+            <div class="concept-card">
+              <h4>1. Ràng buộc cấu trúc dữ liệu <span class="concept-tag">Valid Data</span></h4>
+              <ul>
+                <li>Đề bài yêu cầu <strong>mảng tăng dần</strong>: Sau khi sinh mảng, <strong>bắt buộc phải <code>sort(a + 1, a + n + 1);</code></strong> trước khi in ra file <code>.inp</code>! Nếu quên sort, thuật chặt nhị phân trong code Full sẽ chạy sai oan!</li>
+                <li>Truy vấn đoạn $[L, R]$ với $L \\le R$: Phải sinh <code>int L = Rand(1, n), R = Rand(L, n);</code> chứ không sinh độc lập làm $L > R$.</li>
               </ul>
             </div>
             <div class="concept-card">
-              <h4>3 Tuyệt Chiêu Làm Mạnh Test (Test Strength) <span class="concept-tag">Bí kíp thực chiến</span></h4>
+              <h4>2. Bẫy Test Yếu: Thu hẹp miền sinh & Ép xác suất trúng <span class="concept-tag">Strong Test</span></h4>
               <ul>
-                <li><strong>Chiêu 1 (Nén miền giá trị - Value Compression):</strong> Khi sinh mảng $N = 10$ phần tử, chỉ sinh <code>a[i] = Rand(1, 4)</code>! Theo nguyên lý Dirichlet, chắc chắn sẽ có nhiều số bằng nhau đứng cạnh nhau (ví dụ: <code>1 1 2 2 2 3 4 4</code>), ép chặt nhị phân phải xử lý đúng biên trái/phải của đoạn trùng nhau!</li>
-                <li><strong>Chiêu 2 (Ép xác suất trúng đích - Biased Sampling):</strong> Tung đồng xu <code>if (Rand(0, 1) == 1)</code> thì bốc thẳng một phần tử có thật trong mảng làm $X$: <code>x = a[Rand(L, R)];</code>! Đảm bảo ít nhất 50% truy vấn có kết quả $> 0$.</li>
-                <li><strong>Chiêu 3 (Gài test biên):</strong> Thử $L = R$, thử mảng toàn 1 số giống hệt nhau (<code>Rand(5, 5)</code>), và thử miền số cực lớn ở một vài test để kiểm tra tràn <code>long long</code>.</li>
+                <li>Nếu sinh $A_i$ và $X$ trong miền $[1, 10^9]$ ngây thơ: Xác suất $X$ trùng với phần tử trong mảng gần như bằng <strong>0%</strong>! Cả 100 test đều ra kết quả 0, không test được nhánh tìm thấy của code Full!</li>
+                <li><strong>Cách khắc phục:</strong> Thu hẹp miền giá trị xuống <code>Rand(1, 5)</code> để các số trùng nhau nhiều lần, và tung đồng xu 50% ép $X = a[\\text{Rand}(L, R)]$ để chắc chắn $X$ có mặt trong đoạn!</li>
               </ul>
             </div>
           </div>
@@ -1285,58 +1407,52 @@ int main() {
     discussions: [
       {
         id: 'd5_1',
-        question: 'Câu hỏi thảo luận 1: Trong bài Đoạn con có tổng lớn nhất (MAXSUB), nếu hàm generate() của bạn viết inp << Rand(1, 100) cho mọi phần tử trong mảng, thì có một lỗi cực kỳ phổ biến nào trong code của học sinh sẽ KHÔNG BAO GIỜ bị phát hiện?',
-        answer: 'Đó là lỗi khởi tạo biến kết quả <code>long long ans = 0;</code> (hoặc <code>cur &lt; 0 thì gán bằng 0</code> mà không xét đoạn khác rỗng)! Vì bạn chỉ sinh số dương <code>Rand(1, 100)</code> nên tổng lớn nhất luôn dương. Để bắt được lỗi này, hàm <code>generate()</code> bắt buộc phải sinh cả số âm <code>Rand(-50, 20)</code> (thậm chí có test toàn số âm <code>Rand(-50, -1)</code>)!'
+        question: 'Câu hỏi thảo luận 1: Tại sao khi stress test ta nên ưu tiên sinh kích thước N nhỏ (ví dụ N = 5 đến 10) thay vì sinh thẳng N = 10^5?',
+        answer: 'Vì hai lý do: (1) Thuật Trâu O(N^2) chỉ chạy nhanh với N nhỏ, nếu N = 10^5 máy chấm sẽ bị đơ vì quá thời gian; (2) Khi bắt được test sai, mảng 5 phần tử giúp bạn nhẩm tay tìm ra lỗi trong 30 giây, còn mảng 100.000 phần tử thì không thể nhìn bằng mắt để debug được.'
       },
       {
         id: 'd5_2',
-        question: 'Câu hỏi thảo luận 2: Giả sử đề bài cho N số nguyên ĐÔI MỘT KHÁC NHAU (a[i] != a[j] với mọi i != j). Nếu dùng Rand(1, 10) để sinh 8 số thì chắc chắn bị trùng. Làm thế nào để sinh được N số đôi một khác nhau trong hàm generate()?',
-        answer: 'Có 2 cách rất dễ:<br/>- <strong>Cách 1 (Dùng mảng đánh dấu hoặc <code>set</code>):</strong> Sinh số mới, nếu chưa có trong <code>set</code> thì mới nhận.<br/>- <strong>Cách 2 (Sinh tăng dần từng bước):</strong> Cho <code>a[1] = Rand(1, 5);</code>, với các số tiếp theo gán <code>a[i] = a[i - 1] + Rand(1, 5);</code> (mỗi bước tăng ít nhất 1 đơn vị nên chắc chắn 100% đôi một khác nhau!), sau đó nếu không cần mảng tăng dần thì gọi <code>shuffle(a + 1, a + n + 1, rd);</code> để xáo trộn vị trí!'
-      },
-      {
-        id: 'd5_3',
-        question: 'Câu hỏi thảo luận 3: Khi máy chấm chạy 100 test đều báo CORRECT hết, bạn đã được phép yên tâm 100% nộp bài chưa? Còn 2 yếu tố nào mà máy chấm với N nhỏ (N = 10) chưa kiểm tra được?',
-        answer: 'Còn 2 yếu tố phải tự kiểm tra thêm:<br/>1. <strong>Thời gian chạy (TLE) & Bộ nhớ (MLE) ở giới hạn tối đa:</strong> Phải thử sửa hàm <code>generate()</code> sinh 1 test với $N$ lớn nhất theo đề bài (ví dụ $N = 2 \times 10^5$), chỉ chạy một mình <code>system(NAME ".exe")</code> xem có chạy dưới 1 giây và không bị tràn mảng (khai báo thiếu kích thước mảng <code>NMAX</code>) hay không.<br/>2. <strong>Tràn số <code>int</code> / <code>long long</code> ở giá trị cực đại:</strong> Thử sinh $A_i = \text{Rand}(10^8, 10^9)$ xem tổng có bị tràn kiểu <code>int</code> không.'
+        question: 'Câu hỏi thảo luận 2: Trong bài toán truy vấn đếm số X trên mảng tăng dần, tại sao việc sinh ngẫu nhiên X độc lập trong miền [1, 10^9] lại tạo ra test cực yếu?',
+        answer: 'Vì không gian 10^9 quá rộng lớn trong khi mảng chỉ có vài phần tử. Xác suất số X bốc ngẫu nhiên trúng vào mảng gần như bằng 0, dẫn tới 100% truy vấn đều ra đáp án là 0. Một code Full viết sai hoàn toàn thuật toán tìm kiếm vẫn có thể cho ra kết quả 0 và vượt qua máy chấm!'
       }
     ],
     sandboxes: [
       {
         id: 'sb5_1',
-        title: 'Phòng thí nghiệm 5: Sinh Test Có Cấu Trúc & Làm Mạnh Test (Bài QUERY)',
-        desc: 'Giả sử code Full (QUERY.cpp) của học sinh có một lỗi nhỏ: viết nhầm cả 2 dòng thành lower_bound (hoặc viết sai khi X xuất hiện nhiều lần). Hãy thử thay đổi cách viết hàm generate() để xem khi nào máy chấm bắt được lỗi và khi nào máy chấm bị "mù"!',
+        title: 'Phòng thí nghiệm 5: Bắt Bug với Test Mạnh (Bài QUERY: Mảng tăng dần & Truy vấn [L, R])',
+        desc: 'Mô phỏng máy chấm bắt lỗi code Full khi sinh test có cấu trúc mảng tăng dần và ép xác suất trúng số.',
         toggles: [
           {
-            key: 'structRule',
-            label: '1. Tuân thủ cấu trúc đề bài (.inp)',
+            key: 'structMode',
+            label: '1. Cấu trúc dữ liệu mảng A và đoạn [L, R]',
             options: [
-              { value: 'valid', text: 'Chuẩn: Có sort(a) & R = Rand(L, n)', kind: 'ok' },
-              { value: 'no_sort', text: 'Lỗi: Quên sort mảng a[]', kind: 'bug' },
-              { value: 'bad_lr', text: 'Lỗi: Sinh L, R độc lập (Gây L > R)', kind: 'bug' }
+              { value: 'sorted_valid', text: 'Có sort mảng tăng dần & Luôn đảm bảo L <= R (Chuẩn)', kind: 'ok' },
+              { value: 'unsorted', text: 'Quên sort mảng A (Lỗi vi phạm đề bài mảng tăng dần)', kind: 'bug' },
+              { value: 'bad_range', text: 'Sinh L, R độc lập dẫn đến L > R (Lỗi vi phạm đề)', kind: 'bug' }
             ]
           },
           {
             key: 'strengthMode',
-            label: '2. Chiến lược Độ mạnh của Test',
+            label: '2. Độ mạnh của Test sinh ra',
             options: [
-              { value: 'strong', text: 'Test Mạnh: Miền nhỏ [1, 4] & Ép 50% X thuộc a[]', kind: 'ok' },
-              { value: 'weak', text: 'Test Yếu: Sinh ngây thơ Rand(1, 10^9)', kind: 'bug' }
+              { value: 'strong', text: 'Test Mạnh: Miền hẹp [1, 5] & Ép 50% X thuộc mảng (Bắt bug)', kind: 'ok' },
+              { value: 'weak', text: 'Test Yếu: Miền rộng [1, 10^9] độc lập (100% đáp án = 0)', kind: 'bug' }
             ]
           }
         ],
         build(state) {
-          const st = state.structRule;
+          const isSorted = state.structMode === 'sorted_valid';
+          const isUnsorted = state.structMode === 'unsorted';
+          const isBadRange = state.structMode === 'bad_range';
           const isStrong = state.strengthMode === 'strong';
-          const changed = [];
 
           let code = `#include <bits/stdc++.h>
-#include <cassert>
 using namespace std;
 #define NAME "QUERY"
 
 mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
 long long Rand(long long l, long long r) {
-    assert(l <= r);
-    return uniform_int_distribution<long long>(l, r)(rd);
+    return l + (rd() % (r - l + 1));
 }
 
 void generate() {
@@ -1347,37 +1463,31 @@ void generate() {
     for (int i = 1; i <= n; i++) {
 `;
           if (isStrong) {
-            code += `        a[i] = Rand(1, 4); // TEST MẠNH: Miền giá trị hẹp [1..4] để ép nhiều số trùng nhau\n`;
-            changed.push(18);
+            code += `        a[i] = Rand(1, 5); // TEST MẠNH: Miền hẹp [1..5] để ép trùng số!\\n`;
           } else {
-            code += `        a[i] = Rand(1, 1000000000LL); // TEST YẾU: Miền quá rộng [1..10^9]!\n`;
-            changed.push(18);
+            code += `        a[i] = Rand(1, 1000000000LL); // TEST YẾU: Miền quá rộng [1..10^9]!\\n`;
           }
           code += `    }\n`;
 
-          if (st === 'no_sort') {
-            code += `    // LỖI CẤU TRÚC: Quên sort(a.begin() + 1, a.end()) trong khi đề bài cho mảng tăng dần!\n`;
-            changed.push(20);
+          if (isUnsorted) {
+            code += `    // LỖI: Quên sort mảng trong khi đề bài yêu cầu mảng tăng dần!\\n`;
           } else {
-            code += `    sort(a.begin() + 1, a.end()); // Đảm bảo mảng tăng dần đúng yêu cầu đề bài\n`;
+            code += `    sort(a.begin() + 1, a.end()); // Chuẩn: Đảm bảo mảng tăng dần\\n`;
           }
 
-          code += `    for (int i = 1; i <= n; i++) inp << a[i] << (i == n ? "\\n" : " ");\n\n`;
-          code += `    for (int k = 1; k <= q; k++) {\n`;
+          code += `    for (int i = 1; i <= n; i++) inp << a[i] << (i == n ? "\\n" : " ");\\n\\n`;
+          code += `    for (int k = 1; k <= q; k++) {\\n`;
 
-          if (st === 'bad_lr') {
-            code += `        int L = Rand(1, n), R = Rand(1, n); // LỖI: Có thể sinh ra L > R!\n`;
-            changed.push(24);
+          if (isBadRange) {
+            code += `        int L = Rand(1, n), R = Rand(1, n); // LỖI: Có thể sinh ra L > R!\\n`;
           } else {
-            code += `        int L = Rand(1, n), R = Rand(L, n); // CHUẨN: Luôn đảm bảo 1 <= L <= R <= n\n`;
+            code += `        int L = Rand(1, n), R = Rand(L, n); // Chuẩn: Luôn đảm bảo 1 <= L <= R <= n\\n`;
           }
 
           if (isStrong) {
-            code += `        long long X = (Rand(0, 1) && L <= R) ? a[Rand(L, R)] : Rand(1, 5); // Ép 50% trúng đích\n`;
-            changed.push(25);
+            code += `        long long X = (Rand(0, 1) && L <= R) ? a[Rand(L, R)] : Rand(1, 5); // Ép 50% trúng\\n`;
           } else {
-            code += `        long long X = Rand(1, 1000000000LL); // Xác suất X trùng với a[i] gần như = 0%!\n`;
-            changed.push(25);
+            code += `        long long X = Rand(1, 1000000000LL); // Xác suất trùng gần như bằng 0%!\\n`;
           }
 
           code += `        inp << L << " " << R << " " << X << "\\n";
@@ -1387,134 +1497,133 @@ void generate() {
 
 int main() {
     generate();
+    system(NAME ".exe");
+    system(NAME "_TRAU.exe");
+    // compare()...
     return 0;
 }`;
 
-          if (st === 'bad_lr') {
+          if (isBadRange) {
             return {
               code,
-              changedLines: changed,
+              changedLines: [24],
               statusOk: false,
-              statusText: 'LỖI CẤU TRÚC ĐỀ BÀI (L > R): Truy vấn sinh ra L = 7, R = 2 làm thuật toán chặt nhị phân ra kết quả âm hoặc sập bộ nhớ (RE)!',
-              console: `Comparing files QUERY.out and QUERY.ANS\n***** QUERY.out\n-3\n***** QUERY.ANS\n0\n*****\nTest 1: WRONG! (Lỗi giả: Do máy chấm sinh đề bài sai điều kiện L <= R!)`,
+              statusText: 'LỖI ĐỀ BÀI: Sinh L, R độc lập làm L = 7 > R = 2, vi phạm yêu cầu bài toán!',
+              console: `Comparing files QUERY.out and QUERY.ANS\n***** QUERY.out\n-1\n***** QUERY.ANS\n0\n*****\nTest 1: WRONG! (Lỗi giả: Máy chấm sinh test sai điều kiện L <= R)`,
               files: {
-                inp: `8 4\n1 1 2 2 3 3 4 4\n7 2 3   <-- LỖI: L = 7 lớn hơn R = 2!\n1 5 2\n3 8 4\n2 6 1\n`,
-                out: `-3\n2\n2\n1\n`,
-                ans: `0\n2\n2\n1\n`
-              },
-              explain: 'Khi L = 7 > R = 2, vòng for của code Trâu không chạy lần nào nên in ra 0, còn lower_bound(a+7, a+3, x) trong code Full bị truyền ngược con trỏ đầu/cuối gây lỗi! Luôn nhớ viết R = Rand(L, n) hoặc if (L > R) swap(L, R)!'
+                inp: `8 4\n1 1 2 2 3 3 4 4\n7 2 3   <-- LỖI: L = 7 lớn hơn R = 2!\n`,
+                out: `-1\n`,
+                ans: `0\n`
+              }
             };
           }
 
-          if (st === 'no_sort') {
+          if (isUnsorted) {
             return {
               code,
-              changedLines: changed,
+              changedLines: [18],
               statusOk: false,
-              statusText: 'LỖI VI PHẠM RÀNG BUỘC MẢNG TĂNG DẦN: Quên sort(a) làm thuật toán chặt nhị phân (dù viết đúng) vẫn báo WRONG!',
-              console: `Comparing files QUERY.out and QUERY.ANS\n***** QUERY.out\n0\n1\n***** QUERY.ANS\n2\n2\n*****\nTest 1: WRONG! (Lỗi giả: Do mảng trong QUERY.inp chưa được sắp xếp tăng dần!)`,
+              statusText: 'LỖI CẤU TRÚC: Quên sort mảng tăng dần, làm thuật chặt nhị phân chạy sai!',
+              console: `Comparing files QUERY.out and QUERY.ANS\n***** QUERY.out\n0\n***** QUERY.ANS\n2\n*****\nTest 1: WRONG! (Lỗi giả: Mảng trong QUERY.inp chưa được sắp xếp tăng dần)`,
               files: {
-                inp: `8 4\n4 1 3 2 4 1 2 3   <-- LỖI: Mảng lộn xộn, vi phạm đề bài "mảng tăng dần"!\n1 8 2\n2 7 1\n1 5 4\n3 8 3\n`,
-                out: `0\n1\n0\n1\n`,
-                ans: `2\n2\n2\n2\n`
-              },
-              explain: 'Đề bài cam kết mảng A tăng dần nên code Full mới dùng lower_bound/upper_bound. Vì hàm generate() quên sort mảng trước khi in ra file .inp, chặt nhị phân tìm không thấy phần tử và báo sai oan!'
+                inp: `8 4\n4 1 3 2 4 1 2 3   <-- LỖI: Mảng lộn xộn vi phạm đề bài!\n1 8 2\n`,
+                out: `0\n`,
+                ans: `2\n`
+              }
             };
           }
 
           if (!isStrong) {
             return {
               code,
-              changedLines: changed,
+              changedLines: [15, 27],
               statusOk: false,
-              statusText: 'BẪY TEST YẾU: Chạy 100 test đều báo CORRECT giả tạo vì mọi truy vấn đều trả về 0!',
-              console: `Comparing files QUERY.out and QUERY.ANS\nFC: no differences encountered\nTest 1: CORRECT!\n...\nComparing files QUERY.out and QUERY.ANS\nFC: no differences encountered\nTest 100: CORRECT! (Cảnh báo: 100% đáp án đều là số 0, chưa test được nhánh tìm thấy!)`,
+              statusText: 'CẢNH BÁO TEST QUÁ YẾU: Miền sinh 10^9 làm 100% kết quả bằng 0, không bắt được bug!',
+              console: `Comparing files QUERY.out and QUERY.ANS\nFC: no differences encountered\nTest 1: CORRECT!\n...\nTest 100: CORRECT! (Cảnh báo: 100% đáp án đều là số 0, nhánh tìm thấy chưa từng được chạy!)`,
               files: {
-                inp: `8 4\n14209182 89102938 192837465 340192837 519283746 710293847 891029384 950192837\n1 8 444999111\n2 6 777888222\n1 5 123456789\n3 8 999111222\n`,
+                inp: `8 4\n14209182 89102938 192837465 340192837 519283746 710293847 891029384 950192837\n1 8 444999111\n`,
                 out: `0\n0\n0\n0\n`,
                 ans: `0\n0\n0\n0\n`
-              },
-              explain: 'Hãy nhìn vào tab QUERY.out và QUERY.ans: cả 4 truy vấn đều ra 0! Vì sinh ngẫu nhiên trong 1 tỷ số, X không bao giờ trùng với phần tử nào trong mảng A. Test như vậy hoàn toàn vô tác dụng!'
+              }
             };
           }
 
           return {
             code,
-            changedLines: changed,
+            changedLines: [],
             statusOk: true,
-            statusText: 'TEST CỰC MẠNH & ĐÚNG CẤU TRÚC: Vừa đảm bảo mảng tăng dần & L <= R, vừa ép xuất hiện nhiều số trùng nhau để bắt gọn mọi bug!',
-            console: `Comparing files QUERY.out and QUERY.ANS\n***** QUERY.out\n1\n2\n***** QUERY.ANS\n3\n2\n*****\nTest 1: WRONG! (Bắt gọn bug trong code Full ngay tại Test 1 nhờ có 3 số 2 đứng liền nhau!)`,
+            statusText: 'BẮT GỌN BUG: Test mạnh với 3 số 2 đứng liền nhau giúp bắt bug trong code Full ngay tại Test 1!',
+            console: `Comparing files QUERY.out and QUERY.ANS\n***** QUERY.out\n1\n***** QUERY.ANS\n3\n*****\nTest 1: WRONG! (Bắt trúng bug code Full không đếm hết các số trùng nhau trên đoạn [1..6]!)`,
             files: {
-              inp: `8 4\n1 1 2 2 2 3 4 4\n1 6 2   <-- Đoạn [1..6] có tới 3 số 2 liên tiếp!\n2 8 4\n3 5 2\n1 8 5\n`,
-              out: `1\n2\n1\n0\n`,
-              ans: `3\n2\n3\n0\n`
-            },
-            explain: 'Nhờ thu hẹp miền Rand(1, 4) và lấy X trực tiếp từ mảng A, ngay ở Test 1 mảng đã có 3 số 2 đứng cạnh nhau (1 1 2 2 2 3 4 4), lập tức vạch trần lỗi sai của code Full ngay ở lần chạy đầu tiên!'
+              inp: `8 4\n1 1 2 2 2 3 4 4\n1 6 2   <-- Đoạn [1..6] có tới 3 số 2 đứng liền nhau!\n`,
+              out: `1\n`,
+              ans: `3\n`
+            }
           };
         }
       }
     ],
     quiz: [
       {
-        q: 'Câu 1: Khi mới bắt đầu chạy Máy Chấm để kiểm tra tính đúng đắn của thuật toán Full so với thuật Trâu, ta nên chọn kích thước N trong hàm generate() như thế nào?',
+        q: '1. Tại sao trong mô hình máy chấm 3 file, code Trâu luôn xuất ra file .ans còn code Full xuất ra .out?',
         options: [
-          'Luôn sinh N lớn nhất theo đề bài (ví dụ N = 200,000).',
-          'Sinh N nhỏ (ví dụ N từ 5 đến 10) để thuật Trâu chạy cực nhanh và khi bắt được test WRONG ta có thể nhìn bằng mắt thường, nhẩm tay tìm ra lỗi ngay.',
-          'Chỉ sinh duy nhất N = 1.',
-          'Sinh N âm.'
+          'Để máy tính không bị lẫn lộn giữa hai file kết quả và dùng lệnh so sánh fc /w NAME.out NAME.ans một cách tự động',
+          'Vì đuôi .ans chạy nhanh hơn đuôi .out',
+          'Vì Code::Blocks chỉ đọc được file .ans',
+          'Vì đề bài quy định như vậy'
         ],
-        correct: 1,
-        explain: 'Chính xác! N nhỏ giúp vòng lặp chạy hàng chục test mỗi giây và quan trọng nhất là giúp con người đọc file .inp để tự trace lỗi dễ dàng.'
+        correct: 0,
+        explain: 'Tách biệt NAME.out (kết quả thuật tối ưu) và NAME.ans (đáp án chuẩn của thuật Trâu) giúp lệnh fc /w đối chiếu trực tiếp giữa 2 file kết quả độc lập.'
       },
       {
-        q: 'Câu 2: Đề bài yêu cầu nhập truy vấn đoạn [L, R] thỏa mãn 1 <= L <= R <= N. Cách viết nào sau đây trong hàm generate() là ĐÚNG?',
+        q: '2. Khi sinh test cho bài toán có điều kiện "mảng tăng dần", bước nào trong hàm generate() là bắt buộc?',
         options: [
+          'Gọi sort() mảng trước khi in ra file .inp',
+          'In mảng ngẫu nhiên mà không cần sắp xếp',
+          'Chỉ sinh mảng có 1 phần tử',
+          'Đảo ngược mảng'
+        ],
+        correct: 0,
+        explain: 'Nếu không sort mảng tăng dần trước khi in ra file .inp, test sinh ra sẽ vi phạm giả thiết đề bài, khiến code Full dùng chặt nhị phân bị chạy sai oan.'
+      },
+      {
+        q: '3. Khi sinh truy vấn trên đoạn [L, R] của mảng N phần tử, cách viết nào đảm bảo 1 <= L <= R <= N?',
+        options: [
+          'int L = Rand(1, n); int R = Rand(L, n);',
           'int L = Rand(1, n); int R = Rand(1, n);',
-          'int L = Rand(1, n); int R = Rand(L, n); (hoặc sinh cả hai trong [1, n] rồi if (L > R) swap(L, R);)',
-          'int L = Rand(1, n); int R = Rand(1, L - 1);',
-          'int L = 1; int R = n; cho mọi truy vấn.'
+          'int L = 1; int R = n + 1;',
+          'int L = Rand(n, 1); int R = Rand(n, 1);'
         ],
-        correct: 1,
-        explain: 'Chuẩn xác! Sinh R trong đoạn [L, n] hoặc dùng if (L > R) swap(L, R) luôn đảm bảo điều kiện 1 <= L <= R <= n.'
+        correct: 0,
+        explain: 'Bằng cách sinh R trong đoạn [L, n], ta luôn luôn đảm bảo L <= R mà không cần viết thêm điều kiện if (L > R) swap(L, R).'
       },
       {
-        q: 'Câu 3: Tại sao trong các bài toán tìm kiếm hoặc đếm phần tử bằng nhau, việc sinh a[i] = Rand(1, 10^9) và x = Rand(1, 10^9) lại tạo ra "Test Yếu"?',
+        q: '4. Kỹ thuật nào giúp biến một bộ sinh test "yếu" (100% đáp án bằng 0) thành bộ sinh test "mạnh" bắt bug hiệu quả?',
         options: [
-          'Vì máy tính không in được số 10^9.',
-          'Vì miền giá trị quá rộng khiến xác suất hai số bằng nhau gần như bằng 0%, dẫn đến mọi test đều rơi vào trường hợp "Không tìm thấy" và bỏ sót hoàn toàn nhánh xử lý khi tìm thấy.',
-          'Vì hàm Rand chạy chậm với số 10^9.',
-          'Vì file .inp sẽ nặng quá 100MB.'
+          'Thu hẹp miền giá trị để tăng tần suất trùng lặp và chủ động ép xác suất truy vấn trúng vào phần tử có trong mảng',
+          'Tăng kích thước mảng lên 1 triệu phần tử',
+          'Mở rộng miền giá trị lên 10^18',
+          'Bỏ không dùng hàm Rand nữa'
         ],
-        correct: 1,
-        explain: 'Hoàn toàn chính xác! Muốn test nhánh "tìm thấy" và nhánh "nhiều phần tử trùng nhau", ta phải nén miền giá trị nhỏ lại (ví dụ Rand(1, 5)) hoặc chủ động lấy x = a[Rand(L, R)].'
+        correct: 0,
+        explain: 'Thu hẹp miền giá trị và ép xác suất trúng đích giúp kích hoạt tối đa các nhánh logic xử lý trùng số và tìm thấy của thuật toán, nơi bug thường ẩn nấp.'
       },
       {
-        q: 'Câu 4: Đề bài cho trước điều kiện "Dãy A được sắp xếp tăng dần". Nếu trong hàm generate() bạn sinh ngẫu nhiên mảng A mà quên gọi lệnh sort(a + 1, a + n + 1) trước khi in vào file .inp, điều gì sẽ xảy ra?',
+        q: '5. Điểm cốt lõi nhất của việc "Tự code máy chấm" trong lập trình thi đấu là gì?',
         options: [
-          'Không sao cả, code Full sẽ tự sắp xếp.',
-          'File .inp sinh ra vi phạm điều kiện đề bài; thuật toán chặt nhị phân trong code Full sẽ chạy sai kết quả dù code Full viết hoàn toàn đúng!',
-          'Code Trâu sẽ không biên dịch được.',
-          'Lệnh fc /w sẽ tự động sắp xếp lại file .inp.'
+          'Tự động hóa hoàn toàn việc tìm phản ví dụ (counterexample) để sửa bug trước khi nộp bài, biến điểm 0 thành điểm tuyệt đối',
+          'Để khoe với bạn bè là mình biết nhiều thư viện C++',
+          'Để làm cho máy tính chạy chậm lại',
+          'Để thay thế hoàn toàn việc học thuật toán'
         ],
-        correct: 1,
-        explain: 'Đúng vậy! Máy chấm phải đóng vai người ra đề chuẩn chỉnh: đề bài cam kết điều kiện gì (mảng tăng dần, cây, đồ thị liên thông, L <= R...) thì hàm generate() bắt buộc phải thỏa mãn điều kiện đó.'
-      },
-      {
-        q: 'Câu 5: Sau khi vượt qua 100 test nhỏ (N <= 10) trên máy chấm, bước kiểm tra cuối cùng bạn nên làm trước khi yên tâm nộp bài là gì?',
-        options: [
-          'Xóa luôn file bài làm.',
-          'Sửa hàm generate() sinh thử 1 test có N lớn nhất (Max N) và giá trị A[i] lớn nhất (Max A[i]) để kiểm tra thời gian chạy (TLE), giới hạn mảng và tràn số long long.',
-          'Đổi tên file .out thành .ans.',
-          'Bỏ dòng freopen đi.'
-        ],
-        correct: 1,
-        explain: 'Tuyệt vời! Bạn đã nắm trọn vẹn quy trình từ A đến Z của việc tự code và sử dụng Máy Chấm trong lập trình thi đấu!'
+        correct: 0,
+        explain: 'Stress testing giúp coder chủ động tạo ra hàng nghìn test bẫy để phát hiện và vá mọi lỗ hổng thuật toán ngay trong phòng thi trước khi nộp lên hệ thống chấm chính thức.'
       }
     ]
   }
 ];
 
-// Xuất ra window để script kiểm thử Node.js (verify_web.mjs) và trình duyệt truy cập
+
 window.MODULES_DATA = MODULES_DATA;
 window.highlightCpp = highlightCpp;
 

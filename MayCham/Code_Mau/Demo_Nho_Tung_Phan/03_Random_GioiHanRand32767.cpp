@@ -11,9 +11,11 @@ using namespace std;
 mt19937 rd32(chrono::steady_clock::now().time_since_epoch().count());
 mt19937_64 rd64(chrono::steady_clock::now().time_since_epoch().count());
 
-// Hàm Rand chuẩn dùng được cho cả số âm và số dương lớn tới 10^18
+// Cú pháp chia dư dễ nhớ trong phòng thi với mt19937_64
 long long Rand(long long l, long long r) {
-    return uniform_int_distribution<long long>(l, r)(rd64);
+    return l + (rd64() % (r - l + 1));
+    // Cú pháp mở rộng chuẩn C++:
+    // return uniform_int_distribution<long long>(l, r)(rd64);
 }
 
 int main() {

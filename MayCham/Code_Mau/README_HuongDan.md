@@ -37,6 +37,6 @@ Thư mục này chứa toàn bộ code mẫu C++14 đi kèm bài giảng tương
 > **Lưu ý về `PATH` trên Windows:** Khi cài Code::Blocks, trình biên dịch `g++.exe` thường không được tự động thêm vào biến môi trường `PATH` của Windows. Do đó ta không gọi `system("g++ ...")` trong code mà bấm **Build (F9)** trực tiếp trên Code::Blocks cho từng file.
 
 1. Đặt cả 3 file `BAI1.cpp`, `BAI1_TRAU.cpp`, `MAYCHAM.cpp` trong **cùng một thư mục**.
-2. Mở `BAI1.cpp` trên Code::Blocks $\rightarrow$ Bấm **Build (Ctrl + F9)** để tạo `BAI1.exe`.
-3. Mở `BAI1_TRAU.cpp` trên Code::Blocks $\rightarrow$ Bấm **Build (Ctrl + F9)** để tạo `BAI1_TRAU.exe`.
-4. Mở `MAYCHAM.cpp` $\rightarrow$ Bấm **Build & Run (F9)**. Khi gặp test sai, lệnh `fc /w` sẽ in thẳng dòng khác biệt (`*****`) lên cửa sổ đen và `exit(0)` sẽ giữ nguyên cửa sổ đó để bạn kiểm tra!
+2. Mở `BAI1.cpp` trên Code::Blocks → Bấm **Build (Ctrl + F9)** để tạo `BAI1.exe`.
+3. Mở `BAI1_TRAU.cpp` trên Code::Blocks → Bấm **Build (Ctrl + F9)** để tạo `BAI1_TRAU.exe`.
+4. Mở `MAYCHAM.cpp` → Bấm **Build & Run (F9)**. Khi gặp test sai, lệnh `fc /w` sẽ in thẳng dòng khác biệt (`*****`) lên cửa sổ đen và `exit(0)` sẽ giữ nguyên cửa sổ đó để bạn kiểm tra!

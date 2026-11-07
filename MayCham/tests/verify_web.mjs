@@ -26,6 +26,33 @@ assert.doesNotMatch(js, /hỏi học sinh trước khi bấm/i, 'app.js không �
 assert.match(js, /triggerMathRender/, 'app.js phải có hàm triggerMathRender');
 assert.doesNotMatch(js, /\$\\rightarrow\$/, 'app.js không được chứa macro $\\rightarrow$ thô');
 
+// 1.4. Kiểm tra cấu trúc Module 1 mới: Phần cứng, OS, Shell, PATH, Compiler, File .exe, F9
+const mod1Raw = js.match(/id:\s*['"]m1['"][\s\S]*?(?=id:\s*['"]m2['"])/)?.[0] || '';
+assert.match(mod1Raw, /cmd\.exe|Shell/i, 'Module 1 phải có nội dung về Shell (cmd.exe)');
+assert.match(mod1Raw, /PATH/i, 'Module 1 phải có nội dung về biến môi trường PATH');
+assert.match(mod1Raw, /g\+\+\.exe|Compiler|Trình biên dịch/i, 'Module 1 phải có nội dung về Trình biên dịch (Compiler)');
+assert.match(mod1Raw, /\.exe|PE/i, 'Module 1 phải giải thích bản chất file .exe');
+assert.match(mod1Raw, /F9/i, 'Module 1 phải giải mã phím F9');
+
+// 1.5. Kiểm tra cấu trúc Module 2: Luồng (Stream), Buffer, ofstream mnemonics
+const mod2Raw = js.match(/id:\s*['"]m2['"][\s\S]*?(?=id:\s*['"]m3['"])/)?.[0] || '';
+assert.match(mod2Raw, /ofstream/i, 'Module 2 phải có nội dung về ofstream');
+assert.match(mod2Raw, /Output/i, 'Module 2 phải giải thích chữ o = Output');
+assert.match(mod2Raw, /Buffer/i, 'Module 2 phải giải thích cơ chế Buffer');
+
+// 1.6. Kiểm tra cấu trúc Module 3: system(), exit code, fc /w, exit(0)
+const mod3Raw = js.match(/id:\s*['"]m3['"][\s\S]*?(?=id:\s*['"]m4['"])/)?.[0] || '';
+assert.match(mod3Raw, /system\(/i, 'Module 3 phải có nội dung về hàm system()');
+assert.match(mod3Raw, /fc\s+\/w/i, 'Module 3 phải có lệnh fc /w');
+assert.match(mod3Raw, /exit\(0\)/i, 'Module 3 phải có lệnh exit(0)');
+
+// 1.7. Kiểm tra cấu trúc Module 4: mt19937_64, steady_clock, Rand dễ nhớ
+const mod4Raw = js.match(/id:\s*['"]m4['"][\s\S]*?(?=id:\s*['"]m5['"])/)?.[0] || '';
+assert.match(mod4Raw, /mt19937_64/i, 'Module 4 phải dùng mt19937_64');
+assert.match(mod4Raw, /steady_clock/i, 'Module 4 phải dùng chrono::steady_clock');
+assert.match(mod4Raw, /rd\(\)\s*%\s*\(r\s*-\s*l\s*\+\s*1\)/i, 'Module 4 phải có cú pháp hàm Rand chia dư dễ nhớ');
+assert.match(mod4Raw, /uniform_int_distribution/i, 'Module 4 phải có cú pháp mở rộng uniform_int_distribution');
+
 // 2. Nạp app.js trong môi trường giả lập DOM tối giản để kiểm tra MODULES_DATA & highlightCpp
 const sandbox = {
   window: {},

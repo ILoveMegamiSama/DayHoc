@@ -18,9 +18,12 @@ const int NTEST = 20;
 
 mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
 
+// Hàm sinh số ngẫu nhiên trong đoạn [l, r] (Cú pháp chia dư dễ nhớ trong phòng thi)
 long long Rand(long long l, long long r) {
     assert(l <= r);
-    return uniform_int_distribution<long long>(l, r)(rd);
+    return l + (rd() % (r - l + 1));
+    // Cú pháp mở rộng chuẩn C++ (phân phối đều tuyệt đối):
+    // return uniform_int_distribution<long long>(l, r)(rd);
 }
 
 void generate() {

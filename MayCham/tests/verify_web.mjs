@@ -37,6 +37,11 @@ assert.match(mod1Raw, /PATH/i, 'Module 1 phải có nội dung về biến môi 
 assert.match(mod1Raw, /g\+\+\.exe|Compiler|Trình biên dịch/i, 'Module 1 phải có nội dung về Trình biên dịch (Compiler)');
 assert.match(mod1Raw, /\.exe|PE/i, 'Module 1 phải giải thích bản chất file .exe');
 assert.match(mod1Raw, /F9/i, 'Module 1 phải giải mã phím F9');
+assert.match(mod1Raw, /-static/i, 'Module 1 phải giải thích cờ -static và cách khắc phục lỗi thiếu DLL');
+assert.match(mod1Raw, /libstdc\+\+|libgcc|DLL/i, 'Module 1 phải giải thích lỗi thiếu thư viện libstdc++-6.dll khi chạy máy chấm');
+assert.match(mod1Raw, /-O2/i, 'Module 1 phải giải thích ý nghĩa các cờ g++ như -O2, -std=c++14');
+assert.match(mod1Raw, /python/i, 'Module 1 phải giải thích tại sao phải gõ python hay g++ chứ không gõ trực tiếp tên file text');
+assert.match(css, /\.concept-title/, 'styles.css phải có class .concept-title chống vỡ layout flex');
 
 // 1.5. Kiểm tra cấu trúc Module 2: Luồng (Stream), Buffer, ofstream mnemonics
 const mod2Raw = js.match(/id:\s*['"]m2['"][\s\S]*?(?=id:\s*['"]m3['"])/)?.[0] || '';

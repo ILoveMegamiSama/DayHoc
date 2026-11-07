@@ -72,13 +72,15 @@ function highlightCpp(rawCode, changedLines = []) {
 const MODULES_DATA = [
   // ============================================================================
   // MODULE 1: NỀN TẢNG HỆ THỐNG: PHẦN CỨNG, OS, SHELL, PATH, COMPILER & PHÍM F9
+    // ============================================================================
+  // MODULE 1: NỀN TẢNG HỆ THỐNG: PHẦN CỨNG, OS, SHELL, PATH, COMPILER, CỜ G++ & BÍ ẨN FILE .EXE
   // ============================================================================
   {
     id: 'm1',
     number: 'Module 01',
-    shortTitle: 'Phần Cứng, OS, PATH & F9',
-    title: 'Nền Tảng Hệ Thống: Phần Cứng, OS, Shell, PATH, Compiler & Bản Chất Phím F9',
-    lead: 'Hiểu tận gốc máy tính hoạt động như thế nào: Bit & Byte là gì, RAM (Bàn làm việc) vs Ổ cứng (Tủ hồ sơ), Hệ điều hành & Shell (cmd vs sh), bí mật biến môi trường PATH, dòng chảy từ Code C++ qua Trình biên dịch tạo file .exe, và chuyện gì thực sự xảy ra khi bạn bấm F9 trong Code::Blocks.',
+    shortTitle: 'Phần Cứng, OS, PATH, Cờ g++ & F9',
+    title: 'Nền Tảng Hệ Thống: Phần Cứng, OS, Shell, PATH, Trình Biên Dịch & Bí Ẩn File .exe',
+    lead: 'Hiểu bản chất từ gốc rễ: Bit & Byte là gì, RAM (Bàn làm việc) vs Ổ cứng (Tủ hồ sơ), chuyện gì xảy ra khi gõ 1 lệnh vào Shell, tại sao phải có python hay g++ ở đầu lệnh chứ không thể gõ tên file text, giải phẫu các cờ g++ (-O2, -std=c++14, -Wall, -o, -static), bí ẩn tại sao bấm F9 trong Code::Blocks thì chạy được nhưng gọi file .exe ngoài máy chấm lại báo lỗi thiếu lib (libstdc++-6.dll), và giải mã phím F9.',
     sections: [
       {
         num: '1.1',
@@ -86,7 +88,7 @@ const MODULES_DATA = [
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Bit & Byte là gì? <span class="concept-tag">Đơn vị dữ liệu</span></h4>
+              <h4><span class="concept-title">1. Bit & Byte là gì?</span> <span class="concept-tag">Đơn vị dữ liệu</span></h4>
               <p>Máy tính chỉ là những mạch điện bật/tắt:</p>
               <ul>
                 <li><strong>1 Bit:</strong> Là 1 công tắc bóng đèn: <code>0</code> (tắt) hoặc <code>1</code> (bật).</li>
@@ -95,16 +97,16 @@ const MODULES_DATA = [
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. RAM — "Bàn làm việc tốc độ cao" <span class="concept-tag">Bộ nhớ tạm</span></h4>
+              <h4><span class="concept-title">2. RAM — "Bàn làm việc tốc độ cao"</span> <span class="concept-tag">Bộ nhớ tạm</span></h4>
               <p>Mọi biến bạn khai báo trong C++ như <code>int n;</code>, <code>long long a[1000];</code> đều nằm trên <strong>RAM</strong>:</p>
               <ul>
                 <li><strong>Tốc độ cực nhanh:</strong> CPU lấy dữ liệu trên bàn làm việc chỉ mất vài phần tỷ giây (nanosecond).</li>
                 <li><strong>Mất sạch khi tắt:</strong> Tắt máy hoặc tắt chương trình là bàn làm việc bị xóa trắng.</li>
-                <li><strong>Cách ly tuyệt đối:</strong> Hệ điều hành nhốt mỗi tiến trình trong một căn phòng riêng. <code>MAYCHAM.exe</code> và <code>BAI1.exe</code> <strong>không thể đọc trực tiếp biến trên RAM của nhau</strong>!</li>
+                <li><strong>Cách ly tuyệt đối:</strong> Hệ điều hành nhốt mỗi tiến trình trong một căn phòng riêng (Virtual Memory Isolation). <code>MAYCHAM.exe</code> và <code>BAI1.exe</code> <strong>không thể đọc trực tiếp biến trên RAM của nhau</strong>!</li>
               </ul>
             </div>
             <div class="concept-card">
-              <h4>3. Ổ cứng (Disk) — "Tủ hồ sơ chung" <span class="concept-tag">Lưu trữ File</span></h4>
+              <h4><span class="concept-title">3. Ổ cứng (Disk) — "Tủ hồ sơ chung"</span> <span class="concept-tag">Lưu trữ File</span></h4>
               <p>Các file mã nguồn <code>BAI1.cpp</code> và file dữ liệu <code>BAI1.inp</code>, <code>BAI1.out</code> nằm trên <strong>Ổ cứng (SSD/HDD)</strong>:</p>
               <ul>
                 <li><strong>Lưu trữ bền vững:</strong> Tắt máy thì file vẫn nằm nguyên trong thư mục.</li>
@@ -116,48 +118,56 @@ const MODULES_DATA = [
       },
       {
         num: '1.2',
-        heading: 'Hệ điều hành (OS) & Shell (Giao diện dòng lệnh CLI vs GUI)',
+        heading: 'Hệ điều hành, Shell & Chuyện gì thực sự xảy ra khi nhập 1 lệnh và ấn Enter?',
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Hệ điều hành (OS) là ai? <span class="concept-tag">Người quản lý tối cao</span></h4>
-              <p>Hệ điều hành (Windows, Linux, macOS) là người toàn quyền chỉ huy phần cứng máy tính: cấp phát RAM, quản lý các file trên ổ cứng, và điều phối CPU chạy chương trình nào trước, chương trình nào sau.</p>
-            </div>
-            <div class="concept-card">
-              <h4>2. GUI vs Shell (CLI) <span class="concept-tag">Giao tiếp với OS</span></h4>
+              <h4><span class="concept-title">1. Hệ điều hành (OS) & Shell (CLI)</span> <span class="concept-tag">Giao tiếp với OS</span></h4>
+              <p>Hệ điều hành (Windows, Linux) là người quản lý toàn quyền phần cứng. Con người và chương trình giao tiếp với OS qua <strong>Shell (Giao diện dòng lệnh)</strong>:</p>
               <ul>
-                <li><strong>GUI (Giao diện đồ họa):</strong> Người dùng dùng chuột bấm đúp vào icon, menu, cửa sổ.</li>
-                <li><strong>Shell (Dòng lệnh CLI):</strong> Cổng giao tiếp bằng văn bản. Bạn gõ một câu lệnh chữ rồi bấm <code>Enter</code>, Shell nhận lệnh, chuyển cho OS thực thi và in kết quả ra màn hình.</li>
                 <li>Trên <strong>Windows:</strong> Trợ lý dòng lệnh là <code>cmd.exe</code> (Command Prompt) hoặc PowerShell.</li>
                 <li>Trên <strong>Linux:</strong> Trợ lý dòng lệnh là <code>sh</code>, <code>bash</code>, hoặc <code>zsh</code>.</li>
+                <li>Chương trình C++ <code>MAYCHAM.exe</code> không có bàn tay để cầm chuột click đúp vào file <code>BAI1.exe</code>! Cách duy nhất để máy chấm gọi bài thi chạy là gửi một dòng lệnh dạng chữ cho Shell thông qua lệnh <code>system("BAI1.exe")</code>.</li>
               </ul>
             </div>
             <div class="concept-card">
-              <h4>3. Vì sao coder phải hiểu Shell? <span class="concept-tag">Tự động hóa</span></h4>
-              <p>Chương trình C++ <code>MAYCHAM.exe</code> <strong>không có bàn tay để cầm chuột click đúp</strong> vào <code>BAI1.exe</code>! Cách duy nhất để máy chấm gọi bài thi chạy là gửi lệnh dạng chữ cho Shell của hệ điều hành thông qua lệnh <code>system("BAI1.exe")</code>.</p>
+              <h4><span class="concept-title">2. Bốn bước bí mật khi bạn gõ lệnh và ấn Enter</span> <span class="concept-tag">Vòng đời câu lệnh</span></h4>
+              <ol>
+                <li><strong>Bước 1 (Cắt từ - Tokenize):</strong> Shell tách dòng lệnh bằng dấu cách. Từ đầu tiên (ví dụ <code>g++</code>) là <strong>Tên chương trình cần chạy</strong>; các từ phía sau (như <code>-O2</code>, <code>BAI1.cpp</code>) là <strong>Danh sách tham số (Arguments)</strong> truyền vào hàm <code>main(int argc, char* argv[])</code>.</li>
+                <li><strong>Bước 2 (Tìm file thực thi):</strong> Shell tìm file chương trình ở <strong>Thư mục hiện tại</strong> trước → Nếu không có, nó mới lật cuốn sổ danh bạ hệ thống mang tên <strong><code>PATH</code></strong> để tìm. Nếu không thấy ở đâu → Báo lỗi: <code>'...' is not recognized as an internal or external command</code>!</li>
+                <li><strong>Bước 3 (Tạo tiến trình con & Cấp RAM):</strong> OS cấp phát một vùng nhớ RAM mới, nạp mã máy của chương trình lên RAM và trao quyền cho CPU chạy từ điểm đầu vào.</li>
+                <li><strong>Bước 4 (Chờ & Nhận Exit Code):</strong> Shell tạm dừng đợi chương trình con chạy xong và nhận lại con số <strong>Exit Code</strong> (<code>0</code> = thành công, <code>!= 0</code> = có lỗi) rồi mới in lại dấu nhắc lệnh.</li>
+              </ol>
             </div>
           </div>
         `
       },
       {
         num: '1.3',
-        heading: 'Biến môi trường PATH — Sổ danh bạ tìm kiếm của Shell',
+        heading: 'Tại sao PHẢI có python, g++ ở đầu lệnh? & Bản chất của "Cờ" (Flags)',
         html: `
-          <div class="analogy-box">
-            <strong>Câu đố thực tế:</strong> Tại sao khi mở cửa sổ đen <code>cmd</code>, bạn gõ lệnh <code>python</code> hoặc <code>fc</code> thì máy tính hiểu ngay, nhưng nếu gõ <code>g++</code> trên máy học sinh cài Code::Blocks thì lại báo lỗi: <code>'g++' is not recognized as an internal or external command</code>?
-          </div>
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>Bước 1: Tìm tại "Thư mục hiện tại" <span class="concept-tag">Working Directory</span></h4>
-              <p>Khi bạn gõ tên một chương trình (ví dụ <code>BAI1.exe</code>), Shell sẽ nhìn ngay vào <strong>thư mục bạn đang đứng</strong>.</p>
-              <p>→ Vì vậy, nếu bạn để <code>MAYCHAM.cpp</code>, <code>BAI1.cpp</code>, <code>BAI1_TRAU.cpp</code> trong <strong>cùng 1 thư mục</strong>, các file <code>.exe</code> sinh ra sẽ nằm cạnh nhau và gọi thấy nhau ngay lập tức!</p>
+              <h4><span class="concept-title">1. File Mã máy (.exe) vs File Văn bản (.py / .cpp)</span> <span class="concept-tag">Tại sao cần g++?</span></h4>
+              <p>Tại sao bạn chỉ cần gõ <code>BAI1.exe</code> rồi Enter là chạy được, nhưng nếu chỉ gõ <code>script.py</code> hay <code>BAI1.cpp</code> thì máy không tự chạy?</p>
+              <ul>
+                <li><strong>File <code>.exe</code>:</strong> Đã là <strong>Mã máy nhị phân (Machine Code)</strong> đóng gói theo định dạng PE. CPU đọc được trực tiếp và OS biết cách nạp lên RAM chạy ngay lập tức.</li>
+                <li><strong>File <code>.py</code> (Python):</strong> Chỉ là <strong>File văn bản thuần (Text Script)</strong> chứa chữ cái. CPU không thể hiểu trực tiếp! Bạn bắt buộc phải gõ <code>python script.py</code> — trong đó <code>python.exe</code> là chương trình mã máy được nạp vào RAM để đọc từng dòng chữ trong <code>script.py</code> và phiên dịch ra lệnh cho CPU.</li>
+                <li><strong>File <code>.cpp</code> (C++):</strong> Là ngôn ngữ biên dịch. Bạn không thể gõ <code>BAI1.cpp</code> rồi Enter để chạy! Bắt buộc phải gọi Trình biên dịch: <code>g++ BAI1.cpp -o BAI1.exe</code> để dịch file chữ <code>.cpp</code> thành file mã máy <code>.exe</code>.</li>
+              </ul>
             </div>
             <div class="concept-card">
-              <h4>Bước 2: Lật sổ danh bạ hệ thống (<code>PATH</code>) <span class="concept-tag">System PATH</span></h4>
-              <p>Nếu tìm ở thư mục hiện tại không thấy, Shell mới lật cuốn sổ danh bạ tên là <strong><code>PATH</code></strong> (chứa danh sách các thư mục hệ thống như <code>C:\\Windows\\System32</code>).</p>
+              <h4><span class="concept-title">2. "Cờ" (Flags / Options) là gì?</span> <span class="concept-tag">Chỉ thị cấu hình</span></h4>
+              <p>Cờ là các chỉ thị bắt đầu bằng dấu gạch ngang (<code>-</code> hoặc <code>--</code>) gửi kèm cho chương trình để thay đổi hành vi biên dịch mặc định. Gọi <code>g++</code> mà không có cờ giống như bảo thợ dịch dịch ẩu; thêm cờ là đưa ra các yêu cầu khắt khe và tối ưu cho thợ dịch.</p>
+            </div>
+            <div class="concept-card">
+              <h4><span class="concept-title">3. Bộ 5 "Cờ Thần Thánh" của g++ trong Lập Trình Thi Đấu</span> <span class="concept-tag">Cờ g++ cốt lõi</span></h4>
               <ul>
-                <li>Lệnh <code>fc.exe</code> (so file) nằm sẵn trong <code>System32</code> (đã có trong PATH) → gõ ở đâu cũng chạy!</li>
-                <li>Ngược lại, khi cài <strong>Code::Blocks</strong>, trình biên dịch <code>g++.exe</code> nằm sâu trong <code>C:\\Program Files\\CodeBlocks\\MinGW\\bin</code> nhưng bộ cài <strong>không tự ghi địa chỉ này vào sổ tay <code>PATH</code></strong>! Vì thế cmd không tìm thấy <code>g++</code> nếu bạn chưa tự thêm vào PATH.</li>
+                <li><strong><code>-O2</code> (Optimization Level 2):</strong> Cờ tối ưu hóa tốc độ. Ra lệnh cho <code>g++</code> suy nghĩ thông minh, sắp xếp lại mã máy, trải phẳng vòng lặp, tận dụng tối đa thanh ghi CPU giúp code chạy <strong>nhanh gấp 2–5 lần</strong>! (Bắt buộc dùng trên mọi kỳ thi HSG, VNOI, Codeforces).</li>
+                <li><strong><code>-std=c++14</code> (hoặc <code>c++17</code>, <code>c++20</code>):</strong> Cờ chuẩn ngôn ngữ. Kích hoạt toàn bộ tính năng cú pháp C++ hiện đại (như <code>mt19937_64</code>, <code>auto</code>, generic lambdas).</li>
+                <li><strong><code>-Wall</code> (Warning All):</strong> Cờ bật mọi cảnh báo thông minh (soi biến chưa khởi tạo, hàm thiếu return, tràn kiểu ngầm).</li>
+                <li><strong><code>-o BAI1.exe</code>:</strong> Cờ chỉ định tên file xuất ra (chữ <code>o</code> là <strong>Output</strong>). Nếu thiếu cờ này, mặc định <code>g++</code> sẽ sinh ra file mang tên xấu xí <code>a.exe</code> (trên Windows) hoặc <code>a.out</code> (trên Linux)!</li>
+                <li><strong><code>-static</code> (hoặc <code>-static-libstdc++</code>):</strong> Cờ liên kết tĩnh. Nhúng toàn bộ thư viện chuẩn C++ vào bên trong file <code>.exe</code> — đây chính là chìa khóa giải quyết lỗi thiếu DLL kinh điển dưới đây!</li>
               </ul>
             </div>
           </div>
@@ -165,30 +175,32 @@ const MODULES_DATA = [
       },
       {
         num: '1.4',
-        heading: 'Trình biên dịch (Compiler) & Dòng chảy mã máy: Code C++ → File .exe (Windows) / Binary (Linux)',
+        heading: 'Bí ẩn kinh điển: Tại sao bấm F9 thì chạy được, nhưng chạy file .exe lại báo lỗi thiếu thư viện (libstdc++-6.dll)?',
         html: `
-          <div class="diagram-box">[File Code .cpp] (Ký tự văn bản: int main()...)
-       |
-       v (Trình biên dịch g++ nhận lệnh, kiểm tra cú pháp, dịch sang mã máy 0 & 1)
-[Bộ mã máy nhị phân CPU hiểu được]
-       |
-       +---> Trên Windows: Đóng gói định dạng PE -> File "BAI1.exe" (Hệ điều hành cấp RAM & chạy)
-       +---> Trên Linux:   Đóng gói định dạng ELF -> File binary "./BAI1" (Có cờ chmod +x)</div>
+          <div class="analogy-box">
+            <strong>Hiện tượng lỗi số 1 khi làm Máy Chấm:</strong> Học sinh mở <code>BAI1.cpp</code> và <code>BAI1_TRAU.cpp</code> trên Code::Blocks, bấm F9 thấy chạy ngon lành ra console. Nhưng khi mở <code>MAYCHAM.cpp</code> bấm F9 để máy chấm gọi <code>system("BAI1.exe")</code>, hoặc khi click đúp chuột vào file <code>BAI1.exe</code> trên màn hình Desktop, Windows bỗng ném ra hộp thoại lỗi đỏ lòm:<br/>
+            <code>"The code execution cannot proceed because libstdc++-6.dll was not found. Reinstalling the program may fix this problem."</code><br/>
+            Tại sao lại kỳ lạ như vậy? Code::Blocks có "phép thuật" gì mà ngoài Windows lại không có?
+          </div>
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. CPU chỉ hiểu "Mã máy nhị phân" <span class="concept-tag">0 và 1</span></h4>
-              <p>CPU là con chip điện tử, nó không biết đọc chữ <code>cout &lt;&lt; "Hello"</code>. CPU chỉ hiểu các dòng lệnh nhị phân thô gọi là <strong>Machine Code (Mã máy)</strong>.</p>
+              <h4><span class="concept-title">1. Mặc định: Liên kết động (Dynamic Linking)</span> <span class="concept-tag">Để file nhẹ</span></h4>
+              <p>Mặc định trên Code::Blocks (MinGW), <code>g++</code> biên dịch theo kiểu <strong>Liên kết động</strong> để file <code>.exe</code> nhẹ nhất có thể (chỉ 30–50 KB). File <code>.exe</code> này <strong>không chứa sẵn</strong> mã nguồn của các thư viện C++ như <code>cin</code>, <code>cout</code>, <code>vector</code>, <code>string</code>. Khi chạy, nó phải đi tìm các file thư viện dùng chung ngoài ổ cứng mang đuôi <code>.dll</code> (Dynamic Link Library), cụ thể là <code>libstdc++-6.dll</code> và <code>libgcc_s_seh-1.dll</code>.</p>
             </div>
             <div class="concept-card">
-              <h4>2. Trình biên dịch (Compiler: g++) <span class="concept-tag">Người dịch thuật</span></h4>
-              <p>Bản chất <code>g++.exe</code> là một chương trình dịch thuật: nó đọc file văn bản <code>.cpp</code>, phân tích cú pháp, tối ưu thuật toán (cờ <code>-O2</code>), và chuyển toàn bộ thành mã máy nhị phân.</p>
+              <h4><span class="concept-title">2. Tại sao F9 trong Code::Blocks lại chạy được?</span> <span class="concept-tag">Sân nhà IDE</span></h4>
+              <p>Khi bạn bấm F9, Code::Blocks mở cửa sổ console bằng cách <strong>tự động chèn thư mục <code>C:\\Program Files\\CodeBlocks\\MinGW\\bin</code> vào biến môi trường PATH tạm thời</strong> của phiên chạy đó! Trong thư mục <code>MinGW\\bin</code> có sẵn các file <code>.dll</code> này nên chương trình tìm thấy ngay và chạy được.</p>
             </div>
             <div class="concept-card">
-              <h4>3. Tại sao phải là file <code>.exe</code> trên Windows? <span class="concept-tag">Định dạng PE / ELF</span></h4>
-              <p>Hệ điều hành cần biết: Chương trình này cần bao nhiêu RAM? Bắt đầu chạy từ dòng byte nào? Vì vậy:</p>
+              <h4><span class="concept-title">3. Tại sao chạy Máy Chấm lại bị lỗi thiếu DLL?</span> <span class="concept-tag">PATH ngoài Windows</span></h4>
+              <p>Khi <code>MAYCHAM.exe</code> gọi <code>system("BAI1.exe")</code>, Windows tạo một tiến trình mới với <strong>biến PATH mặc định của hệ thống</strong> (không có <code>MinGW\\bin</code>). Windows tìm các file DLL ở: (1) Cùng thư mục file <code>.exe</code>, (2) Thư mục <code>System32</code>, (3) Biến PATH hệ thống. Không tìm thấy ở đâu → Windows báo lỗi thiếu DLL ngay lập tức!</p>
+            </div>
+            <div class="concept-card">
+              <h4><span class="concept-title">4. Khắc phục triệt để bằng cờ -static</span> <span class="concept-tag">Giải pháp vàng</span></h4>
+              <p>Chỉ cần thêm cờ <strong><code>-static</code></strong> (hoặc <code>-static-libgcc -static-libstdc++</code>) khi biên dịch:</p>
               <ul>
-                <li><strong>Windows:</strong> Đóng gói theo chuẩn <strong>PE (Portable Executable)</strong> có đuôi <code>.exe</code>. Windows nhìn đuôi <code>.exe</code> và cấu trúc PE để nạp mã máy vào RAM cho CPU chạy.</li>
-                <li><strong>Linux:</strong> Đóng gói theo chuẩn <strong>ELF</strong>, không cần đuôi mở rộng, kèm cờ quyền thực thi (executable permission).</li>
+                <li><strong>Cách làm trong Code::Blocks:</strong> Vào menu <code>Settings</code> → <code>Compiler...</code> → tab <code>Compiler settings</code> → tab nhỏ <code>Linker settings</code> → ở ô <em>Other linker options</em>, gõ vào: <strong><code>-static</code></strong> (hoặc tích chọn ô <em>"Link the standard C++ library statically"</em>).</li>
+                <li><strong>Tác dụng:</strong> Trình biên dịch sẽ copy thẳng toàn bộ mã máy của thư viện C++ dán chết vào trong ruột file <code>.exe</code>. File <code>.exe</code> sẽ to hơn một chút (từ 40 KB lên ~1.5 MB), nhưng trở thành <strong>file độc lập 100% (standalone)</strong>, mang sang bất kỳ máy tính nào không có Code::Blocks hay gọi bằng máy chấm đều chạy mượt mà không bao giờ hỏi DLL nữa!</li>
               </ul>
             </div>
           </div>
@@ -200,11 +212,11 @@ const MODULES_DATA = [
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>Bản chất của Code::Blocks <span class="concept-tag">IDE là gì?</span></h4>
-              <p><strong>Code::Blocks không phải là trình biên dịch!</strong> Code::Blocks chỉ là một trình soạn thảo văn bản thông minh (Editor) tích hợp nút bấm để gọi ngầm trình biên dịch <code>g++.exe</code>.</p>
+              <h4><span class="concept-title">Bản chất của Code::Blocks</span> <span class="concept-tag">IDE là gì?</span></h4>
+              <p><strong>Code::Blocks không phải là trình biên dịch!</strong> Code::Blocks chỉ là một trình soạn thảo văn bản thông minh (Editor) tích hợp các nút bấm để thay bạn gửi lệnh cho trình biên dịch <code>g++.exe</code>.</p>
             </div>
             <div class="concept-card">
-              <h4>3 bước bí mật khi bấm F9 (Build and Run) <span class="concept-tag">Quy trình F9</span></h4>
+              <h4><span class="concept-title">3 bước bí mật khi bấm F9 (Build and Run)</span> <span class="concept-tag">Quy trình F9</span></h4>
               <ol>
                 <li><strong>Bước 1 (Lưu file):</strong> Ghi những dòng chữ bạn vừa gõ trên RAM xuống file <code>BAI1.cpp</code> trên ổ cứng.</li>
                 <li><strong>Bước 2 (Biên dịch):</strong> Gọi ngầm lệnh: <code>g++ -Wall -O2 BAI1.cpp -o BAI1.exe</code> để dịch ra file <code>BAI1.exe</code> mới nhất.</li>
@@ -212,7 +224,7 @@ const MODULES_DATA = [
               </ol>
             </div>
             <div class="concept-card">
-              <h4>Cảnh báo lỗi kinh điển khi chấm Stress Test! <span class="concept-tag">Quên F9</span></h4>
+              <h4><span class="concept-title">Cảnh báo lỗi kinh điển khi chấm Stress Test!</span> <span class="concept-tag">Quên F9</span></h4>
               <p>Nếu bạn sửa thuật toán trong <code>BAI1.cpp</code> nhưng <strong>quên bấm Build lại (F9)</strong> mà chạy luôn <code>MAYCHAM.exe</code>, Hệ điều hành vẫn sẽ nạp file <strong><code>BAI1.exe</code> cũ từ 10 phút trước</strong> lên RAM để chạy! Kết quả chấm sẽ hoàn toàn sai lệch so với code bạn đang nhìn trên màn hình.</p>
             </div>
           </div>
@@ -227,23 +239,29 @@ const MODULES_DATA = [
       },
       {
         id: 'd1_2',
-        question: 'Câu hỏi thảo luận 2: Một bạn sửa code trong BAI1.cpp từ thuật toán O(N^2) sang O(N), bấm Save (Ctrl+S) rồi mở MAYCHAM.exe lên chạy luôn. Hỏi máy chấm sẽ chạy thuật toán nào của BAI1?',
-        answer: 'Máy chấm vẫn chạy <strong>thuật toán cũ O(N^2)</strong>! Vì bạn mới chỉ lưu file chữ <code>BAI1.cpp</code> trên ổ cứng, chưa bấm <strong>Build (F9)</strong> để trình biên dịch <code>g++</code> dịch lại thành file mã máy <code>BAI1.exe</code> mới. File <code>BAI1.exe</code> trên ổ cứng vẫn là phiên bản cũ từ lần bấm F9 trước đó!'
+        question: 'Câu hỏi thảo luận 2: Tại sao một file .exe biên dịch bằng Code::Blocks khi bấm F9 thì chạy được, nhưng khi gửi file .exe đó sang máy bạn khác (hoặc gọi qua system() trong máy chấm) lại báo lỗi "libstdc++-6.dll was not found"? Cách giải quyết triệt để là gì?',
+        answer: 'Vì mặc định <code>g++</code> dùng <strong>Liên kết động (Dynamic Linking)</strong>, file <code>.exe</code> phụ thuộc vào các file thư viện DLL bên ngoài. Trong Code::Blocks, IDE tự chèn thư mục <code>MinGW\\bin</code> vào PATH nên tìm thấy DLL. Khi chạy ngoài IDE, Windows không tìm thấy DLL trong PATH mặc định nên báo lỗi! <strong>Cách giải quyết triệt để:</strong> Biên dịch với cờ <strong><code>-static</code></strong> để nhúng thẳng toàn bộ thư viện vào ruột file <code>.exe</code>, biến nó thành file độc lập 100% chạy được ở mọi nơi.'
+      },
+      {
+        id: 'd1_3',
+        question: 'Câu hỏi thảo luận 3: Tại sao trong thi đấu lập trình C++, ta luôn luôn phải dùng cờ tối ưu hóa -O2 khi biên dịch?',
+        answer: 'Cờ <code>-O2</code> kích hoạt bộ tối ưu hóa thông minh của <code>g++</code>: tái sắp xếp mã máy nhị phân, trải phẳng các vòng lặp ngắn, loại bỏ các phép tính dư thừa và tận dụng thanh ghi CPU, giúp chương trình chạy <strong>nhanh gấp 2 đến 5 lần</strong> so với biên dịch không cờ, giúp code vượt qua các giới hạn thời gian (Time Limit) ngặt nghèo của đề bài.'
       }
     ],
     sandboxes: [
       {
         id: 'sb1_1',
-        title: 'Phòng thí nghiệm 1: Dòng chảy từ Code C++ → Biên dịch g++ → File .exe & Giải mã phím F9',
-        desc: 'Thử nghiệm sự khác biệt giữa bấm F9 biên dịch, quên bấm F9 (chạy file .exe cũ còn sót), và gọi trực tiếp g++ từ dòng lệnh Shell.',
+        title: 'Phòng thí nghiệm 1: Dòng chảy từ Code C++ → Biên dịch g++ → File .exe, Cờ -static & Giải mã phím F9',
+        desc: 'Thử nghiệm sự khác biệt giữa bấm F9 biên dịch trong IDE, lỗi thiếu thư viện libstdc++-6.dll khi thiếu cờ -static, và biên dịch liên kết tĩnh độc lập.',
         toggles: [
           {
             key: 'action',
-            label: '1. Thao tác của Lập trình viên',
+            label: '1. Phương thức biên dịch & thực thi',
             options: [
-              { value: 'f9', text: 'Bấm F9: Biên dịch và chạy file .exe mới nhất (Chuẩn)', kind: 'ok' },
-              { value: 'no_build', text: 'Sửa code nhưng quên F9: Chạy file .exe cũ còn sót (Lỗi)', kind: 'bug' },
-              { value: 'cli', text: 'Dòng lệnh CLI: Gõ trực tiếp g++ trong Shell', kind: 'ok' }
+              { value: 'static_ok', text: 'Biên dịch với cờ -static (File độc lập 100% - Chuẩn máy chấm)', kind: 'ok' },
+              { value: 'f9_ide', text: 'Bấm F9 trong Code::Blocks (Chạy được trong IDE nhờ PATH tạm)', kind: 'ok' },
+              { value: 'dynamic_bug', text: 'Chạy .exe ngoài IDE khi thiếu cờ -static (Lỗi thiếu libstdc++-6.dll)', kind: 'bug' },
+              { value: 'no_build', text: 'Sửa code nhưng quên F9 (Chạy file .exe cũ còn sót)', kind: 'bug' }
             ]
           },
           {
@@ -259,86 +277,107 @@ const MODULES_DATA = [
           const act = state.action;
           const isWin = state.env === 'win';
           const exeName = isWin ? 'BAI1.exe' : 'BAI1';
-          const runCmd = isWin ? 'BAI1.exe' : './BAI1';
 
           let code = `#include <iostream>
+#include <vector>
 using namespace std;
 
 #define NAME "BAI1"
 
 int main() {
-    // Flow: Code C++ -> Biên dịch g++ -> File thực thi (.exe / binary)
-    long long n = 10;
+    // Flow: Code C++ -> g++ (-O2 -static) -> File .exe doc lap
+    vector<long long> a = {1, 2, 3, 4, 5};
+    long long sum = 0;
+    for (auto x : a) sum += x;
     cout << "Chay thanh cong bai toan: " << NAME << "\\n";
-    cout << "Du lieu thu nghiem N = " << n << "\\n";
+    cout << "Tong cac phan tu sum = " << sum << "\\n";
     return 0;
 }`;
 
-          if (act === 'f9') {
+          if (act === 'static_ok') {
             return {
               code,
-              changedLines: [7, 8, 9],
+              changedLines: [8, 9, 10],
               statusOk: true,
-              statusText: 'CHUẨN: Đã bấm F9 Build & Run, tạo file ' + exeName + ' mới nhất từ code .cpp hiện tại!',
+              statusText: 'CHUẨN MÁY CHẤM: Biên dịch với cờ -static, file ' + exeName + ' nhúng sẵn thư viện, chạy mượt mà ở mọi nơi!',
+              console: isWin
+                ? `C:\\ThiHSG\\BAI1> g++ -O2 -static BAI1.cpp -o BAI1.exe
+C:\\ThiHSG\\BAI1> BAI1.exe
+Chay thanh cong bai toan: BAI1
+Tong cac phan tu sum = 15
+
+[Thanh cong: File BAI1.exe chua san ma may libstdc++, khong can DLL ngoai!]`
+                : `$ g++ -O2 -static BAI1.cpp -o BAI1
+$ ./BAI1
+Chay thanh cong bai toan: BAI1
+Tong cac phan tu sum = 15`,
+              files: {
+                inp: `BAI1.cpp: Bien dich voi g++ -O2 -static`,
+                out: `${exeName}: Dung luong ~1.5 MB (Chua san thu vien C++, doc lap 100%)`,
+                ans: isWin ? 'Kieu lien ket: Static Linking (Khong lo thieu DLL)' : 'Static ELF Binary'
+              }
+            };
+          } else if (act === 'f9_ide') {
+            return {
+              code,
+              changedLines: [9, 10],
+              statusOk: true,
+              statusText: 'CHẠY TRONG SÂN NHÀ IDE: Code::Blocks tự nạp MinGW\\bin vào PATH tạm nên tìm thấy DLL.',
               console: isWin
                 ? `-------------- Build: Debug in BAI1 (compiler: GNU GCC Compiler)---------------
 g++.exe -Wall -O2 -c D:\\Code\\BAI1.cpp -o obj\\Debug\\BAI1.o
 g++.exe -o bin\\Debug\\BAI1.exe obj\\Debug\\BAI1.o
-Output file is bin\\Debug\\BAI1.exe with size 78.42 KB
+Output file is bin\\Debug\\BAI1.exe with size 48.20 KB
 Process terminated with status 0 (0 minute(s), 0 second(s))
-0 error(s), 0 warning(s)
 
 Chay thanh cong bai toan: BAI1
-Du lieu thu nghiem N = 10
+Tong cac phan tu sum = 15
 
-Process returned 0 (0x0)   execution time : 0.015 s
+Process returned 0 (0x0)   execution time : 0.012 s
 Press any key to continue.`
-                : `$ g++ -O2 BAI1.cpp -o BAI1
-$ ./BAI1
-Chay thanh cong bai toan: BAI1
-Du lieu thu nghiem N = 10`,
+                : `$ g++ -O2 BAI1.cpp -o BAI1\n$ ./BAI1\nChay thanh cong bai toan: BAI1\nTong cac phan tu sum = 15`,
               files: {
-                inp: `BAI1.cpp: Cập nhật lúc 15:30 (Khớp 100% với file thực thi)`,
-                out: `${exeName}: Tạo mới lúc 15:30 (Mã máy nhị phân mới nhất)`,
-                ans: isWin ? 'Định dạng PE (Windows x64)' : 'Định dạng ELF (Linux x86_64)'
+                inp: `BAI1.cpp: Cập nhật mới nhất`,
+                out: `${exeName}: Chạy được nhờ IDE nhét PATH tạm`,
+                ans: 'Lưu ý: Mang sang máy khác hoặc gọi qua máy chấm ngoài IDE có thể lỗi thiếu DLL nếu chưa có cờ -static!'
               }
             };
-          } else if (act === 'no_build') {
+          } else if (act === 'dynamic_bug') {
             return {
               code,
-              changedLines: [8],
+              changedLines: [1, 2],
               statusOk: false,
-              statusText: 'LỖI QUÊN BẤM F9: Sửa code .cpp nhưng không biên dịch, máy tính vẫn chạy file ' + exeName + ' cũ từ lần chạy trước!',
-              console: `[CẢNH BÁO: Code BAI1.cpp vừa sửa lúc 15:30 nhưng KHÔNG bấm Build F9!]
-Hệ điều hành vẫn nạp file ${exeName} cũ (tạo lúc 15:15) từ ổ cứng lên RAM để chạy!
-Chay thanh cong bai toan: BAI1 (Phien ban cu!)
-Du lieu thu nghiem N = 5  <-- KẾT QUẢ CỦA CODE CŨ (chưa có dòng N = 10)!`,
+              statusText: 'LỖI THIẾU THƯ VIỆN KINH ĐIỂN: Chạy ngoài IDE mà thiếu cờ -static, Windows không tìm thấy libstdc++-6.dll!',
+              console: isWin
+                ? `C:\\ThiHSG\\BAI1> BAI1.exe
+-----------------------------------------------------------
+[HỘP THOẠI LỖI WINDOWS BẬT LÊN]
+BAI1.exe - System Error
+The code execution cannot proceed because libstdc++-6.dll was not found.
+Reinstalling the program may fix this problem.
+-----------------------------------------------------------
+(Lý do: File BAI1.exe dung luong nho ~48 KB do dung lien ket dong, khi chay ngoai Code::Blocks khong tim thay file DLL trong PATH he thong!)`
+                : `$ ./BAI1\n./BAI1: error while loading shared libraries: libstdc++.so.6: cannot open shared object file: No such file or directory`,
               files: {
-                inp: `BAI1.cpp: Cập nhật lúc 15:30 (Chứa N = 10)`,
-                out: `${exeName}: Tạo từ lúc 15:15 (Vẫn là mã máy cũ chứa N = 5!)`,
-                ans: 'CẢNH BÁO: File thực thi không khớp với mã nguồn C++ hiện tại!'
+                inp: `BAI1.cpp: Mã nguồn hoàn toàn đúng cú pháp`,
+                out: `${exeName}: Không thể khởi chạy do thiếu libstdc++-6.dll`,
+                ans: 'KHẮC PHỤC: Thêm cờ -static khi biên dịch!'
               }
             };
           } else {
             return {
               code,
-              changedLines: [1, 2, 3],
-              statusOk: true,
-              statusText: 'DÒNG LỆNH CLI: Biên dịch thủ công qua Shell ' + (isWin ? 'cmd.exe' : 'bash'),
-              console: isWin
-                ? `C:\\ThiHSG\\BAI1> g++ -O2 BAI1.cpp -o BAI1.exe
-C:\\ThiHSG\\BAI1> BAI1.exe
-Chay thanh cong bai toan: BAI1
-Du lieu thu nghiem N = 10
-C:\\ThiHSG\\BAI1>`
-                : `$ g++ -O2 BAI1.cpp -o BAI1
-$ ./BAI1
-Chay thanh cong bai toan: BAI1
-Du lieu thu nghiem N = 10`,
+              changedLines: [8],
+              statusOk: false,
+              statusText: 'LỖI QUÊN BẤM F9: Sửa code .cpp nhưng không biên dịch, máy tính vẫn chạy file ' + exeName + ' cũ!',
+              console: `[CẢNH BÁO: Code BAI1.cpp vừa sửa lúc 15:30 nhưng KHÔNG bấm Build F9!]
+Hệ điều hành vẫn nạp file ${exeName} cũ (tạo lúc 15:15) từ ổ cứng lên RAM để chạy!
+Chay thanh cong bai toan: BAI1 (Phien ban cu!)
+Tong cac phan tu sum = 0  <-- KẾT QUẢ CỦA CODE CŨ!`,
               files: {
-                inp: `BAI1.cpp: Đọc trực tiếp bởi trình biên dịch g++`,
-                out: `${exeName}: Tạo thành công trong cùng thư mục làm việc`,
-                ans: `Lệnh gọi: ${runCmd}`
+                inp: `BAI1.cpp: Cập nhật lúc 15:30 (Đã sửa code)`,
+                out: `${exeName}: Tạo từ lúc 15:15 (Vẫn là mã máy cũ!)`,
+                ans: 'CẢNH BÁO: File thực thi không khớp với mã nguồn C++ hiện tại!'
               }
             };
           }
@@ -347,55 +386,52 @@ Du lieu thu nghiem N = 10`,
     ],
     quiz: [
       {
-        q: '1. Tại sao hai chương trình MAYCHAM.exe và BAI1.exe không thể trực tiếp đọc biến trong RAM của nhau mà phải trao đổi qua file trên ổ cứng?',
+        q: '1. Tại sao một file .exe biên dịch trên Code::Blocks khi bấm F9 thì chạy được, nhưng khi gọi qua system() trong máy chấm lại có thể báo lỗi "libstdc++-6.dll was not found"?',
         options: [
-          'Vì RAM của máy tính quá nhỏ không đủ chỗ chứa 2 chương trình cùng lúc',
-          'Vì Hệ điều hành cách ly bộ nhớ RAM của mỗi tiến trình để đảm bảo an toàn, chương trình này không được tự tiện truy cập vùng nhớ của chương trình khác',
-          'Vì biến trong C++ chỉ tồn tại khi được ghi xuống ổ cứng',
-          'Vì CPU chỉ cho phép một chương trình được dùng RAM trong một ngày'
+          'Vì máy chấm cố tình phá hoại file .exe',
+          'Vì mặc định g++ dùng liên kết động (Dynamic Linking) cần các file DLL ngoài; Code::Blocks tự thêm MinGW\\bin vào PATH tạm của nó khi bấm F9, còn khi chạy ngoài IDE Windows dùng biến PATH mặc định không có thư mục này',
+          'Vì file .exe của C++ chỉ được phép chạy tối đa 1 lần trong ngày',
+          'Vì Windows bắt buộc phải đổi tên file thành .bin mới chạy được'
         ],
         correct: 1,
-        explain: 'Hệ điều hành áp dụng cơ chế bảo vệ bộ nhớ ảo (Virtual Memory Isolation): mỗi tiến trình được cấp một không gian địa chỉ riêng biệt và không thể can thiệp vào RAM của tiến trình khác. Vì thế chúng phải giao tiếp qua các file trên ổ cứng (.inp, .out).'
+        explain: 'Code::Blocks tự bổ sung MinGW\\bin vào PATH tạm khi chạy trong IDE. Ngoài IDE, Windows không tìm thấy libstdc++-6.dll trong PATH mặc định trừ khi bạn biên dịch với cờ -static hoặc thêm MinGW\\bin vào PATH hệ thống.'
       },
       {
-        q: '2. Khi bạn mở cửa sổ cmd trên Windows và gõ một lệnh, Shell sẽ tìm kiếm file thực thi theo thứ tự nào?',
+        q: '2. Cờ -static trong câu lệnh biên dịch g++ có tác dụng gì quan trọng nhất đối với lập trình thi đấu?',
         options: [
-          'Tìm trên mạng Internet trước, sau đó tìm trong thùng rác',
-          'Tìm trong thư mục hiện tại trước; nếu không thấy mới tra cứu danh sách thư mục trong biến môi trường PATH',
-          'Tìm trong biến PATH trước, nếu không thấy thì không bao giờ tìm ở thư mục hiện tại',
-          'Chỉ tìm kiếm trong ổ đĩa C:\\'
+          'Làm cho code chạy chậm lại để dễ nhìn kết quả',
+          'Tự động sửa lỗi cú pháp trong code C++',
+          'Nhúng trực tiếp toàn bộ mã máy của thư viện C++ vào ruột file .exe, biến nó thành file độc lập 100% không lo thiếu file DLL khi mang sang máy khác hay chạy trong máy chấm',
+          'Xóa sạch các biến static trong chương trình'
+        ],
+        correct: 2,
+        explain: 'Cờ -static thực hiện Static Linking: toàn bộ mã máy thư viện chuẩn C++ được gói gọn bên trong file .exe, giúp file chạy độc lập hoàn toàn mà không đòi hỏi bất kỳ file DLL runtime nào từ hệ điều hành.'
+      },
+      {
+        q: '3. Khi bạn nhập một dòng lệnh (ví dụ: g++ -O2 -std=c++14 code.cpp -o code.exe) và bấm Enter vào Shell, điều gì xảy ra ở bước đầu tiên?',
+        options: [
+          'Shell gửi ngay toàn bộ dòng chữ lên vệ tinh',
+          'Shell cắt dòng lệnh bằng dấu cách thành Tên chương trình cần chạy (từ đầu tiên: g++) và Danh sách các tham số đối số (nạp vào mảng argv[])',
+          'Shell tự động xóa file code.cpp',
+          'Shell tắt máy tính'
         ],
         correct: 1,
-        explain: 'Trên Windows, cmd.exe trước hết kiểm tra xem file có nằm ngay trong thư mục đang đứng (Working Directory) hay không. Nếu không có, nó mới tra cứu trong biến môi trường PATH.'
+        explain: 'Bước đầu tiên là Tokenize (cắt từ): Shell phân tách từ đầu tiên làm tên lệnh thực thi, còn các cờ (-O2, -std=c++14) và tên file được đóng gói làm tham số dòng lệnh truyền vào mảng argv[] của chương trình.'
       },
       {
-        q: '3. Bản chất của file có đuôi .exe trên hệ điều hành Windows là gì?',
+        q: '4. Tại sao ta PHẢI gõ "python script.py" hoặc "g++ code.cpp" chứ không thể chỉ gõ "script.py" hay "code.cpp" rồi bấm Enter để máy tính chạy?',
         options: [
-          'Là file văn bản chứa nguyên văn mã nguồn C++ mà bạn đã viết',
-          'Là file nén ZIP chứa các hình ảnh của phần mềm',
-          'Là file nhị phân đóng gói theo định dạng PE (Portable Executable) chứa mã máy mà CPU có thể thực thi trực tiếp khi được OS nạp vào RAM',
-          'Là một tập lệnh chỉ chạy được khi có phần mềm Code::Blocks đang mở'
+          'Vì file .py và .cpp chỉ là file văn bản thuần (chữ cái), CPU không hiểu trực tiếp được; bắt buộc phải gọi chương trình mã máy python.exe (trình thông dịch) hoặc g++.exe (trình biên dịch) để xử lý',
+          'Vì bàn phím không nhận diện được dấu chấm .py',
+          'Vì hệ điều hành cấm các file có chữ c và p',
+          'Vì gõ như vậy để chứng tỏ mình biết dùng dòng lệnh'
         ],
-        correct: 2,
-        explain: 'File .exe là file nhị phân theo định dạng PE (Portable Executable). Nó chứa mã máy (Machine code) và các thông tin cần thiết để Windows nạp vào RAM và chỉ định CPU bắt đầu thực thi.'
-      },
-      {
-        q: '4. Khi lập trình trên Code::Blocks, điều gì thực sự xảy ra đằng sau hậu trường khi bạn nhấn phím F9 (Build and Run)?',
-        options: [
-          'Code::Blocks tự biến thành hệ điều hành để chạy trực tiếp từng dòng code C++',
-          'Code::Blocks gửi code lên máy chủ của Google để chấm điểm',
-          'Code::Blocks lưu file .cpp, gọi ngầm trình biên dịch g++ dịch mã sang file .exe, rồi ra lệnh cho OS mở console chạy file .exe đó',
-          'Code::Blocks chỉ mở file .cpp dưới dạng xem trước mà không làm gì khác'
-        ],
-        correct: 2,
-        explain: 'Code::Blocks là một IDE (Môi trường phát triển tích hợp). Khi bấm F9, nó lưu file, gọi g++ biên dịch mã nguồn thành file thực thi .exe, và gọi OS khởi chạy file .exe trong cửa sổ console.'
+        correct: 0,
+        explain: 'File văn bản thuần (.py, .cpp) không phải là mã máy nhị phân. CPU chỉ chạy được mã máy thực thi (như python.exe hay file .exe đã biên dịch), do đó bắt buộc phải gọi interpreter hoặc compiler đứng trước để xử lý file văn bản đó.'
       }
     ]
   },
-
-  // ============================================================================
-  // MODULE 2: BẢN CHẤT CƠ CHẾ LUỒNG (STREAM), BUFFER & 3 CƠ CHẾ NHẬP XUẤT C++
-  // ============================================================================
+// ============================================================================
   {
     id: 'm2',
     number: 'Module 02',
@@ -409,7 +445,7 @@ Du lieu thu nghiem N = 10`,
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Khái niệm "Luồng" (Stream) <span class="concept-tag">Đường ống nước</span></h4>
+              <h4><span class="concept-title">1. Khái niệm "Luồng" (Stream)</span> <span class="concept-tag">Đường ống nước</span></h4>
               <p>Trong C++, dữ liệu không bay nhảy tự do. Nó chảy tuần tự qua các <strong>"Đường ống dẫn dữ liệu" (gọi là Stream)</strong> kết nối giữa bộ nhớ RAM và thế giới bên ngoài:</p>
               <ul>
                 <li><strong><code>cin</code> (Standard Input):</strong> Đường ống hút nước từ Bàn phím vào các biến trên RAM thông qua toán tử <code>&gt;&gt;</code>.</li>
@@ -418,7 +454,7 @@ Du lieu thu nghiem N = 10`,
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Cơ chế Buffer ("Thùng chứa tạm / Xe tải gom hàng") <span class="concept-tag">Tối ưu tốc độ</span></h4>
+              <h4><span class="concept-title">2. Cơ chế Buffer ("Thùng chứa tạm / Xe tải gom hàng")</span> <span class="concept-tag">Tối ưu tốc độ</span></h4>
               <p>Mỗi lần chọc xuống ổ cứng ghi dữ liệu tốn hàng triệu chu kỳ CPU. Vì vậy, C++ đặt một <strong>thùng chứa tạm trên RAM gọi là Buffer</strong> ở miệng mỗi luồng:</p>
               <ul>
                 <li>Khi viết <code>inp &lt;&lt; n &lt;&lt; "\\n";</code>, dữ liệu <strong>chưa nằm trên ổ cứng ngay!</strong> Nó đang nằm trong thùng xe tải Buffer trên RAM.</li>
@@ -426,7 +462,7 @@ Du lieu thu nghiem N = 10`,
               </ul>
             </div>
             <div class="concept-card">
-              <h4>3. Hậu quả khi quên <code>inp.close()</code> trong Máy Chấm <span class="concept-tag">Lỗi kẹt Buffer</span></h4>
+              <h4><span class="concept-title">3. Hậu quả khi quên <code>inp.close()</code> trong Máy Chấm</span> <span class="concept-tag">Lỗi kẹt Buffer</span></h4>
               <p>Trong máy chấm, sau khi sinh test xong ta gọi ngay <code>system("BAI1.exe")</code>. Nếu quên <code>inp.close()</code>, dữ liệu test vẫn nằm kẹt trên Buffer RAM của <code>MAYCHAM.exe</code>. Khi <code>BAI1.exe</code> mở file ra đọc sẽ thấy một <strong>file 0 byte (trắng tinh)</strong> và chạy ra kết quả rác!</p>
             </div>
           </div>
@@ -438,7 +474,7 @@ Du lieu thu nghiem N = 10`,
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Ý nghĩa từng chữ trong <code>ofstream</code> <span class="concept-tag">Mnemonic</span></h4>
+              <h4><span class="concept-title">1. Ý nghĩa từng chữ trong <code>ofstream</code></span> <span class="concept-tag">Mnemonic</span></h4>
               <ul>
                 <li><code>o</code> = <strong>Output</strong> (Xuất dữ liệu từ RAM ra ngoài).</li>
                 <li><code>f</code> = <strong>File</strong> (Tệp tin trên đĩa cứng).</li>
@@ -447,7 +483,7 @@ Du lieu thu nghiem N = 10`,
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Cú pháp khai báo & Ghi dữ liệu <span class="concept-tag">Cú pháp chuẩn</span></h4>
+              <h4><span class="concept-title">2. Cú pháp khai báo & Ghi dữ liệu</span> <span class="concept-tag">Cú pháp chuẩn</span></h4>
               <ul>
                 <li><code>ofstream inp("BAI1.inp");</code>: Mở một đường ống mới cắm vào file <code>BAI1.inp</code>, đặt tên đường ống là <code>inp</code>.</li>
                 <li><code>inp &lt;&lt; n &lt;&lt; "\\n";</code>: Đẩy dữ liệu vào đường ống <code>inp</code> (y hệt như cách dùng <code>cout &lt;&lt;</code>).</li>
@@ -455,7 +491,7 @@ Du lieu thu nghiem N = 10`,
               </ul>
             </div>
             <div class="concept-card">
-              <h4>3. Tương ứng: <code>ifstream</code> <span class="concept-tag">Input File Stream</span></h4>
+              <h4><span class="concept-title">3. Tương ứng: <code>ifstream</code></span> <span class="concept-tag">Input File Stream</span></h4>
               <ul>
                 <li><code>i</code> = <strong>Input</strong> (Hút dữ liệu từ ngoài vào RAM).</li>
                 <li><code>f</code> = <strong>File</strong> (Tệp tin).</li>
@@ -701,7 +737,7 @@ Lý do: Lệnh freopen("BAI1.inp", "w", stdout) đã cướp mất màn hình co
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. system() hoạt động như thế nào? <span class="concept-tag">Nhờ Shell con</span></h4>
+              <h4><span class="concept-title">1. system() hoạt động như thế nào?</span> <span class="concept-tag">Nhờ Shell con</span></h4>
               <p>Chương trình C++ không thể tự ý tạo tiến trình mới. Khi bạn viết <code>system("BAI1.exe");</code>:</p>
               <ol>
                 <li>Chương trình <code>MAYCHAM.exe</code> tạm dừng lại.</li>
@@ -711,7 +747,7 @@ Lý do: Lệnh freopen("BAI1.inp", "w", stdout) đã cướp mất màn hình co
               </ol>
             </div>
             <div class="concept-card">
-              <h4>2. Khác biệt cú pháp giữa Windows và Linux <span class="concept-tag">Môi trường</span></h4>
+              <h4><span class="concept-title">2. Khác biệt cú pháp giữa Windows và Linux</span> <span class="concept-tag">Môi trường</span></h4>
               <ul>
                 <li><strong>Windows (Học sinh):</strong> Gọi <code>system("BAI1.exe");</code> (cmd tự tìm ở thư mục hiện tại). Lệnh so file là <code>fc /w BAI1.out BAI1.ans</code>.</li>
                 <li><strong>Linux (Giáo viên / Online Judge):</strong> Phải có <code>./</code> ở đầu: <code>system("./BAI1");</code>. Lệnh so file là <code>diff -w BAI1.out BAI1.ans</code>.</li>
@@ -726,7 +762,7 @@ Lý do: Lệnh freopen("BAI1.inp", "w", stdout) đã cướp mất màn hình co
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Quy ước quốc tế của Hệ điều hành <span class="concept-tag">Exit Code</span></h4>
+              <h4><span class="concept-title">1. Quy ước quốc tế của Hệ điều hành</span> <span class="concept-tag">Exit Code</span></h4>
               <p>Mọi chương trình khi kết thúc đều trả về một con số nguyên cho OS:</p>
               <ul>
                 <li>Trả về <strong><code>0</code></strong>: Hoàn thành êm đẹp, không gặp lỗi nào.</li>
@@ -734,7 +770,7 @@ Lý do: Lệnh freopen("BAI1.inp", "w", stdout) đã cướp mất màn hình co
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Lệnh so file <code>fc</code> và <code>diff</code> trả về gì? <span class="concept-tag">Quy ước so sánh</span></h4>
+              <h4><span class="concept-title">2. Lệnh so file <code>fc</code> và <code>diff</code> trả về gì?</span> <span class="concept-tag">Quy ước so sánh</span></h4>
               <ul>
                 <li>Nếu 2 file <strong>GIỐNG HỆT NHAU</strong>: Lệnh trả về <strong><code>0</code></strong> (Số lỗi = 0 → Test ĐÚNG!).</li>
                 <li>Nếu 2 file <strong>CÓ KHÁC BIỆT</strong>: Lệnh trả về <strong><code>!= 0</code></strong> (Phát hiện lỗi → Test SAI!).</li>
@@ -750,7 +786,7 @@ Lý do: Lệnh freopen("BAI1.inp", "w", stdout) đã cướp mất màn hình co
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Tại sao phải có cờ <code>/w</code> trong <code>fc /w</code>? <span class="concept-tag">White space</span></h4>
+              <h4><span class="concept-title">1. Tại sao phải có cờ <code>/w</code> trong <code>fc /w</code>?</span> <span class="concept-tag">White space</span></h4>
               <p>Trong thi đấu, in <code>"10 "</code> (dư 1 dấu cách cuối) hay <code>"10\\r\\n"</code> (xuống dòng Windows) đều được tính là <strong>Accepted</strong>.</p>
               <ul>
                 <li>Nếu không có <code>/w</code>: <code>fc</code> soi từng byte một và báo <strong>SAI OAN</strong>!</li>
@@ -758,7 +794,7 @@ Lý do: Lệnh freopen("BAI1.inp", "w", stdout) đã cướp mất màn hình co
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Tuyệt chiêu <code>exit(0)</code> trong <code>void compare()</code> <span class="concept-tag">Giữ hiện trường</span></h4>
+              <h4><span class="concept-title">2. Tuyệt chiêu <code>exit(0)</code> trong <code>void compare()</code></span> <span class="concept-tag">Giữ hiện trường</span></h4>
               <p>Khi tách hàm con <code>void compare()</code>:</p>
               <ul>
                 <li>Nếu gặp test sai, <code>fc /w</code> tự in đoạn khác nhau (<code>***** BAI1.out ... ***** BAI1.ANS ...</code>) lên console.</li>
@@ -968,7 +1004,7 @@ int main() {
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Giới hạn <code>RAND_MAX = 32767</code> <span class="concept-tag">Quá bé</span></h4>
+              <h4><span class="concept-title">1. Giới hạn <code>RAND_MAX = 32767</code></span> <span class="concept-tag">Quá bé</span></h4>
               <p>Trên Windows (MinGW / Code::Blocks), hàm <code>rand()</code> chỉ trả về số tối đa là <strong>32,767</strong> ($2^{15}-1$).</p>
               <ul>
                 <li>Bạn muốn sinh mảng $N = 100,000$ phần tử? <code>rand()</code> không sinh nổi!</li>
@@ -976,7 +1012,7 @@ int main() {
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Cái bẫy của <code>time(0)</code> <span class="concept-tag">Trùng hạt giống</span></h4>
+              <h4><span class="concept-title">2. Cái bẫy của <code>time(0)</code></span> <span class="concept-tag">Trùng hạt giống</span></h4>
               <p>Máy tính sinh số ngẫu nhiên dựa vào <strong>Hạt giống (Seed)</strong>. Cùng seed → sinh ra dãy số y hệt nhau!</p>
               <ul>
                 <li>Hàm <code>time(0)</code> chỉ nhảy số <strong>mỗi giây 1 lần</strong>.</li>
@@ -992,7 +1028,7 @@ int main() {
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. <code>mt19937_64</code> là gì? <span class="concept-tag">Mersenne Twister</span></h4>
+              <h4><span class="concept-title">1. <code>mt19937_64</code> là gì?</span> <span class="concept-tag">Mersenne Twister</span></h4>
               <ul>
                 <li><code>mt</code> = <strong>Mersenne Twister</strong> (thuật toán sinh số ngẫu nhiên cực mạnh phát minh năm 1997, chu kỳ siêu dài $2^{19937}-1$).</li>
                 <li><code>19937</code> = Số mũ nguyên tố Mersenne.</li>
@@ -1000,7 +1036,7 @@ int main() {
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. <code>chrono::steady_clock</code> <span class="concept-tag">Thần thời gian</span></h4>
+              <h4><span class="concept-title">2. <code>chrono::steady_clock</code></span> <span class="concept-tag">Thần thời gian</span></h4>
               <ul>
                 <li><code>chrono</code> = Thư viện thời gian độ chính xác cao của C++11 (bắt nguồn từ thần thời gian Chronos).</li>
                 <li><code>steady_clock</code> = Chiếc đồng hồ chạy đều đơn điệu, không bao giờ bị giật lùi.</li>
@@ -1016,7 +1052,7 @@ int main() {
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Cú pháp chia dư dễ nhớ (Khuyên dùng trong phòng thi) <span class="concept-tag">Ưu tiên số 1</span></h4>
+              <h4><span class="concept-title">1. Cú pháp chia dư dễ nhớ (Khuyên dùng trong phòng thi)</span> <span class="concept-tag">Ưu tiên số 1</span></h4>
               <pre><code>mt19937_64 rd(chrono::steady_clock::now().time_since_epoch().count());
 
 long long Rand(long long l, long long r) {
@@ -1030,7 +1066,7 @@ long long Rand(long long l, long long r) {
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Cú pháp mở rộng chuẩn C++ (Phân phối đều tuyệt đối) <span class="concept-tag">Mở rộng</span></h4>
+              <h4><span class="concept-title">2. Cú pháp mở rộng chuẩn C++ (Phân phối đều tuyệt đối)</span> <span class="concept-tag">Mở rộng</span></h4>
               <pre><code>long long Rand(long long l, long long r) {
     return uniform_int_distribution&lt;long long&gt;(l, r)(rd);
 }</code></pre>
@@ -1040,7 +1076,7 @@ long long Rand(long long l, long long r) {
               </ul>
             </div>
             <div class="concept-card">
-              <h4>3. Vị trí đặt biến <code>rd</code> <span class="concept-tag">Bắt buộc toàn cục</span></h4>
+              <h4><span class="concept-title">3. Vị trí đặt biến <code>rd</code></span> <span class="concept-tag">Bắt buộc toàn cục</span></h4>
               <p>Biến <code>rd</code> <strong>bắt buộc phải khai báo ở ngoài hàm (Global)</strong> một lần duy nhất ở đầu chương trình. Nếu đặt trong hàm <code>generate()</code> hay trong hàm <code>Rand()</code> thì mỗi lần gọi hàm lại bị reset lại bộ quay số!</p>
             </div>
           </div>
@@ -1305,7 +1341,7 @@ int main() {
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Mô hình 3 file trong kỳ thi <span class="concept-tag">Tổ chức</span></h4>
+              <h4><span class="concept-title">1. Mô hình 3 file trong kỳ thi</span> <span class="concept-tag">Tổ chức</span></h4>
               <ul>
                 <li><strong><code>BAI1.cpp</code> (Thuật Full):</strong> Đọc <code>BAI1.inp</code> → Ghi ra <strong><code>BAI1.out</code></strong>. Thuật toán tối ưu ($O(N), O(N \\log N)$).</li>
                 <li><strong><code>BAI1_TRAU.cpp</code> (Thuật Trâu):</strong> Đọc <code>BAI1.inp</code> → Ghi ra <strong><code>BAI1.ans</code></strong>. Thuật toán ngây thơ duyệt cạn nhưng <strong>chắc chắn đúng 100%</strong>.</li>
@@ -1313,7 +1349,7 @@ int main() {
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Khung sườn hoàn chỉnh với hàm Rand dễ nhớ <span class="concept-tag">MAYCHAM.cpp</span></h4>
+              <h4><span class="concept-title">2. Khung sườn hoàn chỉnh với hàm Rand dễ nhớ</span> <span class="concept-tag">MAYCHAM.cpp</span></h4>
               <pre><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
@@ -1363,7 +1399,7 @@ int main() {
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Đề bài MAXSUB <span class="concept-tag">Bài toán cơ bản</span></h4>
+              <h4><span class="concept-title">1. Đề bài MAXSUB</span> <span class="concept-tag">Bài toán cơ bản</span></h4>
               <p>Cho mảng $N$ số nguyên ($N \\le 2 \\times 10^5, |A_i| \\le 10^9$). Tìm đoạn con liên tiếp có tổng lớn nhất.</p>
               <ul>
                 <li>Thuật Trâu: $O(N^2)$ duyệt 2 vòng for.</li>
@@ -1371,7 +1407,7 @@ int main() {
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Nguyên tắc vàng: Sinh N nhỏ trước! <span class="concept-tag">N = 5..10</span></h4>
+              <h4><span class="concept-title">2. Nguyên tắc vàng: Sinh N nhỏ trước!</span> <span class="concept-tag">N = 5..10</span></h4>
               <p>Đừng vội sinh $N = 100,000$!</p>
               <ul>
                 <li>Thuật Trâu $O(N^2)$ chạy $N = 10^5$ sẽ bị đứng hình (TLA).</li>
@@ -1387,14 +1423,14 @@ int main() {
         html: `
           <div class="concept-grid">
             <div class="concept-card">
-              <h4>1. Ràng buộc cấu trúc dữ liệu <span class="concept-tag">Valid Data</span></h4>
+              <h4><span class="concept-title">1. Ràng buộc cấu trúc dữ liệu</span> <span class="concept-tag">Valid Data</span></h4>
               <ul>
                 <li>Đề bài yêu cầu <strong>mảng tăng dần</strong>: Sau khi sinh mảng, <strong>bắt buộc phải <code>sort(a + 1, a + n + 1);</code></strong> trước khi in ra file <code>.inp</code>! Nếu quên sort, thuật chặt nhị phân trong code Full sẽ chạy sai oan!</li>
                 <li>Truy vấn đoạn $[L, R]$ với $L \\le R$: Phải sinh <code>int L = Rand(1, n), R = Rand(L, n);</code> chứ không sinh độc lập làm $L > R$.</li>
               </ul>
             </div>
             <div class="concept-card">
-              <h4>2. Bẫy Test Yếu: Thu hẹp miền sinh & Ép xác suất trúng <span class="concept-tag">Strong Test</span></h4>
+              <h4><span class="concept-title">2. Bẫy Test Yếu: Thu hẹp miền sinh & Ép xác suất trúng</span> <span class="concept-tag">Strong Test</span></h4>
               <ul>
                 <li>Nếu sinh $A_i$ và $X$ trong miền $[1, 10^9]$ ngây thơ: Xác suất $X$ trùng với phần tử trong mảng gần như bằng <strong>0%</strong>! Cả 100 test đều ra kết quả 0, không test được nhánh tìm thấy của code Full!</li>
                 <li><strong>Cách khắc phục:</strong> Thu hẹp miền giá trị xuống <code>Rand(1, 5)</code> để các số trùng nhau nhiều lần, và tung đồng xu 50% ép $X = a[\\text{Rand}(L, R)]$ để chắc chắn $X$ có mặt trong đoạn!</li>

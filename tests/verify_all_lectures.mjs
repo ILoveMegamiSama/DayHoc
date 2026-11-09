@@ -205,6 +205,66 @@ l2Data.debugExercises.forEach((db, dIdx) => {
 });
 
 assert.ok((l2Data.practiceProblems || []).length >= 3, 'Bài 02 phải có ít nhất 3 bài tập thực chiến');
-console.log('✅ PASS: Lesson 02 Specifications Verified!');
+// 7. Kiểm định Bài 03 — 03_HaiConTro
+console.log('--- VERIFYING LESSON 03: KỸ THUẬT HAI CON TRỎ ---');
+assert.ok(fs.existsSync('03_HaiConTro/docs/bai_giang_hai_con_tro.md'), 'Phải có docs/bai_giang_hai_con_tro.md');
+assert.ok(fs.existsSync('03_HaiConTro/Code_Mau/01_HaiConTroNguocChieu_TimCapTongBangS.cpp'), 'Phải có Code_Mau 01');
+assert.ok(fs.existsSync('03_HaiConTro/Code_Mau/02_HaiConTroCungChieu_DoanConDaiNhat.cpp'), 'Phải có Code_Mau 02');
+assert.ok(fs.existsSync('03_HaiConTro/Code_Mau/03_DemSoDoanCon_ThoaManDieuKien.cpp'), 'Phải có Code_Mau 03');
+assert.ok(fs.existsSync('03_HaiConTro/index.html'), 'Phải có index.html');
+
+const l3Sandbox = createSandbox();
+vm.createContext(l3Sandbox);
+const l3DataJs = fs.readFileSync('03_HaiConTro/lesson-data.js', 'utf8');
+vm.runInContext(l3DataJs, l3Sandbox);
+const l3Data = l3Sandbox.window.LESSON_DATA;
+
+assert.ok(l3Data, 'LESSON_DATA bài 03 phải tồn tại');
+assert.equal(l3Data.id, 'hai_con_tro');
+assert.equal(l3Data.modules.length, 3, 'Bài 03 phải có đúng 3 module con');
+
+let totalQuizL3 = 0;
+let traceQuizL3 = 0;
+
+l3Data.modules.forEach((mod, mIdx) => {
+  assert.ok(mod.subproblem, `Module ${mIdx + 1} phải có định nghĩa vấn đề nhỏ`);
+  assert.ok(mod.subproblem.title && mod.subproblem.desc, 'subproblem phải có title và desc');
+  
+  const modHtml = JSON.stringify(mod.cards);
+  assert.match(modHtml, /step-life|đời sống|kệ sách|sâu đo|ngón tay/i, `Module ${mIdx + 1} phải có ví dụ đời sống`);
+  assert.match(modHtml, /step-code|lập trình|trai|phai|con trỏ/i, `Module ${mIdx + 1} phải có ánh xạ lập trình`);
+  assert.match(modHtml, /step-term|thuật ngữ|tên gọi|cửa sổ trượt/i, `Module ${mIdx + 1} phải giải nghĩa thuật ngữ`);
+
+  (mod.quiz || []).forEach((q, qIdx) => {
+    totalQuizL3++;
+    if (q.type === 'trace' || q.traceCode) traceQuizL3++;
+
+    const lens = q.options.map(o => String(o).length);
+    const maxLen = Math.max(...lens);
+    const minLen = Math.min(...lens);
+    const diffRatio = (maxLen - minLen) / maxLen;
+    assert.ok(
+      diffRatio <= 0.38,
+      `Quiz Mod ${mIdx + 1} Câu ${qIdx + 1}: Chênh lệch độ dài (${diffRatio.toFixed(2)}) vượt quá 38% (max: ${maxLen}, min: ${minLen})`
+    );
+  });
+});
+
+assert.ok(
+  traceQuizL3 / totalQuizL3 >= 0.4,
+  `Bài 03: Tỷ lệ câu hỏi trace code (${traceQuizL3}/${totalQuizL3} = ${(traceQuizL3/totalQuizL3*100).toFixed(1)}%) phải >= 40%`
+);
+
+assert.ok((l3Data.debugExercises || []).length >= 2, 'Bài 03 phải có ít nhất 2 bài tập Debug tương tác');
+l3Data.debugExercises.forEach((db, dIdx) => {
+  assert.ok(db.bugLine > 0, `Debug ${dIdx + 1} phải có bugLine > 0`);
+  assert.ok(db.failingInput, `Debug ${dIdx + 1} phải có failingInput`);
+  assert.ok(Array.isArray(db.patches) && db.patches.length >= 3, `Debug ${dIdx + 1} phải có ít nhất 3 bản vá`);
+  assert.ok(typeof db.correctPatch === 'number', `Debug ${dIdx + 1} phải có correctPatch`);
+});
+
+assert.ok((l3Data.practiceProblems || []).length >= 3, 'Bài 03 phải có ít nhất 3 bài tập thực chiến');
+console.log('✅ PASS: Lesson 03 Specifications Verified!');
+
 
 

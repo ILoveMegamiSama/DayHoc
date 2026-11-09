@@ -323,7 +323,21 @@ l4Data.debugExercises.forEach((db, dIdx) => {
 });
 
 assert.ok((l4Data.practiceProblems || []).length >= 3, 'Bài 04 phải có ít nhất 3 bài tập thực chiến');
-console.log('✅ PASS: Lesson 04 Specifications Verified!');
+// 9. Kiểm định Skill Workflow chuẩn hóa
+console.log('--- VERIFYING CP-LECTURE-WORKFLOW SKILL ---');
+const skillPath = '.agents/skills/cp-lecture-workflow/SKILL.md';
+assert.ok(fs.existsSync(skillPath), 'Phải có file .agents/skills/cp-lecture-workflow/SKILL.md');
+const skillContent = fs.readFileSync(skillPath, 'utf8');
+assert.match(skillContent, /name:\s*cp-lecture-workflow/, 'SKILL.md phải có name: cp-lecture-workflow');
+assert.match(skillContent, /Problem Decomposition|Tách vấn đề/i, 'SKILL.md phải mô tả tách vấn đề nhỏ');
+assert.match(skillContent, /Đời sống.*Lập trình.*Thuật ngữ|Life-to-Code/i, 'SKILL.md phải mô tả quy trình 3 bước sư phạm');
+assert.match(skillContent, /debugExercises|Bài tập Debug/i, 'SKILL.md phải có chuẩn bài tập debug');
+assert.match(skillContent, /Trace|Code Execution Tracing/i, 'SKILL.md phải có chuẩn câu hỏi trace code');
+assert.match(skillContent, /shared\/portal-data\.js/, 'SKILL.md phải hướng dẫn cập nhật portal-data.js');
+assert.match(skillContent, /tests\/verify_all_lectures\.mjs/, 'SKILL.md phải hướng dẫn chạy test kiểm định');
+
+console.log('✅ PASS: All 4 Lectures & CP Workflow Skill Verified 100%!');
+
 
 
 

@@ -264,7 +264,67 @@ l3Data.debugExercises.forEach((db, dIdx) => {
 });
 
 assert.ok((l3Data.practiceProblems || []).length >= 3, 'Bài 03 phải có ít nhất 3 bài tập thực chiến');
-console.log('✅ PASS: Lesson 03 Specifications Verified!');
+// 8. Kiểm định Bài 04 — 04_KetHop_NganXep_QHD_HaiConTro
+console.log('--- VERIFYING LESSON 04: KẾT HỢP NGĂN XẾP, QUY HOẠCH ĐỘNG & HAI CON TRỎ ---');
+assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/docs/bai_giang_ket_hop_ngan_xep_qhd_hai_con_tro.md'), 'Phải có docs bài kết hợp');
+assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/Code_Mau/01_TuDeQuy_Sang_NganXep_Va_QHD.cpp'), 'Phải có Code_Mau 01');
+assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/Code_Mau/02_NganXepDonDieu_ToiUu_QuyHoachDong.cpp'), 'Phải có Code_Mau 02');
+assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/Code_Mau/03_KetHop_HangDoiDonDieu_CuaSoTruot_QHD.cpp'), 'Phải có Code_Mau 03');
+assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/index.html'), 'Phải có index.html');
+
+const l4Sandbox = createSandbox();
+vm.createContext(l4Sandbox);
+const l4DataJs = fs.readFileSync('04_KetHop_NganXep_QHD_HaiConTro/lesson-data.js', 'utf8');
+vm.runInContext(l4DataJs, l4Sandbox);
+const l4Data = l4Sandbox.window.LESSON_DATA;
+
+assert.ok(l4Data, 'LESSON_DATA bài 04 phải tồn tại');
+assert.equal(l4Data.id, 'ket_hop_ngan_xep_qhd_hai_con_tro');
+assert.equal(l4Data.modules.length, 3, 'Bài 04 phải có đúng 3 module con');
+
+let totalQuizL4 = 0;
+let traceQuizL4 = 0;
+
+l4Data.modules.forEach((mod, mIdx) => {
+  assert.ok(mod.subproblem, `Module ${mIdx + 1} phải có định nghĩa vấn đề nhỏ`);
+  assert.ok(mod.subproblem.title && mod.subproblem.desc, 'subproblem phải có title và desc');
+  
+  const modHtml = JSON.stringify(mod.cards);
+  assert.match(modHtml, /step-life|đời sống|sổ ghi chép|cửa sổ|đoàn tàu/i, `Module ${mIdx + 1} phải có ví dụ đời sống`);
+  assert.match(modHtml, /step-code|lập trình|dp|ngăn xếp|deque|con trỏ/i, `Module ${mIdx + 1} phải có ánh xạ lập trình`);
+  assert.match(modHtml, /step-term|thuật ngữ|tên gọi|quy hoạch động/i, `Module ${mIdx + 1} phải giải nghĩa thuật ngữ`);
+
+  (mod.quiz || []).forEach((q, qIdx) => {
+    totalQuizL4++;
+    if (q.type === 'trace' || q.traceCode) traceQuizL4++;
+
+    const lens = q.options.map(o => String(o).length);
+    const maxLen = Math.max(...lens);
+    const minLen = Math.min(...lens);
+    const diffRatio = (maxLen - minLen) / maxLen;
+    assert.ok(
+      diffRatio <= 0.38,
+      `Quiz Mod ${mIdx + 1} Câu ${qIdx + 1}: Chênh lệch độ dài (${diffRatio.toFixed(2)}) vượt quá 38% (max: ${maxLen}, min: ${minLen})`
+    );
+  });
+});
+
+assert.ok(
+  traceQuizL4 / totalQuizL4 >= 0.4,
+  `Bài 04: Tỷ lệ câu hỏi trace code (${traceQuizL4}/${totalQuizL4} = ${(traceQuizL4/totalQuizL4*100).toFixed(1)}%) phải >= 40%`
+);
+
+assert.ok((l4Data.debugExercises || []).length >= 2, 'Bài 04 phải có ít nhất 2 bài tập Debug tương tác');
+l4Data.debugExercises.forEach((db, dIdx) => {
+  assert.ok(db.bugLine > 0, `Debug ${dIdx + 1} phải có bugLine > 0`);
+  assert.ok(db.failingInput, `Debug ${dIdx + 1} phải có failingInput`);
+  assert.ok(Array.isArray(db.patches) && db.patches.length >= 3, `Debug ${dIdx + 1} phải có ít nhất 3 bản vá`);
+  assert.ok(typeof db.correctPatch === 'number', `Debug ${dIdx + 1} phải có correctPatch`);
+});
+
+assert.ok((l4Data.practiceProblems || []).length >= 3, 'Bài 04 phải có ít nhất 3 bài tập thực chiến');
+console.log('✅ PASS: Lesson 04 Specifications Verified!');
+
 
 
 

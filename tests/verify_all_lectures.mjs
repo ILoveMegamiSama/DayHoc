@@ -82,4 +82,69 @@ const engineJs = fs.readFileSync('shared/lecture-engine.js', 'utf8');
 vm.runInContext(engineJs, sandbox);
 assert.equal(typeof sandbox.window.initLecturePage, 'function');
 
-console.log('✅ PASS: Infrastructure & Shared Modules Verified!');
+// 5. Kiểm định Bài 01 — 01_DeQuy_Va_DeQuyDuoi
+console.log('--- VERIFYING LESSON 01: ĐỆ QUY & ĐỆ QUY ĐUÔI ---');
+assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/docs/bai_giang_de_quy_duoi.md'), 'Phải có docs/bai_giang_de_quy_duoi.md');
+assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/Code_Mau/01_DeQuyThuong_TranBoNho.cpp'), 'Phải có Code_Mau 01');
+assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/Code_Mau/02_DeQuyDuoi_BienTichLuy.cpp'), 'Phải có Code_Mau 02');
+assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/Code_Mau/03_BienDoi_DeQuyDuoi_Sang_VongLap.cpp'), 'Phải có Code_Mau 03');
+assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/index.html'), 'Phải có index.html');
+
+const l1Sandbox = createSandbox();
+vm.createContext(l1Sandbox);
+const l1DataJs = fs.readFileSync('01_DeQuy_Va_DeQuyDuoi/lesson-data.js', 'utf8');
+vm.runInContext(l1DataJs, l1Sandbox);
+const l1Data = l1Sandbox.window.LESSON_DATA;
+
+assert.ok(l1Data, 'LESSON_DATA bài 01 phải tồn tại');
+assert.equal(l1Data.id, 'de_quy_duoi');
+assert.equal(l1Data.modules.length, 3, 'Bài 01 phải có đúng 3 module con (3 vấn đề nhỏ)');
+
+let totalQuizL1 = 0;
+let traceQuizL1 = 0;
+
+l1Data.modules.forEach((mod, mIdx) => {
+  assert.ok(mod.subproblem, `Module ${mIdx + 1} phải có định nghĩa vấn đề nhỏ (subproblem)`);
+  assert.ok(mod.subproblem.title && mod.subproblem.desc, 'subproblem phải có title và desc');
+  
+  // Kiểm tra 3 bước sư phạm
+  const modHtml = JSON.stringify(mod.cards);
+  assert.match(modHtml, /step-life|đời sống|thực tế/i, `Module ${mIdx + 1} phải có ví dụ đời sống`);
+  assert.match(modHtml, /step-code|lập trình|máy tính/i, `Module ${mIdx + 1} phải có ánh xạ lập trình`);
+  assert.match(modHtml, /step-term|thuật ngữ|tên gọi/i, `Module ${mIdx + 1} phải giải nghĩa thuật ngữ`);
+
+  (mod.quiz || []).forEach((q, qIdx) => {
+    totalQuizL1++;
+    if (q.type === 'trace' || q.traceCode) traceQuizL1++;
+
+    // Kiểm tra chênh lệch độ dài phương án
+    const lens = q.options.map(o => String(o).length);
+    const maxLen = Math.max(...lens);
+    const minLen = Math.min(...lens);
+    const diffRatio = (maxLen - minLen) / maxLen;
+    assert.ok(
+      diffRatio <= 0.38,
+      `Quiz Mod ${mIdx + 1} Câu ${qIdx + 1}: Chênh lệch độ dài (${diffRatio.toFixed(2)}) vượt quá 38% (max: ${maxLen}, min: ${minLen})`
+    );
+  });
+});
+
+assert.ok(
+  traceQuizL1 / totalQuizL1 >= 0.4,
+  `Bài 01: Tỷ lệ câu hỏi trace code (${traceQuizL1}/${totalQuizL1} = ${(traceQuizL1/totalQuizL1*100).toFixed(1)}%) phải >= 40%`
+);
+
+assert.ok(
+  (l1Data.debugExercises || []).length >= 2,
+  'Bài 01 phải có ít nhất 2 bài tập Debug tương tác'
+);
+l1Data.debugExercises.forEach((db, dIdx) => {
+  assert.ok(db.bugLine > 0, `Debug ${dIdx + 1} phải có bugLine > 0`);
+  assert.ok(db.failingInput, `Debug ${dIdx + 1} phải có failingInput`);
+  assert.ok(Array.isArray(db.patches) && db.patches.length >= 3, `Debug ${dIdx + 1} phải có ít nhất 3 bản vá`);
+  assert.ok(typeof db.correctPatch === 'number', `Debug ${dIdx + 1} phải có correctPatch`);
+});
+
+assert.ok((l1Data.practiceProblems || []).length >= 3, 'Bài 01 phải có ít nhất 3 bài tập thực chiến');
+console.log('✅ PASS: Lesson 01 Specifications Verified!');
+

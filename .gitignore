@@ -1,0 +1,15 @@
+# Tiến trình học tập của cá nhân người học (tự động sinh ra tại máy người học, không xung đột git pull)
+user_progress.json
+
+# File thực thi và file nhị phân biên dịch C++
+*.exe
+*.o
+*.out
+*.bin
+/tmp/test_bin_*
+
+# File hệ thống & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cổng Học Tập Lập Trình Thi Đấu C++ (CP) — Cây Kỹ Năng & Bài Giảng Tương Tác</title>
+  <link rel="stylesheet" href="shared/styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="shared/icons.js"></script>
+  <script defer src="shared/progress.js"></script>
+  <script defer src="shared/portal-data.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="header-top">
+        <a href="index.html" class="brand">
+          <span class="brand-badge">CP ACADEMY</span>
+          <span class="brand-title">Học Viện Lập Trình Thi Đấu C++</span>
+        </a>
+        <div class="header-meta">
+          <button id="btn-bind-file" class="btn-pill" type="button" title="Gắn tự động lưu vào file user_progress.json">
+            <span id="bind-icon"></span> <span id="auto-save-label">Auto-save: localStorage</span>
+          </button>
+          <button id="btn-export-json" class="btn-pill" type="button" title="Tải file tiến trình user_progress.json">
+            <span id="export-icon"></span> <span>Xuất File</span>
+          </button>
+          <label class="btn-pill" style="cursor: pointer;" title="Nạp file tiến trình từ máy tính">
+            <span id="import-icon"></span> <span>Nạp File</span>
+            <input type="file" id="input-import-json" accept=".json" style="display: none;" />
+          </label>
+          <button id="btn-theme-toggle" class="btn-pill" type="button" title="Chuyển chế độ Sáng / Tối">
+            <span id="theme-icon"></span> <span id="theme-label">Chế độ Tối</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-area">
+    <div class="wrap">
+      <div class="module-banner">
+        <div class="module-kicker">CỔNG HỌC LIỆU MỞ & BẢN ĐỒ TƯ DUY</div>
+        <h1 class="module-h1">Cây Kỹ Năng Lập Trình Thi Đấu C++ (Skill Tree)</h1>
+        <p class="module-lead">
+          Học từ bản chất gốc rễ: Mỗi khái niệm đều bắt đầu từ vấn đề thực tế, chia nhỏ thành các bài toán con, đối chiếu với đời sống bình thường, ánh xạ vào bộ nhớ máy tính C++ rồi mới giải nghĩa thuật ngữ.
+        </p>
+      </div>
+
+      <!-- Khung Tiến Trình Tổng Quan -->
+      <div id="progress-summary" class="knowledge-card" style="margin-bottom: 24px;"></div>
+
+      <!-- Cây Kỹ Năng SVG Tương Tác -->
+      <section class="knowledge-card">
+        <div class="card-heading">
+          <span style="display: flex; align-items: center; gap: 8px;">
+            <span id="graph-heading-icon"></span> <strong>Bản Đồ Phụ Thuộc & Chuyển Hóa Tư Duy Giữa Các Chủ Đề (DAG)</strong>
+          </span>
+          <span style="font-size: 12px; color: var(--muted);">Bấm vào nút để vào bài giảng • Bấm vào cạnh để xem bước nhảy tư duy</span>
+        </div>
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; overflow-x: auto;">
+          <svg id="skill-tree-svg" class="graph-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div id="edge-detail-box" style="margin-top: 14px; display: none; padding: 12px 16px; background: var(--amber-soft); border-left: 4px solid var(--amber); border-radius: 4px; font-size: 14px;"></div>
+      </section>
+
+      <!-- Danh Mục Bài Giảng Theo Phân Vùng -->
+      <section style="margin-top: 32px;">
+        <div class="module-kicker">DANH MỤC CÁC BÀI HỌC TƯƠNG TÁC</div>
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">Chọn Bài Giảng Để Bắt Đầu</h2>
+        <div id="lesson-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px;"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const p = window.CP_PROGRESS ? window.CP_PROGRESS.loadProgress() : { theme: 'light' };
+      if (window.CP_PROGRESS) window.CP_PROGRESS.applyTheme(p.theme || 'light');
+
+      // Gắn icon
+      if (window.CP_ICONS) {
+        document.getElementById('bind-icon').innerHTML = window.CP_ICONS.linkFile;
+        document.getElementById('export-icon').innerHTML = window.CP_ICONS.save;
+        document.getElementById('import-icon').innerHTML = window.CP_ICONS.upload;
+        document.getElementById('graph-heading-icon').innerHTML = window.CP_ICONS.graph;
+        updateThemeBtn(p.theme);
+      }
+
+      function updateThemeBtn(theme) {
+        const themeBtn = document.getElementById('btn-theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeLabel = document.getElementById('theme-label');
+        if (!themeBtn) return;
+        const isDark = theme === 'dark';
+        themeIcon.innerHTML = isDark ? window.CP_ICONS.sun : window.CP_ICONS.moon;
+        themeLabel.textContent = isDark ? 'Chế độ Sáng' : 'Chế độ Tối';
+      }
+
+      document.getElementById('btn-theme-toggle').addEventListener('click', () => {
+        if (window.CP_PROGRESS) {
+          const next = window.CP_PROGRESS.toggleTheme();
+          updateThemeBtn(next);
+        }
+      });
+
+      document.getElementById('btn-bind-file').addEventListener('click', async () => {
+        if (window.CP_PROGRESS) {
+          const res = await window.CP_PROGRESS.bindAutoSaveFile();
+          if (res.ok) {
+            document.getElementById('auto-save-label').textContent = `Đã gắn: ${res.filename}`;
+            showToast(`Đã liên kết tự động lưu vào file ${res.filename}!`);
+          } else {
+            showToast(res.reason || 'Không thể liên kết file.');
+          }
+        }
+      });
+
+      document.getElementById('btn-export-json').addEventListener('click', () => {
+        if (window.CP_PROGRESS) {
+          window.CP_PROGRESS.exportProgressJson();
+          showToast('Đã tải xuống file user_progress.json!');
+        }
+      });
+
+      document.getElementById('input-import-json').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file && window.CP_PROGRESS) {
+          const ok = await window.CP_PROGRESS.importProgressJson(file);
+          if (ok) {
+            showToast('Nạp tiến trình thành công!');
+            renderAll();
+          } else {
+            showToast('File JSON không hợp lệ.');
+          }
+        }
+      });
+
+      function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2200);
+      }
+
+      function renderAll() {
+        renderProgressSummary();
+        renderSkillTree();
+        renderLessonCards();
+      }
+
+      function renderProgressSummary() {
+        const sumEl = document.getElementById('progress-summary');
+        if (!sumEl) return;
+        const progress = window.CP_PROGRESS ? window.CP_PROGRESS.loadProgress() : { quizzes: {}, debugs: {}, problems: {} };
+
+        let totalQuizDone = 0;
+        let totalDebugDone = 0;
+        let totalProbDone = 0;
+
+        Object.values(progress.quizzes || {}).forEach(q => { if (q && q.isCorrect) totalQuizDone++; });
+        Object.values(progress.debugs || {}).forEach(d => { if (d) totalDebugDone++; });
+        Object.values(progress.problems || {}).forEach(p => { if (p) totalProbDone++; });
+
+        sumEl.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <span class="module-kicker">TIẾN TRÌNH CÁ NHÂN CỦA BẠN</span>
+              <h2 style="font-size: 18px; font-weight: 700;">Học Tập & Thực Hành Đã Hoàn Thành</h2>
+            </div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <div class="btn-pill" style="cursor: default;">
+                ${window.CP_ICONS.check} <span>Quiz đúng: <strong>${totalQuizDone}</strong> câu</span>
+              </div>
+              <div class="btn-pill" style="cursor: default;">
+                ${window.CP_ICONS.bug} <span>Debug xong: <strong>${totalDebugDone}</strong> bài</span>
+              </div>
+              <div class="btn-pill" style="cursor: default;">
+                ${window.CP_ICONS.code} <span>Bài tập AC: <strong>${totalProbDone}</strong> bài</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function renderSkillTree() {
+        const svgEl = document.getElementById('skill-tree-svg');
+        const detailBox = document.getElementById('edge-detail-box');
+        if (!svgEl || !window.PORTAL_DATA) return;
+
+        const data = window.PORTAL_DATA;
+        let edgesSvg = '';
+        data.edges.forEach((ed, idx) => {
+          const fromNode = data.nodes.find(n => n.id === ed.from);
+          const toNode = data.nodes.find(n => n.id === ed.to);
+          if (!fromNode || !toNode) return;
+          const x1 = fromNode.x + 90;
+          const y1 = fromNode.y + 35;
+          const x2 = toNode.x - 90;
+          const y2 = toNode.y + 35;
+          const midX = (x1 + x2) / 2;
+          const midY = (y1 + y2) / 2;
+
+          edgesSvg += `
+            <g class="graph-edge" data-edge-idx="${idx}" style="cursor: pointer;">
+              <path d="M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}" fill="none" stroke="var(--border-strong)" stroke-width="2.5" stroke-dasharray="4,4" />
+              <circle cx="${midX}" cy="${midY}" r="11" fill="var(--surface-card)" stroke="var(--accent)" stroke-width="1.5" />
+              <text x="${midX}" y="${midY + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--accent)">?</text>
+              <text x="${midX}" y="${midY - 14}" text-anchor="middle" font-size="11" font-weight="600" fill="var(--muted)">${ed.label}</text>
+            </g>
+          `;
+        });
+
+        let nodesSvg = '';
+        data.nodes.forEach(node => {
+          const isCombined = node.category === 'combined';
+          const isFoundation = node.category === 'foundation';
+          const strokeCol = isCombined ? 'var(--accent)' : (isFoundation ? 'var(--muted)' : 'var(--ok)');
+          const badgeBg = isCombined ? 'var(--accent-soft)' : (isFoundation ? 'var(--surface)' : 'var(--ok-soft)');
+          const badgeCol = isCombined ? 'var(--accent)' : (isFoundation ? 'var(--ink)' : 'var(--ok)');
+
+          nodesSvg += `
+            <g class="graph-node" data-node-path="${node.path}" transform="translate(${node.x - 90}, ${node.y})">
+              <rect width="180" height="70" rx="6" fill="var(--surface-card)" stroke="${strokeCol}" stroke-width="1.8" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.06))" />
+              <rect x="8" y="8" width="54" height="18" rx="3" fill="${badgeBg}" />
+              <text x="35" y="21" text-anchor="middle" font-size="10" font-weight="700" fill="${badgeCol}">${node.badge}</text>
+              <text x="170" y="21" text-anchor="end" font-size="10" font-family="monospace" fill="var(--muted)">${node.code}</text>
+              <text x="12" y="44" font-size="12" font-weight="700" fill="var(--ink)">${node.title.length > 22 ? node.title.slice(0, 20) + '...' : node.title}</text>
+              <text x="12" y="58" font-size="10" fill="var(--muted)">Nhấn để vào học →</text>
+            </g>
+          `;
+        });
+
+        svgEl.innerHTML = edgesSvg + nodesSvg;
+
+        svgEl.querySelectorAll('.graph-node').forEach(g => {
+          g.addEventListener('click', () => {
+            const path = g.getAttribute('data-node-path');
+            if (path) window.location.href = path;
+          });
+        });
+
+        svgEl.querySelectorAll('.graph-edge').forEach(g => {
+          g.addEventListener('click', () => {
+            const eIdx = Number(g.getAttribute('data-edge-idx'));
+            const ed = data.edges[eIdx];
+            if (ed) {
+              detailBox.style.display = 'block';
+              detailBox.innerHTML = `<strong>Sợi Dây Liên Kết [${ed.label}]:</strong> ${ed.detail}`;
+              detailBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          });
+        });
+      }
+
+      function renderLessonCards() {
+        const grid = document.getElementById('lesson-cards-grid');
+        if (!grid || !window.PORTAL_DATA) return;
+
+        grid.innerHTML = window.PORTAL_DATA.nodes.map(node => {
+          return `
+            <div class="knowledge-card" style="display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
+              <div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                  <span class="concept-tag">${node.code}</span>
+                  <span class="quiz-badge">${node.badge}</span>
+                </div>
+                <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">${node.title}</h3>
+                <p style="font-size: 14px; color: var(--muted); margin-bottom: 14px;">${node.summary}</p>
+              </div>
+              <a href="${node.path}" class="btn-pill primary" style="justify-content: center; text-align: center;">
+                <span>Vào Bài Giảng Tương Tác</span> ${window.CP_ICONS.arrowRight}
+              </a>
+            </div>
+          `;
+        }).join('');
+      }
+
+      renderAll();
+    });
+  </script>
+</body>
+</html>

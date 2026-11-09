@@ -146,5 +146,65 @@ l1Data.debugExercises.forEach((db, dIdx) => {
 });
 
 assert.ok((l1Data.practiceProblems || []).length >= 3, 'Bài 01 phải có ít nhất 3 bài tập thực chiến');
-console.log('✅ PASS: Lesson 01 Specifications Verified!');
+// 6. Kiểm định Bài 02 — 02_NganXep_Va_NganXepDonDieu
+console.log('--- VERIFYING LESSON 02: NGĂN XẾP & NGĂN XẾP ĐƠN ĐIỆU ---');
+assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/docs/bai_giang_ngan_xep_don_dieu.md'), 'Phải có docs/bai_giang_ngan_xep_don_dieu.md');
+assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/Code_Mau/01_NganXepCoBan_KhopNgoac.cpp'), 'Phải có Code_Mau 01');
+assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/Code_Mau/02_NganXepDonDieu_PhanTuLonHonGanNhat.cpp'), 'Phải có Code_Mau 02');
+assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/Code_Mau/03_MoRongBienTraiPhai_HinhChuNhatLonNhat.cpp'), 'Phải có Code_Mau 03');
+assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/index.html'), 'Phải có index.html');
+
+const l2Sandbox = createSandbox();
+vm.createContext(l2Sandbox);
+const l2DataJs = fs.readFileSync('02_NganXep_Va_NganXepDonDieu/lesson-data.js', 'utf8');
+vm.runInContext(l2DataJs, l2Sandbox);
+const l2Data = l2Sandbox.window.LESSON_DATA;
+
+assert.ok(l2Data, 'LESSON_DATA bài 02 phải tồn tại');
+assert.equal(l2Data.id, 'ngan_xep_don_dieu');
+assert.equal(l2Data.modules.length, 3, 'Bài 02 phải có đúng 3 module con');
+
+let totalQuizL2 = 0;
+let traceQuizL2 = 0;
+
+l2Data.modules.forEach((mod, mIdx) => {
+  assert.ok(mod.subproblem, `Module ${mIdx + 1} phải có định nghĩa vấn đề nhỏ`);
+  assert.ok(mod.subproblem.title && mod.subproblem.desc, 'subproblem phải có title và desc');
+  
+  const modHtml = JSON.stringify(mod.cards);
+  assert.match(modHtml, /step-life|đời sống|thực tế|chồng đĩa|hàng dọc/i, `Module ${mIdx + 1} phải có ví dụ đời sống`);
+  assert.match(modHtml, /step-code|lập trình|stack|ngăn xếp/i, `Module ${mIdx + 1} phải có ánh xạ lập trình`);
+  assert.match(modHtml, /step-term|thuật ngữ|tên gọi|đơn điệu/i, `Module ${mIdx + 1} phải giải nghĩa thuật ngữ`);
+
+  (mod.quiz || []).forEach((q, qIdx) => {
+    totalQuizL2++;
+    if (q.type === 'trace' || q.traceCode) traceQuizL2++;
+
+    const lens = q.options.map(o => String(o).length);
+    const maxLen = Math.max(...lens);
+    const minLen = Math.min(...lens);
+    const diffRatio = (maxLen - minLen) / maxLen;
+    assert.ok(
+      diffRatio <= 0.38,
+      `Quiz Mod ${mIdx + 1} Câu ${qIdx + 1}: Chênh lệch độ dài (${diffRatio.toFixed(2)}) vượt quá 38% (max: ${maxLen}, min: ${minLen})`
+    );
+  });
+});
+
+assert.ok(
+  traceQuizL2 / totalQuizL2 >= 0.4,
+  `Bài 02: Tỷ lệ câu hỏi trace code (${traceQuizL2}/${totalQuizL2} = ${(traceQuizL2/totalQuizL2*100).toFixed(1)}%) phải >= 40%`
+);
+
+assert.ok((l2Data.debugExercises || []).length >= 2, 'Bài 02 phải có ít nhất 2 bài tập Debug tương tác');
+l2Data.debugExercises.forEach((db, dIdx) => {
+  assert.ok(db.bugLine > 0, `Debug ${dIdx + 1} phải có bugLine > 0`);
+  assert.ok(db.failingInput, `Debug ${dIdx + 1} phải có failingInput`);
+  assert.ok(Array.isArray(db.patches) && db.patches.length >= 3, `Debug ${dIdx + 1} phải có ít nhất 3 bản vá`);
+  assert.ok(typeof db.correctPatch === 'number', `Debug ${dIdx + 1} phải có correctPatch`);
+});
+
+assert.ok((l2Data.practiceProblems || []).length >= 3, 'Bài 02 phải có ít nhất 3 bài tập thực chiến');
+console.log('✅ PASS: Lesson 02 Specifications Verified!');
+
 

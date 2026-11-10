@@ -315,6 +315,7 @@ int main() {
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
                 <ul style="margin: 8px 0 0 20px;">
                   <li><strong><code>std::cout &lt;&lt;</code> (Console Output):</strong> Miệng loa phát thanh. Mũi tên <code>&lt;&lt;</code> thể hiện hướng dòng dữ liệu được đẩy từ bộ nhớ ra màn hình.</li>
+                  <li><strong>Băng chuyền nối nhiều <code>&lt;&lt;</code>:</strong> Bạn có thể dùng nhiều mũi tên <code>&lt;&lt;</code> liên tiếp như các toa tàu để đẩy một chuỗi: câu chào $\rightarrow$ giá trị trong hộp $\rightarrow$ lệnh xuống dòng cùng một lúc.</li>
                   <li><strong><code>std::cin &gt;&gt;</code> (Console Input):</strong> Khe nhận dữ liệu. Mũi tên <code>&gt;&gt;</code> thể hiện hướng dòng dữ liệu từ bàn phím chảy xuôi rót vào trong chiếc hộp biến.</li>
                   <li><strong><code>std::endl</code> (End Line):</strong> Dặn loa phát thanh xuống dòng và dọn sạch hàng đợi thông báo.</li>
                 </ul>

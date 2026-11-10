@@ -14,6 +14,28 @@
     ],
     nodes: [
       {
+        id: 'nhap_mon_cpp',
+        code: 'MOD-Pre',
+        title: 'Nhập Môn Lập Trình C++ (Bản Chất Giao Tiếp)',
+        track: 'foundations',
+        category: 'foundation',
+        path: '00_NhapMon_LapTrinh_CPP/index.html',
+        summary: 'Xóa tan nỗi sợ: học cách chỉ dẫn Anh Phụ Bếp Thật Thà. Giải phẫu Cửa chính main(), Chuông dứt lệnh (;), Hộp biến RAM và Loa/Khe cin/cout.',
+        x: 40,
+        y: 80,
+        badge: 'Khởi đầu',
+        prerequisites: [
+          'Chưa cần biết gì về lập trình',
+          'Chỉ cần biết sử dụng chuột và bàn phím máy tính cơ bản'
+        ],
+        newConcepts: [
+          'Bản chất lập trình: ủy thác việc cho một người phụ việc ngây ngô máy móc',
+          'Cánh Cửa Chính main() và Tiếng Chuông Đồng dứt câu lệnh (;)',
+          'Hộp dán nhãn trên kệ RAM: int, double, string, char, bool và hiện tượng chia bánh 5 / 2 = 2',
+          'Kênh giao tiếp hai chiều: Loa phát thanh cout << và Khe nhận phiếu order cin >>'
+        ]
+      },
+      {
         id: 'may_cham',
         code: 'MOD-00',
         title: 'Tự Code Máy Chấm (Stress Testing)',
@@ -21,11 +43,11 @@
         category: 'foundation',
         path: 'MayCham/index.html',
         summary: 'Hiểu bản chất phần cứng, RAM vs Ổ cứng, Shell, biến PATH, g++, cờ -static và tự động hóa tìm test sai bằng máy chấm C++14.',
-        x: 120,
+        x: 220,
         y: 80,
         badge: 'Nền tảng',
         prerequisites: [
-          'Biết cú pháp C++ cơ bản: biến, câu lệnh rẽ nhánh if/else, vòng lặp for/while',
+          'Đã học xong MOD-Pre: Nhập Môn Lập Trình C++ (Biến, Kiểu dữ liệu, cin/cout)',
           'Biết cách mở môi trường lập trình (Code::Blocks hoặc Terminal Linux)'
         ],
         newConcepts: [
@@ -124,6 +146,16 @@
       }
     ],
     edges: [
+      {
+        from: 'nhap_mon_cpp',
+        to: 'may_cham',
+        shortTag: 'Giao Tiếp → Hệ Thống',
+        fromTitle: 'Nhập Môn C++ (MOD-Pre)',
+        toTitle: 'Máy Chấm (MOD-00)',
+        fromKnown: 'Ở bài Nhập Môn, bạn đã biết cách giao việc cho anh phụ bếp: mở ca main(), gõ chuông ;, tạo hộp biến và in/nhập dữ liệu.',
+        bottleneck: 'Khi bạn viết code trong file .cpp, máy tính thực sự lưu trữ file ở đâu? Quá trình dịch từ chữ viết sang file .exe và kiểm tra đúng/sai hàng ngàn bài toán diễn ra như thế nào?',
+        solution: 'Khám phá thế giới phần cứng: RAM vs Ổ cứng, Shell, PATH, trình biên dịch g++ và tự code máy chấm tự động sinh test để tìm lỗi sai!'
+      },
       {
         from: 'may_cham',
         to: 'de_quy_duoi',

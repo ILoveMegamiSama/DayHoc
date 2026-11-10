@@ -178,7 +178,8 @@ Trong C++, việc giao tiếp giữa chương trình và con người được t
   - Cặp ngoặc nhọn `<iostream>` là chiếc hộp niêm phong dụng cụ mượn từ kho thư viện tiêu chuẩn (`Input/Output Stream`).
 - **Chiếc loa phát thanh hướng ra màn hình: `std::cout` (Console Output)**
   - Cú pháp: `std::cout << "Thong bao" << std::endl;`
-  - Dấu mũi tên `<<` mô phỏng hướng đẩy thông tin từ trong chương trình bắn thẳng vào miệng loa `cout` để hiện lên màn hình.
+  - Dấu mũi tên `<<`: Mô phỏng hướng đẩy thông tin từ trong chương trình bắn thẳng vào miệng loa `cout` để hiện lên màn hình.
+  - **Băng chuyền nối nhiều mũi tên `<<`:** Chiếc loa này rất xịn! Bạn có thể nối nhiều mũi tên `<<` liên tiếp như các toa tàu trên một băng chuyền (ví dụ: `std::cout << "Chao ban " << tenKhach << "!" << std::endl;`). Nó sẽ đẩy liên tù tì: lời chào $\rightarrow$ tên trong chiếc hộp $\rightarrow$ dấu chấm than $\rightarrow$ lệnh xuống dòng ra ngoài loa mà không cần bạn phải gõ lại chữ `std::cout` nhiều lần.
   - `std::endl` (End Line): Lệnh xuống dòng và nghỉ thở, giúp câu tiếp theo được in ở dòng mới phía dưới.
 - **Khe nhận dữ liệu từ bàn phím: `std::cin` (Console Input)**
   - Cú pháp: `std::cin >> tenHop;`

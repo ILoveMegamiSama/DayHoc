@@ -18,7 +18,7 @@ while IFS= read -r file; do
     cat /tmp/compile_err
     FAILED=$((FAILED + 1))
   fi
-done < <(find 01_* 02_* 03_* 04_* MayCham/Code_Mau -type f -name "*.cpp" 2>/dev/null | sort)
+done < <(find 00_* 01_* 02_* 03_* 04_* MayCham/Code_Mau -type f -name "*.cpp" 2>/dev/null | sort)
 
 echo "=== TỔNG KẾT: Đã kiểm tra $TOTAL file .cpp (Lỗi: $FAILED) ==="
 if [ $FAILED -ne 0 ]; then

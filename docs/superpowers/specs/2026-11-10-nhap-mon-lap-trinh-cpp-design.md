@@ -1,145 +1,159 @@
-# Đặc Tả Thiết Kế (Design Spec) — Chuyên Đề: Nhập Môn Lập Trình C++ (Bản Chất Giao Tiếp Với Người Phụ Việc Ngây Ngô — Phổ Quát Cho Mọi Người Học)
+# Đặc Tả Thiết Kế (Design Spec) — Chuyên Đề: Nhập Môn Lập Trình C++ (Bản Chất Vấn Đề Gốc & Nghệ Thuật Chỉ Dẫn Người Phụ Việc Ngây Ngô)
 
 - **Mã chuyên đề:** `MOD-Pre` (hoặc `MOD-00-Pre`)
 - **Tên chuyên đề:** `00_NhapMon_LapTrinh_CPP`
 - **Ngày cập nhật:** 2026-11-10
-- **Phiên bản:** 3.0 (Thuần đời sống, phi công nghệ — Chạm tới mọi đối tượng từ học sinh cấp 2, người ngoại đạo đến người lớn tuổi)
+- **Phiên bản:** 4.0 (Triết lý: Đi từ Vấn đề gốc đời sống & Hậu quả nếu thiếu cơ chế → Giải pháp từng phần → Ghép lại hoàn chỉnh)
 - **Thư mục đích:** `/home/paust/Projects/DayHoc/00_NhapMon_LapTrinh_CPP/`
-- **Đối tượng học tập:** Bất kỳ ai chưa từng lập trình bao giờ (học sinh lớp 6-7, sinh viên trái ngành, người sợ công nghệ).
+- **Đối tượng học tập:** Mọi lứa tuổi (từ học sinh lớp 6-7, sinh viên đến người đi làm), hoàn toàn chưa biết gì về lập trình.
 
 ---
 
-## 1. Bản Chất Sư Phạm: Mô Hình "Người Phụ Việc Ngây Ngô Siêu Cần Cù"
+## 1. Phương Pháp Sư Phạm Cốt Lõi: Problem-First (Vấn Đề Đi Trước, Giải Pháp Theo Sau)
 
-### 1.1. Triết lý xóa tan rào cản công nghệ
-Tuyệt đối không dùng các thuật ngữ viễn tưởng hay công nghệ như "robot", "hệ điều hành", "phần cứng", "máy móc tự động" trong bước giải thích đời sống ban đầu.
-
-Bản chất của việc lập trình được đưa về tình huống đời thường gần gũi nhất:
-> **"Lập trình thực chất là học cách viết một cuốn sổ tay hướng dẫn thật rõ ràng, không mập mờ, cho một Người Phụ Việc siêu khỏe, siêu chăm chỉ nhưng ngây ngô đến mức máy móc."**
-
-### 1.2. Hình tượng đời sống chủ đạo: "Anh Phụ Bếp Thật Thà"
-Hãy tưởng tượng trong căn bếp của bạn có một anh phụ việc tên là **Thật Thà**:
-1. **Điểm mạnh tuyệt đối:** 
-   - Rất khỏe, làm việc nhanh như chớp, không bao giờ biết mệt mỏi, bảo gì làm nấy, không bao giờ cãi lời hay làm sai nếu bạn chỉ dẫn đúng.
-2. **Điểm yếu ngây ngô:**
-   - **Chỉ làm đúng từng chữ một (Literal mind), tuyệt đối không biết "tự suy diễn" hay "đoán mò ý bạn"**:
-     - Nếu bạn bảo: *"Lấy cho tôi cái gì ngon ngon"* $\rightarrow$ Anh ấy sẽ đứng đờ đẫn không biết làm gì.
-     - Nếu bạn bảo: *"Lấy đường đổ vào cốc"* $\rightarrow$ Anh ấy sẽ lúng túng vì không biết lấy bao nhiêu thìa đường, lấy cốc ở đâu.
-     - Bạn phải nói chính xác: *"Lấy chiếc cốc ở khay có nhãn 'Cốc', múc đúng 2 thìa đường ở hộp có nhãn 'Đường' đổ vào!"*.
-3. **Quy tắc giao tiếp trong gian bếp:**
-   - **Cuốn sổ công thức (Chương trình C++):** Anh ấy chỉ bắt đầu làm việc khi bạn trao cho anh ấy một cuốn sổ có các bước đánh số thứ tự từ trên xuống dưới.
-   - **Dấu chấm câu rõ ràng (Dấu chấm phẩy `;`):** Dặn xong một việc, bạn phải gõ chiếc chuông nhỏ reng một tiếng (dấu `;`). Nếu chưa nghe chuông, anh ấy cứ đứng chờ mãi vì tưởng bạn vẫn đang nói dở.
-   - **Những chiếc hộp có dán nhãn (Biến số & Kiểu dữ liệu):** Trong bếp có rất nhiều hộp: hộp to chứa gạo (`string`), hộp vừa chứa số lượng quả trứng (`int`), lọ thủy tinh đong từng giọt dầu ăn (`double`). Bạn không thể bảo anh ấy đổ dầu ăn vào túi lưới đựng hành tỏi. Hộp nào phải chứa đúng loại đồ đó.
-   - **Ô cửa sổ nhận yêu cầu & Bệ cửa trả món (Luồng vào `cin` & Luồng ra `cout`):**
-     - Anh ấy đứng trong bếp kín. Khách bên ngoài đưa giấy order qua ô cửa nhận đồ $\rightarrow$ Anh ấy cầm tờ giấy đọc dữ liệu cất vào các hộp (`cin`).
-     - Nấu xong, anh ấy đặt món ăn kèm hóa đơn ra bệ cửa sổ cho khách lấy (`cout`).
-
-**Mục tiêu sư phạm:** Bất kỳ ai — kể cả một đứa trẻ 11–12 tuổi hay một người lớn tuổi sợ máy tính — khi đọc câu chuyện này đều bật cười, thấy quen thuộc và hiểu ngay lý do tại sao máy tính cần những dòng lệnh chi tiết đến thế!
+### 1.1. Nguyên tắc sống còn
+- **Không bao giờ đưa ra giải pháp hay cú pháp trước khi người học cảm nhận được vấn đề.**
+- Mọi đặc điểm của ngôn ngữ lập trình (dấu chấm phẩy `;`, hàm `main`, biến, kiểu dữ liệu, `cin`, `cout`) **đều sinh ra để giải quyết một thảm họa cụ thể**.
+- Tiếp cận bằng câu hỏi: **"Nếu không có cơ chế đó, điều tồi tệ gì sẽ xảy ra trong đời sống?"**
+- Trình bày toàn bộ **Vấn đề lớn $\rightarrow$ 3 Vấn đề nhỏ** trước để người học nhìn thấy bức tranh toàn cảnh về sự bế tắc/hỗn loạn, sau đó mới đi vào giải quyết từng vấn đề một và ghép lại thành chương trình hoàn chỉnh.
 
 ---
 
-## 2. Mục Tiêu & Cấu Trúc 3 Vấn Đề Nhỏ
+## 2. Bức Tranh Toàn Cảnh: Vấn Đề Lớn & 3 Vấn Đề Nhỏ
 
-### Vấn đề 1: Bản Chất Lập Trình — Bạn Ra Lệnh, Người Phụ Việc Thật Thà Thực Thi
-- **Bước 1 (Đời sống):**
-  - Tình huống giao việc cho anh phụ việc ngây ngô. Tại sao không thể dùng ngôn ngữ nói chung chung hàng ngày? Vì ngôn ngữ con người có quá nhiều từ ngữ bóng gió, ngầm hiểu.
-  - Cần một bộ từ vựng quy ước chung, rõ nghĩa 100% để giao tiếp: Đó chính là ngôn ngữ C++.
-- **Bước 2 (Ánh xạ C++):**
-  - Căn bếp chính bắt đầu mở cửa: `int main() { ... }` — Bước chân đầu tiên của anh phụ việc khi bước vào ca làm.
-  - Dấu chấm phẩy `;`: Tiếng chuông ngắt lệnh.
-  - Kết thúc công việc: `return 0;` — Báo cáo lại cho bạn: "Em đã làm xong mọi việc suôn sẻ, không đổ vỡ gì!".
-- **Bước 3 (Bản chất & Thuật ngữ):**
-  - **Lập trình:** Là viết hướng dẫn cho người phụ việc ngây ngô.
-  - **Lỗi cú pháp (Syntax error):** Viết sai chữ hoặc quên gõ chuông (quên `;`), anh phụ việc lắc đầu từ chối làm ngay từ đầu.
+### 2.1. Vấn Đề Lớn Cần Giải Quyết Trong Đời Sống
+Bạn mở một tiệm bánh mì đông khách vào mỗi sáng. Bạn phải làm hàng trăm việc: nhận yêu cầu từ khách, nhớ số lượng bánh, tính tiền chính xác từng hào, giao bánh và thối tiền. 
+Bạn không thể tự làm một mình nên bạn thuê một **Anh Phụ Bếp Thật Thà (Người Phụ Việc Ngây Ngô)**:
+- Anh ấy có thể lực phi thường, đôi tay thoăn thoắt, tính toán siêu nhanh, bảo gì làm nấy, không bao giờ biết mệt mỏi hay gian dối.
+- **Nghịch lý trớ trêu:** Nếu bạn nói chuyện với anh ấy như một người bình thường (*"Này anh, có khách kìa, lấy bánh rồi tính tiền giúp tôi với"*), thì **gian bếp lập tức rơi vào hỗn loạn và tê liệt hoàn toàn!**
 
-### Vấn đề 2: Dặn Việc Đầu Tiên — Lời Chào Qua Bệ Cửa Sổ (`cout`)
-- **Bước 1 (Đời sống):**
-  - Trước khi nấu ăn, anh phụ việc muốn chào đón người ngoài cửa sổ. Bạn trang bị cho anh ấy một chiếc **Loa phát thanh** hướng ra ngoài cửa sổ để truyền đi các thông báo.
-  - Mỗi khi cần nói gì, anh ấy chỉ cần đẩy câu chữ vào chiếc loa đó.
-- **Bước 2 (Ánh xạ C++):**
-  ```cpp
-  #include <iostream>
-
-  int main() {
-      std::cout << "Xin chao! Toi la nguoi phu viec cham chi cua ban!" << std::endl;
-      return 0;
-  }
-  ```
-  - `#include <iostream>`: Mượn bộ dụng cụ loa và micro giao tiếp (`Input/Output`).
-  - `std::cout`: Chiếc loa hướng ra ngoài màn hình.
-  - `<<`: Mũi tên đẩy chữ vào miệng loa.
-  - `std::endl`: Xuống dòng, giống như một khoảng nghỉ thở để bắt đầu câu mới.
-- **Bước 3 (Bản chất & Thuật ngữ):**
-  - Dòng xuất chuẩn (Output Stream): Kênh duy nhất đẩy thông điệp từ gian bếp ra cho mọi người thấy.
-
-### Vấn đề 3: Những Chiếc Hộp Dán Nhãn & Nhận Order Qua Ô Cửa Sổ (`cin` / `cout`)
-- **Bước 1 (Đời sống):**
-  - Trong bếp, để không bừa bãi, mọi thứ đều phải có hộp chứa riêng:
-    - Hộp nhãn `so_banh`: Chỉ đựng số nguyên chiếc bánh mì (1 cái, 2 cái, không thể có bánh rưỡi).
-    - Hộp nhãn `gia_tien`: Đựng số tiền có thể lẻ lẻ (15.5 nghìn).
-    - Hộp nhãn `ten_khach`: Đựng cả mẩu giấy ghi họ tên khách hàng.
-  - Nhận yêu cầu: Khách bên ngoài đưa tờ giấy qua khe cửa sổ (`cin`), anh phụ việc đọc số lượng bánh và cất vào hộp `so_banh`.
-  - Tính toán: Anh ấy nhân số bánh với giá tiền, được kết quả đem đặt ra ngoài bệ cửa sổ (`cout`) kèm chiếc bánh cho khách.
-- **Bước 2 (Ánh xạ C++):**
-  ```cpp
-  #include <iostream>
-  #include <string>
-
-  int main() {
-      std::string tenKhach;
-      int soBanh;
-      double giaBanh = 15.5; // nghìn đồng một chiếc
-
-      std::cout << "Chao ban! Ban ten la gi? ";
-      std::cin >> tenKhach;
-
-      std::cout << "Ban muon mua bao nhieu chiec banh? ";
-      std::cin >> soBanh;
-
-      double tongTien = soBanh * giaBanh;
-
-      std::cout << "Cam on " << tenKhach << "! Tong tien cua ban la: " << tongTien << " nghin dong." << std::endl;
-      return 0;
-  }
-  ```
-  - **Biến (Variable):** Một chiếc hộp dán nhãn đặt trong bếp để lưu trữ nguyên liệu tạm thời.
-  - **Kiểu dữ liệu (Data Type):** Kích cỡ và chủng loại của hộp:
-    - `int`: Hộp chứa số nguyên đếm được (không có phần lẻ).
-    - `double`: Hộp chứa số có phần lẻ thập phân.
-    - `char`: Hộp nhỏ xíu chỉ chứa đúng 1 chữ cái.
-    - `string`: Hộp to chứa cả một chuỗi chữ viết dài.
-    - `bool`: Hộp công tắc chỉ có 2 trạng thái Đúng hoặc Sai (`true`/`false`).
-  - Phép gán `=`: Hành động xúc đồ bên phải bỏ vào chiếc hộp bên trái.
-  - `cin >>`: Mũi tên hút thông tin khách gõ từ bàn phím đổ vào chiếc hộp.
-- **Bước 3 (Bản chất & Thuật ngữ):**
-  - Tại sao số nguyên chia số nguyên lại bị vứt phần lẻ (`5 / 2 = 2` chứ không phải `2.5`): Vì cái hộp `int` không có ngăn chứa phần lẻ!
+**Tại sao lại tê liệt?** Vì xuất hiện 3 bế tắc nan giải:
+1. **Bế tắc 1 (Về ranh giới câu lệnh & thời điểm bắt đầu):** Nếu bạn nói một câu dài không ngắt nghỉ, làm sao anh ấy biết câu lệnh kết thúc ở đâu để bắt tay vào làm? Anh ấy cứ đứng trơ mắt chờ bạn nói tiếp mãi mãi!
+2. **Bế tắc 2 (Về lưu trữ & nhầm lẫn dữ liệu):** Khách order 3 chiếc bánh mì thịt, giá 15.5 nghìn một chiếc, khách tên "An". Nếu không có chỗ cất giữ có quy củ, các con số và chữ viết sẽ rơi vãi, lẫn lộn hoặc bị anh ấy quên sạch ngay sau 1 giây!
+3. **Bế tắc 3 (Về kênh chuyển giao dữ liệu 2 chiều):** Gian bếp đóng kín với thế giới bên ngoài. Nếu không có quy định về lối đưa đồ vào và lối đẩy đồ ra, anh ấy không biết khách muốn gì, nấu xong cũng giấu tiệt trong góc bếp không ai nhìn thấy!
 
 ---
 
-## 3. Hệ Thống Tệp Tin Triển Khai
+## 3. Chi Tiết Từng Vấn Đề Nhỏ: Từ "Hậu Quả Nếu Thiếu" Đến "Giải Pháp C++"
 
-```text
-00_NhapMon_LapTrinh_CPP/
-├── docs/
-│   └── bai_giang_nhap_mon_cpp.md         # Giáo án chi tiết, đậm chất sư phạm đời thường
-├── Code_Mau/
-│   ├── 01_PhuViec_ChaoHoi.cpp           # Mã mẫu 1: Cấu trúc cơ bản và std::cout
-│   ├── 02_HopDanNhan_BienVaKieu.cpp     # Mã mẫu 2: Khai báo hộp, kiểu dữ liệu, gán giá trị
-│   └── 03_NhanDon_GiaoHang_MiniApp.cpp  # Mã mẫu 3: cin, cout, tính tiền tiệm bánh mì
-├── index.html                            # Giao diện web bài giảng tương tác
-└── lesson-data.js                        # Toàn bộ nội dung tương tác, mô phỏng gian bếp, quiz
+### 3.1. Vấn Đề Nhỏ 1: Ranh Giới Khẩu Lệnh & Cửa Bắt Đầu Ca Làm Việc
+
+#### Bước 1: Vấn đề trong đời sống (Hậu quả nếu không có)
+- **Nếu không có điểm bắt đầu quy ước:** Bạn để anh phụ việc vào bếp từ sáng. Anh ấy cứ đứng ở cửa nhìn quanh: Có cả trăm việc (quét nhà, rửa bát, nướng bánh, đếm tiền), anh ấy hoàn toàn không biết phải bắt đầu từ đâu!
+- **Nếu không có dấu ngắt câu lệnh dứt khoát:** Bạn dặn: *"Lấy bánh mì ra"* rồi bạn dừng lại hít một hơi thở để dặn tiếp *"cho vào lò nướng"*. Nhưng vì không có tín hiệu dứt câu, anh ấy cứ nghĩ bạn vẫn đang nói dở, nên đứng im bất động chờ đợi, hoặc anh ấy nghe lẫn lộn các câu vào nhau thành một mệnh lệnh quái dị không thể thực hiện!
+- **Giải pháp trong đời sống:**
+  - Quy ước một **Cánh cửa chính mang tên Ca Sáng**: Anh ấy chỉ bước vào cánh cửa này và bắt đầu đọc danh sách dặn việc từ trên xuống dưới.
+  - Trang bị một **Chiếc chuông con**: Cứ dặn xong trọn vẹn MỘT việc, bạn gõ chuông một tiếng *"Reng!"*. Nghe thấy tiếng chuông, anh ấy mới lập tức thực hiện xong việc đó rồi mới nghe việc tiếp theo. Làm xong việc cuối cùng, anh ấy bấm còi báo cáo ca làm thành công và đóng cửa.
+
+#### Bước 2: Ánh xạ vào C++
+- Cánh cửa chính: Hàm `int main() { ... }` — Điểm khởi đầu duy nhất mà hệ thống luôn bước vào đầu tiên.
+- Chiếc chuông báo hết lệnh: Dấu chấm phẩy `;` — Kết thúc một câu lệnh (`statement`). Quên dấu `;` tương đương với việc không gõ chuông, trình biên dịch báo lỗi vì không biết câu lệnh ngắt ở đâu.
+- Báo cáo hoàn thành: `return 0;` — Mã số báo hiệu chương trình kết thúc thành công, không gặp tai nạn.
+
+#### Bước 3: Bản chất & Thuật ngữ
+- **Câu lệnh (Statement):** Một chỉ thị hoàn chỉnh kết thúc bằng `;`.
+- **Hàm `main()` (Entry Point):** Cánh cổng vào duy nhất của chương trình.
+- **Lỗi cú pháp (Syntax Error / Expected ';'):** Lỗi do bạn quên gõ chuông `;`, người phụ việc từ chối làm việc ngay từ đầu.
+
+---
+
+### 3.2. Vấn Đề Nhỏ 2: Hỗn Loạn Chứa Đồ & Rơi Vãi Dữ Liệu (Biến & Kiểu Dữ Liệu)
+
+#### Bước 1: Vấn đề trong đời sống (Hậu quả nếu không có)
+- **Nếu không có vật chứa có tên:** Khách dặn mua 3 cái bánh, giá 15.5 nghìn, tên là "An". Bạn bảo anh phụ việc: *"Nhớ lấy để tí nữa tính tiền"*. Anh ấy không có túi hay khay đựng nào cả. Anh ấy cầm số 3 ở tay trái, số 15.5 ở tay phải, tên "An" ngậm trong miệng. Chỉ cần đi va vào mép bàn là rơi vãi sạch trơn hoặc nhầm số lượng thành giá tiền!
+- **Nếu không phân loại vật chứa (Đổ nhầm loại đồ):** Bạn lấy chiếc túi lưới đựng hành tỏi để đựng nước sốt $\rightarrow$ Nước sốt chảy lênh láng ra sàn nhà. Bạn lấy lọ thuốc nhỏ mắt để nhét cả ổ bánh mì $\rightarrow$ Vỡ lọ.
+- **Nếu chia đồ không đúng tính chất:** Bạn có 5 ổ bánh mì chia đều cho 2 người. Vì anh phụ việc chỉ biết đếm từng ổ nguyên vẹn, anh ấy chia mỗi người 2 ổ rồi vứt luôn ổ còn lại ra sọt rác thay vì cắt đôi thành 2.5!
+- **Giải pháp trong đời sống:**
+  - Trên bàn làm việc, sắp sẵn **những chiếc hộp dán nhãn tên gọi rõ ràng** (`so_banh`, `gia_tien`, `ten_khach`).
+  - Mỗi hộp có hình dạng và tính chất riêng:
+    - *Hộp số nguyên (`int`):* Chuyên đựng các con số đếm nguyên chiếc (1 cái, 2 cái, không có mảnh vỡ).
+    - *Hộp số lẻ (`double`):* Chuyên đong đếm các số có phần lẻ thập phân (15.5 nghìn, 3.14).
+    - *Hộp chữ viết (`string`):* Chuyên đựng các dòng chữ dài (họ tên, lời dặn).
+    - *Hộp ký tự đơn (`char`):* Hộp tí hon đựng đúng một chữ cái ('M', 'L').
+    - *Hộp cờ hiệu (`bool`):* Hộp công tắc chỉ có 2 trạng thái Bật (Đúng) hoặc Tắt (Sai).
+  - Hành động xúc đồ bỏ vào hộp: Phép gán `=`.
+
+#### Bước 2: Ánh xạ vào C++
+```cpp
+int soBanh = 3;             // Hộp số nguyên
+double giaTien = 15.5;      // Hộp số có phần lẻ
+std::string tenKhach = "An"; // Hộp chuỗi chữ
+```
+- Khái niệm biến: Vùng nhớ được đặt tên trên bàn làm việc RAM.
+- Bản chất phép chia nguyên: `5 / 2 = 2` vì hai số nguyên chia nhau chỉ trả về kết quả vào hộp số nguyên, phần dư `.5` bị vứt bỏ. Muốn có `2.5`, phải dùng hộp số thực `double` và phép chia có số thực: `5.0 / 2 = 2.5`.
+
+#### Bước 3: Bản chất & Thuật ngữ
+- **Biến (Variable):** Chiếc hộp chứa dữ liệu có tên gọi.
+- **Kiểu dữ liệu (Data Type):** Định dạng và kích thước chiếc hộp (số byte bộ nhớ).
+- **Phép gán (`=`):** Lấy giá trị bên phải đặt vào chiếc hộp bên trái.
+
+---
+
+### 3.3. Vấn Đề Nhỏ 3 & Ghép Lại: Kênh Giao Tiếp Hai Chiều & Lời Giải Hoàn Chỉnh
+
+#### Bước 1: Vấn đề trong đời sống (Hậu quả nếu không có)
+- **Nếu không có lối đẩy thông điệp ra ngoài:** Anh phụ việc ở trong bếp, dù tính tiền xong hay nướng bánh xong cũng chỉ để trên bàn bên trong. Khách bên ngoài nhìn vào ô cửa sổ tối om, không biết bánh đã xong chưa, giá tiền bao nhiêu $\rightarrow$ Mất kết nối.
+- **Nếu không có lối nhận yêu cầu từ ngoài vào:** Anh ấy chỉ biết dùng các dữ liệu có sẵn từ hôm qua, không có cách nào để khách hàng truyền số lượng mong muốn của ngày hôm nay vào trong bếp.
+- **Nếu nhầm lẫn chiều giao tiếp:** Khách đang muốn đưa tiền vào thì anh lại chìa tay giật đồ của khách; khách đang đợi lấy bánh thì anh lại đòi khách đưa bánh cho anh!
+- **Giải pháp trong đời sống:**
+  - Lắp đặt một chiếc **Loa phát thanh** hướng miệng loa ra ngoài cửa sổ: Mọi thông báo, kết quả đẩy vào miệng loa (`<<`) sẽ vang ra ngoài cho khách nghe thấy.
+  - Mở một **Khe nhận phiếu order**: Phiếu order từ tay khách bên ngoài sẽ trượt theo mũi tên (`>>`) rót thẳng vào đúng chiếc hộp dán nhãn bên trong bếp.
+
+#### Bước 2: Ánh xạ vào C++
+- Bộ đồ nghề giao tiếp: `#include <iostream>` (`Input/Output Stream`).
+- Chiếc loa phát thanh ra màn hình: `std::cout << thong_tin;` (mũi tên đẩy ra loa).
+- Khe nhận thông tin từ bàn phím: `std::cin >> hop_bien;` (mũi tên rót vào hộp).
+
+#### Bước 3: Ghép Lại Thành Chương Trình Hoàn Chỉnh (The Synthesis)
+Ghép toàn bộ lời giải của 3 vấn đề nhỏ thành một chương trình trọn vẹn:
+```cpp
+#include <iostream>
+#include <string>
+
+int main() {
+    // 1. Chuẩn bị các chiếc hộp có dán nhãn (Giải quyết Vấn đề 2)
+    std::string tenKhach;
+    int soBanh;
+    double giaMotBanh = 15.5; // nghìn đồng
+
+    // 2. Loa chào khách & Khe nhận phiếu order (Giải quyết Vấn đề 1 & 3)
+    std::cout << "Xin chao! Quy khach ten la gi? ";
+    std::cin >> tenKhach;
+
+    std::cout << "Ban muon mua bao nhieu chiec banh mi? ";
+    std::cin >> soBanh;
+
+    // 3. Tính toán và lưu vào hộp tổng tiền (Giải quyết Vấn đề 2)
+    double tongTien = soBanh * giaMotBanh;
+
+    // 4. Loa thông báo kết quả ra cho khách (Giải quyết Vấn đề 3)
+    std::cout << "Cam on ban " << tenKhach << "!" << std::endl;
+    std::cout << "Tong so tien ban can thanh toan la: " << tongTien << " nghin dong." << std::endl;
+
+    // 5. Báo cáo kết thúc ca làm việc mỹ mãn (Giải quyết Vấn đề 1)
+    return 0;
+}
 ```
 
 ---
 
-## 4. Kiểm Thử & Nghiệm Thu Bằng Subagent Sư Phạm
+## 4. Hệ Thống Tệp Tin & Kịch Bản Nghiệm Thu
 
-Quy trình nghiệm thu gồm 2 chặng:
-1. **Kiểm thử tự động kỹ thuật (`tests/verify_00_nhap_mon.sh`):**
-   - Biên dịch g++ C++14 cả 3 file code mẫu (`-Wall -Wextra -Werror`).
-   - Kiểm tra liên kết stylesheet, engine, icon và portal DAG.
-2. **Nghiệm thu sư phạm bằng Subagent (`tests/audit_pedagogy_subagent.sh`):**
-   - Gọi `pi --no-session -p` với prompt đóng vai trò:
-     - Giám khảo 1: Giáo viên dạy môn Nhập môn lập trình, chấm điểm tính chặt chẽ và không dạy vẹt.
-     - Giám khảo 2: Học sinh 12 tuổi chưa từng biết lập trình, đọc thử giáo án xem có thấy vui, dễ hiểu và tự tin viết code không.
-   - Thang điểm đánh giá (0-100), yêu cầu đạt trên 90 điểm với nhận xét chi tiết.
+```text
+00_NhapMon_LapTrinh_CPP/
+├── docs/
+│   └── bai_giang_nhap_mon_cpp.md         # Giáo án Problem-First hoàn chỉnh
+├── Code_Mau/
+│   ├── 01_ChiecChuong_Va_CanhCua_Main.cpp # Cấu trúc lệnh, dấu ;, hàm main, return 0
+│   ├── 02_NhungChiecHop_BienVaKieu.cpp    # Biến, kiểu int/double/string, chia nguyên
+│   └── 03_LoaVaKheNhan_TiemBanhMi.cpp     # cin, cout, ghép lại toàn bộ chương trình
+├── index.html                             # Web tương tác tái sử dụng shared/
+└── lesson-data.js                         # Dữ liệu web, sandbox tương tác, trắc nghiệm 80-90%
+```
+
+### Kịch bản nghiệm thu với Subagent (`tests/audit_pedagogy_subagent.sh`):
+Chạy `pi --no-session -p` với tiêu chí thẩm định:
+1. Có trình bày toàn bộ Vấn Đề Lớn và 3 Vấn Đề Nhỏ trước khi đưa ra giải pháp không?
+2. Tình huống đời sống "Hậu quả nếu thiếu cơ chế" có gây ấn tượng mạnh và dễ hiểu cho học sinh cấp 2 không?
+3. Quá trình ghép 3 mảnh ghép lại thành code C++ có mượt mà, tự nhiên và thuyết phục không?
+4. Trắc nghiệm có đạt chuẩn 80-90% độ tương đồng và không bẫy mẹo ngữ pháp không?

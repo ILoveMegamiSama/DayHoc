@@ -152,8 +152,19 @@ int main() {
 ```
 
 ### Kịch bản nghiệm thu với Subagent (`tests/audit_pedagogy_subagent.sh`):
-Chạy `pi --no-session -p` với tiêu chí thẩm định:
-1. Có trình bày toàn bộ Vấn Đề Lớn và 3 Vấn Đề Nhỏ trước khi đưa ra giải pháp không?
-2. Tình huống đời sống "Hậu quả nếu thiếu cơ chế" có gây ấn tượng mạnh và dễ hiểu cho học sinh cấp 2 không?
-3. Quá trình ghép 3 mảnh ghép lại thành code C++ có mượt mà, tự nhiên và thuyết phục không?
-4. Trắc nghiệm có đạt chuẩn 80-90% độ tương đồng và không bẫy mẹo ngữ pháp không?
+Subagent được giao vai trò then chốt: **Một Người Học Bình Thường (Ordinary Learner)** — người hoàn toàn chưa từng biết lập trình, không có năng khiếu hay kiến thức tin học trước đó, có tâm lý e ngại các môn kỹ thuật.
+
+Subagent sẽ đọc toàn bộ bài giảng và code mẫu, sau đó phản biện và đánh giá theo 4 khía cạnh:
+1. **Trải nghiệm tâm lý & Cảm xúc tiếp nhận:**
+   - Đọc câu chuyện "Tiệm bánh mì và Anh phụ bếp thật thà" có thấy tự nhiên, lôi cuốn và dễ hình dung không?
+   - Có từ ngữ nào mang tính "dân trong nghề", hàn lâm hay công nghệ làm người học bình thường bị ngợp và thấy xa lạ không?
+2. **Mức độ thấu hiểu "Bản chất nguồn gốc":**
+   - Người học có thực sự thấm thía **"nếu không có cơ chế đó thì tai họa gì sẽ xảy ra"** trước khi học cú pháp không?
+   - Người học có tự giải thích được vì sao phải có dấu `;`, vì sao phải chia kiểu `int` và `double`, vì sao mũi tên `cin >>` và `cout <<` lại ngược nhau mà KHÔNG CẦN học vẹt không?
+3. **Phát hiện điểm gợn & Vùng bối rối (Friction Points Audit):**
+   - Chỉ ra chính xác những đoạn văn, dòng giải thích hoặc câu lệnh nào khiến một người học bình thường dễ bị khựng lại, khó hiểu hoặc hiểu nhầm.
+4. **Khả năng tự tin thực hành & Độ tin cậy trắc nghiệm:**
+   - Một người học bình thường sau khi đọc xong có tự tin nhìn vào file code mẫu và hiểu được từng dòng đang giao việc gì cho máy tính không?
+   - Các câu hỏi trắc nghiệm có thực sự giúp củng cố bản chất câu chuyện đời sống không, hay vẫn tạo cảm giác làm bài thi căng thẳng?
+
+Chỉ khi Subagent xác nhận bài giảng hoàn toàn thân thiện, sáng rõ và vượt qua bài kiểm tra của "Người học bình thường", bài học mới được nghiệm thu chính thức.

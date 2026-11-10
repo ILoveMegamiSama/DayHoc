@@ -21,7 +21,7 @@
         category: 'foundation',
         path: '00_NhapMon_LapTrinh_CPP/index.html',
         summary: 'Xóa tan nỗi sợ: học cách chỉ dẫn Anh Phụ Bếp Thật Thà. Giải phẫu Cửa chính main(), Chuông dứt lệnh (;), Hộp biến RAM và Loa/Khe cin/cout.',
-        x: 40,
+        x: 100,
         y: 80,
         badge: 'Khởi đầu',
         prerequisites: [
@@ -43,7 +43,7 @@
         category: 'foundation',
         path: 'MayCham/index.html',
         summary: 'Hiểu bản chất phần cứng, RAM vs Ổ cứng, Shell, biến PATH, g++, cờ -static và tự động hóa tìm test sai bằng máy chấm C++14.',
-        x: 220,
+        x: 350,
         y: 80,
         badge: 'Nền tảng',
         prerequisites: [
@@ -64,7 +64,7 @@
         category: 'single',
         path: '01_DeQuy_Va_DeQuyDuoi/index.html',
         summary: 'Kê thêm khay phụ trên bàn làm việc RAM: giải phẫu Call Stack, cơ chế Stack Overflow và kỹ thuật Đệ quy đuôi (TCO) O(1) bộ nhớ.',
-        x: 420,
+        x: 600,
         y: 80,
         badge: 'Đơn lẻ',
         prerequisites: [
@@ -86,7 +86,7 @@
         category: 'single',
         path: '02_NganXep_Va_NganXepDonDieu/index.html',
         summary: 'Từ cơ chế LIFO đến Ngăn xếp đơn điệu: bài toán tìm phần tử che khuất trong O(N) khấu hao và ứng dụng mở rộng biên.',
-        x: 720,
+        x: 850,
         y: 80,
         badge: 'Đơn lẻ',
         prerequisites: [
@@ -108,7 +108,7 @@
         category: 'single',
         path: '03_HaiConTro/index.html',
         summary: 'Khung cửa sổ co giãn trượt trên mảng: Hai con trỏ ngược chiều và Cửa sổ trượt cùng chiều, điều kiện biên và bẫy số âm.',
-        x: 720,
+        x: 850,
         y: 260,
         badge: 'Đơn lẻ',
         prerequisites: [
@@ -130,7 +130,7 @@
         category: 'combined',
         path: '04_KetHop_NganXep_QHD_HaiConTro/index.html',
         summary: 'Khử đệ quy bằng Ngăn xếp, tăng tốc bước chuyển trạng thái Quy hoạch động bằng Ngăn xếp đơn điệu và Deque cửa sổ trượt.',
-        x: 1060,
+        x: 1180,
         y: 170,
         badge: 'Chuyên đề kết hợp',
         prerequisites: [

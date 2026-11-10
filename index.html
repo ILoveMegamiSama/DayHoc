@@ -68,7 +68,7 @@
           💡 Bấm vào một <strong>Nút bài học</strong> để xem kiến thức tiền đề • Bấm vào <strong>Cạnh nối (?)</strong> để xem bước nhảy tư duy • Kéo chuột để di chuyển bản đồ.
         </div>
         <div id="svg-container" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; overflow: hidden; cursor: grab; user-select: none;">
-          <svg id="skill-tree-svg" class="graph-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMid meet"></svg>
+          <svg id="skill-tree-svg" class="graph-svg" viewBox="0 0 1320 380" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
         <div id="edge-detail-box" style="margin-top: 14px; display: none; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border-strong); border-left: 4px solid var(--accent); border-radius: var(--radius); font-size: 14px;"></div>
       </section>
@@ -195,7 +195,7 @@
       }
 
       // Biến lưu trạng thái Pan & Zoom của SVG
-      let vbX = 0, vbY = 0, vbW = 1200, vbH = 380;
+      let vbX = 0, vbY = 0, vbW = 1320, vbH = 380;
       let isPanning = false, startX = 0, startY = 0;
 
       function updateSvgViewBox() {
@@ -268,7 +268,7 @@
         });
 
         document.getElementById('btn-zoom-reset').addEventListener('click', () => {
-          vbX = 0; vbY = 0; vbW = 1200; vbH = 380;
+          vbX = 0; vbY = 0; vbW = 1320; vbH = 380;
           updateSvgViewBox();
         });
       }

@@ -123,11 +123,11 @@ ${ok ? '    std::cout << "Tiem banh mi mo cua!" << std::endl;' : '    std::cout 
             q: 'Điều gì sẽ xảy ra nếu một chương trình C++ được viết mà hoàn toàn không có hàm int main() { ... }?',
             options: [
               'Máy tính vẫn biên dịch bình thường nhưng chỉ chạy các dòng khai báo biến mà bỏ qua các dòng lệnh in ấn màn hình.',
-              'Trình biên dịch sẽ báo lỗi ngay lập tức vì không tìm thấy Cánh Cửa Chính để biết chương trình phải bắt đầu thực thi từ đâu.',
               'Chương trình sẽ tự động chọn câu lệnh đầu tiên trong tệp mã nguồn làm điểm xuất phát và thực thi bình thường.',
+              'Trình biên dịch sẽ báo lỗi ngay lập tức vì không tìm thấy Cánh Cửa Chính để biết chương trình phải bắt đầu thực thi từ đâu.',
               'Chương trình sẽ tự động tạo một hàm phụ ngầm định để thay thế cho hàm main mà người lập trình không hề hay biết.'
             ],
-            correct: 1,
+            correct: 2,
             explain: 'Hàm main() là điểm vào duy nhất (Entry point) bắt buộc của mọi chương trình C++. Thiếu hàm main, trình liên kết (linker) sẽ báo lỗi undefined reference to main.'
           }
         ]
@@ -235,12 +235,12 @@ ${isReal ? '    double ketQua = 5.0 / 2.0; // Phep chia so thuc' : '    int ketQ
             type: 'concept',
             q: 'Trong chương trình C++, kết quả in ra màn hình của dòng lệnh std::cout << 7 / 2; là con số nào và vì sao?',
             options: [
-              'In ra 3 vì cả 7 và 2 đều là số nguyên, máy tính thực hiện phép chia nguyên và cắt bỏ hoàn toàn phần thập phân 0.5.',
               'In ra 3.5 vì máy tính tự động nhận biết kết quả có phần lẻ và tự động chuyển đổi sang số thực để hiển thị chính xác.',
               'In ra 4 vì máy tính nhận thấy phần thập phân là 0.5 nên tự động làm tròn lên con số nguyên gần nhất là 4.',
+              'In ra 3 vì cả 7 và 2 đều là số nguyên, máy tính thực hiện phép chia nguyên và cắt bỏ hoàn toàn phần thập phân 0.5.',
               'Báo lỗi biên dịch vì trong C++ không cho phép thực hiện phép chia giữa hai số nguyên nếu kết quả không chia hết.'
             ],
-            correct: 0,
+            correct: 2,
             explain: 'Trong C++, phép chia giữa hai số nguyên (int / int) luôn luôn trả về một số nguyên bằng cách bỏ đi phần thập phân. Do đó 7 / 2 = 3.'
           },
           {
@@ -378,12 +378,12 @@ int main() {
             type: 'concept',
             q: 'Quan sát hai câu lệnh giao tiếp dưới đây: std::cin >> x; và std::cout << x;. Ý nghĩa chính xác của hướng mũi tên >> và << là gì?',
             options: [
-              'Mũi tên >> thể hiện dữ liệu từ bàn phím chảy xuôi rót vào hộp x, còn mũi tên << thể hiện dữ liệu trong hộp x được đẩy bắn vào miệng loa cout để in ra.',
               'Mũi tên >> thể hiện phép so sánh lớn hơn giữa bàn phím và biến x, còn mũi tên << thể hiện phép so sánh nhỏ hơn giữa biến x và màn hình.',
               'Mũi tên >> là câu lệnh dịch chuyển bit nhị phân sang phải của biến x, còn mũi tên << là câu lệnh dịch chuyển bit nhị phân sang trái của biến x.',
-              'Mũi tên >> và << chỉ là quy ước ký tự ngẫu nhiên của C++ để phân biệt hai lệnh, hoàn toàn không mang ý nghĩa mô phỏng hướng chuyển động của dữ liệu.'
+              'Mũi tên >> và << chỉ là quy ước ký tự ngẫu nhiên của C++ để phân biệt hai lệnh, hoàn toàn không mang ý nghĩa mô phỏng hướng chuyển động của dữ liệu.',
+              'Mũi tên >> thể hiện dữ liệu từ bàn phím chảy xuôi rót vào hộp x, còn mũi tên << thể hiện dữ liệu trong hộp x được đẩy bắn vào miệng loa cout để in ra.'
             ],
-            correct: 0,
+            correct: 3,
             explain: 'Toán tử >> trong cin mô phỏng dòng dữ liệu được hút từ luồng vào rót vào biến, còn toán tử << trong cout mô phỏng dòng dữ liệu được đẩy từ biến ra luồng xuất.'
           },
           {

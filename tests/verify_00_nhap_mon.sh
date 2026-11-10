@@ -41,5 +41,29 @@ else
   exit 1
 fi
 
+echo "--- 4. Kiểm tra khoảng cách tọa độ DAG (Chống tràn viền & chồng lấn) ---"
+node -e '
+const fs = require("fs");
+const code = fs.readFileSync("shared/portal-data.js", "utf8");
+const sandbox = { window: {} };
+require("vm").runInNewContext(code, sandbox);
+const nodes = sandbox.window.PORTAL_DATA.nodes;
+const n0 = nodes.find(n => n.id === "nhap_mon_cpp");
+const n1 = nodes.find(n => n.id === "may_cham");
+const n2 = nodes.find(n => n.id === "de_quy_duoi");
+
+if (n0.x - 90 < 0) {
+  console.error("[FAIL] nhap_mon_cpp bi tran mep trai: x - 90 = " + (n0.x - 90));
+  process.exit(1);
+}
+const gap01 = (n1.x - 90) - (n0.x + 90);
+if (gap01 < 60) {
+  console.error("[FAIL] Khoang cach giua nhap_mon va may_cham qua hep: " + gap01 + "px (yeu cau >= 60px)");
+  process.exit(1);
+}
+console.log("[PASS] Tọa độ DAG hợp lệ, khoảng cách đẹp: " + gap01 + "px");
+'
+
+
 echo "=== HOÀN TẤT: TẤT CẢ KIỂM TRA KỸ THUẬT ĐỀU ĐẠT CHUẨN! ==="
 exit 0

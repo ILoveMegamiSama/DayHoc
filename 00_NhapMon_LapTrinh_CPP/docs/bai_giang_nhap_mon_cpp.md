@@ -88,6 +88,7 @@ int main() {
 
 - **`int main() { ... }` (Cánh Cửa Chính):** Là điểm khởi đầu duy nhất mà máy tính luôn bước vào đầu tiên khi mở tiệm. Dấu mở ngoặc `{` là bước chân vào phòng, dấu đóng ngoặc `}` là bước chân ra khỏi phòng.
   - *Tại sao lại có chữ `int` đứng trước chữ `main`?* Vì khi kết thúc ca làm việc, anh phụ bếp sẽ báo cáo một **con số nguyên** (mã số 0 an toàn ở lệnh `return 0;`). Do đó, trước cửa phòng chỉ huy bắt buộc phải gắn biển `int` để thông báo trước: "Căn phòng này khi đóng cửa sẽ trả về một con số nguyên!".
+  - *Cặp ngoặc tròn `()` sau chữ `main` để làm gì?* Đây là chiếc "túi nhận dặn dò bổ sung" khi bắt đầu ca làm. Vì ở bài nhập môn này ta chưa cần truyền thêm thông tin đặc biệt gì từ bên ngoài nên cặp ngoặc được để rỗng.
 - **Dấu chấm phẩy `;` (Tiếng Chuông Đồng):** Cực kỳ quan trọng! Mỗi câu lệnh trong C++ bắt buộc phải kết thúc bằng dấu `;`. Nếu bạn quên dấu `;`, người phụ việc (và người chấm bài kiểm tra của máy tính) sẽ báo lỗi ngay lập tức vì tưởng câu lệnh của bạn vẫn còn đang dang dở!
 - **`return 0;` (Báo Cáo Thành Công):** Báo cáo cho hệ thống biết: "Chương trình đã thực hiện xong mọi chỉ thị và kết thúc an toàn với mã lỗi bằng 0 (không có tai nạn nào)".
 
@@ -144,6 +145,7 @@ int main() {
   - **`bool` (Boolean):** Chiếc hộp công tắc chỉ có 2 trạng thái: `true` (Đúng / Bật) hoặc `false` (Sai / Tắt).
 - **Phép gán (Dấu bằng `=`):** Trong lập trình, dấu `=` mang ý nghĩa là **hành động xúc giá trị bên tay phải bỏ vào chiếc hộp bên tay trái** (chứ không phải so sánh bằng nhau trong toán học). Ví dụ: `soBanh = 5;` nghĩa là xúc số 5 bỏ vào hộp `soBanh`.
 - **Dấu nhân `*` và dấu chia `/`:** Trong lập trình, máy tính dùng dấu sao `*` thay cho dấu nhân $(\times)$ trong vở toán, và dùng dấu gạch chéo `/` thay cho dấu chia $(:)$.
+- **Tại sao lại viết tiếng Việt không dấu trong code?** Ở bài đầu tiên này, ta viết câu chữ không dấu (như `"Xin chao"`, `"Hoa don"`) vì anh phụ bếp C++ trên màn hình Console mặc định chỉ hiểu bảng chữ cái tiếng Anh cơ bản. Nếu gõ có dấu Tiếng Việt, màn hình sẽ bị biến thành các ký tự giun dế kỳ quặc. Cách dạy anh ấy đọc chữ có dấu ta sẽ học ở bài nâng cao sau.
 - **Lưu ý nhỏ khi nhập chữ:** Ở bài nhập môn này, khi nhập tên khách hàng bằng `cin >>`, bạn hãy gõ một chữ viết liền (ví dụ: `An`, `Nam`, `Linh`) nhé. 
   - *Nếu lỡ tay gõ cả họ và tên có dấu cách (như "Nguyen Van An") thì sao?* Đừng lo, tiệm bánh không bị nổ đâu! Chỉ là anh Thật Thà ngây ngô sẽ chỉ nhặt đúng từ đầu tiên `"Nguyen"` bỏ vào hộp, các từ còn lại bị rơi rớt ngoài cửa. Cách "trị" tính ngây ngô này để gom trọn vẹn cả họ lẫn tên chúng ta sẽ được học ở bài nâng cao tiếp theo.
 
@@ -176,11 +178,13 @@ Trong C++, việc giao tiếp giữa chương trình và con người được t
 - **Mượn bộ loa và khe nhận: `#include <iostream>`** ở ngay đầu cuốn sổ dặn việc. 
   - Dấu thăng `#` giống như một chiếc cờ hiệu lệnh: "Hãy chuẩn bị đồ nghề này TRƯỚC KHI mở cửa tiệm!". 
   - Cặp ngoặc nhọn `<iostream>` là chiếc hộp niêm phong dụng cụ mượn từ kho thư viện tiêu chuẩn (`Input/Output Stream`).
+  - *Tại sao dòng này không có dấu chấm phẩy `;`?* Vì những dòng có dấu thăng `#` là khâu chuẩn bị đồ nghề TRƯỚC KHI mở cửa tiệm, chưa phải khẩu lệnh dặn việc trong ca làm, nên không cần gõ chuông `;`!
 - **Chiếc loa phát thanh hướng ra màn hình: `std::cout` (Console Output)**
   - Cú pháp: `std::cout << "Thong bao" << std::endl;`
   - Dấu mũi tên `<<`: Mô phỏng hướng đẩy thông tin từ trong chương trình bắn thẳng vào miệng loa `cout` để hiện lên màn hình.
   - **Băng chuyền nối nhiều mũi tên `<<`:** Chiếc loa này rất xịn! Bạn có thể nối nhiều mũi tên `<<` liên tiếp như các toa tàu trên một băng chuyền (ví dụ: `std::cout << "Chao ban " << tenKhach << "!" << std::endl;`). Nó sẽ đẩy liên tù tì: lời chào $\rightarrow$ tên trong chiếc hộp $\rightarrow$ dấu chấm than $\rightarrow$ lệnh xuống dòng ra ngoài loa mà không cần bạn phải gõ lại chữ `std::cout` nhiều lần.
   - `std::endl` (End Line): Lệnh xuống dòng và nghỉ thở, giúp câu tiếp theo được in ở dòng mới phía dưới.
+  - **Cảnh báo cực kỳ quan trọng:** Ký tự cuối cùng của chữ `endl` là **chữ 'L' thường** (viết tắt của từ *Line* = Dòng kẻ), **tuyệt đối không phải là số 1 (một)** đâu nhé! Nếu gõ nhầm thành `end1`, máy tính sẽ báo lỗi ngay.
 - **Khe nhận dữ liệu từ bàn phím: `std::cin` (Console Input)**
   - Cú pháp: `std::cin >> tenHop;`
   - Dấu mũi tên `>>` mô phỏng hướng dữ liệu từ bàn phím người dùng gõ vào, chảy xuôi dòng và rót thẳng vào chiếc hộp mang tên `tenHop`.

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light">
+<html lang="vi" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cổng Học Tập Lập Trình Thi Đấu C++ (CP) — Cây Kỹ Năng & Bài Giảng Tương Tác</title>
+  <script>(function(){try{var t=localStorage.getItem('cp_dayhoc_theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
   <link rel="stylesheet" href="shared/styles.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -55,14 +56,21 @@
       <section class="knowledge-card">
         <div class="card-heading">
           <span style="display: flex; align-items: center; gap: 8px;">
-            <span id="graph-heading-icon"></span> <strong>Bản Đồ Phụ Thuộc & Chuyển Hóa Tư Duy Giữa Các Chủ Đề (DAG)</strong>
+            <span id="graph-heading-icon"></span> <strong>Bản Đồ Phụ Thuộc & Cầu Nối Tư Duy (DAG)</strong>
           </span>
-          <span style="font-size: 12px; color: var(--muted);">Bấm vào nút để vào bài giảng • Bấm vào cạnh để xem bước nhảy tư duy</span>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <button id="btn-zoom-in" class="btn-pill" title="Phóng to">+</button>
+            <button id="btn-zoom-out" class="btn-pill" title="Thu nhỏ">-</button>
+            <button id="btn-zoom-reset" class="btn-pill" title="Trở về vừa khung">Vừa Khung</button>
+          </div>
         </div>
-        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; overflow-x: auto;">
+        <div style="font-size: 12.5px; color: var(--muted); margin-bottom: 8px;">
+          💡 Bấm vào một <strong>Nút bài học</strong> để xem kiến thức tiền đề • Bấm vào <strong>Cạnh nối (?)</strong> để xem bước nhảy tư duy • Kéo chuột để di chuyển bản đồ.
+        </div>
+        <div id="svg-container" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; overflow: hidden; cursor: grab; user-select: none;">
           <svg id="skill-tree-svg" class="graph-svg" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
-        <div id="edge-detail-box" style="margin-top: 14px; display: none; padding: 12px 16px; background: var(--amber-soft); border-left: 4px solid var(--amber); border-radius: 4px; font-size: 14px;"></div>
+        <div id="edge-detail-box" style="margin-top: 14px; display: none; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border-strong); border-left: 4px solid var(--accent); border-radius: var(--radius); font-size: 14px;"></div>
       </section>
 
       <!-- Danh Mục Bài Giảng Theo Phân Vùng -->
@@ -186,6 +194,85 @@
         `;
       }
 
+      // Biến lưu trạng thái Pan & Zoom của SVG
+      let vbX = 0, vbY = 0, vbW = 1200, vbH = 380;
+      let isPanning = false, startX = 0, startY = 0;
+
+      function updateSvgViewBox() {
+        const svgEl = document.getElementById('skill-tree-svg');
+        if (svgEl) svgEl.setAttribute('viewBox', `${vbX} ${vbY} ${vbW} ${vbH}`);
+      }
+
+      function initSvgPanZoom() {
+        const container = document.getElementById('svg-container');
+        if (!container) return;
+
+        container.addEventListener('mousedown', (e) => {
+          if (e.target.closest('.graph-node') || e.target.closest('.graph-edge')) return;
+          isPanning = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          container.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          if (!isPanning) return;
+          const dx = (e.clientX - startX) * (vbW / container.clientWidth);
+          const dy = (e.clientY - startY) * (vbH / container.clientHeight);
+          vbX -= dx;
+          vbY -= dy;
+          startX = e.clientX;
+          startY = e.clientY;
+          updateSvgViewBox();
+        });
+
+        window.addEventListener('mouseup', () => {
+          if (isPanning) {
+            isPanning = false;
+            container.style.cursor = 'grab';
+          }
+        });
+
+        container.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
+          const newW = vbW * zoomFactor;
+          const newH = vbH * zoomFactor;
+          if (newW >= 500 && newW <= 3000) {
+            vbX -= (newW - vbW) / 2;
+            vbY -= (newH - vbH) / 2;
+            vbW = newW;
+            vbH = newH;
+            updateSvgViewBox();
+          }
+        }, { passive: false });
+
+        document.getElementById('btn-zoom-in').addEventListener('click', () => {
+          const newW = vbW * 0.85;
+          const newH = vbH * 0.85;
+          vbX -= (newW - vbW) / 2;
+          vbY -= (newH - vbH) / 2;
+          vbW = newW;
+          vbH = newH;
+          updateSvgViewBox();
+        });
+
+        document.getElementById('btn-zoom-out').addEventListener('click', () => {
+          const newW = vbW * 1.15;
+          const newH = vbH * 1.15;
+          vbX -= (newW - vbW) / 2;
+          vbY -= (newH - vbH) / 2;
+          vbW = newW;
+          vbH = newH;
+          updateSvgViewBox();
+        });
+
+        document.getElementById('btn-zoom-reset').addEventListener('click', () => {
+          vbX = 0; vbY = 0; vbW = 1200; vbH = 380;
+          updateSvgViewBox();
+        });
+      }
+
       function renderSkillTree() {
         const svgEl = document.getElementById('skill-tree-svg');
         const detailBox = document.getElementById('edge-detail-box');
@@ -206,10 +293,10 @@
 
           edgesSvg += `
             <g class="graph-edge" data-edge-idx="${idx}" style="cursor: pointer;">
-              <path d="M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}" fill="none" stroke="var(--border-strong)" stroke-width="2.5" stroke-dasharray="4,4" />
-              <circle cx="${midX}" cy="${midY}" r="11" fill="var(--surface-card)" stroke="var(--accent)" stroke-width="1.5" />
-              <text x="${midX}" y="${midY + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--accent)">?</text>
-              <text x="${midX}" y="${midY - 14}" text-anchor="middle" font-size="11" font-weight="600" fill="var(--muted)">${ed.label}</text>
+              <path class="edge-path" d="M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}" fill="none" stroke="var(--border-strong)" stroke-width="2.2" stroke-dasharray="4,4" />
+              <!-- Badge ngắn gọn trên cạnh nối, tránh chữ dài đè nhau -->
+              <rect x="${midX - 35}" y="${midY - 12}" width="70" height="24" rx="12" fill="var(--surface-card)" stroke="var(--accent)" stroke-width="1.5" />
+              <text x="${midX}" y="${midY + 4}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--accent)">${ed.shortTag || '?'}</text>
             </g>
           `;
         });
@@ -223,35 +310,83 @@
           const badgeCol = isCombined ? 'var(--accent)' : (isFoundation ? 'var(--ink)' : 'var(--ok)');
 
           nodesSvg += `
-            <g class="graph-node" data-node-path="${node.path}" transform="translate(${node.x - 90}, ${node.y})">
+            <g class="graph-node" data-node-id="${node.id}" data-node-path="${node.path}" transform="translate(${node.x - 90}, ${node.y})" style="cursor: pointer;">
               <rect width="180" height="70" rx="6" fill="var(--surface-card)" stroke="${strokeCol}" stroke-width="1.8" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.06))" />
               <rect x="8" y="8" width="54" height="18" rx="3" fill="${badgeBg}" />
               <text x="35" y="21" text-anchor="middle" font-size="10" font-weight="700" fill="${badgeCol}">${node.badge}</text>
               <text x="170" y="21" text-anchor="end" font-size="10" font-family="monospace" fill="var(--muted)">${node.code}</text>
               <text x="12" y="44" font-size="12" font-weight="700" fill="var(--ink)">${node.title.length > 22 ? node.title.slice(0, 20) + '...' : node.title}</text>
-              <text x="12" y="58" font-size="10" fill="var(--muted)">Nhấn để vào học →</text>
+              <text x="12" y="58" font-size="10" fill="var(--muted)">Xem tiền đề & Vào học →</text>
             </g>
           `;
         });
 
         svgEl.innerHTML = edgesSvg + nodesSvg;
 
+        // Click vào Nút: Hiển thị Kiến thức tiền đề và Khái niệm mới
         svgEl.querySelectorAll('.graph-node').forEach(g => {
           g.addEventListener('click', () => {
-            const path = g.getAttribute('data-node-path');
-            if (path) window.location.href = path;
+            const nodeId = g.getAttribute('data-node-id');
+            const node = data.nodes.find(n => n.id === nodeId);
+            if (!node) return;
+
+            const prereqsHtml = (node.prerequisites || []).map(p => `<li>${p}</li>`).join('');
+            const newHtml = (node.newConcepts || []).map(c => `<li><strong>${c}</strong></li>`).join('');
+
+            detailBox.style.display = 'block';
+            detailBox.innerHTML = `
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <div>
+                  <span class="concept-tag" style="margin-right: 6px;">${node.code}</span>
+                  <strong style="font-size: 16px;">${node.title}</strong>
+                </div>
+                <a href="${node.path}" class="btn-pill primary"><span>Vào Học Ngay</span> ${window.CP_ICONS.arrowRight}</a>
+              </div>
+              <div class="card-split" style="gap: 16px;">
+                <div style="background: var(--surface-card); padding: 12px 14px; border-radius: 4px; border: 1px solid var(--border);">
+                  <div style="font-weight: 700; color: var(--ok); margin-bottom: 6px; font-size: 13px;">✔ Bạn CẦN BIẾT gì trước khi học bài này?</div>
+                  <ul style="padding-left: 18px; font-size: 13px; color: var(--muted);">${prereqsHtml || '<li>Không có tiên quyết phức tạp</li>'}</ul>
+                </div>
+                <div style="background: var(--surface-card); padding: 12px 14px; border-radius: 4px; border: 1px solid var(--border);">
+                  <div style="font-weight: 700; color: var(--accent); margin-bottom: 6px; font-size: 13px;">✨ Khái niệm MỚI sẽ được xây dựng từ con số 0:</div>
+                  <ul style="padding-left: 18px; font-size: 13px; color: var(--muted);">${newHtml || '<li>Kiến thức nền tảng</li>'}</ul>
+                </div>
+              </div>
+            `;
+            detailBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           });
         });
 
+        // Click vào Cạnh: Hiển thị Soi Cầu Nối Tri Thức (Bridge Inspector)
         svgEl.querySelectorAll('.graph-edge').forEach(g => {
           g.addEventListener('click', () => {
             const eIdx = Number(g.getAttribute('data-edge-idx'));
             const ed = data.edges[eIdx];
-            if (ed) {
-              detailBox.style.display = 'block';
-              detailBox.innerHTML = `<strong>Sợi Dây Liên Kết [${ed.label}]:</strong> ${ed.detail}`;
-              detailBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
+            if (!ed) return;
+
+            // Highlight path
+            svgEl.querySelectorAll('.edge-path').forEach(p => p.setAttribute('stroke', 'var(--border-strong)'));
+            g.querySelector('.edge-path').setAttribute('stroke', 'var(--accent)');
+
+            detailBox.style.display = 'block';
+            detailBox.innerHTML = `
+              <div style="margin-bottom: 10px;">
+                <span class="concept-tag" style="background: var(--accent); color: #fff;">CẦU NỐI TƯ DUY</span>
+                <strong style="font-size: 15px; margin-left: 8px;">${ed.fromTitle} → ${ed.toTitle}</strong>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="padding: 10px 14px; background: var(--ok-soft); border-left: 4px solid var(--ok); border-radius: 4px; font-size: 13.5px;">
+                  <strong>1. Nền tảng đã có từ bài trước:</strong> ${ed.fromKnown}
+                </div>
+                <div style="padding: 10px 14px; background: var(--warn-soft); border-left: 4px solid var(--warn); border-radius: 4px; font-size: 13.5px;">
+                  <strong>2. Nút thắt bế tắc (Tại sao cần chuyển đổi?):</strong> ${ed.bottleneck}
+                </div>
+                <div style="padding: 10px 14px; background: var(--amber-soft); border-left: 4px solid var(--amber); border-radius: 4px; font-size: 13.5px;">
+                  <strong>3. Bước đột phá của bài mới:</strong> ${ed.solution}
+                </div>
+              </div>
+            `;
+            detailBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           });
         });
       }
@@ -280,6 +415,7 @@
       }
 
       renderAll();
+      initSvgPanZoom();
     });
   </script>
 </body>

@@ -26,31 +26,22 @@
           {
             heading: 'Ba Bước Tiếp Cận: Kệ Sách Đã Xếp Đến Thuật Toán Ngược Chiều',
             tag: 'Tối ưu cặp đôi',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Bạn và bạn mình đi mua 2 cuốn sách có tổng giá $S = 100.000đ$ trên kệ sách đã xếp từ rẻ đến đắt:</p>
-                  <ul>
-                    <li>Bạn đặt ngón tay vào cuốn <strong>rẻ nhất (bên trái cùng)</strong>.</li>
-                    <li>Bạn của bạn đặt ngón tay vào cuốn <strong>đắt nhất (bên phải cùng)</strong>.</li>
-                    <li>Nếu $\\text{Tổng} > 100k$: Cuốn đắt nhất quá đắt, ghép với cuốn rẻ nhất còn vượt ngân sách thì không thể ghép với ai khác $\\rightarrow$ dịch ngón tay phải lùi lại (<code>phai--</code>).</li>
-                    <li>Nếu $\\text{Tổng} < 100k$: Cuốn rẻ nhất quá rẻ $\\rightarrow$ dịch ngón tay trái tiến lên (<code>trai++</code>).</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Hai con trỏ (Two Pointers):</strong> Hai biến chỉ số vị trí nguyên <code>trai</code> và <code>phai</code> trỏ vào mảng.</li>
-                    <li><strong>Hai con trỏ ngược chiều:</strong> Một ngón tay đi từ đầu mảng tiến lên, một ngón tay đi từ cuối mảng lùi xuống.</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Thuật toán trên mảng đã sắp xếp tăng dần:</p>
-                  <pre class="code-pre"><code>int trai = 0, phai = n - 1;
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Bạn và bạn mình đi mua 2 cuốn sách có tổng giá $S = 100.000đ$ trên một kệ sách đã xếp giá tăng dần từ trái sang phải:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Bạn đặt ngón tay trái vào cuốn <strong>rẻ nhất (bên trái cùng)</strong>.</li>
+                  <li>Bạn của bạn đặt ngón tay phải vào cuốn <strong>đắt nhất (bên phải cùng)</strong>.</li>
+                  <li>Nếu $\\text{Tổng} > 100k$: Cuốn đắt nhất quá đắt, ghép với cuốn rẻ nhất còn vượt ngân sách thì không thể ghép với ai khác $\\rightarrow$ dịch ngón tay phải lùi lại (<code>phai--</code>).</li>
+                  <li>Nếu $\\text{Tổng} < 100k$: Cuốn rẻ nhất quá rẻ $\\rightarrow$ dịch ngón tay trái tiến lên (<code>trai++</code>).</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Thuật toán trên mảng đã sắp xếp tăng dần:</p>
+                <pre class="code-pre"><code>int trai = 0, phai = n - 1;
 while (trai < phai) {
     long long tong = a[trai] + a[phai];
     if (tong == S) {
@@ -60,12 +51,19 @@ while (trai < phai) {
     if (tong < S) trai++; // Can tang tong -> tien trai
     else phai--;          // Can giam tong -> lui phai
 }</code></pre>
-                  <p style="font-size: 13px; color: var(--muted); margin-top: 8px;">
-                    Mỗi bước lặp hoặc <code>trai</code> tăng lên 1 hoặc <code>phai</code> giảm đi 1. Khoảng cách thu hẹp tối đa $N$ bước $\rightarrow$ Thời gian chạy $O(N)$!
-                  </p>
-                </div>
-              `
-            }
+                <p style="font-size: 13.5px; color: var(--muted); margin-top: 8px;">
+                  Mỗi bước lặp hoặc <code>trai</code> tăng lên 1 hoặc <code>phai</code> giảm đi 1. Khoảng cách thu hẹp tối đa $N$ bước $\\rightarrow$ Thời gian chạy $O(N)$!
+                </p>
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Hai con trỏ (Two Pointers):</strong> Hai biến chỉ số vị trí nguyên <code>trai</code> và <code>phai</code> trỏ vào mảng.</li>
+                  <li><strong>Hai con trỏ ngược chiều:</strong> Một ngón tay đi từ đầu mảng tiến lên, một ngón tay đi từ cuối mảng lùi xuống để kẹp mục tiêu.</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [
@@ -200,32 +198,23 @@ int main() {
           {
             heading: 'Ba Bước Tiếp Cận: Con Sâu Đo Đến Khung Cửa Sổ Trượt [trai..phai]',
             tag: 'Cửa sổ trượt',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Quan sát một <strong>con sâu đo</strong> bò trên cành cây ăn lá:</p>
-                  <ul>
-                    <li>Bụng con sâu chỉ chứa được tối đa cân nặng $S$.</li>
-                    <li>Đầu con sâu (<code>phai</code>) vươn tới trước ăn thêm lá $\\rightarrow$ cân nặng tăng.</li>
-                    <li>Khi cân nặng vượt quá $S$ (bội thực), đầu sâu đứng yên, <strong>đuôi sâu (<code>trai</code>) co lại</strong>, nhả bớt lá cũ ra cho tới khi cân nặng an toàn $\\le S$.</li>
-                    <li>Đầu sâu lại tiếp tục bò tới trước.</li>
-                    <li><strong>Bản chất:</strong> Cả đầu và đuôi sâu <em>chỉ bò về phía trước</em>, không bao giờ quay lùi lại điểm xuất phát!</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Cửa sổ trượt (Sliding Window):</strong> Khung đoạn con <code>[trai..phai]</code> trượt trên mảng số.</li>
-                    <li><strong>Hai con trỏ cùng chiều:</strong> Cả hai chỉ số <code>trai</code> và <code>phai</code> đều chỉ tăng dần từ $0$ đến $N - 1$.</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Mã nguồn chuẩn mực duy trì tổng đoạn con:</p>
-                  <pre class="code-pre"><code>int trai = 0, maxLen = 0;
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Quan sát một <strong>con sâu đo</strong> bò trên cành cây ăn lá:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Bụng con sâu chỉ chứa được tối đa cân nặng $S$.</li>
+                  <li>Đầu con sâu (<code>phai</code>) vươn tới trước ăn thêm lá $\\rightarrow$ cân nặng tăng.</li>
+                  <li>Khi cân nặng vượt quá $S$ (bội thực), đầu sâu đứng yên, <strong>đuôi sâu (<code>trai</code>) co lại</strong>, nhả bớt lá cũ ra cho tới khi cân nặng an toàn $\\le S$.</li>
+                  <li>Đầu sâu lại tiếp tục bò tới trước.</li>
+                  <li><strong>Bản chất:</strong> Cả đầu và đuôi sâu <em>chỉ bò về phía trước</em>, không bao giờ quay lùi lại điểm xuất phát!</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Mã nguồn chuẩn mực duy trì tổng đoạn con:</p>
+                <pre class="code-pre"><code>int trai = 0, maxLen = 0;
 long long tong = 0;
 
 for (int phai = 0; phai < n; phai++) {
@@ -240,9 +229,16 @@ for (int phai = 0; phai < n; phai++) {
     // Doan [trai..phai] chac chan co tong <= S
     maxLen = max(maxLen, phai - trai + 1);
 }</code></pre>
-                </div>
-              `
-            }
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Cửa sổ trượt (Sliding Window):</strong> Khung đoạn con <code>[trai..phai]</code> trượt trên mảng số như thân con sâu đo co giãn.</li>
+                  <li><strong>Hai con trỏ cùng chiều:</strong> Cả hai chỉ số <code>trai</code> và <code>phai</code> đều chỉ tăng dần từ $0$ đến $N - 1$.</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [
@@ -366,30 +362,21 @@ int main() {
           {
             heading: 'Công Thức Đếm Đoạn Con & Bẫy Chết Người Khi Mảng Chứa Số Âm',
             tag: 'Bẫy thuật toán',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Nguyên lý chiếc thước kẻ và cân nặng:</p>
-                  <ul>
-                    <li>Nếu một giỏ hoa quả gồm 4 quả táo có tổng cân nặng $\le 5kg$, thì việc bạn <strong>bớt đi bớt lại quả táo ở đầu</strong> chắc chắn sẽ tạo ra những giỏ nhẹ hơn $\le 5kg$!</li>
-                    <li><strong>Số giỏ hợp lệ kết thúc ở quả cuối:</strong> Đúng bằng số quả có trong giỏ: $\text{phai} - \text{trai} + 1$.</li>
-                    <li><em>Nhưng nếu có một quả táo bay ngược trọng lực (quả táo cân nặng âm)?</em> Bỏ nó ra thì giỏ lại nặng lên, thêm nó vào thì giỏ lại nhẹ đi $\rightarrow$ Không thể biết giỏ nào nặng hơn!</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa thuật ngữ & Giới hạn áp dụng</span>
-                  <ul>
-                    <li><strong>Đơn điệu của tổng (Monotonic Sum):</strong> Các số $A_i \ge 0$ đảm bảo khi mở rộng đoạn thì tổng chỉ có thể tăng, khi thu hẹp đoạn thì tổng chỉ có thể giảm.</li>
-                    <li><strong>Bẫy số âm:</strong> Nếu mảng có số âm, Hai con trỏ <em>bị phá sản hoàn toàn</em>, bắt buộc phải dùng Prefix Sum + Data Structure (Segment Tree / Map).</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Công thức cộng dồn số lượng đoạn con:</p>
-                  <pre class="code-pre"><code>long long tongSoDoan = 0;
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Nguyên lý chiếc thước kẻ và cân nặng:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Nếu một giỏ hoa quả gồm 4 quả táo có tổng cân nặng $\\le 5kg$, thì việc bạn <strong>bớt đi bớt lại quả táo ở đầu</strong> chắc chắn sẽ tạo ra những giỏ nhẹ hơn $\\le 5kg$!</li>
+                  <li><strong>Số giỏ hợp lệ kết thúc ở quả cuối:</strong> Đúng bằng số quả có trong giỏ: $\\text{phai} - \\text{trai} + 1$.</li>
+                  <li><em>Nhưng nếu có một quả táo bay ngược trọng lực (quả táo cân nặng âm)?</em> Bỏ nó ra thì giỏ lại nặng lên, thêm nó vào thì giỏ lại nhẹ đi $\\rightarrow$ Không thể biết giỏ nào nặng hơn!</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Công thức cộng dồn số lượng đoạn con:</p>
+                <pre class="code-pre"><code>long long tongSoDoan = 0;
 for (int phai = 0; phai < n; phai++) {
     tong += a[phai];
     while (tong > S && trai <= phai) {
@@ -399,12 +386,19 @@ for (int phai = 0; phai < n; phai++) {
     // Đếm ngay (phai - trai + 1) đoạn con kết thúc tại phai:
     tongSoDoan += (phai - trai + 1);
 }</code></pre>
-                  <p style="font-size: 13px; color: var(--warn); margin-top: 8px;">
-                    <strong>Cảnh báo phòng thi:</strong> Đọc kỹ giới hạn đề bài! Nếu $A_i$ có thể âm ($A_i \ge -10^9$), cấm tuyệt đối dùng Hai con trỏ.
-                  </p>
-                </div>
-              `
-            }
+                <p style="font-size: 13px; color: var(--warn); margin-top: 8px;">
+                  <strong>Cảnh báo phòng thi:</strong> Đọc kỹ giới hạn đề bài! Nếu $A_i$ có thể âm ($A_i \\ge -10^9$), cấm tuyệt đối dùng Hai con trỏ.
+                </p>
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa thuật ngữ & Giới hạn áp dụng (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Đơn điệu của tổng (Monotonic Sum):</strong> Các số $A_i \\ge 0$ đảm bảo khi mở rộng đoạn thì tổng chỉ có thể tăng, khi thu hẹp đoạn thì tổng chỉ có thể giảm.</li>
+                  <li><strong>Bẫy số âm:</strong> Nếu mảng có số âm, Hai con trỏ <em>bị phá sản hoàn toàn</em>, bắt buộc phải dùng Prefix Sum + Data Structure (Segment Tree / Map).</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [

@@ -26,35 +26,26 @@
           {
             heading: 'Ba Bước Tiếp Cận: Sổ Ghi Chép Chi Tiêu Đến Bảng Mảng dp[]',
             tag: 'Khử đệ quy',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Bạn là thủ quỹ ghi chép tiền bạc hàng ngày:</p>
-                  <ul>
-                    <li>Nếu mỗi lần cần biết số tiền hôm nay, bạn lại <em>gọi điện hỏi người hôm qua</em>, người đó gọi hỏi ngày trước... (Đệ quy): điện thoại sẽ hết pin (Tràn Call Stack) và tốn thời gian.</li>
-                    <li><strong>Cách khôn ngoan:</strong> Bạn mua một <strong>Cuốn sổ ghi chép</strong>:
-                      <ul>
-                        <li>Ngày 0: có 1 triệu.</li>
-                        <li>Ngày 1: tra sổ ngày 0, chi 200k $\\rightarrow$ ghi vào sổ: còn 800k.</li>
-                        <li>Ngày $i$: chỉ việc <strong>tra lại trang sổ ngày $i - 1$</strong> ngay trước mặt!</li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Quy hoạch động (Dynamic Programming):</strong> <em>"Quy hoạch"</em> là lập bảng kế hoạch (mảng <code>dp[]</code>); <em>"Động"</em> là cập nhật nối tiếp dần dần từ nhỏ đến lớn.</li>
-                    <li><strong>Khử đệ quy:</strong> Biến đổi lời gọi hàm tốn bộ nhớ thành việc duyệt mảng tuần tự.</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Chuyển từ đệ quy Fibonacci sang bảng Quy hoạch động:</p>
-                  <pre class="code-pre"><code>// Quy hoạch động: O(N) thời gian, O(1) bộ nhớ
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Bạn là thủ quỹ ghi chép tiền bạc hàng ngày:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Nếu mỗi lần cần biết số tiền hôm nay, bạn lại <em>gọi điện hỏi người hôm qua</em>, người đó gọi hỏi ngày trước... (Đệ quy): điện thoại sẽ hết pin (Tràn Call Stack) và tốn thời gian.</li>
+                  <li><strong>Cách khôn ngoan:</strong> Bạn mua một <strong>Cuốn sổ ghi chép</strong>:
+                    <ul>
+                      <li>Ngày 0: có 1 triệu.</li>
+                      <li>Ngày 1: tra sổ ngày 0, chi 200k $\\rightarrow$ ghi vào sổ: còn 800k.</li>
+                      <li>Ngày $i$: chỉ việc <strong>tra lại trang sổ ngày $i - 1$</strong> ngay trước mặt!</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Chuyển từ đệ quy Fibonacci sang bảng Quy hoạch động:</p>
+                <pre class="code-pre"><code>// Quy hoạch động: O(N) thời gian, O(1) bộ nhớ
 long long dp0 = 0, dp1 = 1;
 for (int i = 2; i <= n; i++) {
     long long dp2 = (dp0 + dp1) % MOD;
@@ -62,12 +53,19 @@ for (int i = 2; i <= n; i++) {
     dp1 = dp2;
 }
 return dp1;</code></pre>
-                  <p style="font-size: 13px; color: var(--muted); margin-top: 8px;">
-                    Không còn bất kỳ một khung nhớ Call Stack nào được tạo ra. Chương trình chạy với $N = 1.000.000$ chỉ trong 0.002 giây!
-                  </p>
-                </div>
-              `
-            }
+                <p style="font-size: 13.5px; color: var(--muted); margin-top: 8px;">
+                  Không còn bất kỳ một khung nhớ Call Stack nào được tạo ra. Chương trình chạy với $N = 1.000.000$ chỉ trong 0.002 giây!
+                </p>
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Quy hoạch động (Dynamic Programming):</strong> <em>"Quy hoạch"</em> là lập bảng kế hoạch (mảng <code>dp[]</code>); <em>"Động"</em> là cập nhật nối tiếp dần dần từ nhỏ đến lớn.</li>
+                  <li><strong>Khử đệ quy:</strong> Biến đổi lời gọi hàm tốn bộ nhớ thành việc duyệt mảng tuần tự.</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [
@@ -199,31 +197,22 @@ for (int i = 3; i <= 4; i++) {
           {
             heading: 'Ba Bước Tiếp Cận: Kế Thừa Quá Khứ Đến Công Thức dp[i] = dp[L] + A[i] * (i - L)',
             tag: 'Tối ưu hóa DP',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Tính tổng chiều cao thấp nhất của các khối đá xếp hàng:</p>
-                  <ul>
-                    <li>Khi một khối đá $A_i$ mới xuất hiện, nó thấp hơn các khối đá ngay trước nó.</li>
-                    <li>Nó sẽ <strong>thay thế toàn bộ các khối đá cao hơn đứng trước</strong> trong vai trò làm "chiều cao thấp nhất" của các đoạn kết thúc tại $i$.</li>
-                    <li>Nhưng các đoạn vươn xa hơn về trước điểm $L_i$ (nơi có khối đá còn thấp hơn cả $A_i$) thì sao? <strong>Đã được tính và ghi lại trong $DP[L_i]$ từ trước!</strong></li>
-                    <li>Ta chỉ việc kế thừa lại $DP[L_i]$ mà không phải tính lại!</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Tối ưu hóa trạng thái DP (DP Optimization):</strong> Kỹ thuật dùng cấu trúc dữ liệu để giảm thời gian tìm trạng thái tốt nhất từ $O(N)$ xuống $O(1)$.</li>
-                    <li><strong>Khấu hao O(N):</strong> Ngăn xếp đơn điệu duy trì các vị trí $L$ chỉ tốn $2N$ thao tác cho cả bài toán.</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Công thức chuyển trạng thái kết hợp Monotonic Stack:</p>
-                  <pre class="code-pre"><code>stack&lt;int&gt; st; // Ngăn xếp tăng dần
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Tính tổng chiều cao thấp nhất của các khối đá xếp hàng:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Khi một khối đá $A_i$ mới xuất hiện, nó thấp hơn các khối đá ngay trước nó.</li>
+                  <li>Nó sẽ <strong>thay thế toàn bộ các khối đá cao hơn đứng trước</strong> trong vai trò làm "chiều cao thấp nhất" của các đoạn kết thúc tại $i$.</li>
+                  <li>Nhưng các đoạn vươn xa hơn về trước điểm $L_i$ (nơi có khối đá còn thấp hơn cả $A_i$) thì sao? <strong>Đã được tính và ghi lại trong $DP[L_i]$ từ trước!</strong></li>
+                  <li>Ta chỉ việc kế thừa lại $DP[L_i]$ mà không phải tính lại!</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Công thức chuyển trạng thái kết hợp Monotonic Stack:</p>
+                <pre class="code-pre"><code>stack&lt;int&gt; st; // Ngăn xếp tăng dần
 for (int i = 0; i &lt; n; i++) {
     while (!st.empty() && a[st.top()] &gt;= a[i]) {
         st.pop();
@@ -238,9 +227,16 @@ for (int i = 0; i &lt; n; i++) {
     }
     st.push(i);
 }</code></pre>
-                </div>
-              `
-            }
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Tối ưu hóa trạng thái DP (DP Optimization):</strong> Kỹ thuật dùng cấu trúc dữ liệu để giảm thời gian tìm trạng thái tốt nhất từ $O(N)$ xuống $O(1)$.</li>
+                  <li><strong>Khấu hao O(N):</strong> Ngăn xếp đơn điệu duy trì các vị trí $L$ chỉ tốn $2N$ thao tác cho cả bài toán.</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [
@@ -368,30 +364,21 @@ dp[2] = dp[L] + a[i] * (i - L);`,
           {
             heading: 'Ba Bước Tiếp Cận: Đoàn Tàu K Toa Đến Hàng Đợi Hai Đầu std::deque',
             tag: 'Cấu trúc tối thượng',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Mô hình đoàn tàu chứa $K$ hành khách ưu tiên:</p>
-                  <ul>
-                    <li>Khi tàu chạy đến ga $i$, những hành khách lên tàu từ ga cũ hơn $i - K$ <strong>bắt buộc phải xuống tàu</strong> (Hết hạn vé) $\rightarrow$ Lấy ra ở <strong>đầu tàu (front)</strong>.</li>
-                    <li>Một hành khách mới lên tàu có điểm ưu tiên rất cao: những ai ở trên tàu mà điểm ưu tiên thấp hơn người mới này <strong>sẽ bị loại khỏi danh sách xét duyệt</strong> $\rightarrow$ Đuổi ra ở <strong>đuôi tàu (back)</strong>.</li>
-                    <li>Người đứng ở đầu tàu luôn luôn là người có điểm ưu tiên cao nhất!</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Hàng đợi hai đầu (Deque - Double Ended Queue):</strong> Cấu trúc cho phép thêm và xóa ở cả hai đầu: <code>pop_front()</code> và <code>pop_back()</code> trong $O(1)$.</li>
-                    <li><strong>Monotonic Deque DP:</strong> Kỹ thuật tối ưu hóa bước chuyển DP trượt cửa sổ $K$ đưa $O(N \times K)$ về $O(N)$.</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Khung code chuẩn mực tối ưu hóa DP bằng <code>std::deque</code>:</p>
-                  <pre class="code-pre"><code>deque&lt;int&gt; dq; // Lưu chỉ số j
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Mô hình đoàn tàu chứa $K$ hành khách ưu tiên:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Khi tàu chạy đến ga $i$, những hành khách lên tàu từ ga cũ hơn $i - K$ <strong>bắt buộc phải xuống tàu</strong> (Hết hạn vé) $\\rightarrow$ Lấy ra ở <strong>đầu tàu (front)</strong>.</li>
+                  <li>Một hành khách mới lên tàu có điểm ưu tiên rất cao: những ai ở trên tàu mà điểm ưu tiên thấp hơn người mới này <strong>sẽ bị loại khỏi danh sách xét duyệt</strong> $\\rightarrow$ Đuổi ra ở <strong>đuôi tàu (back)</strong>.</li>
+                  <li>Người đứng ở đầu tàu luôn luôn là người có điểm ưu tiên cao nhất!</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Khung code chuẩn mực tối ưu hóa DP bằng <code>std::deque</code>:</p>
+                <pre class="code-pre"><code>deque&lt;int&gt; dq; // Lưu chỉ số j
 dq.push_back(0);
 
 for (int i = 1; i &lt; n; i++) {
@@ -409,9 +396,16 @@ for (int i = 1; i &lt; n; i++) {
     }
     dq.push_back(i);
 }</code></pre>
-                </div>
-              `
-            }
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Hàng đợi hai đầu (Deque - Double Ended Queue):</strong> Cấu trúc cho phép thêm và xóa ở cả hai đầu: <code>pop_front()</code> và <code>pop_back()</code> trong $O(1)$.</li>
+                  <li><strong>Monotonic Deque DP:</strong> Kỹ thuật tối ưu hóa bước chuyển DP trượt cửa sổ $K$ đưa $O(N \\times K)$ về $O(N)$.</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [

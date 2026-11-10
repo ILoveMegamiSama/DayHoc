@@ -11,19 +11,27 @@ Skill này định nghĩa quy trình vàng 6 bước để tạo mới bất k�
 
 ## 1. Nguyên Tắc Sư Phạm Bắt Buộc (Core Pedagogical Principles)
 
-1. **Khởi đầu từ Vấn đề lớn & Tách vấn đề (Problem Decomposition):**
+1. **Bước 0: Kiểm Toán Tiền Đề Theo Cây Kỹ Năng (Prerequisite Knowledge Audit):**
+   - **PHẢI LUÔN NHỚ RẰNG NGƯỜI HỌC LÀ NGƯỜI MỚI.**
+   - Trước khi viết bất kỳ bài giảng nào, bắt buộc tra cứu Cây Kỹ Năng xem bài học này nối tiếp từ bài nào, và lập danh sách:
+     * `knownConcepts`: Những hình ảnh/khái niệm người học **ĐÃ BIẾT THẬT SỰ** từ bài trước (ví dụ: từ bài MayCham, người học chỉ biết RAM là chiếc bàn làm việc, ổ cứng là tủ hồ sơ, OS, Shell, g++, hàm `main()`, mảng).
+     * `newConcepts`: Những khái niệm **MỚI TINH** cần giảng giải.
+   - **CẤM TUYỆT ĐỐI** dùng thuật ngữ mới (như Call Stack, Stack Frame, LIFO...) khi chưa dẫn dắt từ các hình ảnh cũ đã biết (ví dụ: từ "chiếc bàn làm việc RAM" ở MayCham $\rightarrow$ kê thêm "chiếc khay phụ" $\rightarrow$ chồng các khay phụ thành "Call Stack").
+
+2. **Khởi đầu từ Vấn đề lớn & Tách vấn đề (Problem Decomposition):**
    - Không mở đầu bằng công thức hay lý thuyết khô khan.
    - Luôn bắt đầu bằng một **bài toán lập trình thực tế** mà cách làm thông thường (duyệt trâu, đệ quy ngây thơ) bị **bế tắc** (TLE hoặc Stack Overflow).
    - Tách vấn đề lớn đó thành **2–3 vấn đề nhỏ độc lập ($V_1, V_2, V_3$)**, giải quyết dứt điểm từng vấn đề nhỏ rồi ghép lại thành kỹ thuật hoàn chỉnh.
 
-2. **Chuẩn 3 bước trong từng mục kiến thức (Đời sống $\rightarrow$ Lập trình $\rightarrow$ Thuật ngữ):**
+3. **Chuẩn 3 bước trong từng mục kiến thức (Đời sống $\rightarrow$ Lập trình $\rightarrow$ Thuật ngữ):**
    - **Bước 1 (Vấn đề & Cách giải quyết ngoài đời sống):** Đặt ra một tình huống đời thường tương tự mà ai cũng hình dung được (chồng đĩa, xếp hàng, con sâu đo, hỏi hàng ghế...).
    - **Bước 2 (Ánh xạ vào lập trình):** Bê nguyên cách giải quyết ngoài đời đó vào máy tính và code C++ (mô hình bộ nhớ RAM, vòng lặp, điều kiện biên).
    - **Bước 3 (Giải nghĩa tên gọi & Thuật ngữ liên kết ngược về ví dụ đời sống):** Giải thích ý nghĩa từng chữ trong tên gọi tiếng Việt và tiếng Anh, đồng thời đối chiếu rõ: *"Thuật ngữ X này chính là đồ vật/hành động Y trong ví dụ đời sống ở Bước 1"*.
 
-3. **Tiêu chuẩn Giao diện & Tương tác:**
-   - Sử dụng chung bộ hạ tầng `shared/`: hỗ trợ Chế độ Sáng / Tối (`[data-theme="dark"]`), không dùng icon màu mè (chỉ dùng SVG nét mảnh trong `shared/icons.js`).
-   - Bố cục **`.knowledge-card`** rộng toàn chiều ngang, hỗ trợ **`.card-split` (tối đa 2 cột: Lý thuyết + Minh họa cạnh nhau)**.
+4. **Tiêu chuẩn Giao diện & Tương tác:**
+   - Mặc định toàn hệ thống là **Giao diện Tối (Dark Mode)**, đồng bộ tức thì qua `localStorage['cp_dayhoc_theme']`.
+   - Bố cục **`.knowledge-card`** rộng rãi toàn chiều ngang, từng bước `.step-life`, `.step-code`, `.step-term` được bố trí thoáng đạt, không ép vào các cột hẹp gây chật chội.
+   - **Phòng thí nghiệm Dự đoán trước khi chạy (Prediction-First Sandbox):** Người học chọn dự đoán trước khi bấm Chạy Thử, sau đó mới quan sát kết quả thật từ console.
    - Bắt buộc có **Bài tập Debug tương tác (`debugExercises`)** và **Câu hỏi Trace hành vi Code (`traceCode`)**.
 
 ---

@@ -372,9 +372,10 @@ html, body {
   border: 1px solid #E5C99B;
   border-left: 4px solid var(--amber);
   border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 12px;
-  font-size: 14px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  line-height: 1.68;
 }
 
 .step-code {
@@ -382,9 +383,10 @@ html, body {
   border: 1px solid #B7DECD;
   border-left: 4px solid var(--ok);
   border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 12px;
-  font-size: 14px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  line-height: 1.68;
 }
 
 .step-term {
@@ -392,22 +394,83 @@ html, body {
   border: 1px solid var(--border-strong);
   border-left: 4px solid var(--accent);
   border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-bottom: 12px;
-  font-size: 14px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  line-height: 1.68;
 }
 
 .step-badge {
   font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
   text-transform: uppercase;
-  margin-bottom: 6px;
-  display: block;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .step-life .step-badge { color: var(--amber); }
 .step-code .step-badge { color: var(--ok); }
 .step-term .step-badge { color: var(--accent); }
+
+/* Sandbox Prediction Box & Output Placeholder */
+.sandbox-prediction-card {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-left: 4px solid var(--amber);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+}
+.prediction-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.prediction-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pred-opt-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13.5px;
+  color: var(--ink);
+  transition: all 0.15s ease;
+}
+.pred-opt-label:hover {
+  border-color: var(--border-strong);
+}
+.pred-opt-label.selected {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+.output-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--code-bg);
+  border: 1px dashed var(--code-border);
+  border-radius: var(--radius);
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--muted);
+  flex: 1;
+}
 
 /* Code and Inline Code */
 code {

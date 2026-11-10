@@ -62,17 +62,21 @@ Trong ví dụ rạp chiếu phim ở trên:
 - Người phía trước bạn cũng phải đứng đợi. Người phía trước nữa cũng phải đứng đợi.
 - Nếu hàng ghế có $1.000.000$ người, sẽ có đúng **$1.000.000$ người cùng phải đứng đợi cùng một lúc**, mỗi người cầm một mảnh giấy ghi nhớ việc chưa hoàn thành! Hành lang rạp chiếu phim sẽ bị tắc nghẽn hoàn toàn vì không đủ chỗ đứng.
 
-#### Bước 2: Ánh xạ vào lập trình C++ (Cơ chế Call Stack trên RAM)
-Bộ nhớ RAM của máy tính dành riêng một góc có dung lượng cố định (thường từ 2 MB đến 8 MB) gọi là **Vùng nhớ Ngăn Xếp Lời Gọi (Call Stack)**:
-- Mỗi khi một hàm được gọi, hệ điều hành cấp phát một ô nhớ nhỏ gọi là **Khung ngăn xếp (Stack Frame)** để lưu:
-  1. Các biến cục bộ và tham số của hàm đó (`nguoi`).
-  2. **Địa chỉ dòng lệnh cần quay về** sau khi hàm con tính xong (để thực hiện phép tính `+ 1` còn nợ nần).
-- Khi hàm `timHangGhe(N)` gọi `timHangGhe(N - 1)`, khung nhớ của `timHangGhe(N)` **vẫn bị giữ nguyên trên RAM** vì phép tính `+ 1` chưa được thực hiện!
-- Khi $N = 1.000.000$, máy tính phải xếp chồng $10^6$ khung nhớ lên nhau. Khi chiều cao vượt quá giới hạn 8 MB, máy tính lập tức ngắt chương trình để bảo vệ hệ thống.
+#### Bước 2: Ánh xạ vào lập trình C++ (Từ Bàn Làm Việc RAM ở MayCham Đến Chồng Khay Call Stack)
+Ở bài **Máy Chấm (MOD-00)**, chúng ta đã biết:
+- **RAM là "Chiếc bàn làm việc tốc độ cao"** của CPU. Khi chương trình khởi động, hàm `main()` đặt các biến cục bộ của nó lên chiếc bàn này để tính toán.
 
-#### Bước 3: Giải nghĩa tên gọi & Thuật ngữ
-- **Khung ngăn xếp lời gọi (Stack Frame):** Ứng với **tờ giấy ghi nhớ việc còn dở dang** mà mỗi người đang đứng chờ phải cầm trên tay.
-- **Tràn ngăn xếp (Stack Overflow):** Ứng với tình huống **hành lang rạp chiếu phim hết chỗ đứng**, khiến mọi người ngã đổ và sự kiện bị hủy bỏ.
+Bây giờ, chuyện gì xảy ra khi hàm `main()` gọi hàm con `tinhTong(3)`?
+1. Hàm `main()` **chưa hoàn thành việc của nó**, nên nó **không được phép xóa đồ đạc trên bàn làm việc**.
+2. Để hàm con `tinhTong(3)` có chỗ làm việc, CPU phải lấy ra một **"Chiếc khay phụ nhỏ"** kê lên trên chiếc bàn làm việc RAM. Chiếc khay này chứa biến `n = 3` và mảnh giấy ghi nhớ: *"Sau khi tính xong phải quay về main() làm tiếp"*.
+3. Hàm `tinhTong(3)` lại gọi `tinhTong(2)` $\rightarrow$ CPU lại phải lấy thêm một **chiếc khay phụ thứ hai chồng lên trên chiếc khay thứ nhất**!
+4. Cứ như vậy, mỗi tầng gọi hàm đệ quy lại làm chồng khay cao thêm một bậc.
+5. Khi hàm con tính xong, CPU dọn chiếc khay trên cùng cất đi (`pop`), trả lại không gian cho chiếc khay ngay bên dưới tiếp tục làm việc.
+
+#### Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về chiếc bàn làm việc)
+- **Khung ngăn xếp lời gọi (Stack Frame):** Chính là **mỗi chiếc khay phụ nhỏ** mà CPU kê thêm lên bàn làm việc RAM cho từng lời gọi hàm.
+- **Ngăn xếp lời gọi (Call Stack):** Chính là **toàn bộ chồng các chiếc khay phụ** đang xếp lớp trên bàn làm việc RAM.
+- **Tràn ngăn xếp (Stack Overflow):** Chiếc bàn làm việc RAM chỉ cho phép chồng khay phụ lên một chiều cao giới hạn (thường từ **2 MB đến 8 MB**). Nếu bạn để hàm gọi đệ quy sâu $1.000.000$ lần, chồng khay sẽ quá cao và **đổ sập**, hệ điều hành lập tức ngắt chương trình để bảo vệ máy tính!
 
 ---
 

@@ -51,6 +51,8 @@
     let currentModIdx = 0;
     const sandboxStates = {};
     const sandboxTabs = {};
+    const sandboxPredictions = {}; // { [sb.id]: number|null }
+    const sandboxRan = {};         // { [sb.id]: boolean }
     const debugUserSelections = {}; // { [debugId]: { selectedLine: number, selectedPatch: number, checked: boolean } }
     const multiQuizSelections = {}; // { [ansKey]: Set<number> }
 
@@ -139,9 +141,23 @@
 
     function renderSandbox(sb) {
       const state = sandboxStates[sb.id];
-      const activeTab = sandboxTabs[sb.id] || 'console';
       const built = sb.build(state);
       const highlightedCode = window.highlightCpp ? window.highlightCpp(built.code, built.changedLines || []) : escapeHtml(built.code);
+      const hasRan = !!sandboxRan[sb.id];
+      const userPred = sandboxPredictions[sb.id];
+
+      // Xác định 2 lựa chọn dự đoán
+      let opt0Text = 'Chương trình sẽ chạy êm ru, chuẩn thuật toán và in ra kết quả mong muốn';
+      let opt1Text = 'Chương trình sẽ gặp sự cố (bị sập, chạy sai logic hoặc tràn bộ nhớ)';
+      if (built.predictions && built.predictions.length >= 2) {
+        opt0Text = built.predictions[0].text;
+        opt1Text = built.predictions[1].text;
+      } else if (!built.statusOk) {
+        opt0Text = 'Chương trình vẫn chạy bình thường không gặp bất kỳ lỗi nào';
+        opt1Text = `Chương trình sẽ phát hiện lỗi / chạy bất thường: ${built.statusText}`;
+      }
+
+      const correctPredIdx = built.statusOk ? 0 : 1;
 
       const togglesHtml = (sb.toggles || []).map((t) => {
         const optsHtml = t.options.map((opt) => {
@@ -157,6 +173,57 @@
         `;
       }).join('');
 
+      const predictionBoxHtml = `
+        <div class="sandbox-prediction-card">
+          <div class="prediction-title">
+            ${window.CP_ICONS.info} <span>Bước 1: Hãy chọn dự đoán của bạn trước khi bấm Chạy Thử:</span>
+          </div>
+          <div class="prediction-options">
+            <label class="pred-opt-label ${userPred === 0 ? 'selected' : ''}">
+              <input type="radio" name="pred_${sb.id}" value="0" ${userPred === 0 ? 'checked' : ''} data-sb-pred="${sb.id}" style="margin-top: 3px;" />
+              <span><strong>A.</strong> ${opt0Text}</span>
+            </label>
+            <label class="pred-opt-label ${userPred === 1 ? 'selected' : ''}">
+              <input type="radio" name="pred_${sb.id}" value="1" ${userPred === 1 ? 'checked' : ''} data-sb-pred="${sb.id}" style="margin-top: 3px;" />
+              <span><strong>B.</strong> ${opt1Text}</span>
+            </label>
+          </div>
+        </div>
+      `;
+
+      let outputPaneContent = '';
+      if (!hasRan) {
+        outputPaneContent = `
+          <div class="output-placeholder">
+            <div style="font-size: 28px; margin-bottom: 8px;">⏳</div>
+            <strong style="color: var(--code-ink); font-size: 14px;">Chưa Chạy Mô Phỏng</strong>
+            <p style="font-size: 13px; color: #8B949E; margin-top: 6px; max-width: 340px;">
+              Hãy chọn 1 dự đoán ở Bước 1 phía trên, sau đó bấm nút <strong>▶ Chạy Thử</strong> để đối chiếu kết quả thực tế từ máy tính!
+            </p>
+          </div>
+        `;
+      } else {
+        let statusBanner = '';
+        if (userPred !== null && userPred !== undefined) {
+          const isPredCorrect = userPred === correctPredIdx;
+          if (isPredCorrect) {
+            statusBanner = `<div class="output-status ok">🎉 DỰ ĐOÁN CHÍNH XÁC! ${built.statusText}</div>`;
+          } else {
+            statusBanner = `<div class="output-status bug">💡 DỰ ĐOÁN CHƯA KHỚP THỰC TẾ: ${built.statusText}</div>`;
+          }
+        } else {
+          statusBanner = `<div class="output-status ${built.statusOk ? 'ok' : 'bug'}">${built.statusOk ? '✔ CHUẨN THUẬT TOÁN: ' : '⚠ PHÁT HIỆN VẤN ĐỀ: '}${built.statusText}</div>`;
+        }
+
+        outputPaneContent = `
+          ${statusBanner}
+          <div class="output-content">${escapeHtml(built.console)}</div>
+          <div style="font-size: 13px; color: var(--muted); margin-top: 8px;">
+            <strong>Giải thích cơ chế máy tính:</strong> ${built.explain}
+          </div>
+        `;
+      }
+
       return `
         <div class="sandbox-card" id="sandbox-${sb.id}">
           <div class="sandbox-top">
@@ -170,6 +237,7 @@
             </div>
           </div>
           <div class="sandbox-toggles">${togglesHtml}</div>
+          ${predictionBoxHtml}
           <div class="sandbox-body">
             <div class="code-pane">
               <div class="code-pane-header">
@@ -179,13 +247,7 @@
               <pre class="code-pre"><code>${highlightedCode}</code></pre>
             </div>
             <div class="output-pane">
-              <div class="output-status ${built.statusOk ? 'ok' : 'bug'}">
-                ${built.statusOk ? '✔ CHUẨN THUẬT TOÁN: ' : '⚠ PHÁT HIỆN VẤN ĐỀ: '}${built.statusText}
-              </div>
-              <div class="output-content">${escapeHtml(built.console)}</div>
-              <div style="font-size: 13px; color: var(--muted);">
-                <strong>Giải thích cơ chế:</strong> ${built.explain}
-              </div>
+              ${outputPaneContent}
             </div>
           </div>
         </div>
@@ -518,6 +580,17 @@
           const key = btn.getAttribute('data-key');
           const val = btn.getAttribute('data-val');
           sandboxStates[sbId][key] = val;
+          sandboxRan[sbId] = false;
+          sandboxPredictions[sbId] = null;
+          renderBody();
+        });
+      });
+
+      // Sandbox: Chọn Dự Đoán
+      container.querySelectorAll('[data-sb-pred]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+          const sbId = radio.getAttribute('data-sb-pred');
+          sandboxPredictions[sbId] = Number(radio.value);
           renderBody();
         });
       });
@@ -542,6 +615,8 @@
       // Run Sandbox
       container.querySelectorAll('[data-run-sb]').forEach((btn) => {
         btn.addEventListener('click', () => {
+          const sbId = btn.getAttribute('data-run-sb');
+          sandboxRan[sbId] = true;
           renderBody();
           showToast('Đã chạy mô phỏng và cập nhật kết quả!');
         });

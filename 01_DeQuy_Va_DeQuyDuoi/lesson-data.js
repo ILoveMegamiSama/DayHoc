@@ -26,43 +26,44 @@
           {
             heading: 'Ba Bước Tiếp Cận: Từ Chuyện Hỏi Hàng Ghế Đến Khái Niệm Đệ Quy',
             tag: 'Phương pháp sư phạm',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Bạn ngồi trong rạp chiếu phim tối và muốn biết mình ở <strong>hàng ghế số mấy</strong>:</p>
-                  <ul>
-                    <li>Bạn vỗ vai người phía trước hỏi: <em>"Bạn ngồi hàng số mấy?"</em>.</li>
-                    <li>Người đó cũng không biết, lại hỏi tiếp người phía trước nữa.</li>
-                    <li>Câu hỏi chuyền dần lên tới <strong>người ngồi hàng đầu tiên</strong>. Người này biết ngay mình ở hàng 1 mà không cần hỏi ai.</li>
-                    <li>Đáp án được báo ngược về sau: mỗi người lấy số của người trước rồi <strong>cộng thêm 1</strong> để trả lời cho người sau mình.</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Đệ quy (Recursion):</strong> Chữ <em>"Đệ"</em> là chuyển tiếp từng cấp (vỗ vai người trước); chữ <em>"Quy"</em> là quay ngược trở về gốc (chuyền đáp án từ hàng 1 về lại bạn).</li>
-                    <li><strong>Điều kiện dừng (Base case):</strong> Ứng với người ngồi hàng 1, nơi có sẵn đáp án mà không cần hỏi tiếp ai nữa.</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Diễn đạt quy trình trên bằng một hàm nhận số hiệu và tự gọi lại chính nó:</p>
-                  <pre class="code-pre"><code>int timHang(int nguoi) {
-    // Điểm dừng: Người hàng đầu biết ngay đáp án
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Bạn ngồi trong rạp chiếu phim tối và muốn biết mình đang ngồi ở <strong>hàng ghế số mấy</strong>:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Bạn vỗ vai người phía trước hỏi: <em>"Bạn ngồi hàng số mấy?"</em>.</li>
+                  <li>Người đó cũng không biết, họ lại quay lên vỗ vai hỏi tiếp người phía trước nữa.</li>
+                  <li>Câu hỏi chuyền dần lên tới <strong>người ngồi hàng đầu tiên</strong>. Người này biết ngay mình ở hàng 1 mà không cần hỏi ai.</li>
+                  <li>Đáp án được báo ngược về sau: mỗi người lấy số của người trước rồi <strong>cộng thêm 1</strong> để trả lời cho người sau mình.</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Diễn đạt quy trình trên bằng một hàm nhận số hiệu và tự gọi lại chính nó:</p>
+                <pre class="code-pre"><code>int timHang(int nguoi) {
+    // 1. Điểm dừng (Base case): Người hàng đầu biết ngay đáp án
     if (nguoi == 1) return 1;
 
-    // Tự gọi lại chính nó với bài toán nhỏ hơn
+    // 2. Tự gọi lại chính nó với bài toán nhỏ hơn và cộng dồn khi nhận kết quả
     return timHang(nguoi - 1) + 1;
 }</code></pre>
-                  <p style="margin-top: 8px; font-size: 13px; color: var(--muted);">
-                    <strong>Cảnh báo:</strong> Nếu xóa dòng <code>if (nguoi == 1)</code>, hàm sẽ hỏi người 0, người -1... mãi mãi cho đến khi chương trình bị ép dừng!
-                  </p>
-                </div>
-              `
-            }
+                <p style="margin-top: 8px; font-size: 13.5px; color: var(--muted);">
+                  <strong>Cảnh báo sống còn:</strong> Nếu xóa dòng kiểm tra <code>if (nguoi == 1)</code>, hàm sẽ hỏi người 0, người -1... mãi mãi cho đến khi chương trình bị ép dừng!
+                </p>
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Đệ quy (Recursion):</strong>
+                    <br>• Chữ <em>"Đệ"</em>: Trong tiếng Hán-Việt có nghĩa là chuyển tiếp, nối tiếp nhau theo từng bậc (như đệ trình, sư đệ). Ứng với hành động <strong>vỗ vai chuyền câu hỏi lên người phía trước</strong>.
+                    <br>• Chữ <em>"Quy"</em>: Có nghĩa là quay ngược trở về gốc (như quy tụ, hồi quy). Ứng với hành động <strong>chuyền ngược đáp án từ hàng 1 về lại vị trí của bạn</strong>.
+                  </li>
+                  <li style="margin-top: 8px;"><strong>Điều kiện dừng (Base case):</strong> Ứng với <strong>người ngồi hàng số 1</strong> trong ví dụ, nơi có sẵn đáp số mà không cần chuyền câu hỏi đi tiếp.</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [
@@ -182,41 +183,43 @@ int main() {
         },
         cards: [
           {
-            heading: 'Cơ Chế Khung Nhớ (Stack Frame) Và Nợ Nần Tính Toán',
+            heading: 'Cơ Chế Chiếc Khay Phụ Trên Bàn Làm Việc RAM & Nợ Nần Tính Toán',
             tag: 'Bản chất hệ thống',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Khi bạn hỏi người phía trước, bạn <strong>chưa thể bỏ đi</strong>:</p>
-                  <ul>
-                    <li>Bạn phải đứng nguyên tại chỗ cầm tờ giấy ghi: <em>"Đang nợ phép tính: Lấy kết quả người trước cộng thêm 1"</em>.</li>
-                    <li>Người thứ 2 cũng đứng chờ cầm tờ giấy. Người thứ 3 cũng vậy...</li>
-                    <li>Nếu hàng có <strong>100.000 người</strong> cùng đứng chờ trong hành lang chật hẹp, hành lang sẽ vỡ trận vì hết chỗ chứa người đứng đợi!</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Khung ngăn xếp (Stack Frame):</strong> Ứng với tờ giấy ghi nhớ việc còn dở mà mỗi người phải cầm khi đứng đợi.</li>
-                    <li><strong>Tràn ngăn xếp (Stack Overflow):</strong> Ứng với hành lang rạp bị quá tải chỗ đứng, hệ điều hành buộc phải đóng cửa chương trình.</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Mỗi lần gọi <code>tinhTong(n - 1) + n</code>, máy tính lưu vào Call Stack:</p>
-                  <pre class="code-pre"><code>| Stack Frame 3: n = 3 (chờ n=2) còn nợ "+ 3" |  <- Đỉnh Stack
-| Stack Frame 2: n = 2 (chờ n=1) còn nợ "+ 2" |
-| Stack Frame 1: n = 1 (chờ n=0) còn nợ "+ 1" |
-| Stack Frame 0: main() gọi tinhTong(3)       |  <- Đáy Stack</code></pre>
-                  <p style="font-size: 13.5px; margin-top: 8px;">
-                    Dung lượng Call Stack mặc định chỉ khoảng <strong>2 MB – 8 MB</strong>. Mỗi Stack Frame tốn khoảng 32–64 byte. Khi gọi sâu $10^5 - 10^6$ tầng, Call Stack lập tức hết sạch chỗ!
-                  </p>
-                </div>
-              `
-            }
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Khi bạn hỏi người phía trước, bạn <strong>chưa thể bỏ đi</strong>:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Bạn phải đứng nguyên tại chỗ cầm tờ giấy ghi: <em>"Đang nợ phép tính: Lấy kết quả người trước cộng thêm 1"</em>.</li>
+                  <li>Người thứ 2 cũng đứng chờ cầm tờ giấy. Người thứ 3 cũng vậy...</li>
+                  <li>Nếu hàng có <strong>100.000 người</strong> cùng đứng chờ trong hành lang chật hẹp, hành lang sẽ vỡ trận vì hết chỗ chứa người đứng đợi!</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++ (Từ Bàn Làm Việc RAM ở MayCham Đến Chồng Khay)</span>
+                <p>Ở bài <strong>Máy Chấm (MOD-00)</strong>, bạn đã biết: <strong>RAM là chiếc bàn làm việc tốc độ cao của CPU</strong>, nơi hàm <code>main()</code> để các biến của nó lên bàn để tính. Bây giờ, chuyện gì xảy ra khi hàm <code>main()</code> gọi hàm con <code>tinhTong(3)</code>?</p>
+                <ol style="margin: 8px 0 0 20px; font-size: 14.5px;">
+                  <li>Hàm <code>main()</code> <strong>chưa làm xong việc của nó</strong>, nên nó <strong>không được phép xóa đồ trên bàn làm việc</strong>.</li>
+                  <li>Để hàm con <code>tinhTong(3)</code> có chỗ làm việc, CPU phải lấy một <strong>"Chiếc khay phụ nhỏ"</strong> kê lên trên chiếc bàn làm việc RAM. Chiếc khay này chứa biến <code>n = 3</code> và tờ giấy nợ: <em>"Sau khi tính xong phải lấy kết quả cộng với 3 rồi báo về main()"</em>.</li>
+                  <li>Hàm <code>tinhTong(3)</code> lại gọi <code>tinhTong(2)</code> $\\rightarrow$ CPU lại lấy thêm <strong>chiếc khay phụ thứ hai chồng lên trên chiếc khay thứ nhất</strong>!</li>
+                  <li>Cứ mỗi lần gọi đệ quy, CPU lại phải kê thêm một chiếc khay phụ chồng cao dần lên trên chiếc bàn làm việc RAM!</li>
+                </ol>
+                <pre class="code-pre" style="margin-top: 12px;"><code>| Khay phụ 3: n = 3 (chờ n=2) nợ phép "+ 3" |  <- Đỉnh ngăn xếp
+| Khay phụ 2: n = 2 (chờ n=1) nợ phép "+ 2" |
+| Khay phụ 1: n = 1 (chờ n=0) nợ phép "+ 1" |
+| Khay phụ 0: main() đang chờ               |  <- Đáy ngăn xếp</code></pre>
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về chiếc bàn làm việc RAM)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Khung ngăn xếp (Stack Frame):</strong> Chính là <strong>mỗi chiếc khay phụ nhỏ</strong> mà CPU kê thêm lên chiếc bàn làm việc RAM cho từng lượt gọi hàm.</li>
+                  <li><strong>Ngăn xếp lời gọi (Call Stack):</strong> Chính là <strong>toàn bộ chồng các chiếc khay phụ</strong> đang xếp lớp trên bàn làm việc RAM.</li>
+                  <li><strong>Tràn ngăn xếp (Stack Overflow):</strong> Chiếc bàn làm việc RAM chỉ cho phép chồng khay phụ lên một độ cao giới hạn (thường từ <strong>2 MB đến 8 MB</strong>). Khi bạn để hàm gọi đệ quy sâu $1.000.000$ tầng, chồng khay quá cao sẽ <strong>đổ sập</strong>, hệ điều hành lập tức tắt chương trình để bảo vệ hệ thống!</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [
@@ -342,45 +345,43 @@ int main() {
           {
             heading: 'Biến Tích Lũy (Accumulator) & Cơ Chế Tối Ưu Hóa TCO',
             tag: 'Kỹ thuật cốt lõi',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Làm sao để không ai phải đứng chờ trong hành lang?</p>
-                  <ul>
-                    <li>Bạn cầm theo một <strong>Cuốn sổ tổng kết</strong>.</li>
-                    <li>Khi vỗ vai người phía trước, bạn ghi luôn vào sổ: <em>"Đến tôi là 1 người rồi nhé"</em>, trao luôn cuốn sổ cho người đó và <strong>bạn đi về nhà nghỉ ngơi ngay lập tức</strong>!</li>
-                    <li>Người tiếp theo cộng thêm họ thành 2, chuyền tiếp cho người trên rồi cũng về nhà.</li>
-                    <li>Đến người hàng 1, cuốn sổ đã có sẵn kết quả cuối cùng.</li>
-                    <li><strong>Bản chất:</strong> Tại bất kỳ giây nào, chỉ có <strong>đúng 1 người</strong> đang cầm sổ làm việc!</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Đệ quy đuôi (Tail Recursion):</strong> Chữ <em>"Đuôi"</em> nghĩa là lời gọi hàm nằm ở vị trí chót cùng tuyệt đối, không còn phép tính nào đứng sau.</li>
-                    <li><strong>Biến tích lũy (Accumulator):</strong> Cuốn sổ chuyền tay mang theo tổng kết quả trung gian.</li>
-                    <li><strong>TCO (Tail Call Optimization):</strong> Trình biên dịch tái sử dụng chính ô nhớ hiện tại thành vòng lặp, tiêu tốn $O(1)$ bộ nhớ!</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Cú pháp đệ quy đuôi chuẩn mực với tham số <code>tichLuy</code>:</p>
-                  <pre class="code-pre"><code>long long tongDuoi(long long n, long long tichLuy = 0) {
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Làm sao để không ai phải đứng chờ trong hành lang?</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Bạn chuẩn bị sẵn một <strong>Cuốn sổ tổng kết</strong>.</li>
+                  <li>Khi vỗ vai người phía trước, bạn ghi luôn vào sổ: <em>"Đến tôi là 1 người rồi nhé"</em>, trao luôn cuốn sổ cho người đó và <strong>bạn đi về nhà nghỉ ngơi ngay lập tức</strong>!</li>
+                  <li>Người tiếp theo nhận sổ, cộng thêm họ thành 2, chuyền tiếp cho người trên rồi cũng về nhà luôn.</li>
+                  <li>Đến người hàng 1, cuốn sổ đã có sẵn kết quả cuối cùng.</li>
+                  <li><strong>Bản chất:</strong> Tại bất kỳ giây nào, trong rạp chỉ có <strong>đúng 1 người</strong> đang cầm sổ làm việc, không ai phải đứng chờ!</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Cú pháp đệ quy đuôi chuẩn mực với tham số tích lũy <code>tichLuy</code>:</p>
+                <pre class="code-pre"><code>long long tongDuoi(long long n, long long tichLuy = 0) {
     if (n <= 0) return tichLuy; // Co san ket qua trong so
 
     // Lời gọi đệ quy là hành động CUỐI CÙNG TUYỆT ĐỐI!
     // Phep cong duoc thuc hien TRUOC khi goi ham:
     return tongDuoi(n - 1, tichLuy + n);
 }</code></pre>
-                  <p style="font-size: 13.5px; margin-top: 8px;">
-                    Khi biên dịch với cờ <code>-O2</code>, <code>g++</code> tự động chuyển hàm này thành lệnh nhảy vòng lặp trong mã máy. Gọi $N = 10^8$ lần vẫn êm ru!
-                  </p>
-                </div>
-              `
-            }
+                <p style="font-size: 13.5px; margin-top: 8px;">
+                  Khi biên dịch với cờ <code>-O2</code>, <code>g++</code> tự động chuyển hàm này thành lệnh nhảy vòng lặp trong mã máy (tái sử dụng đúng 1 chiếc khay phụ duy nhất). Gọi $N = 10^8$ lần vẫn chạy êm ru trong vài phần nghìn giây!
+                </p>
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Đệ quy đuôi (Tail Recursion):</strong> Chữ <em>"Đuôi"</em> nghĩa là lời gọi hàm nằm ở vị trí chót cùng tuyệt đối, sau khi gọi xong không còn bất kỳ phép tính nào đứng sau.</li>
+                  <li><strong>Biến tích lũy (Accumulator):</strong> Chính là <strong>cuốn sổ tổng kết chuyền tay</strong> mang theo kết quả trung gian đẩy dần về phía trước.</li>
+                  <li><strong>TCO (Tail Call Optimization):</strong> Trình biên dịch tái sử dụng chính ô nhớ hiện tại thành vòng lặp, tiêu tốn $O(1)$ bộ nhớ!</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [

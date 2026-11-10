@@ -26,40 +26,38 @@
           {
             heading: 'Ba Bước Tiếp Cận: Từ Chồng Đĩa Rửa Bát Đến Thao Tác std::stack',
             tag: 'Cấu trúc dữ liệu',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Quan sát một <strong>chồng đĩa rửa bát</strong> trong gian bếp:</p>
-                  <ul>
-                    <li>Chiếc đĩa bạn vừa rửa xong sạch sẽ được đặt lên <strong>trên cùng</strong> của chồng đĩa.</li>
-                    <li>Khi gia đình dọn cơm ăn, chiếc đĩa được lấy ra đầu tiên chính là <strong>chiếc đĩa đặt vào sau cùng</strong>.</li>
-                    <li>Chiếc đĩa đặt vào đầu tiên nằm dưới đáy chỉ được lấy ra khi toàn bộ đĩa phía trên đã lấy hết.</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Ngăn xếp (Stack):</strong> <em>"Ngăn"</em> là nơi chứa, <em>"Xếp"</em> là xếp chồng các phần tử lên nhau từ đáy lên đỉnh.</li>
-                    <li><strong>LIFO (Last In, First Out):</strong> <em>"Vào sau - Ra trước"</em>, chiếc đĩa vào sau cùng lấy ra đầu tiên.</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Các thao tác cốt lõi của <code>std::stack</code> trong thư viện <code>&lt;stack&gt;</code>:</p>
-                  <pre class="code-pre"><code>stack&lt;char&gt; st;
-st.push('(');    // Đặt ngoặc '(' lên đỉnh
-char c = st.top(); // Xem phần tử ở đỉnh (Cần check !st.empty())
-st.pop();        // Lấy phần tử đỉnh ra vứt đi
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Quan sát một <strong>chồng đĩa rửa bát</strong> trong gian bếp:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Chiếc đĩa bạn vừa rửa xong sạch sẽ được đặt lên <strong>trên cùng</strong> của chồng đĩa.</li>
+                  <li>Khi gia đình dọn cơm ăn, chiếc đĩa được lấy ra đầu tiên chính là <strong>chiếc đĩa đặt vào sau cùng</strong>.</li>
+                  <li>Chiếc đĩa đặt vào đầu tiên nằm dưới đáy chỉ được lấy ra khi toàn bộ đĩa phía trên đã lấy hết.</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Các thao tác cốt lõi của <code>std::stack</code> trong thư viện <code>&lt;stack&gt;</code>:</p>
+                <pre class="code-pre"><code>stack&lt;char&gt; st;
+st.push('(');        // Đặt ngoặc '(' lên đỉnh
+char c = st.top();   // Xem phần tử ở đỉnh (Cần check !st.empty())
+st.pop();            // Lấy phần tử đỉnh ra vứt đi
 bool r = st.empty(); // Kiểm tra ngăn xếp có rỗng không</code></pre>
-                  <p style="margin-top: 8px; font-size: 13.5px; color: var(--muted);">
-                    <strong>Cảnh báo sống còn:</strong> Tuyệt đối không gọi <code>st.top()</code> hoặc <code>st.pop()</code> khi <code>st.empty() == true</code>! Điều này sẽ gây lỗi Crash chương trình ngay lập tức.
-                  </p>
-                </div>
-              `
-            }
+                <p style="margin-top: 8px; font-size: 13.5px; color: var(--muted);">
+                  <strong>Cảnh báo sống còn:</strong> Tuyệt đối không gọi <code>st.top()</code> hoặc <code>st.pop()</code> khi <code>st.empty() == true</code>! Điều này sẽ gây lỗi Crash chương trình ngay lập tức.
+                </p>
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Ngăn xếp (Stack):</strong> <em>"Ngăn"</em> là nơi chứa, <em>"Xếp"</em> là xếp chồng các phần tử lên nhau từ đáy lên đỉnh.</li>
+                  <li><strong>LIFO (Last In, First Out):</strong> <em>"Vào sau - Ra trước"</em>, chiếc đĩa vào sau cùng lấy ra đầu tiên.</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [
@@ -201,31 +199,22 @@ int main() {
           {
             heading: 'Ba Bước Tiếp Cận: Hàng Người Xếp Dọc Đến Vòng Lặp Duy Trì Tính Đơn Điệu',
             tag: 'Thuật toán tối ưu',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Một nhóm người xếp hàng dọc nhìn về phía trước:</p>
-                  <ul>
-                    <li>Một người mới cao <strong>1m80</strong> bước vào đứng ở vị trí $i$.</li>
-                    <li>Những người đứng ngay trước người này chỉ cao <strong>1m60, 1m65</strong>.</li>
-                    <li><strong>Hỏi:</strong> Đối với tất cả những người đến sau $i$, liệu có ai còn nhìn thấy các bạn $1m60, 1m65$ nữa không?</li>
-                    <li><strong>Trả lời:</strong> <em>Không bao giờ!</em> Người $1m80$ đã che khuất họ hoàn toàn. Do đó, ta có thể mời ngay các bạn bị che khuất rời khỏi danh sách chờ.</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa tên gọi & Thuật ngữ</span>
-                  <ul>
-                    <li><strong>Ngăn xếp đơn điệu (Monotonic Stack):</strong> <em>"Đơn"</em> là một, <em>"Điệu"</em> là chiều hướng. Các phần tử trong ngăn xếp chỉ tăng dần hoặc chỉ giảm dần.</li>
-                    <li><strong>Bất biến (Invariant):</strong> Các phần tử trong ngăn xếp luôn giảm dần từ đáy lên đỉnh; đỉnh luôn là phần tử lớn hơn gần nhất.</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Mã nguồn tìm phần tử lớn hơn gần nhất bên trái:</p>
-                  <pre class="code-pre"><code>stack&lt;int&gt; st;
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Một nhóm người xếp hàng dọc nhìn về phía trước:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Một người mới cao <strong>1m80</strong> bước vào đứng ở vị trí $i$.</li>
+                  <li>Những người đứng ngay trước người này chỉ cao <strong>1m60, 1m65</strong>.</li>
+                  <li><strong>Hỏi:</strong> Đối với tất cả những người đến sau $i$, liệu có ai còn nhìn thấy các bạn $1m60, 1m65$ nữa không?</li>
+                  <li><strong>Trả lời:</strong> <em>Không bao giờ!</em> Người $1m80$ đã che khuất họ hoàn toàn. Do đó, ta có thể mời ngay các bạn bị che khuất rời khỏi danh sách chờ.</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Mã nguồn tìm phần tử lớn hơn gần nhất bên trái:</p>
+                <pre class="code-pre"><code>stack&lt;int&gt; st;
 for (int i = 0; i &lt; n; i++) {
     // Đuổi tất cả những phần tử bị a[i] che khuất
     while (!st.empty() && st.top() &lt;= a[i]) {
@@ -237,9 +226,16 @@ for (int i = 0; i &lt; n; i++) {
     // Đẩy a[i] vào để làm người che khuất tiếp theo
     st.push(a[i]);
 }</code></pre>
-                </div>
-              `
-            }
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa tên gọi & Thuật ngữ (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Ngăn xếp đơn điệu (Monotonic Stack):</strong> <em>"Đơn"</em> là một, <em>"Điệu"</em> là chiều hướng. Các phần tử trong ngăn xếp chỉ tăng dần hoặc chỉ giảm dần từ đáy lên đỉnh.</li>
+                  <li><strong>Bất biến (Invariant):</strong> Các phần tử trong ngăn xếp luôn giảm dần từ đáy lên đỉnh; đỉnh luôn là phần tử lớn hơn gần nhất.</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [
@@ -370,28 +366,20 @@ int main() {
           {
             heading: 'Lưu Chỉ Số Vị Trí & Khấu Hao O(N) Trong Bài Toán Histogram',
             tag: 'Ghép nối kỹ thuật',
-            split: {
-              left: `
-                <div class="step-life">
-                  <span class="step-badge">Bước 1: Tình huống đời sống bình thường</span>
-                  <p>Khoảng cách và vị trí cột mốc:</p>
-                  <ul>
-                    <li>Nếu bạn chỉ nhớ <em>"người cao hơn đứng trước cao 1m85"</em>, bạn không biết họ đứng cách bạn bao xa.</li>
-                    <li>Nếu bạn ghi nhớ <strong>"người đó đứng ở vị trí cọc số 2"</strong>, bạn biết ngay khoảng cách từ cọc của bạn ($i = 6$) đến họ là: $6 - 2 - 1 = 3$ bước chân!</li>
-                  </ul>
-                </div>
-                <div class="step-term">
-                  <span class="step-badge">Bước 3: Giải nghĩa thuật ngữ & Độ phức tạp</span>
-                  <ul>
-                    <li><strong>Độ phức tạp khấu hao (Amortized O(1)):</strong> Mỗi chỉ số chỉ vào stack 1 lần và ra tối đa 1 lần. Tổng số thao tác pop trên cả $N$ bước $\le N$. Tổng chi phí: $2N$ thao tác $\rightarrow O(N)$!</li>
-                  </ul>
-                </div>
-              `,
-              right: `
-                <div class="step-code">
-                  <span class="step-badge">Bước 2: Ánh xạ vào lập trình C++</span>
-                  <p>Đẩy chỉ số <code>i</code> vào ngăn xếp thay vì giá trị:</p>
-                  <pre class="code-pre"><code>stack&lt;int&gt; st; // Lưu CHỈ SỐ i
+            html: `
+              <div class="step-life">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tình huống đời sống bình thường</span>
+                <p>Khoảng cách và vị trí cột mốc:</p>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li>Nếu bạn chỉ nhớ <em>"người cao hơn đứng trước cao 1m85"</em>, bạn không biết họ đứng cách bạn bao xa.</li>
+                  <li>Nếu bạn ghi nhớ <strong>"người đó đứng ở vị trí cọc số 2"</strong>, bạn biết ngay khoảng cách từ cọc của bạn ($i = 6$) đến họ là: $6 - 2 - 1 = 3$ bước chân!</li>
+                </ul>
+              </div>
+
+              <div class="step-code">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
+                <p>Đẩy chỉ số <code>i</code> vào ngăn xếp thay vì giá trị:</p>
+                <pre class="code-pre"><code>stack&lt;int&gt; st; // Lưu CHỈ SỐ i
 for (int i = 0; i &lt; n; i++) {
     while (!st.empty() && h[st.top()] &gt;= h[i]) {
         st.pop();
@@ -400,12 +388,18 @@ for (int i = 0; i &lt; n; i++) {
     L[i] = st.empty() ? -1 : st.top();
     st.push(i);
 }</code></pre>
-                  <p style="font-size: 13.5px; margin-top: 8px;">
-                    Diện tích hình chữ nhật lớn nhất tạo bởi cột $h[i]$: $\text{DienTich} = h[i] \times (R[i] - L[i] - 1)$.
-                  </p>
-                </div>
-              `
-            }
+                <p style="font-size: 13.5px; margin-top: 8px;">
+                  Diện tích hình chữ nhật lớn nhất tạo bởi cột $h[i]$: $\\text{DienTich} = h[i] \\times (R[i] - L[i] - 1)$.
+                </p>
+              </div>
+
+              <div class="step-term">
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.info : ''} Bước 3: Giải nghĩa thuật ngữ & Độ phức tạp (Liên kết ngược về Bước 1)</span>
+                <ul style="margin: 8px 0 0 20px;">
+                  <li><strong>Độ phức tạp khấu hao (Amortized O(1)):</strong> Mỗi chỉ số chỉ vào stack 1 lần và ra tối đa 1 lần. Tổng số thao tác pop trên cả $N$ bước $\\le N$. Tổng chi phí: $2N$ thao tác $\\rightarrow O(N)$!</li>
+                </ul>
+              </div>
+            `
           }
         ],
         sandboxes: [

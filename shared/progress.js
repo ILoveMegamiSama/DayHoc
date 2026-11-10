@@ -11,7 +11,7 @@
   const defaultProgress = {
     version: 1,
     updatedAt: new Date().toISOString(),
-    theme: 'light',
+    theme: 'dark',
     quizzes: {}, // { [lessonId_modId_qIdx]: { answer: number|number[], isCorrect: boolean } }
     debugs: {},  // { [lessonId_debugId]: boolean }
     problems: {}, // { [lessonId_probId]: boolean }
@@ -213,8 +213,12 @@
 
   function applyTheme(themeName) {
     if (typeof document === 'undefined') return;
-    const theme = themeName === 'dark' ? 'dark' : 'light';
+    const theme = themeName === 'light' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', theme);
+    const ls = getLocalStorage();
+    if (ls) {
+      try { ls.setItem('cp_dayhoc_theme', theme); } catch {}
+    }
     const p = loadProgress();
     if (p.theme !== theme) {
       saveProgress({ theme });
@@ -222,7 +226,7 @@
   }
 
   function toggleTheme() {
-    const current = (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme')) || 'light';
+    const current = (typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme')) || 'dark';
     const next = current === 'dark' ? 'light' : 'dark';
     applyTheme(next);
     return next;
@@ -230,8 +234,19 @@
 
   // Khởi động theme ban đầu
   if (typeof document !== 'undefined') {
-    const p = loadProgress();
-    applyTheme(p.theme || 'light');
+    let initialTheme = 'dark';
+    const ls = getLocalStorage();
+    if (ls) {
+      try {
+        const storedTheme = ls.getItem('cp_dayhoc_theme');
+        if (storedTheme) initialTheme = storedTheme;
+        else {
+          const p = loadProgress();
+          if (p && p.theme) initialTheme = p.theme;
+        }
+      } catch {}
+    }
+    applyTheme(initialTheme);
   }
 
   const CP_PROGRESS = {

@@ -121,6 +121,7 @@
 
   if (typeof window !== 'undefined') {
     window.highlightCpp = highlightCpp;
+    window.highlightCppLine = highlightCppLine;
     window.highlightInlineCodeSnippet = highlightInlineCodeSnippet;
     window.highlightAllInlineCode = highlightAllInlineCode;
   }

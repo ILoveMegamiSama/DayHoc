@@ -354,7 +354,10 @@
         let codeSnippetHtml = '';
         if (qItem.traceCode) {
           const lines = String(qItem.traceCode).split('\n');
-          const numbered = lines.map((l, i) => `<span class="code-line"><span class="line-no">${i + 1}</span>${escapeHtml(l)}</span>`).join('\n');
+          const numbered = lines.map((l, i) => {
+            const lineContent = window.highlightCppLine ? window.highlightCppLine(l) : escapeHtml(l);
+            return `<span class="code-line"><span class="line-no">${i + 1}</span>${lineContent}</span>`;
+          }).join('\n');
           codeSnippetHtml = `<div class="quiz-trace-code"><pre style="margin:0;"><code>${numbered}</code></pre></div>`;
         }
 

@@ -32,8 +32,8 @@
   --surface-elevated: #21242B;
   --border: #2B2E37;
   --border-strong: #3E4350;
-  --ink: #E6E8EC;
-  --muted: #9BA1AB;
+  --ink: #F0F2F5;
+  --muted: #A3AAB5;
   --accent: #E06C50;
   --accent-hover: #F07E63;
   --accent-soft: #2D1D19;
@@ -47,6 +47,20 @@
   --code-surface: #16181E;
   --code-border: #262933;
   --code-ink: #F2F0EB;
+}
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] .module-h1,
+[data-theme="dark"] .card-heading,
+[data-theme="dark"] .section-heading,
+[data-theme="dark"] .quiz-q,
+[data-theme="dark"] .debug-title,
+[data-theme="dark"] .module-tab-title,
+[data-theme="dark"] .brand-title {
+  color: #FFFFFF !important;
 }
 
 * {
@@ -483,6 +497,16 @@ code {
   border-radius: 4px;
 }
 
+pre code {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  display: block;
+}
+
 p code, li code, td code, th code {
   background: var(--code-bg);
   color: #E6EDF3;
@@ -599,12 +623,35 @@ p code, li code, td code, th code {
 
 .code-pre {
   margin: 0;
-  padding: 12px 0;
+  padding: 14px 16px;
   overflow-x: auto;
   font-family: var(--font-mono);
-  font-size: 12.5px;
-  line-height: 1.55;
+  font-size: 13px;
+  line-height: 1.6;
   color: var(--code-ink);
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+}
+
+.code-pane .code-pre {
+  border: none;
+  border-radius: 0;
+  padding: 12px 0;
+}
+
+.code-diagram-box {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--code-ink);
+  overflow-x: auto;
+  white-space: pre;
 }
 
 .code-line {
@@ -798,12 +845,20 @@ p code, li code, td code, th code {
 .quiz-trace-code {
   background: var(--code-bg);
   border: 1px solid var(--code-border);
-  border-radius: 4px;
-  padding: 10px;
-  margin-bottom: 12px;
+  border-radius: var(--radius);
+  padding: 12px 0;
+  margin-bottom: 14px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--code-ink);
   overflow-x: auto;
+}
+.quiz-trace-code pre {
+  margin: 0;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .quiz-options {

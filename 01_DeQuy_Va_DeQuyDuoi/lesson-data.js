@@ -205,10 +205,12 @@ int main() {
                   <li>Hàm <code>tinhTong(3)</code> lại gọi <code>tinhTong(2)</code> $\\rightarrow$ CPU lại lấy thêm <strong>chiếc khay phụ thứ hai chồng lên trên chiếc khay thứ nhất</strong>!</li>
                   <li>Cứ mỗi lần gọi đệ quy, CPU lại phải kê thêm một chiếc khay phụ chồng cao dần lên trên chiếc bàn làm việc RAM!</li>
                 </ol>
-                <pre class="code-pre" style="margin-top: 12px;"><code>| Khay phụ 3: n = 3 (chờ n=2) nợ phép "+ 3" |  <- Đỉnh ngăn xếp
-| Khay phụ 2: n = 2 (chờ n=1) nợ phép "+ 2" |
-| Khay phụ 1: n = 1 (chờ n=0) nợ phép "+ 1" |
-| Khay phụ 0: main() đang chờ               |  <- Đáy ngăn xếp</code></pre>
+                <pre class="code-diagram-box"><code>┌────────────────────────────────────────────────────────┐
+│ [Khay phụ 3]: n = 3 (chờ n = 2) nợ phép "+ 3"          │ <- Đỉnh ngăn xếp (Top)
+│ [Khay phụ 2]: n = 2 (chờ n = 1) nợ phép "+ 2"          │
+│ [Khay phụ 1]: n = 1 (chờ n = 0) nợ phép "+ 1"          │
+│ [Khay phụ 0]: main() đang chờ kết quả cuối cùng       │ <- Đáy ngăn xếp (Bottom)
+└────────────────────────────────────────────────────────┘</code></pre>
               </div>
 
               <div class="step-term">

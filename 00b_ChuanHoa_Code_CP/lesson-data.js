@@ -371,9 +371,9 @@ int main() {
             html: `
               <div class="step-life">
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Vấn đề &amp; Cách giải quyết trong đời sống</span>
-                <p>Trước khi C++ ra đời, các lập trình viên dùng bộ loa-khe thế hệ cũ tên là <code>printf</code> và <code>scanf</code>. Khi tiệm bánh tiếp đón hàng trăm nghìn đơn hàng trong 1 giây, <strong>Anh Thật Thà</strong> bị chậm vì 2 quy trình kiểm tra thừa thãi:</p>
+                <p>Trước khi C++ ra đời, ngôn ngữ lập trình cũ hơn là C dùng thư viện nhập xuất thế hệ cũ <code>&lt;cstdio&gt;</code> (gọi tắt là <code>stdio</code> — gồm lệnh <code>printf</code> để in và <code>scanf</code> để đọc). Khi tiệm bánh tiếp đón hàng trăm nghìn đơn hàng trong 1 giây, <strong>Anh Thật Thà</strong> bị chậm vì 2 quy trình kiểm tra thừa thãi:</p>
                 <ul style="margin: 8px 0 0 20px;">
-                  <li><strong>Trạm gác đồng bộ (<code>sync_with_stdio</code>):</strong> Cứ mỗi lần dùng loa mới <code>cout</code> hay khe mới <code>cin</code>, anh ấy lại chạy qua đối chiếu sổ với bộ loa-khe cũ <code>printf/scanf</code> để phòng có người dùng trộn hai bộ cùng lúc $\rightarrow$ tốn thời gian gấp bội!</li>
+                  <li><strong>Trạm gác đồng bộ (<code>sync_with_stdio</code>):</strong> Cứ mỗi lần dùng loa mới <code>cout</code> hay khe mới <code>cin</code>, anh ấy lại chạy qua đối chiếu sổ với bộ <code>stdio</code> cũ (<code>printf/scanf</code>) để phòng có người dùng trộn hai bộ cùng lúc $\rightarrow$ tốn thời gian gấp bội!</li>
                   <li><strong>Dây buộc dọn bàn (<code>cin.tie</code>):</strong> Hễ chuẩn bị nhận phiếu mới ở khe <code>cin</code>, anh ấy lại dừng bếp bắt loa <code>cout</code> phải dọn sạch chữ đang chờ ra màn hình rồi mới đọc số tiếp theo!</li>
                 </ul>
                 <p style="margin-top: 8px;"><strong>Giải pháp:</strong> Cắt trạm gác đối chiếu và cởi dây buộc dọn bàn — nhưng từ giây phút đó, <strong>TUYỆT ĐỐI KHÔNG ĐƯỢC DÙNG TRỘN</strong> bộ loa cũ <code>printf/scanf</code> nữa, vì hai sổ tách rời nhau sẽ đọc/in lộn xộn thứ tự!</p>
@@ -684,12 +684,12 @@ int main() {
         hint: 'Giới hạn 1 <= x <= 10^6. Chú voi đi tối đa 5 đơn vị mỗi bước. Để làm tròn lên phép chia x / 5 mà chưa cần dùng if/else, hãy dùng công thức chia nguyên (x + 4) / 5!'
       },
       {
-        id: 'SPOJ-INTEST',
-        title: 'Enormous Input Test (Thử tải Fast I/O)',
-        judge: 'SPOJ',
+        id: 'CF-546A',
+        title: '546A - Soldier and Bananas',
+        judge: 'Codeforces',
         tier: 3,
-        link: 'https://www.spoj.com/problems/INTEST/',
-        hint: 'Giới hạn n, k <= 10^7, Time Limit 2.112s — bài kiểm chứng kinh điển tốc độ Fast I/O! Ngay sau khi mở khóa vòng lặp for và if ở bài tiếp theo L1-01, hãy quay lại nộp bài này với sync_with_stdio(false) + cin.tie(NULL) + \'\\n\' để vượt qua 10 triệu số mà không bị TLE.'
+        link: 'https://codeforces.com/problemset/problem/546/A',
+        hint: 'Giới hạn 1 <= k, w <= 1000 và 0 <= n <= 10^9. Tính tổng tiền w quả chuối bằng công thức k * w * (w + 1) / 2 (vẫn nằm gọn trong kiểu int), rồi dùng hàm max(0, tongTien - n) có sẵn từ <bits/stdc++.h> để in kết quả mà không cần dùng if/else hay vòng lặp! (Nhớ không đặt tên biến trùng với max).'
       }
     ]
   };

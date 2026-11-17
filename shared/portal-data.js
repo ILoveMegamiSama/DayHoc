@@ -501,7 +501,7 @@
         x: 2980,
         y: 490,
         badge: 'Core DP',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã vững DP 1D (L2-06), phép chia dư modulo (L1-07) và quen mảng 2D / cuộn mảng (L2-07)'

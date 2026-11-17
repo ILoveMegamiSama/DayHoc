@@ -40,7 +40,7 @@
                 <ul style="margin: 8px 0 0 20px;">
                   <li><strong>Ánh xạ sang số nguyên tố:</strong> Một số nguyên $N \\ge 2$ là nguyên tố nếu không có ước nào từ $2$ đến $\\lfloor\\sqrt{N}\\rfloor$. Chỉ mất tối đa $10^6$ bước cho $N = 10^{12}$!</li>
                   <li><strong>Bẫy 1 — Quên trường hợp <code>n = 1</code>:</strong> Theo định nghĩa, số nguyên tố phải có <strong>đúng 2 ước dương phân biệt</strong> ($1$ và chính nó). Số $1$ chỉ có đúng 1 ước nên <strong>$n = 1$ KHÔNG phải số nguyên tố</strong>! Luôn viết <code>if (n &lt; 2) return false;</code> ngay đầu hàm.</li>
-                  <li><strong>Bẫy 2 — Viết <code>int i</code> trong <code>i * i &lt;= n</code>:</strong> Nếu viết <code>for (int i = 2; i * i &lt;= n; i++)</code> khi $n \\approx 2 \\cdot 10^9$, tại $i = 46\\,341$ phép nhân <code>i * i = 2\\,147\\,488\\,281</code> vượt ngưỡng <code>int</code> ($2^{31} - 1$) gây <strong>tràn số (Undefined Behavior)</strong>! Luôn viết <code>long long i</code> hoặc <code>1LL * i * i &lt;= n</code> (tránh cả dùng <code>sqrt(n)</code> liên tục vì hàm số thực chậm và có thể sai số làm tròn).</li>
+                  <li><strong>Bẫy 2 — Viết <code>int i</code> trong <code>i * i &lt;= n</code>:</strong> Nếu viết <code>for (int i = 2; i * i &lt;= n; i++)</code> khi $n \\approx 2 \\cdot 10^9$, tại $i = 46\\,341$ phép nhân <code>i * i = 2,147,488,281</code> vượt ngưỡng <code>int</code> ($2^{31} - 1$) gây <strong>tràn số (Undefined Behavior)</strong>! Luôn viết <code>long long i</code> hoặc <code>1LL * i * i &lt;= n</code> (tránh cả dùng <code>sqrt(n)</code> liên tục vì hàm số thực chậm và có thể sai số làm tròn).</li>
                 </ul>
               </div>
 
@@ -50,6 +50,7 @@
 using namespace std;
 
 int countDivisors(long long n) {
+    if (n &lt;= 0) return 0;
     int cnt = 0;
     for (long long d = 1; d * d &lt;= n; d++) {
         if (n % d == 0) {
@@ -89,7 +90,7 @@ int main() {
             `
           },
           {
-            heading: 'Sàng Nguyên Tố Eratosthenes O(N log log N) Trên vector<bool>',
+            heading: 'Sàng Nguyên Tố Eratosthenes O(N log log N) Trên vector&lt;bool&gt;',
             tag: 'Tiền xử lý đoạn [1, N]',
             html: `
               <div class="step-life">
@@ -150,15 +151,15 @@ int main() {
         sandboxes: [
           {
             id: 'sb_prime_bound',
-            title: 'Phòng Thí Nghiệm 1A: Thiếu Dấu "=" Ở i * i <= n Làm Nhận Nhầm Số Chính Phương',
-            desc: 'Thử kiểm tra ba số {1, 49, 97} bằng hàm isPrime. Đổi công tắc để quan sát điều gì xảy ra khi điều kiện vòng lặp quên dấu "=" (viết nhầm thành i * i < n)!',
+            title: 'Phòng Thí Nghiệm 1A: Thiếu Dấu "=" Ở i * i &lt;= n Làm Nhận Nhầm Số Chính Phương',
+            desc: 'Thử kiểm tra ba số {1, 49, 97} bằng hàm isPrime. Đổi công tắc để quan sát điều gì xảy ra khi điều kiện vòng lặp quên dấu "=" (viết nhầm thành i * i &lt; n)!',
             toggles: [
               {
                 key: 'boundMode',
                 label: 'Điều kiện dừng của vòng lặp chia thử',
                 options: [
-                  { value: 'le', text: 'i * i <= n — Kiểm tra cả đúng căn bậc hai (AC)', kind: 'ok' },
-                  { value: 'lt', text: 'i * i < n — Thiếu dấu "=" (Bẫy WA!)', kind: 'bug' }
+                  { value: 'le', text: 'i * i &lt;= n — Kiểm tra cả đúng căn bậc hai (AC)', kind: 'ok' },
+                  { value: 'lt', text: 'i * i &lt; n — Thiếu dấu "=" (Bẫy WA!)', kind: 'bug' }
                 ]
               }
             ],
@@ -329,7 +330,7 @@ int main() {
               'In ra 6 vì vòng lặp dừng ngay khi d chạm đúng giá trị căn bậc hai của 36'
             ],
             correct: 2,
-            explain: 'Các ước d <= 6 là: d=1 -> (1, 36) +2; d=2 -> (2, 18) +2; d=3 -> (3, 12) +2; d=4 -> (4, 9) +2; d=6 -> d == n/d nên chỉ +1. Tổng: 2+2+2+2+1 = 9.'
+            explain: 'Các ước d &lt;= 6 là: d=1 &rarr; (1, 36) +2; d=2 &rarr; (2, 18) +2; d=3 &rarr; (3, 12) +2; d=4 &rarr; (4, 9) +2; d=6 &rarr; d == n/d nên chỉ +1. Tổng: 2+2+2+2+1 = 9.'
           },
           {
             type: 'trace',
@@ -362,7 +363,7 @@ int main() {
               'In ra 7 0 1 vì số 12 đã bị gạch ở i = 2 nên lượt i = 3 tự động bỏ qua'
             ],
             correct: 1,
-            explain: 'Vòng ngoài chạy i = 2, 3 (vì 4*4 = 16 > 15). Với i = 2: j chạy {4, 6, 8, 10, 12, 14} (6 lần). Với i = 3: j chạy {9, 12, 15} (3 lần). Tổng marks = 6 + 3 = 9; p[9] = 0 (hợp số), p[11] = 1 (nguyên tố). In ra: 9 0 1.'
+            explain: 'Vòng ngoài chạy i = 2, 3 (vì 4*4 = 16 &gt; 15). Với i = 2: j chạy {4, 6, 8, 10, 12, 14} (6 lần). Với i = 3: j chạy {9, 12, 15} (3 lần). Tổng marks = 6 + 3 = 9; p[9] = 0 (hợp số), p[11] = 1 (nguyên tố). In ra: 9 0 1.'
           },
           {
             type: 'single',
@@ -374,13 +375,13 @@ int main() {
               'Vì vòng lặp int bắt buộc phải khởi tạo từ i = 1 thay vì bắt đầu từ i = 2'
             ],
             correct: 0,
-            explain: 'Giá trị lớn nhất của int là 2,147,483,647. Khi i = 46,341 thì 46,341^2 = 2,147,488,281 vượt ngưỡng int gây tràn số (Undefined Behavior). Dùng long long i hoặc 1LL * i * i <= n sẽ an toàn tuyệt đối.'
+            explain: 'Giá trị lớn nhất của int là 2,147,483,647. Khi i = 46,341 thì 46,341^2 = 2,147,488,281 vượt ngưỡng int gây tràn số (Undefined Behavior). Dùng long long i hoặc 1LL * i * i &lt;= n sẽ an toàn tuyệt đối.'
           },
           {
             type: 'multiple',
             q: 'Những nhận định nào sau đây là <strong>ĐÚNG</strong> về kiểm tra nguyên tố và Sàng Eratosthenes?',
             options: [
-              'Hàm isPrime(n) bắt buộc trả về false ngay khi n < 2 vì số 1 không phải nguyên tố',
+              'Hàm isPrime(n) bắt buộc trả về false ngay khi n &lt; 2 vì số 1 không phải nguyên tố',
               'Với Sàng Eratosthenes trên N = 10^6, độ phức tạp thời gian là O(N * sqrt(N))',
               'Bắt đầu vòng gạt bội trong sàng từ 1LL * i * i giúp tránh xét lại bội nhỏ hơn',
               'Để tìm mọi số nguyên tố từ 1 đến 10^6 nhanh nhất, nên gọi isPrime(x) từng số'
@@ -401,7 +402,7 @@ int main() {
         title: 'Vấn Đề Nhỏ 2: Thuật Toán Euclid ($O(\\log(\\min(a,b)))$) &amp; Bẫy Tràn Số LCM',
         lead: 'Hiểu sâu bản chất phép chia dư liên tiếp của thuật toán Euclid dạng lặp, nắm rõ lưu ý giữa <code>__gcd</code> của GCC với hàm tự viết, và bảo vệ công thức LCM khỏi tràn số trung gian bằng thứ tự <code>(a / gcd) * b</code>.',
         subproblem: {
-          title: 'Với hai số nguyên khổng lồ $A, B \\le 10^{12}$, làm sao tìm $\\gcd(A, B)$ và $\\text{lcm}(A, B)$ chỉ trong vài chục phép tính mà không bị tràn `long long` ở bước nhân $A \\times B$?',
+          title: 'Với hai số nguyên khổng lồ $A, B \\le 10^{12}$, làm sao tìm $\\gcd(A, B)$ và $\\text{lcm}(A, B)$ chỉ trong vài chục phép tính mà không bị tràn <code>long long</code> ở bước nhân $A \\times B$?',
           desc: 'Thử ước từ $\\min(A, B)$ xuống $1$ tốn $O(\\min(A, B))$ (TLE!), còn công thức (a * b) / gcd làm tích $a \\times b = 10^{24}$ tràn ngay kiểu long long! Ta cài đặt thuật toán Euclid lặp $O(\\log(\\min(a, b)))$ và luôn chia trước khi nhân.'
         },
         cards: [
@@ -609,7 +610,7 @@ int main() {
               'In ra 3 4 vì thuật toán dừng ngay khi phần dư chạm xuống ước nguyên tố 3'
             ],
             correct: 0,
-            explain: 'Bước 1: r = 84 % 30 = 24 -> (30, 24), steps=1. Bước 2: r = 30 % 24 = 6 -> (24, 6), steps=2. Bước 3: r = 24 % 6 = 0 -> (6, 0), steps=3. Dừng vì b == 0. In ra: 6 3.'
+            explain: 'Bước 1: r = 84 % 30 = 24 &rarr; (30, 24), steps=1. Bước 2: r = 30 % 24 = 6 &rarr; (24, 6), steps=2. Bước 3: r = 24 % 6 = 0 &rarr; (6, 0), steps=3. Dừng vì b == 0. In ra: 6 3.'
           },
           {
             type: 'trace',
@@ -680,8 +681,8 @@ int main() {
         title: 'Vấn Đề Nhỏ 3: Phép Toán Đồng Dư An Toàn &amp; Lũy Thừa Nhị Phân Lặp $O(\\log b)$',
         lead: 'Xử lý cộng, nhân và tránh bẫy phép trừ ra số âm <code>((a - b) % M + M) % M</code> trong C++, đồng thời cài đặt Lũy thừa nhị phân dạng lặp <code>while (b &gt; 0)</code> tính $(a^b) \\bmod M$ với $b \\le 10^{18}$ chỉ trong ~60 bước.',
         subproblem: {
-          title: 'Làm sao tính $(a^b) \\bmod M$ khi $b \\le 10^{18}$ chỉ trong ~60 bước bằng vòng lặp `while` và đảm bảo các phép cộng, trừ, nhân đồng dư không bao giờ tràn số hay bị âm?',
-          desc: 'Nhân lặp $b$ lần tốn $O(b)$ (TLE!), quên % M ở từng bước làm tràn long long, còn viết (a - b) % M trong C++ có thể trả về số âm! Ta dùng Lũy thừa nhị phân lặp while (b > 0) trong $O(\\log b)$ và chuẩn hóa ((a - b) % M + M) % M.'
+          title: 'Làm sao tính $(a^b) \\bmod M$ khi $b \\le 10^{18}$ chỉ trong ~60 bước bằng vòng lặp <code>while</code> và đảm bảo các phép cộng, trừ, nhân đồng dư không bao giờ tràn số hay bị âm?',
+          desc: 'Nhân lặp $b$ lần tốn $O(b)$ (TLE!), quên % M ở từng bước làm tràn long long, còn viết (a - b) % M trong C++ có thể trả về số âm! Ta dùng Lũy thừa nhị phân lặp while (b &gt; 0) trong $O(\\log b)$ và chuẩn hóa ((a - b) % M + M) % M.'
         },
         cards: [
           {
@@ -739,8 +740,8 @@ int main() {
             `
           },
           {
-            heading: 'Lũy Thừa Nhị Phân Lặp (while (b > 0)) Tính (a^b) % M Trong O(log b)',
-            tag: 'O(log b) với b <= 10^18',
+            heading: 'Lũy Thừa Nhị Phân Lặp (while (b &gt; 0)) Tính (a^b) % M Trong O(log b)',
+            tag: 'O(log b) với b &lt;= 10^18',
             html: `
               <div class="step-life">
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Vấn đề &amp; Cách giải quyết trong đời sống</span>
@@ -855,7 +856,7 @@ int main() {
           {
             id: 'sb_binpow_mod',
             title: 'Phòng Thí Nghiệm 3B: Quên "% mod" Ở Bước Nhân res Trong Lũy Thừa Nhị Phân',
-            desc: 'Tính (10^9)^3 % (10^9 + 7). Quan sát sự khác biệt khi quên chia dư lúc cập nhật res = res * a trong vòng while (b > 0)!',
+            desc: 'Tính (10^9)^3 % (10^9 + 7). Quan sát sự khác biệt khi quên chia dư lúc cập nhật res = res * a trong vòng while (b &gt; 0)!',
             toggles: [
               {
                 key: 'powMode',
@@ -992,7 +993,7 @@ int main() {
               'Để vòng lặp while chạy giảm đi đúng một nửa số bước lặp so với khi không ép dư',
               'Để khi b = 0 chương trình vẫn trả về chính xác giá trị phần dư a % mod ban đầu',
               'Để khi cơ số a rất lớn (ví dụ 10^12) phép tính a * a đầu tiên không bị tràn số',
-              'Để tự động biến các số mũ âm b < 0 thành số mũ dương trước khi thực hiện dịch bit'
+              'Để tự động biến các số mũ âm b &lt; 0 thành số mũ dương trước khi thực hiện dịch bit'
             ],
             correct: 2,
             explain: 'Nếu không có a %= mod ở đầu hàm, khi đề cho a = 10^12 thì ngay lệnh a = (a * a) % mod ở lượt đầu tiên phép nhân 10^12 * 10^12 = 10^24 sẽ tràn ngay long long (9.22 * 10^18).'
@@ -1002,9 +1003,9 @@ int main() {
             q: 'Những quy tắc nào sau đây là <strong>ĐÚNG</strong> về số học đồng dư và Lũy thừa nhị phân?',
             options: [
               'Có thể tính (a / b) % M trực tiếp bằng công thức ((a % M) / (b % M)) % M',
-              'Khi b = 10^18, vòng lặp while (b > 0) trong binPow chỉ thực hiện khoảng 60 bước',
+              'Khi b = 10^18, vòng lặp while (b &gt; 0) trong binPow chỉ thực hiện khoảng 60 bước',
               'Cần dùng kiểu long long cho các phép nhân đồng dư khi M = 10^9 + 7 để tránh tràn int',
-              'Nếu a < b (0 <= a, b < M), biểu thức (a - b + M) % M luôn cho kết quả thuộc [0, M - 1]'
+              'Nếu 0 &lt;= a &lt; b &lt; M thì phép trừ (a - b + M) % M luôn thuộc đoạn [0, M - 1]'
             ],
             correct: [1, 2, 3],
             explain: 'B, C và D đều đúng. A sai hoàn toàn vì phép chia không có tính chất phân phối với phép lấy dư thông thường (ví dụ (10 / 2) % 3 = 2 nhưng ((10 % 3) / (2 % 3)) % 3 = 1 / 2 = 0).'
@@ -1019,7 +1020,7 @@ int main() {
     debugExercises: [
       {
         id: 'dbg_l107_prime_square_bound',
-        title: 'Thiếu Dấu "=" Ở i * i <= n Làm Nhận Nhầm Số Chính Phương (WA)',
+        title: 'Thiếu Dấu "=" Ở i * i &lt;= n Làm Nhận Nhầm Số Chính Phương (WA)',
         description: 'Chương trình đọc một số nguyên dương n và kiểm tra xem n có phải số nguyên tố hay không (in YES hoặc NO). Tuy nhiên với các số là bình phương của một số nguyên tố (như 25 = 5 * 5 hay 49 = 7 * 7), chương trình luôn báo nhầm là YES!',
         failingInput: '25',
         failingOutput: 'YES',
@@ -1050,12 +1051,12 @@ int main() {
           { text: 'Đổi dòng 6 thành for (long long i = 2; i * i <= n / 2; i++) { để rút ngắn vòng lặp' }
         ],
         correctPatch: 1,
-        explain: 'Ở dòng 6, điều kiện i * i < n dừng khi i = 5 vì 5 * 5 < 25 là sai, bỏ sót đúng ước 5 của 25! Đổi thành i * i <= n để kiểm tra đủ các ước từ 2 đến floor(sqrt(n)).'
+        explain: 'Ở dòng 6, điều kiện i * i &lt; n dừng khi i = 5 vì 5 * 5 &lt; 25 là sai, bỏ sót đúng ước 5 của 25! Đổi thành i * i &lt;= n để kiểm tra đủ các ước từ 2 đến floor(sqrt(n)).'
       },
       {
         id: 'dbg_l107_lcm_overflow',
         title: 'Tràn Số Trung Gian Khi Tính LCM Theo Thứ Tự (a * b) / gcd (WA)',
-        description: 'Cho hai số nguyên dương a, b <= 10^13 có ước chung lớn nhất đủ lớn để LCM(a, b) vẫn nằm gọn trong long long. Nhưng khi thử với a = 2*10^12 và b = 3*10^12, thay vì in ra 6000000000000, chương trình lại in ra một số âm vô nghĩa!',
+        description: 'Cho hai số nguyên dương a, b &lt;= 10^13 có ước chung lớn nhất đủ lớn để LCM(a, b) vẫn nằm gọn trong long long. Nhưng khi thử với a = 2*10^12 và b = 3*10^12, thay vì in ra 6000000000000, chương trình lại in ra một số âm vô nghĩa!',
         failingInput: '2000000000000 3000000000000',
         failingOutput: '-6424158',
         expectedOutput: '6000000000000',

@@ -478,7 +478,7 @@
         x: 2980,
         y: 360,
         badge: 'Core DP',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã nắm vững định nghĩa trạng thái, truy hồi và lập bảng 1D ở Nhập Môn QHD (L2-06)'

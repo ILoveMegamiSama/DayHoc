@@ -24,7 +24,7 @@
         lead: 'Tại sao phải dùng mảng thay cho biến đơn lẻ khi cần giữ lại dãy số tới 10^6 phần tử, vì sao mảng khổng lồ đặt trong main() bị sập còn đặt toàn cục lại chạy êm, và cách tránh bẫy truy cập ngoài biên (Out of Bounds).',
         subproblem: {
           title: 'Làm sao giữ lại cùng lúc 1.000.000 số nguyên để duyệt đi duyệt lại mà không sập bộ nhớ và không đọc nhầm sang ô nhớ bên cạnh?',
-          desc: 'Ở L1-01, một biến x chỉ giữ được 1 số tại một thời điểm — đọc số mới là mất số cũ. Khi bài toán yêu cầu tính điểm trung bình cả trường (N <= 10^6) rồi quay lại đếm số bạn cao hơn trung bình, ta cần chiếc tủ nhiều ngăn đánh số thứ tự đặt tại vùng nhớ rộng rãi ngoài main().'
+          desc: 'Ở L1-01, một biến x chỉ giữ được 1 số tại một thời điểm — đọc số mới là mất số cũ. Khi bài toán yêu cầu tính điểm trung bình cả trường (N &lt;= 10^6) rồi quay lại đếm số bạn cao hơn trung bình, ta cần chiếc tủ nhiều ngăn đánh số thứ tự đặt tại vùng nhớ rộng rãi ngoài main().'
         },
         cards: [
           {
@@ -116,7 +116,7 @@ int main() {
                 <pre class="code-pre"><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
-// ĐÚNG CHUẨN: Đặt toàn cục ngoài main() -> Vùng nhớ tĩnh ~256MB, tự gán toàn 0!
+// ĐÚNG CHUẨN: Đặt toàn cục ngoài main() -&gt; Vùng nhớ tĩnh ~256MB, tự gán toàn 0!
 const int N = 1e6 + 5;
 int a[N];
 
@@ -124,8 +124,8 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    // NGUY HIỂM: Nếu đặt int b[3000000]; Ở ĐÂY -> Sập ngay vì tràn ngăn xếp cục bộ ~8MB!
-    // NGUY HIỂM: Nếu đặt int c[100]; ở đây -> 100 ô chứa rác ngẫu nhiên (không phải 0)!
+    // NGUY HIỂM: Nếu đặt int b[3000000]; Ở ĐÂY -&gt; Sập ngay vì tràn ngăn xếp cục bộ ~8MB!
+    // NGUY HIỂM: Nếu đặt int c[100]; ở đây -&gt; 100 ô chứa rác ngẫu nhiên (không phải 0)!
 
     int n;
     cin &gt;&gt; n;
@@ -267,11 +267,11 @@ int main() {
             options: [
               'In ra số 2 vì chỉ có hai cặp kề thỏa mãn là (a[2], a[3]) và (a[3], a[4])',
               'In ra số 3 vì vòng lặp so sánh cả cặp cuối cùng là (a[4], a[5]) với a[5] = 0',
-              'In ra số 1 vì điều kiện i < n bỏ qua lượt i = 3 nên chỉ kịp xét tới a[3]',
+              'In ra số 1 vì điều kiện i &lt; n bỏ qua lượt i = 3 nên chỉ kịp xét tới a[3]',
               'In ra số 4 vì mọi phần tử từ 1 đến 4 đều tham gia tăng biến đếm lên 1'
             ],
             correct: 0,
-            explain: 'Vòng lặp chạy với i = 1, 2, 3 (dừng trước n = 4). Cặp (5, 2) sai; cặp (2, 7) đúng (dem = 1); cặp (7, 9) đúng (dem = 2). Điều kiện i < n giữ an toàn không chạm vào a[5].'
+            explain: 'Vòng lặp chạy với i = 1, 2, 3 (dừng trước n = 4). Cặp (5, 2) sai; cặp (2, 7) đúng (dem = 1); cặp (7, 9) đúng (dem = 2). Điều kiện i &lt; n giữ an toàn không chạm vào a[5].'
           },
           {
             type: 'single',
@@ -523,12 +523,12 @@ int main() {
             q: 'Quan sát kỹ điều kiện biên bảng <code>2 &times; 3</code> (<code>nr &lt;= 2 &amp;&amp; nc &lt;= 3</code>) quanh ô <code>(2, 2)</code>. Giá trị <code>s</code> in ra là bao nhiêu?',
             options: [
               'In ra 19 vì vòng lặp cộng đủ cả 4 ô kề gồm 5 + 4 + 3 + 7 quanh tâm (2, 2)',
-              'In ra 15 vì hướng đi xuống ra hàng 3 vượt biên nr <= 2 nên chỉ cộng 5 + 3 + 7',
+              'In ra 15 vì hướng đi xuống ra hàng 3 vượt biên nr &lt;= 2 nên chỉ cộng 5 + 3 + 7',
               'In ra 12 vì ô bên phải (2, 3) vượt quá số hàng nên chỉ cộng được hai ô 5 + 7',
               'In ra 10 vì hai hướng lên và xuống đối xứng triệt tiêu nhau chỉ còn hướng ngang'
             ],
             correct: 1,
-            explain: '4 ô kề của (2, 2) lần lượt là (1, 2)=5, (3, 2)=4, (2, 1)=3, (2, 3)=7. Vì bảng chỉ có 2 hàng (nr <= 2) nên ô (3, 2) bị loại, tổng cộng được 5 + 3 + 7 = 15.'
+            explain: '4 ô kề của (2, 2) lần lượt là (1, 2)=5, (3, 2)=4, (2, 1)=3, (2, 3)=7. Vì bảng chỉ có 2 hàng (nr &lt;= 2) nên ô (3, 2) bị loại, tổng cộng được 5 + 3 + 7 = 15.'
           },
           {
             type: 'trace',
@@ -550,7 +550,7 @@ int main() {
 }`,
             q: 'Mảng đếm <code>cnt</code> toàn cục thống kê dãy <code>b = {4, 2, 4, 1, 4}</code>. Kết quả in ra <code>ans</code> và <code>cnt[ans]</code> là gì?',
             options: [
-              'In ra 1 1 vì số 1 được cập nhật đầu tiên và điều kiện > không đổi nữa',
+              'In ra 1 1 vì số 1 được cập nhật đầu tiên và điều kiện &gt; không đổi nữa',
               'In ra 4 5 vì vòng lặp đếm cả 5 phần tử trong dãy b vào ô nhớ cnt[4]',
               'In ra 2 3 vì số 2 nằm ở vị trí có tần suất bằng với phần tử lớn nhất',
               'In ra 4 3 vì giá trị 4 xuất hiện nhiều nhất với đúng 3 lần trong dãy b'
@@ -568,7 +568,7 @@ int main() {
               'Đưa mảng int cnt[100005]; vào trong vòng while (t--) mà không cần gán 0 để tối ưu tốc độ'
             ],
             correct: 0,
-            explain: 'Mảng toàn cục chỉ tự động gán 0 một lần trước khi vào main(). Với nhiều bộ test, bắt buộc phải xóa lại các ô đã dùng của cnt[] về 0 sau mỗi test (cẩn thận không quét hết 10^5 nếu T * 10^5 > 10^8; tốt nhất chỉ xóa những giá trị đã lưu trong test đó!).'
+            explain: 'Mảng toàn cục chỉ tự động gán 0 một lần trước khi vào main(). Với nhiều bộ test, bắt buộc phải xóa lại các ô đã dùng của cnt[] về 0 sau mỗi test (cẩn thận không quét hết 10^5 nếu T * 10^5 &gt; 10^8; tốt nhất chỉ xóa những giá trị đã lưu trong test đó!).'
           },
           {
             type: 'multiple',
@@ -743,7 +743,7 @@ int main() {
             toggles: [
               {
                 key: 'ignoreMode',
-                label: 'Xử lý ký tự xuống dòng thừa sau cin >> n',
+                label: 'Xử lý ký tự xuống dòng thừa sau cin &gt;&gt; n',
                 options: [
                   { value: 'with_ignore', text: 'Có gọi cin.ignore(); trước getline', kind: 'ok' },
                   { value: 'no_ignore', text: 'Quên gọi cin.ignore(); trước getline', kind: 'bug' }
@@ -781,8 +781,8 @@ ${isOk ? '    cin.ignore(); // Nuot dau Enter \'\\n\' thua sau so n!' : '    // 
                   ? '$ ./main   # Input: 1 <Enter> Nguyen Van An\nTen doc duoc: [Nguyen Van An] (do dai 13)'
                   : '$ ./main   # Input: 1 <Enter> Nguyen Van An\nTen doc duoc: [] (do dai 0)\n[Canh bao: Chuoi "Nguyen Van An" da bi bo sot o phia sau!]',
                 explain: isOk
-                  ? 'Lệnh cin.ignore() đọc và bỏ đi 1 ký tự (chính là dấu xuống dòng \'\\n\' còn sót lại sau lệnh cin >> n), nhường đường cho getline(cin, hoTen) đọc trọn dòng tiếp theo.'
-                  : 'Toán tử >> luôn dừng ngay trước khoảng trắng hoặc dấu xuống dòng \'\\n\'. Vì vậy ngay sau cin >> n, dấu \'\\n\' vẫn nằm đầu bộ đệm; getline chạm ngay nó và kết thúc tức thì với xâu rỗng!'
+                  ? 'Lệnh cin.ignore() đọc và bỏ đi 1 ký tự (chính là dấu xuống dòng \'\\n\' còn sót lại sau lệnh cin &gt;&gt; n), nhường đường cho getline(cin, hoTen) đọc trọn dòng tiếp theo.'
+                  : 'Toán tử &gt;&gt; luôn dừng ngay trước khoảng trắng hoặc dấu xuống dòng \'\\n\'. Vì vậy ngay sau cin &gt;&gt; n, dấu \'\\n\' vẫn nằm đầu bộ đệm; getline chạm ngay nó và kết thúc tức thì với xâu rỗng!'
               };
             }
           }
@@ -852,17 +852,17 @@ int main() {
             options: [
               'Trình biên dịch báo lỗi cú pháp ngay lúc biên dịch vì không cho phép dùng lẫn cin và getline',
               'Lệnh getline(cin, s) tự động bỏ qua dòng chữ đầu tiên và đọc thẳng sang dòng thứ hai bên dưới',
-              'Lệnh getline(cin, s) đọc nhầm ký tự xuống dòng \'\\n\' còn sót sau cin >> n nên nhận xâu rỗng ""',
+              'Lệnh getline(cin, s) đọc nhầm ký tự xuống dòng \'\\n\' còn sót sau cin &gt;&gt; n nên nhận xâu rỗng ""',
               'Chương trình chạy vào vòng lặp vô tận không thể kết thúc vì bộ đệm nhập bị khóa hoàn toàn'
             ],
             correct: 2,
-            explain: 'cin >> n để lại dấu xuống dòng \'\\n\' trong bộ đệm nhập. Ngay khi gọi getline(cin, s), nó gặp dấu \'\\n\' này nên lập tức dừng lại và trả về xâu rỗng "".'
+            explain: 'cin &gt;&gt; n để lại dấu xuống dòng \'\\n\' trong bộ đệm nhập. Ngay khi gọi getline(cin, s), nó gặp dấu \'\\n\' này nên lập tức dừng lại và trả về xâu rỗng "".'
           },
           {
             type: 'multiple',
             q: 'Những thói quen lập trình nào sau đây là <strong>ĐÚNG CHUẨN</strong> khi xử lý xâu ký tự <code>string</code> và bài toán Mô phỏng?',
             options: [
-              'Viết vòng lặp for (int i = 0; i < s.size() - 1; i++) mà không ép (int) kể cả khi s có thể rỗng',
+              'Viết vòng lặp for (int i = 0; i &lt; s.size() - 1; i++) mà không ép (int) kể cả khi s có thể rỗng',
               'Luôn ép kiểu (int)s.size() trước khi trừ 1 hoặc so sánh để tránh bị tràn số không dấu',
               'Khi mô phỏng bước đi trên lưới 2D, luôn kiểm tra tọa độ mới nằm trong bảng trước khi truy cập',
               'Khi chia trường hợp (Casework), các nhánh cần rời nhau không trùng và phủ kín mọi tình huống'
@@ -910,7 +910,7 @@ int main() {
       {
         id: 'dbg_l102_oob_neighbor',
         title: 'Bẫy Truy Cập Ngoài Biên a[i + 1] Khi So Sánh Hai Phần Tử Liên Tiếp',
-        description: 'Chương trình cần đếm số cặp kề tăng dần (a[i] < a[i + 1]). Với dãy toàn số âm "-8 -5 -9", đáp án đúng là 1 (chỉ có -8 < -5), nhưng code lại đếm thành 2 vì lỡ so sánh a[3] với a[4] = 0 ngoài dãy!',
+        description: 'Chương trình cần đếm số cặp kề tăng dần (a[i] &lt; a[i + 1]). Với dãy toàn số âm "-8 -5 -9", đáp án đúng là 1 (chỉ có -8 &lt; -5), nhưng code lại đếm thành 2 vì lỡ so sánh a[3] với a[4] = 0 ngoài dãy!',
         failingInput: '3\n-8 -5 -9',
         failingOutput: '2',
         expectedOutput: '1',
@@ -940,7 +940,7 @@ int main() {
           { text: 'Sửa dòng 15 thành if (a[i] <= a[i + 1]) dem++; để bổ sung trường hợp hai số bằng nhau' }
         ],
         correctPatch: 1,
-        explain: 'Ở dòng 14, i chạy tới n làm dòng 15 đọc sang phần tử a[n + 1] = a[4] (bằng 0 do mảng toàn cục khởi tạo sẵn). Vì -9 < 0 đúng nên dem bị cộng oan thêm 1! Sửa thành i < n sẽ dừng đúng ở cặp cuối (n - 1, n).'
+        explain: 'Ở dòng 14, i chạy tới n làm dòng 15 đọc sang phần tử a[n + 1] = a[4] (bằng 0 do mảng toàn cục khởi tạo sẵn). Vì -9 &lt; 0 đúng nên dem bị cộng oan thêm 1! Sửa thành i &lt; n sẽ dừng đúng ở cặp cuối (n - 1, n).'
       },
       {
         id: 'dbg_l102_missing_cin_ignore',
@@ -969,7 +969,7 @@ int main() {
           { text: 'Thêm cin.ignore(); ngay trước dòng 10 để xóa ký tự xuống dòng \'\\n\' sót lại sau cin >> n' }
         ],
         correctPatch: 2,
-        explain: 'Lệnh cin >> n ở dòng 8 chỉ đọc số 1 và để lại dấu Enter \'\\n\' trong bộ đệm. Khi dòng 10 gọi getline(cin, hoTen), nó chạm ngay dấu \'\\n\' đó và trả về xâu rỗng! Thêm cin.ignore(); trước getline sẽ gỡ bỏ dấu \'\\n\' thừa.'
+        explain: 'Lệnh cin &gt;&gt; n ở dòng 8 chỉ đọc số 1 và để lại dấu Enter \'\\n\' trong bộ đệm. Khi dòng 10 gọi getline(cin, hoTen), nó chạm ngay dấu \'\\n\' đó và trả về xâu rỗng! Thêm cin.ignore(); trước getline sẽ gỡ bỏ dấu \'\\n\' thừa.'
       }
     ],
 
@@ -983,7 +983,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/136/A',
-        hint: 'Giới hạn 1 <= n <= 100. Dùng mảng 1D toàn cục int ans[105]; với chỉ số 1-based: khi đọc được p ở lượt i (bạn i tặng quà cho p), hãy gán ngược lại ans[p] = i; rồi in từ 1 đến n.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 100. Dùng mảng 1D toàn cục int ans[105]; với chỉ số 1-based: khi đọc được p ở lượt i (bạn i tặng quà cho p), hãy gán ngược lại ans[p] = i; rồi in từ 1 đến n.'
       },
       {
         id: 'CF-263A',
@@ -999,7 +999,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/71/A',
-        hint: 'Giới hạn 1 <= n <= 100, độ dài mỗi từ <= 100. Đọc từng xâu bằng cin >> s; (không có dấu cách). Nếu (int)s.size() > 10 thì in s[0], rồi số (int)s.size() - 2, rồi s[(int)s.size() - 1]; ngược lại giữ nguyên s.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 100, độ dài mỗi từ &lt;= 100. Đọc từng xâu bằng cin &gt;&gt; s; (không có dấu cách). Nếu (int)s.size() &gt; 10 thì in s[0], rồi số (int)s.size() - 2, rồi s[(int)s.size() - 1]; ngược lại giữ nguyên s.'
       },
       {
         id: 'CSES-1083',
@@ -1007,7 +1007,7 @@ int main() {
         judge: 'CSES',
         tier: 2,
         link: 'https://cses.fi/problemset/task/1083',
-        hint: 'Giới hạn 2 <= n <= 2*10^5. Khai báo mảng đánh dấu toàn cục bool daCo[200005]; (nếu để mảng lớn trong main() rất dễ sập!). Đọc n - 1 số x và đánh dấu daCo[x] = true;, sau đó duyệt i từ 1 đến n tìm vị trí đầu tiên có daCo[i] == false.'
+        hint: 'Giới hạn 2 &lt;= n &lt;= 2*10^5. Khai báo mảng đánh dấu toàn cục bool daCo[200005]; (nếu để mảng lớn trong main() rất dễ sập!). Đọc n - 1 số x và đánh dấu daCo[x] = true;, sau đó duyệt i từ 1 đến n tìm vị trí đầu tiên có daCo[i] == false.'
       },
       {
         id: 'VNOJ-BONES',
@@ -1015,7 +1015,7 @@ int main() {
         judge: 'VNOJ',
         tier: 2,
         link: 'https://oj.vnoi.info/problem/bones',
-        hint: 'Giới hạn 2 <= S1, S2 <= 20, 2 <= S3 <= 40. Dùng 3 vòng lặp for (i=1..S1, j=1..S2, k=1..S3) cộng dồn vào mảng đếm tần suất toàn cục int cnt[85]; tại vị trí cnt[i + j + k]++. Sau đó quét từ tổng 3 đến S1+S2+S3 bằng dấu > để tự động giữ tổng nhỏ nhất nếu tần suất bằng nhau.'
+        hint: 'Giới hạn 2 &lt;= S1, S2 &lt;= 20, 2 &lt;= S3 &lt;= 40. Dùng 3 vòng lặp for (i=1..S1, j=1..S2, k=1..S3) cộng dồn vào mảng đếm tần suất toàn cục int cnt[85]; tại vị trí cnt[i + j + k]++. Sau đó quét từ tổng 3 đến S1+S2+S3 bằng dấu &gt; để tự động giữ tổng nhỏ nhất nếu tần suất bằng nhau.'
       },
       {
         id: 'ABC197-B',
@@ -1023,7 +1023,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc197/tasks/abc197_b',
-        hint: 'Giới hạn 1 <= H, W <= 100. Dùng mảng xâu toàn cục string grid[105]; (lưu ý grid[0..H-1] dùng 0-based nên đổi X--, Y--!). Dùng 2 mảng hướng đi dr[4] = {-1, 1, 0, 0}, dc[4] = {0, 0, -1, 1} kết hợp while tiến từng bước, dừng ngay khi ra ngoài biên hoặc đụng ô "#".'
+        hint: 'Giới hạn 1 &lt;= H, W &lt;= 100. Dùng mảng xâu toàn cục string grid[105]; (lưu ý grid[0..H-1] dùng 0-based nên đổi X--, Y--!). Dùng 2 mảng hướng đi dr[4] = {-1, 1, 0, 0}, dc[4] = {0, 0, -1, 1} kết hợp while tiến từng bước, dừng ngay khi ra ngoài biên hoặc đụng ô "#".'
       },
       {
         id: 'ABC065-B',
@@ -1031,7 +1031,7 @@ int main() {
         judge: 'AtCoder',
         tier: 3,
         link: 'https://atcoder.jp/contests/abc065/tasks/abc065_b',
-        hint: 'Giới hạn 2 <= N <= 10^5. Khai báo hai mảng toàn cục int a[100005]; và bool visited[100005];. Mô phỏng từ nút cur = 1: mỗi bước kiểm tra nếu cur == 2 thì in số bước rồi dừng; nếu visited[cur] đã true (rơi vào vòng lặp vô tận!) thì in -1; ngược lại đánh dấu visited[cur] = true, cur = a[cur] và tăng bước.'
+        hint: 'Giới hạn 2 &lt;= N &lt;= 10^5. Khai báo hai mảng toàn cục int a[100005]; và bool visited[100005];. Mô phỏng từ nút cur = 1: mỗi bước kiểm tra nếu cur == 2 thì in số bước rồi dừng; nếu visited[cur] đã true (rơi vào vòng lặp vô tận!) thì in -1; ngược lại đánh dấu visited[cur] = true, cur = a[cur] và tăng bước.'
       },
       {
         id: 'CSES-1755',
@@ -1039,7 +1039,7 @@ int main() {
         judge: 'CSES',
         tier: 3,
         link: 'https://cses.fi/problemset/task/1755',
-        hint: 'Giới hạn độ dài xâu |s| <= 10^6 gồm chữ in hoa A..Z. Dùng mảng đếm cnt[26] theo mã ASCII (c - \'A\'). Chia trường hợp (Casework): đếm số chữ cái xuất hiện lẻ lần; nếu > 1 in "NO SOLUTION". Ngược lại tạo nửa trái bằng toán tử += (tránh viết s = s + c gây tốn O(N^2)!) hoặc in trực tiếp từng ký tự bằng cout << (char)(\'A\' + c) cho cnt[c]/2 lần, in ký tự lẻ ở giữa, rồi in ngược nửa trái!'
+        hint: 'Giới hạn độ dài xâu |s| &lt;= 10^6 gồm chữ in hoa A..Z. Dùng mảng đếm cnt[26] theo mã ASCII (c - \'A\'). Chia trường hợp (Casework): đếm số chữ cái xuất hiện lẻ lần; nếu &gt; 1 in "NO SOLUTION". Ngược lại tạo nửa trái bằng toán tử += (tránh viết s = s + c gây tốn O(N^2)!) hoặc in trực tiếp từng ký tự bằng cout &lt;&lt; (char)(\'A\' + c) cho cnt[c]/2 lần, in ký tự lẻ ở giữa, rồi in ngược nửa trái!'
       }
     ]
   };

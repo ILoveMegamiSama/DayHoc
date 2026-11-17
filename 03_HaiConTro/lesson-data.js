@@ -20,7 +20,7 @@
         lead: 'Khám phá cách tìm cặp số có tổng bằng S trên mảng đã sắp xếp: tại sao mỗi bước so sánh loại bỏ được hẳn một hàng lựa chọn?',
         subproblem: {
           title: 'Làm sao để tìm cặp số có tổng bằng S trong O(N) mà không phải thử mọi cặp đầu-cuối O(N^2)?',
-          desc: 'Nếu dữ liệu đã được sắp xếp tăng dần, khi tổng a[trai] + a[phai] > S, ta biết chắc chắn a[phai] không thể ghép với bất kỳ số nào khác, cho phép loại bỏ ngay a[phai].'
+          desc: 'Nếu dữ liệu đã được sắp xếp tăng dần, khi tổng a[trai] + a[phai] &gt; S, ta biết chắc chắn a[phai] không thể ghép với bất kỳ số nào khác, cho phép loại bỏ ngay a[phai].'
         },
         cards: [
           {
@@ -33,8 +33,8 @@
                 <ul style="margin: 8px 0 0 20px;">
                   <li>Bạn đặt ngón tay trái vào cuốn <strong>rẻ nhất (bên trái cùng)</strong>.</li>
                   <li>Bạn của bạn đặt ngón tay phải vào cuốn <strong>đắt nhất (bên phải cùng)</strong>.</li>
-                  <li>Nếu $\\text{Tổng} > 100k$: Cuốn đắt nhất quá đắt, ghép với cuốn rẻ nhất còn vượt ngân sách thì không thể ghép với ai khác $\\rightarrow$ dịch ngón tay phải lùi lại (<code>phai--</code>).</li>
-                  <li>Nếu $\\text{Tổng} < 100k$: Cuốn rẻ nhất quá rẻ $\\rightarrow$ dịch ngón tay trái tiến lên (<code>trai++</code>).</li>
+                  <li>Nếu $\\text{Tổng} &gt; 100k$: Cuốn đắt nhất quá đắt, ghép với cuốn rẻ nhất còn vượt ngân sách thì không thể ghép với ai khác $\\rightarrow$ dịch ngón tay phải lùi lại (<code>phai--</code>).</li>
+                  <li>Nếu $\\text{Tổng} &lt; 100k$: Cuốn rẻ nhất quá rẻ $\\rightarrow$ dịch ngón tay trái tiến lên (<code>trai++</code>).</li>
                 </ul>
               </div>
 
@@ -42,14 +42,14 @@
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
                 <p>Thuật toán trên mảng đã sắp xếp tăng dần:</p>
                 <pre class="code-pre"><code>int trai = 0, phai = n - 1;
-while (trai < phai) {
+while (trai &lt; phai) {
     long long tong = a[trai] + a[phai];
     if (tong == S) {
-        cout << "Tim thay tai: " << trai << ", " << phai;
+        cout &lt;&lt; "Tim thay tai: " &lt;&lt; trai &lt;&lt; ", " &lt;&lt; phai;
         break;
     }
-    if (tong < S) trai++; // Can tang tong -> tien trai
-    else phai--;          // Can giam tong -> lui phai
+    if (tong &lt; S) trai++; // Can tang tong -&gt; tien trai
+    else phai--;          // Can giam tong -&gt; lui phai
 }</code></pre>
                 <p style="font-size: 13.5px; color: var(--muted); margin-top: 8px;">
                   Mỗi bước lặp hoặc <code>trai</code> tăng lên 1 hoặc <code>phai</code> giảm đi 1. Khoảng cách thu hẹp tối đa $N$ bước $\\rightarrow$ Thời gian chạy $O(N)$!
@@ -135,13 +135,13 @@ int main() {
             type: 'trace',
             q: 'Với mảng a = [2, 3, 5, 8, 11] và mục tiêu S = 10. Khi bắt đầu với trai = 0, phai = 4, chuỗi các cặp chỉ số (trai, phai) được duyệt lần lượt là gì?',
             options: [
-              'Bắt đầu (0, 4) -> chuyển sang (0, 3) và tìm thấy cặp (2, 8)',
-              'Bắt đầu (0, 4) -> chuyển sang (1, 4) và tìm thấy cặp (3, 8)',
-              'Bắt đầu (0, 4) -> chuyển sang (1, 3) và tìm thấy cặp (3, 5)',
-              'Bắt đầu (0, 4) -> chuyển sang (2, 4) và tìm thấy cặp (5, 8)'
+              'Bắt đầu (0, 4) -&gt; chuyển sang (0, 3) và tìm thấy cặp (2, 8)',
+              'Bắt đầu (0, 4) -&gt; chuyển sang (1, 4) và tìm thấy cặp (3, 8)',
+              'Bắt đầu (0, 4) -&gt; chuyển sang (1, 3) và tìm thấy cặp (3, 5)',
+              'Bắt đầu (0, 4) -&gt; chuyển sang (2, 4) và tìm thấy cặp (5, 8)'
             ],
             correct: 0,
-            explain: 'Tại (0, 4): 2 + 11 = 13 > 10 -> phai giảm xuống 3. Tại (0, 3): 2 + 8 = 10 == 10 -> Tìm thấy ngay cặp (2, 8).'
+            explain: 'Tại (0, 4): 2 + 11 = 13 &gt; 10 -&gt; phai giảm xuống 3. Tại (0, 3): 2 + 8 = 10 == 10 -&gt; Tìm thấy ngay cặp (2, 8).'
           },
           {
             type: 'trace',
@@ -153,7 +153,7 @@ int main() {
               'Vòng lặp chạy vô tận không dừng vì không tìm thấy tổng nào bằng 12'
             ],
             correct: 0,
-            explain: '(0,3): 1+9=10 < 12 -> trai=1. (1,3): 4+9=13 > 12 -> phai=2. (1,2): 4+6=10 < 12 -> trai=2. Lúc này trai == phai (2 == 2) -> dừng sau 3 bước.'
+            explain: '(0,3): 1+9=10 &lt; 12 -&gt; trai=1. (1,3): 4+9=13 &gt; 12 -&gt; phai=2. (1,2): 4+6=10 &lt; 12 -&gt; trai=2. Lúc này trai == phai (2 == 2) -&gt; dừng sau 3 bước.'
           },
           {
             type: 'single',
@@ -192,7 +192,7 @@ int main() {
         title: 'Vấn Đề Nhỏ 2: Cửa Sổ Trượt — Khung Co Giãn Con Sâu Đo Bò Trên Mảng Dương',
         lead: 'Khám phá mô hình Hai con trỏ cùng chiều: tại sao khi đầu vươn tới trước và đuôi co lại, ta luôn duy trì được đoạn con tối ưu trong O(N)?',
         subproblem: {
-          title: 'Làm sao để tìm đoạn con dài nhất có tổng <= S trên dãy số dương mà không tính lại từ đầu?',
+          title: 'Làm sao để tìm đoạn con dài nhất có tổng &lt;= S trên dãy số dương mà không tính lại từ đầu?',
           desc: 'Khi mở rộng biên phải, tổng tăng; khi co hẹp biên trái, tổng giảm. Cả hai biên cùng tiến sang phải giúp ta cập nhật tổng chỉ bằng phép cộng/trừ 1 phần tử.'
         },
         cards: [
@@ -218,16 +218,16 @@ int main() {
                 <pre class="code-pre"><code>int trai = 0, maxLen = 0;
 long long tong = 0;
 
-for (int phai = 0; phai < n; phai++) {
+for (int phai = 0; phai &lt; n; phai++) {
     tong += a[phai]; // Dau sau vuon toi an them
 
     // Khi boi thuc: duoi sau co lai
-    while (tong > S && trai <= phai) {
+    while (tong &gt; S && trai &lt;= phai) {
         tong -= a[trai];
         trai++;
     }
 
-    // Doan [trai..phai] chac chan co tong <= S
+    // Doan [trai..phai] chac chan co tong &lt;= S
     maxLen = max(maxLen, phai - trai + 1);
 }</code></pre>
               </div>
@@ -246,7 +246,7 @@ for (int phai = 0; phai < n; phai++) {
           {
             id: 'sb_sliding_window_trace',
             title: 'Phòng Thí Nghiệm 2: Mô Phỏng Từng Bước Cửa Sổ Trượt',
-            desc: 'Quan sát biến trai và phai dịch chuyển để duy trì tổng <= S.',
+            desc: 'Quan sát biến trai và phai dịch chuyển để duy trì tổng &lt;= S.',
             toggles: [
               {
                 key: 'win_target',
@@ -306,7 +306,7 @@ int main() {
               'trai = 0 vì vòng lặp while không bao giờ được kích hoạt khi gặp số 5'
             ],
             correct: 0,
-            explain: 'tong = 2 + 1 + 5 = 8 > 4. Pop 2 -> tong=6 > 4, trai=1. Pop 1 -> tong=5 > 4, trai=2. Pop 5 -> tong=0, trai=3. Lúc này trai = 3 > phai (2) nên dừng.'
+            explain: 'tong = 2 + 1 + 5 = 8 &gt; 4. Pop 2 -&gt; tong=6 &gt; 4, trai=1. Pop 1 -&gt; tong=5 &gt; 4, trai=2. Pop 5 -&gt; tong=0, trai=3. Lúc này trai = 3 &gt; phai (2) nên dừng.'
           },
           {
             type: 'trace',
@@ -318,7 +318,7 @@ int main() {
               'Vô hạn lần vì vòng lặp while có thể bị lặp lại liên tục không dừng'
             ],
             correct: 0,
-            explain: 'Biến trai khởi tạo bằng 0 và chỉ có phép tăng trai++, đồng thời bị chặn bởi trai <= phai < N. Do đó tổng số lần tăng tối đa là N.'
+            explain: 'Biến trai khởi tạo bằng 0 và chỉ có phép tăng trai++, đồng thời bị chặn bởi trai &lt;= phai &lt; N. Do đó tổng số lần tăng tối đa là N.'
           },
           {
             type: 'single',
@@ -379,9 +379,9 @@ int main() {
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
                 <p>Công thức cộng dồn số lượng đoạn con:</p>
                 <pre class="code-pre"><code>long long tongSoDoan = 0;
-for (int phai = 0; phai < n; phai++) {
+for (int phai = 0; phai &lt; n; phai++) {
     tong += a[phai];
-    while (tong > S && trai <= phai) {
+    while (tong &gt; S && trai &lt;= phai) {
         tong -= a[trai];
         trai++;
     }
@@ -450,7 +450,7 @@ int main() {
                   : `$ ./countSub\nSo doan con tim duoc: 5 (Dap an thuc te la 7!)\n[That bai: Doan {5, -3, 2} co tong 4 bi bo sot vi con tro da lo tay duoi so 5 di!]`,
                 explain: isPos
                   ? 'Khi các phần tử đều dương, tổng luôn tăng khi phai tăng và luôn giảm khi trai tăng, đảm bảo không bỏ sót.'
-                  : 'Khi a[0]=5 > 4, con trỏ trai bị ép nhảy qua 5. Nhưng sau đó xuất hiện -3 làm tổng giảm xuống 4, con trỏ trai không thể lùi lại để lấy lại số 5 được nữa!'
+                  : 'Khi a[0]=5 &gt; 4, con trỏ trai bị ép nhảy qua 5. Nhưng sau đó xuất hiện -3 làm tổng giảm xuống 4, con trỏ trai không thể lùi lại để lấy lại số 5 được nữa!'
               };
             }
           }
@@ -458,7 +458,7 @@ int main() {
         quiz: [
           {
             type: 'trace',
-            q: 'Với mảng số dương a = [1, 2, 1] và S = 3. Tại phai = 1 (khi xét đoạn [0..1] gồm các số {1, 2} có tổng = 3 <= 3), số đoạn con hợp lệ kết thúc tại vị trí index 1 là bao nhiêu?',
+            q: 'Với mảng số dương a = [1, 2, 1] và S = 3. Tại phai = 1 (khi xét đoạn [0..1] gồm các số {1, 2} có tổng = 3 &lt;= 3), số đoạn con hợp lệ kết thúc tại vị trí index 1 là bao nhiêu?',
             options: [
               'Có 2 đoạn con là đoạn [0..1] ({1, 2}) và đoạn [1..1] ({2})',
               'Có 1 đoạn con duy nhất là đoạn [0..1] có đầy đủ cả hai số',
@@ -472,13 +472,13 @@ int main() {
             type: 'trace',
             q: 'Tại sao khi mảng có chứa số âm, ví dụ a = [10, -5, 2] với S = 7, kỹ thuật Hai con trỏ lại bị thất bại ngay từ bước đầu tiên?',
             options: [
-              'Vì khi gặp số 10 > 7, con trỏ trái đã loại bỏ 10, trong khi đoạn {10, -5, 2} có tổng 7 hoàn toàn hợp lệ',
+              'Vì khi gặp số 10 &gt; 7, con trỏ trái đã loại bỏ 10, trong khi đoạn {10, -5, 2} có tổng 7 hoàn toàn hợp lệ',
               'Vì máy tính không thể thực hiện phép cộng giữa một số dương và một số nguyên âm',
               'Vì con trỏ phải bắt buộc phải dừng lại ngay lập tức khi nhìn thấy một số nguyên âm',
               'Vì các số nguyên âm bắt buộc phải được nhân với âm một trước khi đưa vào mảng'
             ],
             correct: 0,
-            explain: 'Khi thấy 10 > 7, thuật toán thu hẹp bỏ mất số 10. Nhưng sự xuất hiện của số -5 phía sau giúp kéo tổng xuống còn 7, con trỏ trái không thể lùi lại để sửa sai.'
+            explain: 'Khi thấy 10 &gt; 7, thuật toán thu hẹp bỏ mất số 10. Nhưng sự xuất hiện của số -5 phía sau giúp kéo tổng xuống còn 7, con trỏ trái không thể lùi lại để sửa sai.'
           },
           {
             type: 'single',
@@ -515,7 +515,7 @@ int main() {
       {
         id: 'dbg_tp_1',
         title: 'Bẫy Cập Nhật Độ Dài TRƯỚC Khi Thu Hẹp Cửa Sổ Hợp Lệ',
-        description: 'Học sinh viết hàm tìm độ dài đoạn con dài nhất có tổng <= S, nhưng lại đặt lệnh cập nhật maxLen trước vòng lặp while thu hẹp, khiến kết quả lấy nhầm cả đoạn bị quá tải.',
+        description: 'Học sinh viết hàm tìm độ dài đoạn con dài nhất có tổng &lt;= S, nhưng lại đặt lệnh cập nhật maxLen trước vòng lặp while thu hẹp, khiến kết quả lấy nhầm cả đoạn bị quá tải.',
         failingInput: 'a = [4, 5], S = 4',
         failingOutput: 'maxLen = 2 (Đoạn {4, 5} có tổng 9 > 4 mà vẫn bị tính!)',
         expectedOutput: 'maxLen = 1',
@@ -538,12 +538,12 @@ int main() {
           { text: 'Sửa dòng 5 thành: maxLen = maxLen + 1;' }
         ],
         correctPatch: 0,
-        explain: 'Tại phai = 1 (số 5), tong = 9 > 4. Nếu cập nhật maxLen ở dòng 5, đoạn {4, 5} (độ dài 2) chưa được thu hẹp đã bị tính vào kết quả! Bản vá A chuyển lệnh cập nhật xuống sau vòng while, đảm bảo chỉ đoạn hợp lệ mới được ghi nhận.'
+        explain: 'Tại phai = 1 (số 5), tong = 9 &gt; 4. Nếu cập nhật maxLen ở dòng 5, đoạn {4, 5} (độ dài 2) chưa được thu hẹp đã bị tính vào kết quả! Bản vá A chuyển lệnh cập nhật xuống sau vòng while, đảm bảo chỉ đoạn hợp lệ mới được ghi nhận.'
       },
       {
         id: 'dbg_tp_2',
-        title: 'Bẫy Lỗi Điều Kiện Vòng Lặp Hai Con Trỏ Ngược Chiều (Dùng <= Thay Vì <)',
-        description: 'Học sinh tìm 2 phần tử ở HAI VỊ TRÍ KHÁC NHAU có tổng bằng S, nhưng lại dùng điều kiện trai <= phai khiến chương trình tự cộng một phần tử với chính nó.',
+        title: 'Bẫy Lỗi Điều Kiện Vòng Lặp Hai Con Trỏ Ngược Chiều (Dùng &lt;= Thay Vì &lt;)',
+        description: 'Học sinh tìm 2 phần tử ở HAI VỊ TRÍ KHÁC NHAU có tổng bằng S, nhưng lại dùng điều kiện trai &lt;= phai khiến chương trình tự cộng một phần tử với chính nó.',
         failingInput: 'a = [2, 5, 8], S = 10',
         failingOutput: 'Tìm thấy cặp tại vị trí 1 và 1 (tự lấy 5 + 5 = 10, trong khi chỉ có 1 số 5!)',
         expectedOutput: 'Không tìm thấy cặp số nào ở hai vị trí khác nhau có tổng bằng 10',
@@ -564,7 +564,7 @@ int main() {
           { text: 'Sửa dòng 3 thành: while (trai != phai + 1)' }
         ],
         correctPatch: 0,
-        explain: 'Khi đề bài yêu cầu tìm hai phần tử ở hai vị trí khác nhau (i != j), vòng lặp bắt buộc phải là "while (trai < phai)". Dùng "<=" sẽ dẫn đến trường hợp trai == phai, phần tử a[trai] bị cộng với chính nó dẫn đến kết luận sai.'
+        explain: 'Khi đề bài yêu cầu tìm hai phần tử ở hai vị trí khác nhau (i != j), vòng lặp bắt buộc phải là "while (trai &lt; phai)". Dùng "&lt;=" sẽ dẫn đến trường hợp trai == phai, phần tử a[trai] bị cộng với chính nó dẫn đến kết luận sai.'
       }
     ],
 
@@ -578,7 +578,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/381/A',
-        hint: 'Giới hạn 1 <= n <= 1000. Hai người lần lượt lấy lá bài lớn hơn ở hai đầu hàng: dùng 2 con trỏ ngược chiều l = 0, r = n - 1 co vào giữa trong O(N).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 1000. Hai người lần lượt lấy lá bài lớn hơn ở hai đầu hàng: dùng 2 con trỏ ngược chiều l = 0, r = n - 1 co vào giữa trong O(N).'
       },
       {
         id: 'CSES-1640',
@@ -586,7 +586,7 @@ int main() {
         judge: 'CSES Problem Set',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1640',
-        hint: 'Giới hạn 1 <= n <= 2*10^5, 1 <= x, a_i <= 10^9. Lưu {giá trị, vị trí gốc} vào vector<pair<long long, int>>, sort tăng dần rồi dùng Hai con trỏ ngược chiều while (trai < phai) tìm 2 số tổng bằng x.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 2*10^5, 1 &lt;= x, a_i &lt;= 10^9. Lưu {giá trị, vị trí gốc} vào vector&lt;pair&lt;long long, int&gt;&gt;, sort tăng dần rồi dùng Hai con trỏ ngược chiều while (trai &lt; phai) tìm 2 số tổng bằng x.'
       },
       {
         id: 'CSES-1660',
@@ -594,7 +594,7 @@ int main() {
         judge: 'CSES Problem Set',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1660',
-        hint: 'Giới hạn 1 <= n <= 2*10^5, a_i >= 1 (toàn số dương). Áp dụng Cửa sổ trượt (Hai con trỏ cùng chiều): co trai++ khi tong > x và tăng đáp án khi tong == x trong O(N).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 2*10^5, a_i &gt;= 1 (toàn số dương). Áp dụng Cửa sổ trượt (Hai con trỏ cùng chiều): co trai++ khi tong &gt; x và tăng đáp án khi tong == x trong O(N).'
       },
       {
         id: 'CF-279B',
@@ -602,7 +602,7 @@ int main() {
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/279/B',
-        hint: 'Giới hạn 1 <= n <= 10^5, 1 <= t <= 10^9, 1 <= a_i <= 10^4. Khuôn mẫu chuẩn Cửa sổ trượt tìm đoạn liên tiếp dài nhất có tổng thời gian đọc <= t (maxLen = max(maxLen, phai - trai + 1)).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^5, 1 &lt;= t &lt;= 10^9, 1 &lt;= a_i &lt;= 10^4. Khuôn mẫu chuẩn Cửa sổ trượt tìm đoạn liên tiếp dài nhất có tổng thời gian đọc &lt;= t (maxLen = max(maxLen, phai - trai + 1)).'
       },
       {
         id: 'VNOJ-NKSGAME',
@@ -610,7 +610,7 @@ int main() {
         judge: 'VNOJ',
         tier: 2,
         link: 'https://oj.vnoi.info/problem/nksgame',
-        hint: 'Giới hạn 1 <= n <= 10^5, |b_i|, |c_i| <= 10^9. Sort cả 2 mảng b và c tăng dần. Đặt i = 0 ở đầu b, j = n - 1 ở cuối c: nếu b[i] + c[j] > 0 thì j--, ngược lại i++, cập nhật min(|b[i] + c[j]|).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^5, |b_i|, |c_i| &lt;= 10^9. Sort cả 2 mảng b và c tăng dần. Đặt i = 0 ở đầu b, j = n - 1 ở cuối c: nếu b[i] + c[j] &gt; 0 thì j--, ngược lại i++, cập nhật min(|b[i] + c[j]|).'
       },
       {
         id: 'CSES-1141',
@@ -618,7 +618,7 @@ int main() {
         judge: 'CSES Problem Set',
         tier: 2,
         link: 'https://cses.fi/problemset/task/1141',
-        hint: 'Giới hạn 1 <= n <= 2*10^5. Tìm đoạn liên tiếp dài nhất gồm các bài hát phân biệt: dùng Cửa sổ trượt [trai..phai] kết hợp map<int, int> đếm tần suất; khi a[phai] bị trùng thì tăng trai++ đến khi hết trùng.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 2*10^5. Tìm đoạn liên tiếp dài nhất gồm các bài hát phân biệt: dùng Cửa sổ trượt [trai..phai] kết hợp map&lt;int, int&gt; đếm tần suất; khi a[phai] bị trùng thì tăng trai++ đến khi hết trùng.'
       },
       {
         id: 'CSES-1641',
@@ -626,7 +626,7 @@ int main() {
         judge: 'CSES Problem Set',
         tier: 3,
         link: 'https://cses.fi/problemset/task/1641',
-        hint: 'Giới hạn 1 <= n <= 5000, 1 <= x, a_i <= 10^9. Sort mảng kèm chỉ số gốc. Cố định phần tử thứ nhất i rồi dùng Hai con trỏ ngược chiều trên đoạn [i + 1 .. n - 1] tìm tổng x - a[i] trong O(N^2).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 5000, 1 &lt;= x, a_i &lt;= 10^9. Sort mảng kèm chỉ số gốc. Cố định phần tử thứ nhất i rồi dùng Hai con trỏ ngược chiều trên đoạn [i + 1 .. n - 1] tìm tổng x - a[i] trong O(N^2).'
       },
       {
         id: 'CSES-2428',
@@ -634,7 +634,7 @@ int main() {
         judge: 'CSES Problem Set',
         tier: 3,
         link: 'https://cses.fi/problemset/task/2428',
-        hint: 'Giới hạn 1 <= k <= n <= 2*10^5, 1 <= x_i <= 10^9. Dùng Cửa sổ trượt + map<int, int> giữ tối đa k giá trị khác nhau trong [trai..phai]; tại mỗi phai, cộng ngay (phai - trai + 1) vào tổng (kiểu long long).'
+        hint: 'Giới hạn 1 &lt;= k &lt;= n &lt;= 2*10^5, 1 &lt;= x_i &lt;= 10^9. Dùng Cửa sổ trượt + map&lt;int, int&gt; giữ tối đa k giá trị khác nhau trong [trai..phai]; tại mỗi phai, cộng ngay (phai - trai + 1) vào tổng (kiểu long long).'
       }
     ]
   };

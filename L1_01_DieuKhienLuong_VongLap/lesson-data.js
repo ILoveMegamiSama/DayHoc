@@ -20,7 +20,7 @@
         number: 'Phần 1',
         shortTitle: 'Rẽ Nhánh if/else & Logic',
         title: 'Vấn Đề Nhỏ 1: Ngã Tư Quyết Định if / else if / else & Toán Tử Logic',
-        lead: 'Giúp chương trình tự chọn đúng một hướng đi khi gặp điều kiện, kết hợp nhiều tiêu chí bằng &&, ||, ! và tránh hai bẫy chết người của Lớp 9: nhầm = với == và viết gộp 5 <= x <= 10.',
+        lead: 'Giúp chương trình tự chọn đúng một hướng đi khi gặp điều kiện, kết hợp nhiều tiêu chí bằng &&, ||, ! và tránh hai bẫy chết người của Lớp 9: nhầm = với == và viết gộp 5 &lt;= x &lt;= 10.',
         subproblem: {
           title: 'Làm sao để Anh Thật Thà biết tự phân loại học lực, kiểm tra năm nhuận và không rẽ nhầm cổng kiểm soát?',
           desc: 'Ở bài MOD-Pre và MOD-CP0, code chỉ chạy thẳng một mạch từ trên xuống dưới. Khi bước vào Ngày Hội Học Sinh, mỗi thí sinh có điểm số và năm sinh khác nhau: cần tự xét loại Giỏi / Khá / Trung bình hoặc kiểm tra năm nhuận mà không được để hai nhánh dẫm chân lên nhau.'
@@ -145,15 +145,15 @@ int main() {
         sandboxes: [
           {
             id: 'sb_if_range_trap',
-            title: 'Phòng Thí Nghiệm 1: Bẫy Viết Gộp Toán Học (5 <= x <= 10) vs Toán Tử &&',
-            desc: 'Quan sát chuyện gì xảy ra với x = 20 khi bạn viết điều kiện kiểu Toán học 5 <= x <= 10 thay vì tách bằng toán tử &&.',
+            title: 'Phòng Thí Nghiệm 1: Bẫy Viết Gộp Toán Học (5 &lt;= x &lt;= 10) vs Toán Tử &&',
+            desc: 'Quan sát chuyện gì xảy ra với x = 20 khi bạn viết điều kiện kiểu Toán học 5 &lt;= x &lt;= 10 thay vì tách bằng toán tử &&.',
             toggles: [
               {
                 key: 'condStyle',
                 label: 'Cách viết điều kiện kiểm tra đoạn [5, 10]',
                 options: [
-                  { value: 'and_ok', text: 'Tách chuẩn C++: if (5 <= x && x <= 10)', kind: 'ok' },
-                  { value: 'chain_bug', text: 'Viết gộp kiểu Toán: if (5 <= x <= 10)', kind: 'bug' }
+                  { value: 'and_ok', text: 'Tách chuẩn C++: if (5 &lt;= x && x &lt;= 10)', kind: 'ok' },
+                  { value: 'chain_bug', text: 'Viết gộp kiểu Toán: if (5 &lt;= x &lt;= 10)', kind: 'bug' }
                 ]
               }
             ],
@@ -178,8 +178,8 @@ ${isOk ? '    if (5 <= x && x <= 10) { // Dung: kiem tra dong thoi ca 2 ve' : ' 
                 changedLines: [8],
                 statusOk: isOk,
                 statusText: isOk
-                  ? 'Chính xác: Với x = 20, vế (x <= 10) sai nên nhánh if trả về Sai và in "Khong hop le"'
-                  : 'SAI LOGIC (WA): Máy tính hiểu (5 <= 20) = 1, sau đó 1 <= 10 lại ĐÚNG nên in nhầm "Hop le"!',
+                  ? 'Chính xác: Với x = 20, vế (x &lt;= 10) sai nên nhánh if trả về Sai và in "Khong hop le"'
+                  : 'SAI LOGIC (WA): Máy tính hiểu (5 &lt;= 20) = 1, sau đó 1 &lt;= 10 lại ĐÚNG nên in nhầm "Hop le"!',
                 predictions: [
                   { text: 'Chương trình nhận đúng x = 20 nằm ngoài [5, 10] và in "Khong hop le: ngoai doan [5, 10]"' },
                   { text: 'Chương trình bị đánh lừa bởi phép so sánh nối tiếp và in nhầm "Hop le: nam trong [5, 10]"' }
@@ -188,8 +188,8 @@ ${isOk ? '    if (5 <= x && x <= 10) { // Dung: kiem tra dong thoi ca 2 ve' : ' 
                   ? '$ g++ -std=c++14 main.cpp -o main && ./main\nKhong hop le: ngoai doan [5, 10]'
                   : '$ g++ -std=c++14 main.cpp -o main && ./main\nHop le: nam trong [5, 10]\n[Canh bao: 20 > 10 nhung 5 <= x <= 10 van chay vao nhanh if!]',
                 explain: isOk
-                  ? 'Toán tử && yêu cầu cả hai vế (5 <= 20) là đúng VÀ (20 <= 10) là đúng. Vì vế sau sai nên biểu thức trả về false và đi đúng vào nhánh else.'
-                  : 'C++ đọc 5 <= x <= 10 thành (5 <= x) <= 10. Khi x = 20, (5 <= 20) có giá trị true (tức số 1). Tiếp theo 1 <= 10 lại luôn đúng! Đó là lý do không bao giờ được viết gộp hai dấu so sánh liên tiếp trong C++.'
+                  ? 'Toán tử && yêu cầu cả hai vế (5 &lt;= 20) là đúng VÀ (20 &lt;= 10) là đúng. Vì vế sau sai nên biểu thức trả về false và đi đúng vào nhánh else.'
+                  : 'C++ đọc 5 &lt;= x &lt;= 10 thành (5 &lt;= x) &lt;= 10. Khi x = 20, (5 &lt;= 20) có giá trị true (tức số 1). Tiếp theo 1 &lt;= 10 lại luôn đúng! Đó là lý do không bao giờ được viết gộp hai dấu so sánh liên tiếp trong C++.'
               };
             }
           }
@@ -245,12 +245,12 @@ int main() {
             q: 'Quan sát kỹ thứ tự nhánh if / else if ở đoạn mã trên. Với diem = 9.0, chương trình sẽ in ra kết quả nào?',
             options: [
               'Chương trình in ra chữ Gioi vì điểm 9.0 đạt điều kiện lớn hơn hoặc bằng 8.0',
-              'Chương trình in ra chữ TB vì điều kiện >= 5.0 đứng đầu tiên đã đúng rồi',
+              'Chương trình in ra chữ TB vì điều kiện &gt;= 5.0 đứng đầu tiên đã đúng rồi',
               'Chương trình in ra cả TB và Gioi liền nhau vì thỏa mãn cả hai điều kiện',
               'Chương trình báo lỗi biên dịch vì các nhánh else if chưa xếp theo thứ tự tăng'
             ],
             correct: 1,
-            explain: 'Trong chuỗi if / else if / else, máy tính kiểm tra từ trên xuống và dừng ngay ở nhánh đầu tiên đúng. Vì 9.0 >= 5.0 đúng ngay ở dòng đầu nên nó in "TB" và bỏ qua toàn bộ nhánh else if phía sau.'
+            explain: 'Trong chuỗi if / else if / else, máy tính kiểm tra từ trên xuống và dừng ngay ở nhánh đầu tiên đúng. Vì 9.0 &gt;= 5.0 đúng ngay ở dòng đầu nên nó in "TB" và bỏ qua toàn bộ nhánh else if phía sau.'
           },
           {
             type: 'trace',
@@ -294,7 +294,7 @@ int main() {
             q: 'Những nhận định nào sau đây là ĐÚNG về câu lệnh rẽ nhánh và toán tử logic trong C++?',
             options: [
               'Trong chuỗi if / else if / else, luôn xếp các điều kiện hẹp (chặt) lên trước điều kiện rộng',
-              'Để kiểm tra x nằm giữa 1 và 100, ta phải tách thành (1 <= x && x <= 100) thay vì viết 1 <= x <= 100',
+              'Để kiểm tra x nằm giữa 1 và 100, ta phải tách thành (1 &lt;= x && x &lt;= 100) thay vì viết 1 &lt;= x &lt;= 100',
               'Trong biểu thức logic, ký hiệu || chỉ trả về true khi cả hai vế trái và phải đều cùng đúng',
               'Toán tử phủ định ! biến điều kiện đúng (true) thành sai (false) và ngược lại từ sai thành đúng'
             ],
@@ -477,7 +477,7 @@ ${isOk ? '        n /= 10; // Cat bo chu so cuoi -> n giam dan ve 0!' : '       
                 statusOk: isOk,
                 statusText: isOk
                   ? 'Dừng đúng lúc sau 6 lượt: n giảm 202605 → 20260 → ... → 0 và in "So chu so: 6"'
-                  : 'VÒNG LẶP VÔ TẬN (TLE): n mãi giữ giá trị 202605 > 0, CPU quay cuồng không thoát được!',
+                  : 'VÒNG LẶP VÔ TẬN (TLE): n mãi giữ giá trị 202605 &gt; 0, CPU quay cuồng không thoát được!',
                 predictions: [
                   { text: 'Vòng lặp chạy 6 lần cho tới khi n về 0 và in ra "So chu so: 6"' },
                   { text: 'Vòng lặp chạy mãi mãi không thể dừng lại và máy chấm báo TLE (Quá thời gian)' }
@@ -486,8 +486,8 @@ ${isOk ? '        n /= 10; // Cat bo chu so cuoi -> n giam dan ve 0!' : '       
                   ? '$ g++ -std=c++14 main.cpp -o main && ./main\nSo chu so: 6'
                   : '$ g++ -std=c++14 main.cpp -o main && ./main\n[Dang chay mai mai... n luon bang 202605!]\n[Ket qua may cham: TLE - Time Limit Exceeded]',
                 explain: isOk
-                  ? 'Mỗi lượt lặp, n /= 10 rút ngắn n đi 1 chữ số. Sau 6 lượt, n = 0 nên điều kiện (n > 0) thành sai, vòng lặp thoát an toàn.'
-                  : 'Vì không có dòng cập nhật n trong thân vòng lặp, giá trị của n không bao giờ thay đổi. Điều kiện (202605 > 0) luôn đúng qua hàng tỷ lượt lặp cho đến khi hết thời gian quy định.'
+                  ? 'Mỗi lượt lặp, n /= 10 rút ngắn n đi 1 chữ số. Sau 6 lượt, n = 0 nên điều kiện (n &gt; 0) thành sai, vòng lặp thoát an toàn.'
+                  : 'Vì không có dòng cập nhật n trong thân vòng lặp, giá trị của n không bao giờ thay đổi. Điều kiện (202605 &gt; 0) luôn đúng qua hàng tỷ lượt lặp cho đến khi hết thời gian quy định.'
               };
             }
           }
@@ -522,7 +522,7 @@ int main() {
               { text: 'Sửa dòng 9 thành long long tong = 1; để cộng bù vào tổng ban đầu bị thiếu' }
             ],
             correctPatch: 0,
-            explain: 'Điều kiện i < n chỉ cho i chạy từ 1 đến n - 1 (tức 1 + 2 + 3 + 4 = 10), bỏ sót mất số n = 5. Phải dùng i <= n ở dòng 10 để bao gồm cả phần tử cuối cùng.'
+            explain: 'Điều kiện i &lt; n chỉ cho i chạy từ 1 đến n - 1 (tức 1 + 2 + 3 + 4 = 10), bỏ sót mất số n = 5. Phải dùng i &lt;= n ở dòng 10 để bao gồm cả phần tử cuối cùng.'
           }
         ],
         quiz: [
@@ -575,7 +575,7 @@ int main() {
               'In ra 47 0 vì chữ số 0 ở giữa làm phép lấy dư % 10 cộng sai chữ số hàng trăm'
             ],
             correct: 0,
-            explain: 'Lượt 1: s = 7, n = 40. Lượt 2: s = 7 + 0 = 7, n = 4. Lượt 3: s = 7 + 4 = 11, n = 0. Lúc này (n > 0) sai nên thoát vòng lặp và in ra 11 0.'
+            explain: 'Lượt 1: s = 7, n = 40. Lượt 2: s = 7 + 0 = 7, n = 4. Lượt 3: s = 7 + 4 = 11, n = 0. Lúc này (n &gt; 0) sai nên thoát vòng lặp và in ra 11 0.'
           },
           {
             type: 'single',
@@ -587,7 +587,7 @@ int main() {
               'Vòng lặp chạy đúng 3 lượt ứng với giá trị kiểm tra 3, 2, 1 rồi thoát khi t kiểm tra lúc bằng 0'
             ],
             correct: 3,
-            explain: 'Biểu thức t-- trả về giá trị trước khi giảm (3, 2, 1 đều khác 0 nên đúng -> chạy 3 lượt). Đến lượt thứ 4, t-- trả về 0 (sai) rồi giảm t thành -1 và thoát vòng lặp.'
+            explain: 'Biểu thức t-- trả về giá trị trước khi giảm (3, 2, 1 đều khác 0 nên đúng -&gt; chạy 3 lượt). Đến lượt thứ 4, t-- trả về 0 (sai) rồi giảm t thành -1 và thoát vòng lặp.'
           },
           {
             type: 'multiple',
@@ -653,7 +653,7 @@ int main() {
     long long dung = 1LL * a * b; // = 1000000000000000000 (10^18)
     cout &lt;&lt; "10^9 * 10^9 = " &lt;&lt; dung &lt;&lt; '\\n';
 
-    // Luu y them: Phep cong 2 so 2 * 10^9 cung vuot int (4 * 10^9 > 2.14 * 10^9)!
+    // Luu y them: Phep cong 2 so 2 * 10^9 cung vuot int (4 * 10^9 &gt; 2.14 * 10^9)!
     long long x = 2000000000LL, y = 2000000000LL;
     cout &lt;&lt; "Tong an toan = " &lt;&lt; x + y &lt;&lt; '\\n';
     return 0;
@@ -815,7 +815,7 @@ ${isOk ? '    long long du = (((a - b) % m) + m) % m; // Chuan hoa ve [0, m - 1]
                   ? '$ g++ -std=c++14 main.cpp -o main && ./main\n3'
                   : '$ g++ -std=c++14 main.cpp -o main && ./main\n-2\n[Canh bao: So du bi am (-2) khi thuc hien phep tru trong modulo!]',
                 explain: isOk
-                  ? 'Bước (a - b) % m cho -2 (thuộc (-m, m)). Cộng thêm m thành 3 (chắc chắn >= 0), rồi % m lần nữa để đề phòng trường hợp số ban đầu đã dương.'
+                  ? 'Bước (a - b) % m cho -2 (thuộc (-m, m)). Cộng thêm m thành 3 (chắc chắn &gt;= 0), rồi % m lần nữa để đề phòng trường hợp số ban đầu đã dương.'
                   : 'Toán tử % trong C++14 giữ dấu của số bị chia bên trái (-7), nên (-7) % 5 = -2. Mọi bài toán đồng dư yêu cầu đáp án trong [0, m - 1] đều sẽ chấm sai nếu không cộng bù + m rồi % m.'
               };
             }
@@ -842,7 +842,7 @@ int main() {
               'Chương trình bị chia nguyên mất phần dư nên chỉ lưu được giá trị là 100000'
             ],
             correct: 1,
-            explain: '100000 * 100000 = 10^10 > 2.14e9. Vì cả a và b đều là int, C++ thực hiện a * b bằng 32-bit int (gây tràn số) rồi mới gán giá trị đã tràn đó sang biến s kiểu long long.'
+            explain: '100000 * 100000 = 10^10 &gt; 2.14e9. Vì cả a và b đều là int, C++ thực hiện a * b bằng 32-bit int (gây tràn số) rồi mới gán giá trị đã tràn đó sang biến s kiểu long long.'
           },
           {
             type: 'trace',
@@ -884,7 +884,7 @@ int main() {
             q: 'Những nguyên tắc nào sau đây là ĐÚNG khi làm việc với kiểu số nguyên lớn và chia lấy dư (%) trong C++?',
             options: [
               'Kiểu int 32-bit chứa thoải mái tới 10^12 nên chỉ cần dùng long long khi số vượt 10^15',
-              'Khi tính (A * B) % M với M = 10^9 + 7, phải dùng long long vì tích hai số < M có thể tới 10^18',
+              'Khi tính (A * B) % M với M = 10^9 + 7, phải dùng long long vì tích hai số &lt; M có thể tới 10^18',
               'Để tránh tràn khi tính lũy thừa hay giai thừa theo modulo, phải lấy % M ngay sau từng bước nhân',
               'Công thức (((x % M) + M) % M) giúp mọi kết quả chia dư luôn nằm trong đoạn [0, M - 1] kể cả khi x âm'
             ],
@@ -902,7 +902,7 @@ int main() {
       {
         id: 'dbg_l101_int_mul_overflow',
         title: 'Bẫy Tràn Số int * int Trước Khi Gán Vào Biến Kết Quả long long',
-        description: 'Chương trình đọc hai cạnh a, b <= 10^9 của sân khấu hình chữ nhật và in diện tích. Dù đã khai báo dienTich là long long, khi chạy test a = 1000000, b = 1000000 lại ra số âm!',
+        description: 'Chương trình đọc hai cạnh a, b &lt;= 10^9 của sân khấu hình chữ nhật và in diện tích. Dù đã khai báo dienTich là long long, khi chạy test a = 1000000, b = 1000000 lại ra số âm!',
         failingInput: '1000000 1000000',
         failingOutput: '-727379968',
         expectedOutput: '1000000000000',
@@ -953,7 +953,7 @@ int main() {
           { text: 'Sửa dòng 9 thành long long du = (a % m) - (b % m); để chia dư từng số trước khi trừ nhau' }
         ],
         correctPatch: 0,
-        explain: 'Trong C++14, (-7) % 5 ra -2. Nếu chỉ + m mà không % m lần nữa (phương án B), khi a - b >= 0 kết quả sẽ bị cộng dư vượt quá m - 1! Còn phương án C vẫn ra 3 - 0 = 3 hoặc khi a%m < b%m vẫn bị âm. Chuẩn mực là (((a - b) % m) + m) % m.'
+        explain: 'Trong C++14, (-7) % 5 ra -2. Nếu chỉ + m mà không % m lần nữa (phương án B), khi a - b &gt;= 0 kết quả sẽ bị cộng dư vượt quá m - 1! Còn phương án C vẫn ra 3 - 0 = 3 hoặc khi a%m &lt; b%m vẫn bị âm. Chuẩn mực là (((a - b) % m) + m) % m.'
       }
     ],
 
@@ -967,7 +967,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/4/A',
-        hint: 'Giới hạn 1 <= w <= 100. Cần chia quả dưa thành 2 phần ĐỀU CÓ CÂN NẶNG CHẴN DƯƠNG. Đừng quên bẫy trường hợp biên w = 2 (tuy chẵn nhưng 2 = 1 + 1 lẻ!): viết if (w > 2 && w % 2 == 0).'
+        hint: 'Giới hạn 1 &lt;= w &lt;= 100. Cần chia quả dưa thành 2 phần ĐỀU CÓ CÂN NẶNG CHẴN DƯƠNG. Đừng quên bẫy trường hợp biên w = 2 (tuy chẵn nhưng 2 = 1 + 1 lẻ!): viết if (w &gt; 2 && w % 2 == 0).'
       },
       {
         id: 'VNOJ-FCB010-BIGGER',
@@ -975,7 +975,7 @@ int main() {
         judge: 'VNOJ',
         tier: 1,
         link: 'https://oj.vnoi.info/problem/fcb010_bigger',
-        hint: 'Giới hạn 1 <= A, B <= 10. Mỗi năm cây A tăng gấp 3 lần (a *= 3;), cây B tăng gấp 2 lần (b *= 2;). Dùng vòng lặp while (a <= b) đếm số năm cho đến khi a > b (dùng long long để an toàn tuyệt đối).'
+        hint: 'Giới hạn 1 &lt;= A, B &lt;= 10. Mỗi năm cây A tăng gấp 3 lần (a *= 3;), cây B tăng gấp 2 lần (b *= 2;). Dùng vòng lặp while (a &lt;= b) đếm số năm cho đến khi a &gt; b (dùng long long để an toàn tuyệt đối).'
       },
       {
         id: 'CF-231A',
@@ -983,7 +983,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/231/A',
-        hint: 'Giới hạn 1 <= n <= 1000. Chưa cần dùng mảng! Dùng vòng lặp for từ 1 đến n (hoặc while (n--)), mỗi lượt đọc 3 số p, v, t rồi kiểm tra if (p + v + t >= 2) thì tăng biến đếm ans++.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 1000. Chưa cần dùng mảng! Dùng vòng lặp for từ 1 đến n (hoặc while (n--)), mỗi lượt đọc 3 số p, v, t rồi kiểm tra if (p + v + t &gt;= 2) thì tăng biến đếm ans++.'
       },
       {
         id: 'CF-1328A',
@@ -991,7 +991,7 @@ int main() {
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/1328/A',
-        hint: 'Giới hạn 1 <= t <= 10^4 và 1 <= a, b <= 10^9. Dùng mẫu while (t--) đọc từng cặp (a, b). Nếu dùng vòng lặp while (a % b != 0) a++; sẽ bị TLE vì a, b tới 10^9! Hãy dùng rẽ nhánh kết hợp %: nếu a % b == 0 in 0, ngược lại in b - (a % b).'
+        hint: 'Giới hạn 1 &lt;= t &lt;= 10^4 và 1 &lt;= a, b &lt;= 10^9. Dùng mẫu while (t--) đọc từng cặp (a, b). Nếu dùng vòng lặp while (a % b != 0) a++; sẽ bị TLE vì a, b tới 10^9! Hãy dùng rẽ nhánh kết hợp %: nếu a % b == 0 in 0, ngược lại in b - (a % b).'
       },
       {
         id: 'CSES-1068',
@@ -999,7 +999,7 @@ int main() {
         judge: 'CSES',
         tier: 2,
         link: 'https://cses.fi/problemset/task/1068',
-        hint: 'Giới hạn 1 <= n <= 10^6. Dùng vòng lặp while (n != 1) với if (n % 2 == 0) n /= 2; else n = 3 * n + 1;. BẪY TRÀN SỐ: dù đầu vào n <= 10^6, giá trị trung gian khi nhân 3n + 1 vượt quá giới hạn 32-bit int! Bắt buộc khai báo long long n;'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^6. Dùng vòng lặp while (n != 1) với if (n % 2 == 0) n /= 2; else n = 3 * n + 1;. BẪY TRÀN SỐ: dù đầu vào n &lt;= 10^6, giá trị trung gian khi nhân 3n + 1 vượt quá giới hạn 32-bit int! Bắt buộc khai báo long long n;'
       },
       {
         id: 'ABC174-B',
@@ -1007,7 +1007,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc174/tasks/abc174_b',
-        hint: 'Giới hạn N <= 2*10^5, |X|, |Y|, D <= 2*10^5. Đọc từng tọa độ (x, y) trong vòng lặp for (không cần lưu mảng) và so sánh x * x + y * y <= d * d để tránh sai số thập phân của sqrt. Chú ý (2*10^5)^2 = 4*10^10 vượt int -> bắt buộc dùng long long cho x, y, d!'
+        hint: 'Giới hạn N &lt;= 2*10^5, |X|, |Y|, D &lt;= 2*10^5. Đọc từng tọa độ (x, y) trong vòng lặp for (không cần lưu mảng) và so sánh x * x + y * y &lt;= d * d để tránh sai số thập phân của sqrt. Chú ý (2*10^5)^2 = 4*10^10 vượt int -&gt; bắt buộc dùng long long cho x, y, d!'
       },
       {
         id: 'CF-1A',
@@ -1015,7 +1015,7 @@ int main() {
         judge: 'Codeforces',
         tier: 3,
         link: 'https://codeforces.com/problemset/problem/1/A',
-        hint: 'Giới hạn 1 <= n, m, a <= 10^9. Số viên gạch mỗi chiều làm tròn lên bằng chia nguyên: (n + a - 1) / a (hoặc dùng if (n % a != 0)). Khi a = 1 và n = m = 10^9, đáp án tới 10^18 -> bắt buộc dùng long long n, m, a; từ lúc nhập!'
+        hint: 'Giới hạn 1 &lt;= n, m, a &lt;= 10^9. Số viên gạch mỗi chiều làm tròn lên bằng chia nguyên: (n + a - 1) / a (hoặc dùng if (n % a != 0)). Khi a = 1 và n = m = 10^9, đáp án tới 10^18 -&gt; bắt buộc dùng long long n, m, a; từ lúc nhập!'
       },
       {
         id: 'CSES-1617',
@@ -1023,7 +1023,7 @@ int main() {
         judge: 'CSES',
         tier: 3,
         link: 'https://cses.fi/problemset/task/1617',
-        hint: 'Giới hạn 1 <= n <= 10^6. Yêu cầu tính 2^n mod (10^9 + 7). Với n <= 10^6, chỉ cần vòng lặp for chạy từ 1 đến n, mỗi bước tính ans = (ans * 2) % 1000000007; với long long ans = 1 là chạy kịp dưới 1 giây và không bao giờ tràn số!'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^6. Yêu cầu tính 2^n mod (10^9 + 7). Với n &lt;= 10^6, chỉ cần vòng lặp for chạy từ 1 đến n, mỗi bước tính ans = (ans * 2) % 1000000007; với long long ans = 1 là chạy kịp dưới 1 giây và không bao giờ tràn số!'
       }
     ]
   };

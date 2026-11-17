@@ -176,7 +176,7 @@ int main() {
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\nlaNguyenTo(9) = 1\nlaNguyenTo(11) = 1\n[Canh bao WA: So 9 chi kiem tra moi i = 2 roi thoat ham ngay tai return true!]',
                 explain: isOk
                   ? 'Khi x = 9, i = 2 không chia hết nên vòng lặp tiếp tục sang i = 3. Tại i = 3, 9 % 3 == 0 nên hàm chạy return false; và kết thúc đúng đắn.'
-                  : 'Lệnh return lập tức chấm dứt toàn bộ hàm! Đặt else return true; trong vòng for biến vòng lặp thành lệnh chỉ kiểm tra duy nhất số chẵn i = 2, mọi số lẻ >= 3 như 9, 15, 21 đều bị kết luận nhầm là số nguyên tố!'
+                  : 'Lệnh return lập tức chấm dứt toàn bộ hàm! Đặt else return true; trong vòng for biến vòng lặp thành lệnh chỉ kiểm tra duy nhất số chẵn i = 2, mọi số lẻ &gt;= 3 như 9, 15, 21 đều bị kết luận nhầm là số nguyên tố!'
               };
             }
           }
@@ -210,7 +210,7 @@ int main() {
               'In ra 1 1 vì câu lệnh return true ở cuối vòng lặp luôn được chạy tới'
             ],
             correct: 2,
-            explain: 'Với kiemTra(9): ở lượt i = 2, 9 % 2 != 0 nên chạy nhánh else return true; -> thoát hàm ngay với giá trị 1. Với kiemTra(4): ở lượt i = 2, 4 % 2 == 0 nên chạy return false; -> trả về 0. Kết quả là 1 0.'
+            explain: 'Với kiemTra(9): ở lượt i = 2, 9 % 2 != 0 nên chạy nhánh else return true; -&gt; thoát hàm ngay với giá trị 1. Với kiemTra(4): ở lượt i = 2, 4 % 2 == 0 nên chạy return false; -&gt; trả về 0. Kết quả là 1 0.'
           },
           {
             type: 'trace',
@@ -241,7 +241,7 @@ int main() {
               'In ra OK 6 vì -3 bị thoát sớm còn lệnh x + 100 sau return bị bỏ qua',
               'In ra OK 106 vì lệnh return đầu tiên trong tangThem vẫn cộng tiếp 100',
               'In ra OK OK 6 vì hàm void không dừng lại khi gặp câu lệnh return trống',
-              'In ra 6 vì điều kiện val <= 0 làm cả hai lời gọi inNeuDuong đều thoát'
+              'In ra 6 vì điều kiện val &lt;= 0 làm cả hai lời gọi inNeuDuong đều thoát'
             ],
             correct: 0,
             explain: 'inNeuDuong(-3) gặp return; nên thoát ngay không in gì. inNeuDuong(4) in "OK ". tangThem(4) gặp return x + 2; ở dòng đầu nên trả về 6 và dừng ngay, dòng x = x + 100 không bao giờ chạy.'
@@ -264,11 +264,11 @@ int main() {
             options: [
               'Hàm có kiểu trả về như int hay bool bắt buộc kết thúc bằng return kèm giá trị đúng kiểu đó',
               'Ngay khi gặp lệnh return chạy tới, hàm lập tức dừng lại và bỏ qua mọi dòng lệnh phía sau',
-              'Hàm void vẫn có thể dùng câu lệnh cout << hamVoid(); để in thẳng kết quả trả về ra màn hình',
+              'Hàm void vẫn có thể dùng câu lệnh cout &lt;&lt; hamVoid(); để in thẳng kết quả trả về ra màn hình',
               'Hàm void có thể dùng lệnh return; trống (không kèm giá trị) để thoát sớm khi thỏa điều kiện dừng'
             ],
             correct: [0, 1, 3],
-            explain: 'A, B và D đều chính xác. C sai hoàn toàn vì hàm void không trả về bất kỳ giá trị nào nên không thể đặt vào trong biểu thức cout << hoặc gán cho biến.'
+            explain: 'A, B và D đều chính xác. C sai hoàn toàn vì hàm void không trả về bất kỳ giá trị nào nên không thể đặt vào trong biểu thức cout &lt;&lt; hoặc gán cho biến.'
           }
         ]
       },
@@ -469,11 +469,11 @@ int main() {
             options: [
               'In ra 10 10 vì hai biến mn và mx ở main() không bị thay đổi bởi hàm void',
               'In ra 4 10 vì lần gọi thứ hai với val = 12 chỉ kiểm tra sau lệnh return',
-              'In ra 10 12 vì điều kiện val < mn không cập nhật vào biến gốc của mn',
+              'In ra 10 12 vì điều kiện val &lt; mn không cập nhật vào biến gốc của mn',
               'In ra 4 12 vì lần đầu hạ mn xuống 4 và lần sau nâng mx lên thành 12'
             ],
             correct: 3,
-            explain: 'Ban đầu mn = 10, mx = 10. Lần 1 (val = 4): 4 < 10 nên mn đổi thành 4 (mx giữ 10). Lần 2 (val = 12): 12 > 10 nên mx đổi thành 12 (mn giữ 4). Kết quả cuối cùng là 4 12.'
+            explain: 'Ban đầu mn = 10, mx = 10. Lần 1 (val = 4): 4 &lt; 10 nên mn đổi thành 4 (mx giữ 10). Lần 2 (val = 12): 12 &gt; 10 nên mx đổi thành 12 (mn giữ 4). Kết quả cuối cùng là 4 12.'
           },
           {
             type: 'single',
@@ -673,7 +673,7 @@ int main() {
                 statusOk: isOk,
                 statusText: isOk
                   ? 'Chính xác (AC): Cả 2 lần gọi đều cộng thẳng vào tong toàn cục nên kết quả là 35'
-                  : 'SAI KẾT QUẢ (WA): Biến cục bộ int tong = 0 che khuất biến toàn cục rồi biến mất -> ngoài main() vẫn là 0!',
+                  : 'SAI KẾT QUẢ (WA): Biến cục bộ int tong = 0 che khuất biến toàn cục rồi biến mất -&gt; ngoài main() vẫn là 0!',
                 predictions: [
                   { text: 'Ngoài main() nhận đủ hai lần cộng dồn và in ra tong ngoai main() = 35' },
                   { text: 'Ngoài main() hoàn toàn không nhận được thay đổi và in ra tong ngoai main() = 0' }
@@ -682,7 +682,7 @@ int main() {
                   ? '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\ntong ngoai main() = 35'
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\ntong ngoai main() = 0\n[Canh bao WA: int tong = 0 trong ham da che khuat bien toan cuc va bi xoa khi return!]',
                 explain: isOk
-                  ? 'Hàm tangTong không khai báo biến cục bộ trùng tên, nên câu lệnh tong += x; cập nhật thẳng vào biến toàn cục tong (0 -> 10 -> 35).'
+                  ? 'Hàm tangTong không khai báo biến cục bộ trùng tên, nên câu lệnh tong += x; cập nhật thẳng vào biến toàn cục tong (0 -&gt; 10 -&gt; 35).'
                   : 'Khi viết int tong = 0; bên trong hàm, hệ thống tạo biến cục bộ riêng trên ngăn xếp lời gọi hàm. Biến này nhận giá trị 10 (lần 1) rồi 25 (lần 2) và đều bị hủy ngay khi thoát hàm, bỏ mặc biến toàn cục tong ngoài main() vẫn bằng 0!'
               };
             }
@@ -816,12 +816,12 @@ int main() {
           { text: 'Đổi dòng 10 ở cuối hàm thành return false; để tránh trả về true khi hết vòng lặp' }
         ],
         correctPatch: 1,
-        explain: 'Ở dòng 8, nhánh else return true; khiến hàm lập tức thoát ngay ở lượt i = 2 với mọi số lẻ >= 3 (như 9, 15, 21). Chỉ cần xóa bỏ dòng 8 để vòng lặp chạy hết tới sqrt(x) trước khi return true ở dòng 10.'
+        explain: 'Ở dòng 8, nhánh else return true; khiến hàm lập tức thoát ngay ở lượt i = 2 với mọi số lẻ &gt;= 3 (như 9, 15, 21). Chỉ cần xóa bỏ dòng 8 để vòng lặp chạy hết tới sqrt(x) trước khi return true ở dòng 10.'
       },
       {
         id: 'dbg_l103_missing_ref_swap',
         title: 'Quên Dấu & Khi Viết Hàm Hoán Đổi Hai Biến Ngoài main()',
-        description: 'Chương trình nhập hai số a, b và gọi hàm xepTang(a, b) để sắp xếp sao cho a <= b trước khi in ra hiệu b - a. Khi nhập "50 20", hàm không hề đổi chỗ khiến output vẫn là "50 20"!',
+        description: 'Chương trình nhập hai số a, b và gọi hàm xepTang(a, b) để sắp xếp sao cho a &lt;= b trước khi in ra hiệu b - a. Khi nhập "50 20", hàm không hề đổi chỗ khiến output vẫn là "50 20"!',
         failingInput: '50 20',
         failingOutput: '50 20',
         expectedOutput: '20 50',
@@ -905,7 +905,7 @@ int main() {
         judge: 'AtCoder',
         tier: 1,
         link: 'https://atcoder.jp/contests/abc083/tasks/abc083_b',
-        hint: 'Giới hạn 1 <= N <= 10^4, 1 <= A <= B <= 36. Tách riêng hàm int tongChuSo(int x) dùng while (x > 0) cộng x % 10 rồi chia 10. Trong main(), chỉ cần duyệt i từ 1..N và gọi hàm nếu A <= s && s <= B thì cộng i vào đáp án.'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 10^4, 1 &lt;= A &lt;= B &lt;= 36. Tách riêng hàm int tongChuSo(int x) dùng while (x &gt; 0) cộng x % 10 rồi chia 10. Trong main(), chỉ cần duyệt i từ 1..N và gọi hàm nếu A &lt;= s && s &lt;= B thì cộng i vào đáp án.'
       },
       {
         id: 'CF-271A',
@@ -913,7 +913,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/271/A',
-        hint: 'Giới hạn 1000 <= y <= 9000. Viết hàm bool cacChuSoKhacNhau(int nam) kiểm tra 4 chữ số có đôi một khác nhau (hoặc dùng mảng cục bộ nhỏ bool daCo[10] = {}; bên trong hàm để thấy mỗi lần gọi là một khay mới!). Sau đó chạy while (true) { y++; if (cacChuSoKhacNhau(y)) { cout << y << \'\\n\'; break; } }.'
+        hint: 'Giới hạn 1000 &lt;= y &lt;= 9000. Viết hàm bool cacChuSoKhacNhau(int nam) kiểm tra 4 chữ số có đôi một khác nhau (hoặc dùng mảng cục bộ nhỏ bool daCo[10] = {}; bên trong hàm để thấy mỗi lần gọi là một khay mới!). Sau đó chạy while (true) { y++; if (cacChuSoKhacNhau(y)) { cout &lt;&lt; y &lt;&lt; \'\\n\'; break; } }.'
       },
       {
         id: 'CF-155A',
@@ -921,7 +921,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/155/A',
-        hint: 'Giới hạn 1 <= n <= 1000, điểm 0 <= a_i <= 10^4. Đọc điểm đầu tiên làm thapNhat và caoNhat. Với n - 1 điểm sau, viết hàm bool capNhatKyLuc(int& thapNhat, int& caoNhat, int diem) dùng tham chiếu & để cập nhật thẳng hai kỷ lục và trả về true nếu phá kỷ lục.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 1000, điểm 0 &lt;= a_i &lt;= 10^4. Đọc điểm đầu tiên làm thapNhat và caoNhat. Với n - 1 điểm sau, viết hàm bool capNhatKyLuc(int& thapNhat, int& caoNhat, int diem) dùng tham chiếu & để cập nhật thẳng hai kỷ lục và trả về true nếu phá kỷ lục.'
       },
       {
         id: 'ABC081-B',
@@ -929,7 +929,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc081/tasks/abc081_b',
-        hint: 'Giới hạn 1 <= N <= 200, 1 <= A_i <= 10^9. Khai báo mảng tĩnh toàn cục int a[205];. Tách thành hai hàm: bool tatCaChan(int n) kiểm tra mọi a[1..n] đều chia hết cho 2, và void chiaDoiTatCa(int n) chia đôi mọi phần tử. Trong main() chỉ cần while (tatCaChan(n)) { chiaDoiTatCa(n); ans++; }.'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 200, 1 &lt;= A_i &lt;= 10^9. Khai báo mảng tĩnh toàn cục int a[205];. Tách thành hai hàm: bool tatCaChan(int n) kiểm tra mọi a[1..n] đều chia hết cho 2, và void chiaDoiTatCa(int n) chia đôi mọi phần tử. Trong main() chỉ cần while (tatCaChan(n)) { chiaDoiTatCa(n); ans++; }.'
       },
       {
         id: 'VNOJ-NKNUMFRE',
@@ -937,7 +937,7 @@ int main() {
         judge: 'VNOJ',
         tier: 2,
         link: 'https://oj.vnoi.info/problem/nknumfre',
-        hint: 'Giới hạn 10 <= a <= b <= 30000. Tách bài toán thành 3 hàm rõ ràng: int daoNguoc(int x), int ucln(int x, int y) (dùng vòng lặp while (y != 0) { int r = x % y; x = y; y = r; } return x;), và bool laSoThanThien(int x) kiểm tra ucln(x, daoNguoc(x)) == 1.'
+        hint: 'Giới hạn 10 &lt;= a &lt;= b &lt;= 30000. Tách bài toán thành 3 hàm rõ ràng: int daoNguoc(int x), int ucln(int x, int y) (dùng vòng lặp while (y != 0) { int r = x % y; x = y; y = r; } return x;), và bool laSoThanThien(int x) kiểm tra ucln(x, daoNguoc(x)) == 1.'
       },
       {
         id: 'ABC186-C',
@@ -945,7 +945,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc186/tasks/abc186_c',
-        hint: 'Giới hạn 1 <= N <= 10^5. Thay vì viết 2 vòng lặp tách chữ số giống nhau cho hệ 10 và hệ 8, hãy viết ĐÚNG MỘT hàm có tham số hóa: bool coChuaSo7(int x, int coSo) lặp while (x > 0) { if (x % coSo == 7) return true; x /= coSo; }. Trong main() chỉ cần kiểm tra !coChuaSo7(i, 10) && !coChuaSo7(i, 8).'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 10^5. Thay vì viết 2 vòng lặp tách chữ số giống nhau cho hệ 10 và hệ 8, hãy viết ĐÚNG MỘT hàm có tham số hóa: bool coChuaSo7(int x, int coSo) lặp while (x &gt; 0) { if (x % coSo == 7) return true; x /= coSo; }. Trong main() chỉ cần kiểm tra !coChuaSo7(i, 10) && !coChuaSo7(i, 8).'
       },
       {
         id: 'CSES-1754',
@@ -953,7 +953,7 @@ int main() {
         judge: 'CSES',
         tier: 3,
         link: 'https://cses.fi/problemset/task/1754',
-        hint: 'Giới hạn 1 <= t <= 10^5, 0 <= a, b <= 10^9. Viết hàm void xepTang(long long& a, long long& b) dùng tham chiếu & để luôn đảm bảo a <= b. Sau đó viết bool coTheHetXu(long long a, long long b): gọi xepTang(a, b) rồi kiểm tra (a + b) % 3 == 0 && 2 * a >= b (dùng long long tránh tràn khi 2 * a hoặc a + b).'
+        hint: 'Giới hạn 1 &lt;= t &lt;= 10^5, 0 &lt;= a, b &lt;= 10^9. Viết hàm void xepTang(long long& a, long long& b) dùng tham chiếu & để luôn đảm bảo a &lt;= b. Sau đó viết bool coTheHetXu(long long a, long long b): gọi xepTang(a, b) rồi kiểm tra (a + b) % 3 == 0 && 2 * a &gt;= b (dùng long long tránh tràn khi 2 * a hoặc a + b).'
       },
       {
         id: 'ABC196-C',
@@ -961,7 +961,7 @@ int main() {
         judge: 'AtCoder',
         tier: 3,
         link: 'https://atcoder.jp/contests/abc196/tasks/abc196_c',
-        hint: 'Giới hạn 1 <= N < 10^12 (duyệt từ 1..N sẽ TLE!). Chỉ cần duyệt nửa đầu x từ 1..10^6 và viết hàm long long ghepDoi(long long x) nhân x với lũy thừa 10 vừa lớn hơn x rồi cộng x (ví dụ x = 12 -> 12 * 100 + 12 = 1212). Nếu ghepDoi(x) <= N thì tăng biến đếm, ngược lại break ngay!'
+        hint: 'Giới hạn 1 &lt;= N &lt; 10^12 (duyệt từ 1..N sẽ TLE!). Chỉ cần duyệt nửa đầu x từ 1..10^6 và viết hàm long long ghepDoi(long long x) nhân x với lũy thừa 10 vừa lớn hơn x rồi cộng x (ví dụ x = 12 -&gt; 12 * 100 + 12 = 1212). Nếu ghepDoi(x) &lt;= N thì tăng biến đếm, ngược lại break ngay!'
       }
     ]
   };

@@ -10,15 +10,27 @@ if [ $# -eq 1 ]; then
   if [ "$1" = "--lesson" ] || [ "${1#--}" != "$1" ]; then
     if [[ "$1" == --lesson=* ]]; then
       TARGET_DIR="${1#--lesson=}"
+      if [ -z "$TARGET_DIR" ]; then
+        echo "[FAIL] Thiếu giá trị thư mục trong --lesson=<dir>" >&2
+        exit 1
+      fi
     else
       echo "[FAIL] Cách dùng: bash tests/verify_all_cpp.sh [<dir> | --lesson <dir>]" >&2
       exit 1
     fi
   else
     TARGET_DIR="$1"
+    if [ -z "$TARGET_DIR" ]; then
+      echo "[FAIL] Giá trị thư mục không được để trống" >&2
+      exit 1
+    fi
   fi
 elif [ $# -eq 2 ] && [ "$1" = "--lesson" ]; then
   TARGET_DIR="$2"
+  if [ -z "$TARGET_DIR" ]; then
+    echo "[FAIL] Thiếu giá trị thư mục sau cờ --lesson" >&2
+    exit 1
+  fi
 elif [ $# -ne 0 ]; then
   echo "[FAIL] Tham số không hợp lệ. Cách dùng: bash tests/verify_all_cpp.sh [<dir> | --lesson <dir>]" >&2
   exit 1

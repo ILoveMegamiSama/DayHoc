@@ -9,7 +9,7 @@
     number: 'Chương Phụ CP0',
     shortTitle: 'Chuẩn Hóa Code CP',
     title: 'Chương Phụ: Chuẩn Hóa Code C++ Hướng Thi Đấu (CP)',
-    lead: 'Nâng cấp bộ đồ nghề từ bài Nhập môn (MOD-Pre) để bước vào đấu trường tốc độ: gói gọn thư viện bằng #include <bits/stdc++.h>, mở bảng tên viết tắt using namespace std; (tránh bẫy trùng tên count/min/max) và bật bộ tăng tốc Fast I/O chuẩn CP.',
+    lead: 'Nâng cấp bộ đồ nghề từ bài Nhập môn (MOD-Pre) để bước vào đấu trường tốc độ: gói gọn thư viện bằng #include &lt;bits/stdc++.h&gt;, mở bảng tên viết tắt using namespace std; (tránh bẫy trùng tên count/min/max) và bật bộ tăng tốc Fast I/O chuẩn CP.',
     modules: [
       // ============================================================================
       // MODULE 1: THÙNG ĐỒ NGHỀ ĐA NĂNG #include <bits/stdc++.h>
@@ -17,12 +17,12 @@
       {
         id: 'mod1',
         number: 'Phần 1',
-        shortTitle: 'Vali #include <bits/stdc++.h>',
-        title: 'Vấn Đề Nhỏ 1: Thùng Đồ Nghề Đa Năng #include <bits/stdc++.h>',
+        shortTitle: 'Vali #include &lt;bits/stdc++.h&gt;',
+        title: 'Vấn Đề Nhỏ 1: Thùng Đồ Nghề Đa Năng #include &lt;bits/stdc++.h&gt;',
         lead: 'Giải quyết bế tắc phải nhớ và gõ hàng loạt #include rời rạc khi đi thi đấu tốc độ bằng một dòng khai báo tổng hợp chuẩn GCC.',
         subproblem: {
           title: 'Làm sao để không phải nhớ tên hàng chục thư viện rời rạc và tránh lỗi biên dịch vì quên #include khi làm bài thi?',
-          desc: 'Ở bài Nhập môn (MOD-Pre), muốn dùng cin/cout phải viết #include <iostream>, muốn dùng string phải viết thêm #include <string>. Khi bước vào đề thi cần tính căn bậc hai (cmath), tìm lớn/nhỏ nhất (algorithm), làm tròn số thập phân (iomanip)..., chỉ cần quên đúng 1 dòng là Anh Thật Thà báo lỗi thiếu đồ nghề ngay!'
+          desc: 'Ở bài Nhập môn (MOD-Pre), muốn dùng cin/cout phải viết #include &lt;iostream&gt;, muốn dùng string phải viết thêm #include &lt;string&gt;. Khi bước vào đề thi cần tính căn bậc hai (cmath), tìm lớn/nhỏ nhất (algorithm), làm tròn số thập phân (iomanip)..., chỉ cần quên đúng 1 dòng là Anh Thật Thà báo lỗi thiếu đồ nghề ngay!'
         },
         cards: [
           {
@@ -73,15 +73,15 @@ int main() {
         sandboxes: [
           {
             id: 'sb_bits_header',
-            title: 'Phòng Thí Nghiệm 1: Thiếu Thư Viện Rời Rạc vs Vali <bits/stdc++.h>',
+            title: 'Phòng Thí Nghiệm 1: Thiếu Thư Viện Rời Rạc vs Vali &lt;bits/stdc++.h&gt;',
             desc: 'So sánh phản ứng của trình biên dịch g++ khi dùng hàm sqrt() và setprecision() với hai cách khai báo thư viện.',
             toggles: [
               {
                 key: 'headerMode',
                 label: 'Cách nạp thư viện đầu file',
                 options: [
-                  { value: 'bits', text: 'Dùng vali đa năng #include <bits/stdc++.h>', kind: 'ok' },
-                  { value: 'iostream_only', text: 'Chỉ viết #include <iostream> (quên cmath/iomanip)', kind: 'bug' }
+                  { value: 'bits', text: 'Dùng vali đa năng #include &lt;bits/stdc++.h&gt;', kind: 'ok' },
+                  { value: 'iostream_only', text: 'Chỉ viết #include &lt;iostream&gt; (quên cmath/iomanip)', kind: 'bug' }
                 ]
               }
             ],
@@ -99,8 +99,8 @@ int main() {
                 changedLines: [1],
                 statusOk: isBits,
                 statusText: isBits
-                  ? 'Biên dịch sạch 100%: Cả sqrt() lẫn setprecision() đều có sẵn trong <bits/stdc++.h>'
-                  : 'Lỗi biên dịch: \'sqrt\' và \'setprecision\' chưa được khai báo vì thiếu <cmath> và <iomanip>!',
+                  ? 'Biên dịch sạch 100%: Cả sqrt() lẫn setprecision() đều có sẵn trong &lt;bits/stdc++.h&gt;'
+                  : 'Lỗi biên dịch: \'sqrt\' và \'setprecision\' chưa được khai báo vì thiếu &lt;cmath&gt; và &lt;iomanip&gt;!',
                 predictions: [
                   { text: 'Chương trình biên dịch thành công và in ra 7.07' },
                   { text: 'Trình biên dịch báo lỗi vì không tìm thấy sqrt và setprecision' }
@@ -109,8 +109,8 @@ int main() {
                   ? '$ g++ -std=c++14 main.cpp -o main && ./main\n7.07'
                   : '$ g++ -std=c++14 main.cpp\nmain.cpp:4:28: error: \'sqrt\' is not a member of \'std\'\nmain.cpp:5:37: error: \'setprecision\' is not a member of \'std\'',
                 explain: isBits
-                  ? 'Chỉ một dòng #include <bits/stdc++.h> đã nạp cả <iostream>, <cmath>, <iomanip>, <algorithm>, <string>... giúp Anh Thật Thà tìm thấy ngay sqrt() và setprecision().'
-                  : 'Thư viện <iostream> chỉ chứa loa-khe cin/cout. Khi gọi std::sqrt hoặc std::setprecision mà quên nạp thêm <cmath> và <iomanip>, g++ sẽ dừng ngay ở bước biên dịch!'
+                  ? 'Chỉ một dòng #include &lt;bits/stdc++.h&gt; đã nạp cả &lt;iostream&gt;, &lt;cmath&gt;, &lt;iomanip&gt;, &lt;algorithm&gt;, &lt;string&gt;... giúp Anh Thật Thà tìm thấy ngay sqrt() và setprecision().'
+                  : 'Thư viện &lt;iostream&gt; chỉ chứa loa-khe cin/cout. Khi gọi std::sqrt hoặc std::setprecision mà quên nạp thêm &lt;cmath&gt; và &lt;iomanip&gt;, g++ sẽ dừng ngay ở bước biên dịch!'
               };
             }
           }
@@ -132,11 +132,11 @@ int main() {
               'Trình biên dịch tự động tải thêm thư viện toán học từ hệ thống để chạy ra kết quả 3'
             ],
             correct: 2,
-            explain: 'Hàm std::sqrt() nằm trong thư viện toán học <cmath> (được gói sẵn trong <bits/stdc++.h>). Chỉ nạp <iostream> sẽ khiến g++ báo lỗi \'sqrt\' is not a member of \'std\'.'
+            explain: 'Hàm std::sqrt() nằm trong thư viện toán học &lt;cmath&gt; (được gói sẵn trong &lt;bits/stdc++.h&gt;). Chỉ nạp &lt;iostream&gt; sẽ khiến g++ báo lỗi \'sqrt\' is not a member of \'std\'.'
           },
           {
             type: 'single',
-            q: 'Vì sao trong Lập trình thi đấu (CP) với trình biên dịch g++, thí sinh thường dùng dòng #include <bits/stdc++.h> ở đầu file?',
+            q: 'Vì sao trong Lập trình thi đấu (CP) với trình biên dịch g++, thí sinh thường dùng dòng #include &lt;bits/stdc++.h&gt; ở đầu file?',
             options: [
               'Vì dòng này tự động tăng tốc độ tính toán của bộ xử lý CPU lên gấp nhiều lần trong suốt quá trình chạy bài thi',
               'Vì dòng này nạp sẵn toàn bộ thư viện chuẩn C++ chỉ trong một lệnh, giúp code gọn và tránh quên khai báo thư viện',
@@ -144,11 +144,11 @@ int main() {
               'Vì dòng này tự động bỏ qua tiền tố std:: ở mọi câu lệnh nên không cần dùng thêm dòng khai báo using namespace std'
             ],
             correct: 1,
-            explain: '#include <bits/stdc++.h> là file tổng hợp của GCC giúp nạp gần như toàn bộ thư viện chuẩn C++ chỉ trong 1 dòng. Nó KHÔNG tự tăng tốc CPU hay thay thế using namespace std;.'
+            explain: '#include &lt;bits/stdc++.h&gt; là file tổng hợp của GCC giúp nạp gần như toàn bộ thư viện chuẩn C++ chỉ trong 1 dòng. Nó KHÔNG tự tăng tốc CPU hay thay thế using namespace std;.'
           },
           {
             type: 'multiple',
-            q: 'Những nhận định nào sau đây là ĐÚNG về chỉ thị #include <bits/stdc++.h>?',
+            q: 'Những nhận định nào sau đây là ĐÚNG về chỉ thị #include &lt;bits/stdc++.h&gt;?',
             options: [
               'Đây là chỉ thị tiền xử lý nên tuyệt đối không đặt dấu chấm phẩy (;) ở cuối dòng lệnh này',
               'Đây là thư viện bắt buộc có sẵn trên mọi trình biên dịch C++ kể cả Visual Studio (MSVC) gốc',
@@ -156,7 +156,7 @@ int main() {
               'Khi dùng dòng này, ta có thể gọi ngay string, sqrt(), max() mà không cần tách nhiều #include'
             ],
             correct: [0, 2, 3],
-            explain: 'A, C và D đúng. Nhận định B sai vì <bits/stdc++.h> là phần mở rộng của bộ biên dịch GCC (g++), không phải chuẩn mặc định trên Visual Studio MSVC.'
+            explain: 'A, C và D đúng. Nhận định B sai vì &lt;bits/stdc++.h&gt; là phần mở rộng của bộ biên dịch GCC (g++), không phải chuẩn mặc định trên Visual Studio MSVC.'
           }
         ]
       },
@@ -194,9 +194,9 @@ int main() {
                 <pre class="code-pre"><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
-// KHONG DAT: int count = 0;  -> Se bi loi "reference to 'count' is ambiguous"!
+// KHONG DAT: int count = 0;  -&gt; Se bi loi "reference to 'count' is ambiguous"!
 // KHONG DAT: min, max, left, right, size, next, prev, hash
-int soLuong = 5; // Ten tieng Viet ro nghia hoac cnt, minVal, maxVal -> An toan 100%!
+int soLuong = 5; // Ten tieng Viet ro nghia hoac cnt, minVal, maxVal -&gt; An toan 100%!
 
 int main() {
     int giaNhoNhat = min(15, 20);
@@ -262,7 +262,7 @@ int main() {
                   : '$ g++ -std=c++14 main.cpp\nmain.cpp:7:33: error: reference to \'count\' is ambiguous\n  candidate 1: template<...> std::count(...)\n  candidate 2: int count',
                 explain: isSafe
                   ? 'Tên biến soLuong (hoặc cnt, minVal, maxVal) hoàn toàn tách biệt với kho tên tiếng Anh chuẩn của C++, giúp code vừa ngắn gọn vừa an toàn.'
-                  : 'Do đã bật using namespace std; và #include <bits/stdc++.h>, cả hàm std::count lẫn biến toàn cục count của bạn đều xuất hiện chung một chỗ, khiến g++ không biết chọn cái nào!'
+                  : 'Do đã bật using namespace std; và #include &lt;bits/stdc++.h&gt;, cả hàm std::count lẫn biến toàn cục count của bạn đều xuất hiện chung một chỗ, khiến g++ không biết chọn cái nào!'
               };
             }
           }
@@ -294,7 +294,7 @@ int main() {
               { text: 'Đổi kiểu dữ liệu của biến toàn cục ở dòng 4 từ int thành double để trình biên dịch phân biệt' }
             ],
             correctPatch: 0,
-            explain: 'Khi dùng #include <bits/stdc++.h> và using namespace std;, biến toàn cục tên count bị đụng độ trực tiếp với hàm std::count. Đổi tên thành soLuong (hoặc cnt) giúp hết xung đột hoàn toàn.'
+            explain: 'Khi dùng #include &lt;bits/stdc++.h&gt; và using namespace std;, biến toàn cục tên count bị đụng độ trực tiếp với hàm std::count. Đổi tên thành soLuong (hoặc cnt) giúp hết xung đột hoàn toàn.'
           }
         ],
         quiz: [
@@ -315,7 +315,7 @@ int main() {
               'Trình biên dịch báo lỗi nhập nhằng vì biến count trùng tên với hàm count có sẵn trong std'
             ],
             correct: 3,
-            explain: 'Do <bits/stdc++.h> đã nạp sẵn std::count và dòng using namespace std; mở khóa tên đó ra toàn cục, khai báo int count = 5; gây ra lỗi reference to \'count\' is ambiguous.'
+            explain: 'Do &lt;bits/stdc++.h&gt; đã nạp sẵn std::count và dòng using namespace std; mở khóa tên đó ra toàn cục, khai báo int count = 5; gây ra lỗi reference to \'count\' is ambiguous.'
           },
           {
             type: 'trace',
@@ -534,7 +534,7 @@ int main() {
               'In hai dòng chữ nguyên văn là a + b ở dòng đầu và a * b ở dòng thứ hai'
             ],
             correct: 2,
-            explain: 'Băng chuyền toán tử << xuất tổng a + b = 11, gặp ký tự \'\\n\' nên xuống dòng mới, sau đó xuất tích a * b = 28 và xuống dòng kết thúc.'
+            explain: 'Băng chuyền toán tử &lt;&lt; xuất tổng a + b = 11, gặp ký tự \'\\n\' nên xuống dòng mới, sau đó xuất tích a * b = 28 và xuống dòng kết thúc.'
           },
           {
             type: 'single',
@@ -552,7 +552,7 @@ int main() {
             type: 'multiple',
             q: 'Những quy tắc nào sau đây thuộc Bộ Khung Chuẩn CP hoàn chỉnh cho bài thi tốc độ thông thường?',
             options: [
-              'Dùng #include <bits/stdc++.h> kết hợp với using namespace std; ngay ở phần đầu file',
+              'Dùng #include &lt;bits/stdc++.h&gt; kết hợp với using namespace std; ngay ở phần đầu file',
               'Gọi cặp lệnh ios_base::sync_with_stdio(false); và cin.tie(NULL); ngay đầu hàm main()',
               'Kết hợp dùng xen kẽ cả scanf/printf lẫn cin/cout để tận dụng tốc độ của cả hai thư viện',
               'Dùng ký tự \'\\n\' để xuống dòng và tránh đặt tên biến trùng với count, min, max, left, right'
@@ -597,7 +597,7 @@ int main() {
       },
       {
         id: 'dbg_cp0_missing_header',
-        title: 'Bẫy Thiếu Thư Viện Khi Dùng #include <iostream> Rời Rạc',
+        title: 'Bẫy Thiếu Thư Viện Khi Dùng #include &lt;iostream&gt; Rời Rạc',
         description: 'Tìm dòng khai báo thư viện ở đầu file khiến chương trình báo lỗi "\'sqrt\' was not declared in this scope" khi gọi hàm tính căn bậc hai, và chuẩn hóa theo bộ khung CP.',
         failingInput: '(Biên dịch bằng g++ -std=c++14)',
         failingOutput: 'error: \'sqrt\' was not declared in this scope',
@@ -619,7 +619,7 @@ int main() {
           { text: 'Xóa dòng using namespace std; ở dòng 2 để hàm sqrt() tự động được mở khóa' }
         ],
         correctPatch: 0,
-        explain: '<iostream> không chứa các hàm toán học như sqrt(). Chuẩn hóa dòng 1 thành #include <bits/stdc++.h> sẽ nạp đầy đủ cả <cmath>, <algorithm>, <string>, <iostream>... chỉ trong 1 dòng.'
+        explain: '&lt;iostream&gt; không chứa các hàm toán học như sqrt(). Chuẩn hóa dòng 1 thành #include &lt;bits/stdc++.h&gt; sẽ nạp đầy đủ cả &lt;cmath&gt;, &lt;algorithm&gt;, &lt;string&gt;, &lt;iostream&gt;... chỉ trong 1 dòng.'
       }
     ],
 
@@ -633,7 +633,7 @@ int main() {
         judge: 'VNOJ',
         tier: 1,
         link: 'https://oj.vnoi.info/problem/post',
-        hint: 'Giới hạn 1 <= A, B <= 1000. Gõ lại trọn vẹn bộ khung chuẩn CP (#include <bits/stdc++.h>, using namespace std;, ios_base::sync_with_stdio(false); cin.tie(NULL);), đọc cin >> a >> b; và in cout << a + b << \'\\n\'; không in thêm lời nhắc.'
+        hint: 'Giới hạn 1 &lt;= A, B &lt;= 1000. Gõ lại trọn vẹn bộ khung chuẩn CP (#include &lt;bits/stdc++.h&gt;, using namespace std;, ios_base::sync_with_stdio(false); cin.tie(NULL);), đọc cin &gt;&gt; a &gt;&gt; b; và in cout &lt;&lt; a + b &lt;&lt; \'\\n\'; không in thêm lời nhắc.'
       },
       {
         id: 'ABC172-A',
@@ -641,7 +641,7 @@ int main() {
         judge: 'AtCoder',
         tier: 1,
         link: 'https://atcoder.jp/contests/abc172/tasks/abc172_a',
-        hint: 'Giới hạn 1 <= a <= 10. Dùng bộ khung chuẩn CP, nhập số nguyên a rồi tính trực tiếp a + a * a + a * a * a và in kèm \'\\n\'.'
+        hint: 'Giới hạn 1 &lt;= a &lt;= 10. Dùng bộ khung chuẩn CP, nhập số nguyên a rồi tính trực tiếp a + a * a + a * a * a và in kèm \'\\n\'.'
       },
       {
         id: 'ABC134-A',
@@ -649,7 +649,7 @@ int main() {
         judge: 'AtCoder',
         tier: 1,
         link: 'https://atcoder.jp/contests/abc134/tasks/abc134_a',
-        hint: 'Giới hạn 1 <= r <= 100. Nhập bán kính r và xuất diện tích thập nhị giác đều 3 * r * r theo bộ khung chuẩn CP.'
+        hint: 'Giới hạn 1 &lt;= r &lt;= 100. Nhập bán kính r và xuất diện tích thập nhị giác đều 3 * r * r theo bộ khung chuẩn CP.'
       },
       {
         id: 'ABC211-A',
@@ -657,7 +657,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc211/tasks/abc211_a',
-        hint: 'Giới hạn 50 <= B <= A <= 300. Tính huyết áp trung bình (A - B) / 3.0 + B (dùng 3.0 để không dính bẫy chia nguyên từ MOD-Pre), và nhớ thêm cout << fixed << setprecision(6) để in đủ độ chính xác thập phân theo yêu cầu AtCoder.'
+        hint: 'Giới hạn 50 &lt;= B &lt;= A &lt;= 300. Tính huyết áp trung bình (A - B) / 3.0 + B (dùng 3.0 để không dính bẫy chia nguyên từ MOD-Pre), và nhớ thêm cout &lt;&lt; fixed &lt;&lt; setprecision(6) để in đủ độ chính xác thập phân theo yêu cầu AtCoder.'
       },
       {
         id: 'ABC184-A',
@@ -665,7 +665,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc184/tasks/abc184_a',
-        hint: 'Giới hạn -100 <= a, b, c, d <= 100. Dù dữ liệu cho trên 2 dòng, cin >> a >> b >> c >> d; tự động bỏ qua khoảng trắng/xuống dòng. In a * d - b * c kèm \'\\n\'.'
+        hint: 'Giới hạn -100 &lt;= a, b, c, d &lt;= 100. Dù dữ liệu cho trên 2 dòng, cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d; tự động bỏ qua khoảng trắng/xuống dòng. In a * d - b * c kèm \'\\n\'.'
       },
       {
         id: 'CF-50A',
@@ -673,7 +673,7 @@ int main() {
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/50/A',
-        hint: 'Giới hạn 1 <= M <= N <= 16. Mỗi quân domino phủ 2 ô, nên tận dụng chính phép chia nguyên (M * N) / 2 để tìm số quân tối đa trên bảng M x N.'
+        hint: 'Giới hạn 1 &lt;= M &lt;= N &lt;= 16. Mỗi quân domino phủ 2 ô, nên tận dụng chính phép chia nguyên (M * N) / 2 để tìm số quân tối đa trên bảng M x N.'
       },
       {
         id: 'CF-617A',
@@ -681,7 +681,7 @@ int main() {
         judge: 'Codeforces',
         tier: 3,
         link: 'https://codeforces.com/problemset/problem/617/A',
-        hint: 'Giới hạn 1 <= x <= 10^6. Chú voi đi tối đa 5 đơn vị mỗi bước. Để làm tròn lên phép chia x / 5 mà chưa cần dùng if/else, hãy dùng công thức chia nguyên (x + 4) / 5!'
+        hint: 'Giới hạn 1 &lt;= x &lt;= 10^6. Chú voi đi tối đa 5 đơn vị mỗi bước. Để làm tròn lên phép chia x / 5 mà chưa cần dùng if/else, hãy dùng công thức chia nguyên (x + 4) / 5!'
       },
       {
         id: 'CF-546A',
@@ -689,7 +689,7 @@ int main() {
         judge: 'Codeforces',
         tier: 3,
         link: 'https://codeforces.com/problemset/problem/546/A',
-        hint: 'Giới hạn 1 <= k, w <= 1000 và 0 <= n <= 10^9. Tính tổng tiền w quả chuối bằng công thức k * w * (w + 1) / 2 (vẫn nằm gọn trong kiểu int), rồi dùng hàm max(0, tongTien - n) có sẵn từ <bits/stdc++.h> để in kết quả mà không cần dùng if/else hay vòng lặp! (Nhớ không đặt tên biến trùng với max).'
+        hint: 'Giới hạn 1 &lt;= k, w &lt;= 1000 và 0 &lt;= n &lt;= 10^9. Tính tổng tiền w quả chuối bằng công thức k * w * (w + 1) / 2 (vẫn nằm gọn trong kiểu int), rồi dùng hàm max(0, tongTien - n) có sẵn từ &lt;bits/stdc++.h&gt; để in kết quả mà không cần dùng if/else hay vòng lặp! (Nhớ không đặt tên biến trùng với max).'
       }
     ]
   };

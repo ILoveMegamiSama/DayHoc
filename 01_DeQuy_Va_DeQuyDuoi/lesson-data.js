@@ -208,10 +208,10 @@ int main() {
                   <li>Cứ mỗi lần gọi đệ quy, CPU lại phải kê thêm một chiếc khay phụ chồng cao dần lên trên chiếc bàn làm việc RAM!</li>
                 </ol>
                 <pre class="code-diagram-box"><code>┌────────────────────────────────────────────────────────┐
-│ [Khay phụ 3]: n = 3 (chờ n = 2) nợ phép "+ 3"          │ <- Đỉnh ngăn xếp (Top)
+│ [Khay phụ 3]: n = 3 (chờ n = 2) nợ phép "+ 3"          │ &lt;- Đỉnh ngăn xếp (Top)
 │ [Khay phụ 2]: n = 2 (chờ n = 1) nợ phép "+ 2"          │
 │ [Khay phụ 1]: n = 1 (chờ n = 0) nợ phép "+ 1"          │
-│ [Khay phụ 0]: main() đang chờ kết quả cuối cùng       │ <- Đáy ngăn xếp (Bottom)
+│ [Khay phụ 0]: main() đang chờ kết quả cuối cùng       │ &lt;- Đáy ngăn xếp (Bottom)
 └────────────────────────────────────────────────────────┘</code></pre>
               </div>
 
@@ -368,7 +368,7 @@ int main() {
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
                 <p>Cú pháp đệ quy đuôi chuẩn mực với tham số tích lũy <code>tichLuy</code>:</p>
                 <pre class="code-pre"><code>long long tongDuoi(long long n, long long tichLuy = 0) {
-    if (n <= 0) return tichLuy; // Co san ket qua trong so
+    if (n &lt;= 0) return tichLuy; // Co san ket qua trong so
 
     // Lời gọi đệ quy là hành động CUỐI CÙNG TUYỆT ĐỐI!
     // Phep cong duoc thuc hien TRUOC khi goi ham:
@@ -451,10 +451,10 @@ int main() {
     return f(n - 1, tichLuy * n);
 }`,
             options: [
-              'Bước 1: (3, 1) -> Bước 2: (2, 3) -> Bước 3: (1, 6) và trả về 6',
-              'Bước 1: (3, 1) -> Bước 2: (2, 2) -> Bước 3: (1, 3) và trả về 3',
-              'Bước 1: (3, 3) -> Bước 2: (2, 6) -> Bước 3: (1, 6) và trả về 6',
-              'Bước 1: (3, 1) -> Bước 2: (2, 1) -> Bước 3: (1, 1) và trả về 1'
+              'Bước 1: (3, 1) -&gt; Bước 2: (2, 3) -&gt; Bước 3: (1, 6) và trả về 6',
+              'Bước 1: (3, 1) -&gt; Bước 2: (2, 2) -&gt; Bước 3: (1, 3) và trả về 3',
+              'Bước 1: (3, 3) -&gt; Bước 2: (2, 6) -&gt; Bước 3: (1, 6) và trả về 6',
+              'Bước 1: (3, 1) -&gt; Bước 2: (2, 1) -&gt; Bước 3: (1, 1) và trả về 1'
             ],
             correct: 0,
             explain: 'Ban đầu n=3, tichLuy=1. Lời gọi tiếp theo: n=2, tichLuy=1*3=3. Lời gọi tiếp: n=1, tichLuy=3*2=6. Tại n=1, hàm trả về ngay 6.'
@@ -541,7 +541,7 @@ int main() {
           { text: 'Sửa dòng 2 thành: if (n < 0) return -1; để báo lỗi số âm' }
         ],
         correctPatch: 0,
-        explain: 'Trong đệ quy đuôi, kết quả cuối cùng nằm trọn vẹn trong biến tichLuy! Nếu viết "return 0;" hoặc "return 1;" tại điểm dừng, bạn sẽ vứt bỏ toàn bộ công sức cộng dồn từ trước. Phải trả về chính biến tichLuy khi n <= 0.'
+        explain: 'Trong đệ quy đuôi, kết quả cuối cùng nằm trọn vẹn trong biến tichLuy! Nếu viết "return 0;" hoặc "return 1;" tại điểm dừng, bạn sẽ vứt bỏ toàn bộ công sức cộng dồn từ trước. Phải trả về chính biến tichLuy khi n &lt;= 0.'
       }
     ],
 
@@ -555,7 +555,7 @@ int main() {
         judge: 'AtCoder',
         tier: 1,
         link: 'https://atcoder.jp/contests/abc273/tasks/abc273_a',
-        hint: 'Giới hạn 0 <= N <= 10. Đề cho sẵn định nghĩa f(0) = 1 và f(k) = k * f(k - 1). Hãy thử viết cả 2 bản: đệ quy thường và đệ quy đuôi có biến tichLuy!'
+        hint: 'Giới hạn 0 &lt;= N &lt;= 10. Đề cho sẵn định nghĩa f(0) = 1 và f(k) = k * f(k - 1). Hãy thử viết cả 2 bản: đệ quy thường và đệ quy đuôi có biến tichLuy!'
       },
       {
         id: 'CSES-1068',
@@ -563,7 +563,7 @@ int main() {
         judge: 'CSES Problem Set',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1068',
-        hint: 'Giới hạn 1 <= n <= 10^6. Mỗi bước n chẵn -> n / 2, n lẻ -> 3 * n + 1 (nhớ dùng long long vì 3n + 1 có thể vượt int). Cài đặt bằng đệ quy đuôi void inDay(long long n).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^6. Mỗi bước n chẵn -&gt; n / 2, n lẻ -&gt; 3 * n + 1 (nhớ dùng long long vì 3n + 1 có thể vượt int). Cài đặt bằng đệ quy đuôi void inDay(long long n).'
       },
       {
         id: 'ABC247-C',
@@ -571,7 +571,7 @@ int main() {
         judge: 'AtCoder',
         tier: 1,
         link: 'https://atcoder.jp/contests/abc247/tasks/abc247_c',
-        hint: 'Giới hạn 1 <= N <= 16. Dãy S_n = S_{n-1} + n + S_{n-1}. Viết hàm đệ quy in trực tiếp inDay(n - 1), in số n, rồi gọi inDay(n - 1) với điểm dừng n == 1.'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 16. Dãy S_n = S_{n-1} + n + S_{n-1}. Viết hàm đệ quy in trực tiếp inDay(n - 1), in số n, rồi gọi inDay(n - 1) với điểm dừng n == 1.'
       },
       {
         id: 'CSES-2165',
@@ -579,7 +579,7 @@ int main() {
         judge: 'CSES Problem Set',
         tier: 2,
         link: 'https://cses.fi/problemset/task/2165',
-        hint: 'Giới hạn 1 <= n <= 16. Tổng số bước là 2^n - 1. Chia việc chuyển n đĩa thành 3 bước: chuyển n - 1 đĩa sang cọc phụ, chuyển đĩa lớn nhất sang đích, chuyển n - 1 đĩa về đích.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 16. Tổng số bước là 2^n - 1. Chia việc chuyển n đĩa thành 3 bước: chuyển n - 1 đĩa sang cọc phụ, chuyển đĩa lớn nhất sang đích, chuyển n - 1 đĩa về đích.'
       },
       {
         id: 'CF-1829D',
@@ -587,7 +587,7 @@ int main() {
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/1829/D',
-        hint: 'Giới hạn 1 <= t <= 10^4, 1 <= m <= n <= 10^7. Đống vàng x chia hết cho 3 tách thành x / 3 và 2 * x / 3. Đệ quy bool coThe(int x, int m) với điểm dừng x == m hoặc x < m || x % 3 != 0 (sâu tối đa ~log n tầng).'
+        hint: 'Giới hạn 1 &lt;= t &lt;= 10^4, 1 &lt;= m &lt;= n &lt;= 10^7. Đống vàng x chia hết cho 3 tách thành x / 3 và 2 * x / 3. Đệ quy bool coThe(int x, int m) với điểm dừng x == m hoặc x &lt; m || x % 3 != 0 (sâu tối đa ~log n tầng).'
       },
       {
         id: 'CF-1033A',
@@ -595,7 +595,7 @@ int main() {
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/1033/A',
-        hint: 'Giới hạn 3 <= n <= 1000. Khi loang trên lưới 1000x1000 bằng DFS đệ quy thường có thể sâu tới 10^6 tầng và gây tràn Call Stack! Hãy áp dụng tư duy khử đệ quy hoặc nhận xét 4 góc phần tư quanh quân Hậu.'
+        hint: 'Giới hạn 3 &lt;= n &lt;= 1000. Khi loang trên lưới 1000x1000 bằng DFS đệ quy thường có thể sâu tới 10^6 tầng và gây tràn Call Stack! Hãy áp dụng tư duy khử đệ quy hoặc nhận xét 4 góc phần tư quanh quân Hậu.'
       },
       {
         id: 'CF-727A',
@@ -603,7 +603,7 @@ int main() {
         judge: 'Codeforces',
         tier: 3,
         link: 'https://codeforces.com/problemset/problem/727/A',
-        hint: 'Giới hạn 1 <= a < b <= 10^9. Đi xuôi từ a có 2 nhánh, nhưng đi ngược từ b về a chỉ có tối đa 1 cách! Dùng đệ quy đuôi (hoặc vòng lặp while (b > a)) kiểm tra b chẵn (chia 2) hay tận cùng là 1 ((b - 1) / 10).'
+        hint: 'Giới hạn 1 &lt;= a &lt; b &lt;= 10^9. Đi xuôi từ a có 2 nhánh, nhưng đi ngược từ b về a chỉ có tối đa 1 cách! Dùng đệ quy đuôi (hoặc vòng lặp while (b &gt; a)) kiểm tra b chẵn (chia 2) hay tận cùng là 1 ((b - 1) / 10).'
       },
       {
         id: 'CF-768B',
@@ -611,7 +611,7 @@ int main() {
         judge: 'Codeforces',
         tier: 3,
         link: 'https://codeforces.com/problemset/problem/768/B',
-        hint: 'Giới hạn 0 <= n < 2^50, 0 <= r - l <= 10^5. Mảng kết quả quá lớn để lưu hết, nhưng độ sâu đệ quy chia đôi n -> n/2 tối đa 50 tầng. Tính kích thước cây con và chỉ đệ quy vào nhánh giao với đoạn [l, r].'
+        hint: 'Giới hạn 0 &lt;= n &lt; 2^50, 0 &lt;= r - l &lt;= 10^5. Mảng kết quả quá lớn để lưu hết, nhưng độ sâu đệ quy chia đôi n -&gt; n/2 tối đa 50 tầng. Tính kích thước cây con và chỉ đệ quy vào nhánh giao với đoạn [l, r].'
       }
     ]
   };

@@ -61,14 +61,14 @@ int main() {
     // 1. O(1): Công thức trực tiếp, không phụ thuộc độ lớn của n
     long long tong = n * (n + 1) / 2;
 
-    // 2. O(log N): Chia đôi liên tiếp -> n = 1000 chỉ chạy đúng 10 lần!
+    // 2. O(log N): Chia đôi liên tiếp -&gt; n = 1000 chỉ chạy đúng 10 lần!
     long long buocLog = 0, x = n;
     while (x &gt; 0) {
         buocLog++;
         x /= 2;
     }
 
-    // 3. O(sqrt(N)): Duyệt i tới căn bậc hai -> n = 1000 chạy 31 lần!
+    // 3. O(sqrt(N)): Duyệt i tới căn bậc hai -&gt; n = 1000 chạy 31 lần!
     long long buocSqrt = 0;
     for (long long i = 1; i * i &lt;= n; i++) {
         buocSqrt++;
@@ -82,7 +82,7 @@ int main() {
         }
     }
 
-    // 5. O(N^2): Hai vòng lặp lồng nhau -> ~500,000 bước khi n = 1000
+    // 5. O(N^2): Hai vòng lặp lồng nhau -&gt; ~500,000 bước khi n = 1000
     long long buocN2 = 0;
     for (int i = 1; i &lt;= n; i++) {
         for (int j = i + 1; j &lt;= n; j++) {
@@ -272,7 +272,7 @@ int main() {
               'In ra 18 vì phép chia nguyên cho 2 chạy đúng một nửa số lượng của số 36 đầu'
             ],
             correct: 1,
-            explain: 'Các giá trị của n ở đầu mỗi lần lặp lần lượt là: 36 (bước 1 -> 18), 18 (bước 2 -> 9), 9 (bước 3 -> 4), 4 (bước 4 -> 2), 2 (bước 5 -> 1), 1 (bước 6 -> 0). Khi n = 0 thì vòng while dừng, nên in ra 6.'
+            explain: 'Các giá trị của n ở đầu mỗi lần lặp lần lượt là: 36 (bước 1 -&gt; 18), 18 (bước 2 -&gt; 9), 9 (bước 3 -&gt; 4), 4 (bước 4 -&gt; 2), 2 (bước 5 -&gt; 1), 1 (bước 6 -&gt; 0). Khi n = 0 thì vòng while dừng, nên in ra 6.'
           },
           {
             type: 'trace',
@@ -315,7 +315,7 @@ int main() {
               'Rút gọn thành O(N), vì hệ số 100 ở trước N lớn hơn hệ số 2 đứng trước số hạng N^2'
             ],
             correct: 0,
-            explain: 'Ta bỏ hằng số và chỉ giữ số hạng bậc cao nhất N^2 -> O(N^2). Tuy nhiên trong thi đấu CP, hệ số hằng số ẩn quá lớn hoặc có thêm T bộ test ngoài vẫn có thể làm tổng bước vượt 10^8 và gây TLE.'
+            explain: 'Ta bỏ hằng số và chỉ giữ số hạng bậc cao nhất N^2 -&gt; O(N^2). Tuy nhiên trong thi đấu CP, hệ số hằng số ẩn quá lớn hoặc có thêm T bộ test ngoài vẫn có thể làm tổng bước vượt 10^8 và gây TLE.'
           },
           {
             type: 'single',
@@ -352,10 +352,10 @@ int main() {
         number: 'Phần 2',
         shortTitle: 'Quy Tắc 10^8 & Giới Hạn N',
         title: 'Vấn Đề Nhỏ 2: Quy Tắc Vàng 10^8 Phép/Giây & Đọc Ngược Giới Hạn N',
-        lead: 'Cách dùng mốc ~10^8 phép toán/giây để lập bảng tra ngược giới hạn N trong đề bài (N <= 20, 500, 5000, 10^5, 10^9, 10^18) và né 3 cạm bẫy kinh điển: T bộ test, tổng Sum(N), và vòng lặp ẩn trong hàm.',
+        lead: 'Cách dùng mốc ~10^8 phép toán/giây để lập bảng tra ngược giới hạn N trong đề bài (N &lt;= 20, 500, 5000, 10^5, 10^9, 10^18) và né 3 cạm bẫy kinh điển: T bộ test, tổng Sum(N), và vòng lặp ẩn trong hàm.',
         subproblem: {
           title: 'Vừa đọc đề thấy Time Limit 1.0s và giới hạn N (hoặc T và N), làm sao biết ngay thuật toán mình đang nghĩ sẽ AC hay bị TLE trước khi viết code?',
-          desc: 'Áp dụng quy tắc CPU máy chấm thực hiện ~10^8 phép toán sơ cấp/giây (ngưỡng an toàn <= 10^7 - 5*10^7), kết hợp bảng tra ngược giới hạn N và kiểm tra kỹ số lượng bộ test T.'
+          desc: 'Áp dụng quy tắc CPU máy chấm thực hiện ~10^8 phép toán sơ cấp/giây (ngưỡng an toàn &lt;= 10^7 - 5*10^7), kết hợp bảng tra ngược giới hạn N và kiểm tra kỹ số lượng bộ test T.'
         },
         cards: [
           {
@@ -431,7 +431,7 @@ int main() {
 
               <div class="step-code">
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Đối chiếu T bộ test: O(T * sqrt(X)) TLE vs O(T * log X) AC</span>
-                <p>Bài toán: Cho $T \\le 10^4$ bộ test, mỗi test cho $X \\le 10^{14}$. Hỏi $X$ có ước lẻ nào lớn hơn $1$ không? (Nếu chia hết hết thừa số $2$ mà còn lại $> 1$ thì chắc chắn có ước lẻ!)</p>
+                <p>Bài toán: Cho $T \\le 10^4$ bộ test, mỗi test cho $X \\le 10^{14}$. Hỏi $X$ có ước lẻ nào lớn hơn $1$ không? (Nếu chia hết hết thừa số $2$ mà còn lại $&gt; 1$ thì chắc chắn có ước lẻ!)</p>
                 <pre class="code-pre"><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
@@ -483,8 +483,8 @@ int main() {
                 key: 'testMode',
                 label: 'Cách giải trong mỗi bộ test (T = 10,000; N = 10,000)',
                 options: [
-                  { value: 'o1_per_test', text: 'Công thức O(1) mỗi test -> tổng O(T) = 10^4 bước', kind: 'ok' },
-                  { value: 'on2_trap', text: 'Vòng lặp lồng O(N^2) kiểm tra trùng -> T*N^2 = 10^12 bước', kind: 'bug' }
+                  { value: 'o1_per_test', text: 'Công thức O(1) mỗi test -&gt; tổng O(T) = 10^4 bước', kind: 'ok' },
+                  { value: 'on2_trap', text: 'Vòng lặp lồng O(N^2) kiểm tra trùng -&gt; T*N^2 = 10^12 bước', kind: 'bug' }
                 ]
               }
             ],
@@ -531,7 +531,7 @@ int main() {
                 statusOk: isOk,
                 statusText: isOk
                   ? 'AN TOAN AC: Chỉ 30,000 phép toán cho toàn bộ 10,000 test (~0.001s)!'
-                  : 'TLE THẢM HẠI: 10,000 * 10,000^2 = 10^12 phép toán (> 10^8 tới 10,000 lần)!',
+                  : 'TLE THẢM HẠI: 10,000 * 10,000^2 = 10^12 phép toán (&gt; 10^8 tới 10,000 lần)!',
                 predictions: [
                   { text: 'Tổng số phép toán cho 10,000 test chỉ là 30,000 bước, chạy xong tức thì dưới 0.01s' },
                   { text: 'Quên nhân hệ số T khiến tổng phép toán vọt lên 10^12 bước và bị TLE ngay lập tức' }
@@ -575,7 +575,7 @@ int main() {
               'In ra 12 vì cả ba phần tử trong mảng đều thực hiện chia đôi tối đa bốn lượt'
             ],
             correct: 1,
-            explain: '12 chia 2 được 2 lần (12 -> 6 -> 3); 16 chia 2 được 4 lần (16 -> 8 -> 4 -> 2 -> 1); 20 chia 2 được 2 lần (20 -> 10 -> 5). Tổng số bước là 2 + 4 + 2 = 8.'
+            explain: '12 chia 2 được 2 lần (12 -&gt; 6 -&gt; 3); 16 chia 2 được 4 lần (16 -&gt; 8 -&gt; 4 -&gt; 2 -&gt; 1); 20 chia 2 được 2 lần (20 -&gt; 10 -&gt; 5). Tổng số bước là 2 + 4 + 2 = 8.'
           },
           {
             type: 'trace',
@@ -626,12 +626,12 @@ int main() {
             q: 'Đếm chính xác số lượt lặp <code>ops</code> của thuật toán <code>O(T * sqrt(N))</code> khi <code>t = 3</code> và <code>n = 25</code>:',
             options: [
               'In ra 5 vì biến t chỉ đếm ngược nhưng vòng lặp for bên trong chỉ thực thi một lần',
-              'In ra 12 vì điều kiện i * i <= 25 dừng lại ngay trước khi biến i đạt tới giá trị 5',
+              'In ra 12 vì điều kiện i * i &lt;= 25 dừng lại ngay trước khi biến i đạt tới giá trị 5',
               'In ra 15 vì mỗi bộ test chạy 5 lượt tới căn bậc hai của 25 và lặp lại đủ 3 bộ test',
               'In ra 75 vì vòng lặp bên trong chạy hết tới n = 25 cho cả 3 bộ test liên tiếp'
             ],
             correct: 2,
-            explain: 'Mỗi bộ test vòng for chạy i = 1, 2, 3, 4, 5 (vì 5 * 5 = 25 <= 25), tức 5 lượt. Lặp qua 3 bộ test nên ops = 3 * 5 = 15.'
+            explain: 'Mỗi bộ test vòng for chạy i = 1, 2, 3, 4, 5 (vì 5 * 5 = 25 &lt;= 25), tức 5 lượt. Lặp qua 3 bộ test nên ops = 3 * 5 = 15.'
           },
           {
             type: 'single',
@@ -640,7 +640,7 @@ int main() {
               'Thuật toán O(N^2) mỗi test vẫn chạy kịp vì N = 10^4 bình phương lên đúng bằng mốc 10^8',
               'Thuật toán O(N^3) mỗi test vẫn chạy kịp vì trình biên dịch tự bỏ qua các bộ test giống nhau',
               'Thuật toán O(N log N) mỗi test chắc chắn vượt xa 10^10 phép tính nên sẽ luôn bị báo lỗi TLE',
-              'Thuật toán O(N^2) mỗi test sẽ thành T * N^2 = 10^12 phép tính (TLE), phải hạ xuống <= O(N)'
+              'Thuật toán O(N^2) mỗi test sẽ thành T * N^2 = 10^12 phép tính (TLE), phải hạ xuống &lt;= O(N)'
             ],
             correct: 3,
             explain: 'Không được quên hệ số T bộ test! Nếu mỗi test chạy O(N^2) = 10^8 thì cả T = 10^4 test sẽ thành 10^12 bước (TLE chắc chắn). Cần hạ xuống tối đa O(N) (khi T * N = 10^8 hơi sát) hoặc tốt nhất là O(log N) hay O(1).'
@@ -649,10 +649,10 @@ int main() {
             type: 'multiple',
             q: 'Khi đọc giới hạn của một bài toán có Time Limit <code>1.0s</code>, những suy luận nào sau đây là <strong>CHÍNH XÁC</strong>?',
             options: [
-              'Khi N <= 10^5, thuật toán O(N^2) tốn khoảng 10^10 bước nên chắc chắn TLE, cần tìm hướng O(N log N) hoặc O(N)',
-              'Khi N <= 10^12, một vòng lặp for từ 1 đến N vẫn qua gọn trong 1.0 giây nếu dùng fast I/O cin.tie(NULL)',
-              'Khi T <= 10^5, N <= 10^5 nhưng đề đảm bảo tổng N các test <= 2*10^5 thì thuật toán O(N) mỗi test vẫn AC',
-              'Khi N <= 20, tuyệt đối không được dùng thuật toán quay lui O(2^N) vì 2^20 đã vượt quá ngưỡng 10^8 phép'
+              'Khi N &lt;= 10^5, thuật toán O(N^2) tốn khoảng 10^10 bước nên chắc chắn TLE, cần tìm hướng O(N log N) hoặc O(N)',
+              'Khi N &lt;= 10^12, một vòng lặp for từ 1 đến N vẫn qua gọn trong 1.0 giây nếu dùng fast I/O cin.tie(NULL)',
+              'Khi T &lt;= 10^5, N &lt;= 10^5 nhưng đề đảm bảo tổng N các test &lt;= 2*10^5 thì thuật toán O(N) mỗi test vẫn AC',
+              'Khi N &lt;= 20, tuyệt đối không được dùng thuật toán quay lui O(2^N) vì 2^20 đã vượt quá ngưỡng 10^8 phép'
             ],
             correct: [0, 2],
             explain: 'A và C đúng. B sai vì fast I/O chỉ tăng tốc đọc/in chứ CPU vẫn không thể chạy 10^12 vòng lặp trong 1 giây. D sai vì 2^20 chỉ bằng ~10^6, rất an toàn trong ngưỡng 10^8!'
@@ -670,7 +670,7 @@ int main() {
         title: 'Vấn Đề Nhỏ 3: Độ Phức Tạp Không Gian (Space Complexity) & Giới Hạn 256 MB',
         lead: 'Cách quy đổi kích thước mảng (bool/char 1B, int 4B, long long 8B) sang MB, lý do mảng 10^7 int (~40 MB) an toàn còn a[10000][10000] (~400 MB) gây MLE, và cách hạ bộ nhớ xuống O(N) hay O(1).',
         subproblem: {
-          title: 'Tại sao code chạy rất nhanh, đặt mảng ra ngoài main() để tránh tràn bộ nhớ stack ~8 MB rồi mà vẫn bị hệ thống đánh MLE (> 256 MB)?',
+          title: 'Tại sao code chạy rất nhanh, đặt mảng ra ngoài main() để tránh tràn bộ nhớ stack ~8 MB rồi mà vẫn bị hệ thống đánh MLE (&gt; 256 MB)?',
           desc: 'Cả vùng dữ liệu tĩnh toàn cục cũng có giới hạn RAM (thường 256 MB). Chỉ cần biết kích thước mỗi kiểu dữ liệu và công thức 1 MB ~ 10^6 bytes, bạn sẽ tính chính xác dung lượng mọi mảng trước khi nộp bài.'
         },
         cards: [
@@ -740,7 +740,7 @@ int main() {
               <div class="step-life">
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Những chỗ ngốn RAM âm thầm ngoài 1 mảng đơn lẻ</span>
                 <ul style="margin: 8px 0 0 20px;">
-                  <li><strong>Bẫy 1 — Quên cộng tổng bộ nhớ TẤT CẢ các mảng:</strong> Một mảng <code>long long a[10000000]</code> mất 80 MB là ổn, nhưng khai báo thêm 3 mảng nữa (<code>b, c, d</code> cùng cỡ $10^7$) sẽ thành $4 \\times 80 = 320\\text{ MB} > 256\\text{ MB}$ $\\implies$ <strong>MLE</strong>! Luôn giữ tổng bộ nhớ mọi mảng dưới ~200 MB.</li>
+                  <li><strong>Bẫy 1 — Quên cộng tổng bộ nhớ TẤT CẢ các mảng:</strong> Một mảng <code>long long a[10000000]</code> mất 80 MB là ổn, nhưng khai báo thêm 3 mảng nữa (<code>b, c, d</code> cùng cỡ $10^7$) sẽ thành $4 \\times 80 = 320\\text{ MB} &gt; 256\\text{ MB}$ $\\implies$ <strong>MLE</strong>! Luôn giữ tổng bộ nhớ mọi mảng dưới ~200 MB.</li>
                   <li><strong>Bẫy 2 — Khai báo mảng lớn bên trong vòng lặp hoặc hàm:</strong> Đặt <code>int tam[3000000];</code> (~12 MB) trong <code>main()</code> hay trong <code>while (t--)</code> sẽ làm tràn <strong>ngăn xếp lời gọi hàm / bộ nhớ stack (~8 MB)</strong> gây lỗi <strong>RE</strong> ngay lập tức!</li>
                   <li><strong>Bẫy 3 — Nối chuỗi <code>s = s + c</code> trong vòng lặp:</strong> Với $N = 2 \\times 10^5$, viết <code>ans = ans + s[i];</code> bắt máy tính tạo bản sao mới dài hơn qua mỗi bước, ngốn $O(N^2)$ cả thời gian lẫn tổng dung lượng cấp phát tạm! Luôn viết <code>ans += s[i];</code>.</li>
                 </ul>
@@ -792,7 +792,7 @@ int main() {
           {
             id: 'sb_space_256mb',
             title: 'Phòng Thí Nghiệm 3: Soi Dung Lượng MB Thực Tế Giữa Mảng 2D O(N^2) Và Mảng 1D O(N)',
-            desc: 'Cùng bài toán truy vấn tổng đoạn [2, 4] trên dãy N <= 10,000 với giới hạn 256 MB. Hãy chuyển đổi giữa mảng 2D lưu sẵn mọi cặp [l][r] (~400 MB) và mảng cộng dồn 1D (~0.8 MB)!',
+            desc: 'Cùng bài toán truy vấn tổng đoạn [2, 4] trên dãy N &lt;= 10,000 với giới hạn 256 MB. Hãy chuyển đổi giữa mảng 2D lưu sẵn mọi cặp [l][r] (~400 MB) và mảng cộng dồn 1D (~0.8 MB)!',
             toggles: [
               {
                 key: 'spaceMode',
@@ -841,8 +841,8 @@ int main() {
                 changedLines: isOk ? [4, 5] : [5],
                 statusOk: isOk,
                 statusText: isOk
-                  ? 'AN TOAN RAM: Mảng 1D chỉ chiếm ~0.8 MB (chưa tới 1% giới hạn 256 MB) -> AC!'
-                  : 'TRÀN BỘ NHỚ (MLE): Mảng 2D chiếm tới 400,400,100 bytes (~382 MiB / 400 MB > 256 MB)!',
+                  ? 'AN TOAN RAM: Mảng 1D chỉ chiếm ~0.8 MB (chưa tới 1% giới hạn 256 MB) -&gt; AC!'
+                  : 'TRÀN BỘ NHỚ (MLE): Mảng 2D chiếm tới 400,400,100 bytes (~382 MiB / 400 MB &gt; 256 MB)!',
                 predictions: [
                   { text: 'Mảng 1D chỉ chiếm chưa tới 1 MB RAM và vẫn trả lời mọi đoạn [l, r] trong O(1)' },
                   { text: 'Mảng 2D int[10005][10005] ngốn tới ~400 MB RAM, vượt quá trần 256 MB và bị MLE' }
@@ -913,10 +913,10 @@ int main() {
             type: 'single',
             q: 'Với giới hạn bộ nhớ của đề là <strong>256 MB</strong>, khai báo mảng toàn cục nào sau đây sẽ gây ra lỗi <strong>MLE (tràn bộ nhớ)</strong>?',
             options: [
-              'Mảng int dp[10005][10005]; vì tổng số ô xấp xỉ 10^8 nhân 4 byte tốn khoảng 400 MB (> 256 MB)',
+              'Mảng int dp[10005][10005]; vì tổng số ô xấp xỉ 10^8 nhân 4 byte tốn khoảng 400 MB (&gt; 256 MB)',
               'Mảng int a[10000005]; vì tổng số ô 10^7 nhân 4 byte chỉ chiếm khoảng 40 MB (vẫn dư nhiều RAM)',
-              'Mảng long long b[5000005]; vì tổng số ô 5*10^6 nhân 8 byte chỉ tốn khoảng 40 MB (< 256 MB)',
-              'Mảng bool vis[20000005]; vì tổng số ô 2*10^7 nhân 1 byte chỉ tốn khoảng 20 MB (< 256 MB)'
+              'Mảng long long b[5000005]; vì tổng số ô 5*10^6 nhân 8 byte chỉ tốn khoảng 40 MB (&lt; 256 MB)',
+              'Mảng bool vis[20000005]; vì tổng số ô 2*10^7 nhân 1 byte chỉ tốn khoảng 20 MB (&lt; 256 MB)'
             ],
             correct: 0,
             explain: 'int dp[10005][10005] có hơn 10^8 phần tử * 4 bytes ~ 400.4 MB, vượt quá trần 256 MB nên bị MLE ngay! Ba mảng còn lại chỉ tốn 20–40 MB nên rất an toàn.'
@@ -955,8 +955,8 @@ int main() {
     debugExercises: [
       {
         id: 'dbg_l104_mle_2d_array',
-        title: 'Khai Báo Bảng 2D Quá Khổ Gây Tràn Bộ Nhớ (MLE > 256 MB)',
-        description: 'Cho dãy N <= 10,000 số nguyên và Q truy vấn tổng đoạn [l, r] (Memory Limit: 256 MB). Để trả lời nhanh trong O(1), học sinh khai báo bảng 2D toàn cục sum2D[10005][10005] nên bị máy chấm báo MLE ngay lập tức!',
+        title: 'Khai Báo Bảng 2D Quá Khổ Gây Tràn Bộ Nhớ (MLE &gt; 256 MB)',
+        description: 'Cho dãy N &lt;= 10,000 số nguyên và Q truy vấn tổng đoạn [l, r] (Memory Limit: 256 MB). Để trả lời nhanh trong O(1), học sinh khai báo bảng 2D toàn cục sum2D[10005][10005] nên bị máy chấm báo MLE ngay lập tức!',
         failingInput: '5 1\n10 20 30 40 50\n2 4',
         failingOutput: 'Memory Limit Exceeded (~400.4 MB > 256 MB)',
         expectedOutput: '90',
@@ -994,12 +994,12 @@ int main() {
           { text: 'Chuyển dòng 5 vào bên trong hàm main() để trình biên dịch giải phóng bộ nhớ sau khi đọc xong' }
         ],
         correctPatch: 0,
-        explain: 'Ở dòng 5, int sum2D[10005][10005] chiếm hơn 10^8 * 4 bytes ~ 400.4 MB (> 256 MB) gây MLE! Dùng mảng cộng dồn 1D pref[MAXN] chỉ tốn ~80 KB (O(N) không gian) mà vẫn trả lời mọi truy vấn [l, r] trong O(1) thời gian.'
+        explain: 'Ở dòng 5, int sum2D[10005][10005] chiếm hơn 10^8 * 4 bytes ~ 400.4 MB (&gt; 256 MB) gây MLE! Dùng mảng cộng dồn 1D pref[MAXN] chỉ tốn ~80 KB (O(N) không gian) mà vẫn trả lời mọi truy vấn [l, r] trong O(1) thời gian.'
       },
       {
         id: 'dbg_l104_on2_pair_sum_tle',
         title: 'Thuật Toán O(N^2) Bị TLE Khi N = 10^5 (Tổng Tích Mọi Cặp)',
-        description: 'Cho dãy N <= 10^5 số nguyên, tính tổng tích mọi cặp a[i] * a[j] (1 <= i < j <= N) chia dư 10^9 + 7. Code chạy test mẫu N = 4 đúng kết quả, nhưng vừa nộp lên bị TLE do dùng 2 vòng lặp lồng O(N^2)!',
+        description: 'Cho dãy N &lt;= 10^5 số nguyên, tính tổng tích mọi cặp a[i] * a[j] (1 &lt;= i &lt; j &lt;= N) chia dư 10^9 + 7. Code chạy test mẫu N = 4 đúng kết quả, nhưng vừa nộp lên bị TLE do dùng 2 vòng lặp lồng O(N^2)!',
         failingInput: '4\n2 3 5 4',
         failingOutput: 'Time Limit Exceeded (~5*10^9 phép toán khi N = 10^5)',
         expectedOutput: '71',
@@ -1032,7 +1032,7 @@ int main() {
           { text: 'Đổi dòng 12 thành long long n; và thêm hàm kiểm tra riêng bên ngoài main() cho gọn' }
         ],
         correctPatch: 1,
-        explain: 'Vòng lặp lồng từ dòng 15–19 tạo thành O(N^2), với N = 10^5 tốn 5*10^9 phép toán (>> 10^8) nên bị TLE! Bỏ vòng trong và dùng 1 biến tongTruoc cộng dồn giúp giảm xuống O(N) (~10^5 bước).'
+        explain: 'Vòng lặp lồng từ dòng 15–19 tạo thành O(N^2), với N = 10^5 tốn 5*10^9 phép toán (&gt;&gt; 10^8) nên bị TLE! Bỏ vòng trong và dùng 1 biến tongTruoc cộng dồn giúp giảm xuống O(N) (~10^5 bước).'
       },
       {
         id: 'dbg_l104_string_concat_tle',
@@ -1079,7 +1079,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/486/A',
-        hint: 'Giới hạn 1 <= n <= 10^15, TL 1.0s. Đừng viết vòng lặp for i từ 1..n (O(n) = 10^15 -> TLE!). Ghép từng cặp (-1 + 2) + (-3 + 4) + ...: nếu n % 2 == 0 thì đáp án là n / 2, ngược lại là -(n + 1) / 2 trong O(1) thời gian và O(1) không gian (nhớ dùng long long!).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^15, TL 1.0s. Đừng viết vòng lặp for i từ 1..n (O(n) = 10^15 -&gt; TLE!). Ghép từng cặp (-1 + 2) + (-3 + 4) + ...: nếu n % 2 == 0 thì đáp án là n / 2, ngược lại là -(n + 1) / 2 trong O(1) thời gian và O(1) không gian (nhớ dùng long long!).'
       },
       {
         id: 'ABC181-B',
@@ -1087,7 +1087,7 @@ int main() {
         judge: 'AtCoder',
         tier: 1,
         link: 'https://atcoder.jp/contests/abc181/tasks/abc181_b',
-        hint: 'Giới hạn 1 <= N <= 10^5, 1 <= A_i <= B_i <= 10^6. Nếu dùng thêm 1 vòng for chạy từ A_i đến B_i cho mỗi lượt thì tốn O(N * 10^6) = 10^11 bước (TLE!). Thay vào đó dùng công thức cấp số cộng (B - A + 1) * (A + B) / 2 trong O(1) mỗi dòng để đạt tổng O(N) và bộ nhớ O(1).'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 10^5, 1 &lt;= A_i &lt;= B_i &lt;= 10^6. Nếu dùng thêm 1 vòng for chạy từ A_i đến B_i cho mỗi lượt thì tốn O(N * 10^6) = 10^11 bước (TLE!). Thay vào đó dùng công thức cấp số cộng (B - A + 1) * (A + B) / 2 trong O(1) mỗi dòng để đạt tổng O(N) và bộ nhớ O(1).'
       },
       {
         id: 'CSES-1618',
@@ -1095,7 +1095,7 @@ int main() {
         judge: 'CSES',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1618',
-        hint: 'Giới hạn 1 <= n <= 10^9, TL 1.0s. Không thể tính n! bằng vòng lặp 1..n (vừa O(n) = 10^9 TLE vừa tràn số!). Hãy đếm số thừa số 5 trong n! bằng vòng lặp while (n >= 5) { n /= 5; ans += n; }: chỉ tốn O(log_5(n)) <= 13 bước!'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^9, TL 1.0s. Không thể tính n! bằng vòng lặp 1..n (vừa O(n) = 10^9 TLE vừa tràn số!). Hãy đếm số thừa số 5 trong n! bằng vòng lặp while (n &gt;= 5) { n /= 5; ans += n; }: chỉ tốn O(log_5(n)) &lt;= 13 bước!'
       },
       {
         id: 'CF-1475A',
@@ -1103,7 +1103,7 @@ int main() {
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/1475/A',
-        hint: 'Giới hạn 1 <= t <= 10^4 bộ test, 2 <= n <= 10^14, TL 2.0s. Duyệt ước lẻ tới sqrt(n) cho mỗi test tốn 10^4 * 10^7 = 10^11 (TLE!). Dùng while (n % 2 == 0) n /= 2; trong O(log_2(n)) <= 47 bước mỗi test -> tổng ~4.7*10^5 bước. Nếu sau khi chia hết cho 2 mà n > 1 thì in YES, ngược lại NO.'
+        hint: 'Giới hạn 1 &lt;= t &lt;= 10^4 bộ test, 2 &lt;= n &lt;= 10^14, TL 2.0s. Duyệt ước lẻ tới sqrt(n) cho mỗi test tốn 10^4 * 10^7 = 10^11 (TLE!). Dùng while (n % 2 == 0) n /= 2; trong O(log_2(n)) &lt;= 47 bước mỗi test -&gt; tổng ~4.7*10^5 bước. Nếu sau khi chia hết cho 2 mà n &gt; 1 thì in YES, ngược lại NO.'
       },
       {
         id: 'CSES-1071',
@@ -1111,7 +1111,7 @@ int main() {
         judge: 'CSES',
         tier: 2,
         link: 'https://cses.fi/problemset/task/1071',
-        hint: 'Giới hạn 1 <= t <= 10^5 bộ test, 1 <= y, x <= 10^9, TL 1.0s. Không thể tạo mảng 2D 10^9 x 10^9 (MLE hàng triệu TB!) hay mô phỏng từng ô (TLE!). Gọi k = max(y, x) (dùng if/else), xét lớp vuông thứ k có giá trị từ (k-1)^2 + 1 đến k^2 rồi tính trực tiếp giá trị ô (y, x) trong O(1) mỗi test (dùng long long vì k^2 <= 10^18).'
+        hint: 'Giới hạn 1 &lt;= t &lt;= 10^5 bộ test, 1 &lt;= y, x &lt;= 10^9, TL 1.0s. Không thể tạo mảng 2D 10^9 x 10^9 (MLE hàng triệu TB!) hay mô phỏng từng ô (TLE!). Gọi k = max(y, x) (dùng if/else), xét lớp vuông thứ k có giá trị từ (k-1)^2 + 1 đến k^2 rồi tính trực tiếp giá trị ô (y, x) trong O(1) mỗi test (dùng long long vì k^2 &lt;= 10^18).'
       },
       {
         id: 'VNOJ-PNUMBER',
@@ -1119,7 +1119,7 @@ int main() {
         judge: 'VNOJ',
         tier: 2,
         link: 'https://oj.vnoi.info/problem/pnumber',
-        hint: 'Giới hạn 1 <= A <= B <= 200,000, TL 1.0s, ML 256 MB. Kiểm tra nguyên tố bằng vòng lặp 2..x-1 tốn O(B^2) = 4*10^10 (TLE!). Viết hàm kiểm tra nguyên tố O(sqrt(x)) (hoặc dùng mảng tĩnh bool isPrime[200005] ~ 200 KB sàng ước O(B log log B)) để liệt kê nhanh gọn dưới 1 giây.'
+        hint: 'Giới hạn 1 &lt;= A &lt;= B &lt;= 200,000, TL 1.0s, ML 256 MB. Kiểm tra nguyên tố bằng vòng lặp 2..x-1 tốn O(B^2) = 4*10^10 (TLE!). Viết hàm kiểm tra nguyên tố O(sqrt(x)) (hoặc dùng mảng tĩnh bool isPrime[200005] ~ 200 KB sàng ước O(B log log B)) để liệt kê nhanh gọn dưới 1 giây.'
       },
       {
         id: 'ABC180-C',
@@ -1127,7 +1127,7 @@ int main() {
         judge: 'AtCoder',
         tier: 3,
         link: 'https://atcoder.jp/contests/abc180/tasks/abc180_c',
-        hint: 'Giới hạn 1 <= N <= 10^12, TL 2.0s, ML 256 MB. Duyệt 1..N chắc chắn TLE! Chỉ cần duyệt i từ 1..sqrt(N) (tối đa 10^6 bước). Để in tăng dần mà chưa dùng hàm sắp xếp thư viện: khai báo 2 mảng tĩnh toàn cục long long uocNho[1000005], uocLon[1000005]; (~16 MB << 256 MB), lưu i vào uocNho và N/i vào uocLon (khi i != N/i), rồi in xuôi uocNho và in ngược uocLon!'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 10^12, TL 2.0s, ML 256 MB. Duyệt 1..N chắc chắn TLE! Chỉ cần duyệt i từ 1..sqrt(N) (tối đa 10^6 bước). Để in tăng dần mà chưa dùng hàm sắp xếp thư viện: khai báo 2 mảng tĩnh toàn cục long long uocNho[1000005], uocLon[1000005]; (~16 MB &lt;&lt; 256 MB), lưu i vào uocNho và N/i vào uocLon (khi i != N/i), rồi in xuôi uocNho và in ngược uocLon!'
       },
       {
         id: 'ABC177-C',
@@ -1135,7 +1135,7 @@ int main() {
         judge: 'AtCoder',
         tier: 3,
         link: 'https://atcoder.jp/contests/abc177/tasks/abc177_c',
-        hint: 'Giới hạn 2 <= N <= 2*10^5, 0 <= A_i <= 10^9, mod 10^9 + 7. Dùng 2 vòng for lồng O(N^2) = 2*10^10 chắc chắn TLE! Dùng mảng toàn cục long long a[200005]; (~1.6 MB) hoặc biến cộng dồn tongTruoc để tính tổng a[i] * tongTruoc trong O(N) duy nhất, nhớ lấy % MOD sau mỗi bước cộng và nhân!'
+        hint: 'Giới hạn 2 &lt;= N &lt;= 2*10^5, 0 &lt;= A_i &lt;= 10^9, mod 10^9 + 7. Dùng 2 vòng for lồng O(N^2) = 2*10^10 chắc chắn TLE! Dùng mảng toàn cục long long a[200005]; (~1.6 MB) hoặc biến cộng dồn tongTruoc để tính tổng a[i] * tongTruoc trong O(N) duy nhất, nhớ lấy % MOD sau mỗi bước cộng và nhân!'
       }
     ]
   };

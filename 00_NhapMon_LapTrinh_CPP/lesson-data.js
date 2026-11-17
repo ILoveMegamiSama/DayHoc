@@ -9,7 +9,7 @@
     number: 'Bài Học 00',
     shortTitle: 'Nhập Môn Lập Trình C++',
     title: 'Nhập Môn Lập Trình C++ — Bản Chất Giao Tiếp & Tiệm Bánh Mì Của Anh Phụ Bếp Thật Thà',
-    lead: 'Hiểu từ gốc rễ: Lập trình không phải là học vẹt cú pháp, mà là nghệ thuật chỉ dẫn một người phụ việc ngây ngô. Giải phẫu Tủ Đồ Nghề #include <bits/stdc++.h>, Cánh Cửa Chính main(), Tiếng Chuông (;), Hộp Biến RAM và Kênh Giao Tiếp cin/cout.',
+    lead: 'Hiểu từ gốc rễ: Lập trình không phải là học vẹt cú pháp, mà là nghệ thuật chỉ dẫn một người phụ việc ngây ngô. Giải phẫu Tủ Đồ Nghề #include &lt;bits/stdc++.h&gt;, Cánh Cửa Chính main(), Tiếng Chuông (;), Hộp Biến RAM và Kênh Giao Tiếp cin/cout.',
     modules: [
       // ============================================================================
       // MODULE 1: VẤN ĐỀ NHỎ 1: RANH GIỚI KHẨU LỆNH & CỬA BẮT ĐẦU CA LÀM
@@ -19,7 +19,7 @@
         number: 'Phần 1',
         shortTitle: 'Cửa Chính main() & Chuông Ngắt Lệnh ;',
         title: 'Vấn Đề Nhỏ 1: Ranh Giới Khẩu Lệnh & Cửa Bắt Đầu Ca Làm Việc',
-        lead: 'Khám phá lý do vì sao máy tính luôn bắt đầu từ hàm main(), tầm quan trọng sống còn của dấu chấm phẩy (;), tủ đồ nghề #include <bits/stdc++.h>, xưởng chung std và lệnh return 0.',
+        lead: 'Khám phá lý do vì sao máy tính luôn bắt đầu từ hàm main(), tầm quan trọng sống còn của dấu chấm phẩy (;), tủ đồ nghề #include &lt;bits/stdc++.h&gt;, xưởng chung std và lệnh return 0.',
         subproblem: {
           title: 'Làm sao để một người phụ việc ngây ngô biết khi nào bắt đầu làm việc và khi nào dứt một câu dặn?',
           desc: 'Nếu không có quy ước cửa bắt đầu, anh phụ việc sẽ đứng trơ mắt giữa gian bếp ngổn ngang. Nếu không có dấu hiệu ngắt lệnh dứt khoát, anh ấy cứ nghĩ ta đang nói dở câu nên đứng chờ mãi mãi, hoặc gộp mọi chỉ dẫn thành mớ bòng bong hỗn loạn.'
@@ -129,7 +129,7 @@ int main() {
               'In ra A ở dòng thứ nhất và BC dính liền nhau ở dòng hai'
             ],
             correct: 0,
-            explain: 'Lệnh cout << "A"; chưa có endl nên "B" được nối ngay sau "A" thành "AB". Sau đó gặp endl mới xuống dòng, nên "C" nằm ở dòng thứ hai.'
+            explain: 'Lệnh cout &lt;&lt; "A"; chưa có endl nên "B" được nối ngay sau "A" thành "AB". Sau đó gặp endl mới xuống dòng, nên "C" nằm ở dòng thứ hai.'
           },
           {
             type: 'trace',
@@ -143,7 +143,7 @@ int main() {
     cout << "Ca 2" << endl;
 }`,
             options: [
-              'Vì lệnh cout << "Ca 2" thiếu tiền tố std:: ở phía trước',
+              'Vì lệnh cout &lt;&lt; "Ca 2" thiếu tiền tố std:: ở phía trước',
               'Vì hàm main() kết thúc ngay tại return 0 nên lệnh sau bị bỏ qua',
               'Vì trong một hàm main() chỉ được phép gọi tối đa một lệnh cout',
               'Vì máy tính chỉ đọc dòng đầu tiên rồi tự động xóa dòng cuối cùng'
@@ -153,7 +153,7 @@ int main() {
           },
           {
             type: 'single',
-            q: 'Tại sao trong C++, sau mỗi câu lệnh như cout << "Xin chao"; ta bắt buộc phải đặt dấu chấm phẩy (;)?',
+            q: 'Tại sao trong C++, sau mỗi câu lệnh như cout &lt;&lt; "Xin chao"; ta bắt buộc phải đặt dấu chấm phẩy (;)?',
             options: [
               'Vì dấu chấm phẩy như tín hiệu xuống dòng màn hình cho câu thông báo tiếp theo',
               'Vì dấu chấm phẩy dùng để cấp phát thêm một ngăn nhớ mới cho câu lệnh sau',
@@ -168,7 +168,7 @@ int main() {
             q: 'Những nhận định nào sau đây là ĐÚNG về bộ khung chương trình C++ chuẩn vừa học?',
             options: [
               'Hàm int main() là điểm bắt đầu duy nhất mà máy tính bước vào khi chạy chương trình',
-              'Dòng #include <bits/stdc++.h> không kết thúc bằng dấu ; vì là khâu chuẩn bị đồ nghề',
+              'Dòng #include &lt;bits/stdc++.h&gt; không kết thúc bằng dấu ; vì là khâu chuẩn bị đồ nghề',
               'Lệnh using namespace std; giúp ta viết gọn cout, cin, endl mà không cần tiền tố std::',
               'Bất kỳ dòng ghi chú nào bắt đầu bằng hai dấu gạch chéo // đều gây lỗi khi biên dịch'
             ],
@@ -356,10 +356,10 @@ int main() {
         number: 'Phần 3',
         shortTitle: 'Loa cout & Khe cin (Tiệm Bánh Mì)',
         title: 'Vấn Đề Nhỏ 3 & Ghép Lại: Kênh Giao Tiếp Hai Chiều & Tiệm Bánh Mì Hoàn Chỉnh',
-        lead: 'Làm chủ cơ chế đưa dữ liệu ra ngoài qua Loa phát thanh cout << và nhận dữ liệu vào qua Khe trượt cin >>. Ghép toàn bộ kiến thức thành ứng dụng Tiệm Bánh Mì.',
+        lead: 'Làm chủ cơ chế đưa dữ liệu ra ngoài qua Loa phát thanh cout &lt;&lt; và nhận dữ liệu vào qua Khe trượt cin &gt;&gt;. Ghép toàn bộ kiến thức thành ứng dụng Tiệm Bánh Mì.',
         subproblem: {
           title: 'Làm sao để người trong bếp giao tiếp 2 chiều với khách bên ngoài mà không bị nhầm lẫn chiều đưa đồ?',
-          desc: 'Nếu không có loa thông báo, anh phụ bếp làm xong cũng giấu tiệt trong góc không ai thấy. Nếu không có khe nhận phiếu, khách không cách nào đưa số lượng bánh mong muốn vào bếp. Chiều mũi tên << và >> giúp định hướng luồng dữ liệu chính xác tuyệt đối.'
+          desc: 'Nếu không có loa thông báo, anh phụ bếp làm xong cũng giấu tiệt trong góc không ai thấy. Nếu không có khe nhận phiếu, khách không cách nào đưa số lượng bánh mong muốn vào bếp. Chiều mũi tên &lt;&lt; và &gt;&gt; giúp định hướng luồng dữ liệu chính xác tuyệt đối.'
         },
         cards: [
           {
@@ -458,7 +458,7 @@ int main() {
                 statusOk: true,
                 statusText: `Đã tính toán thành công đơn hàng cho khách ${cur.name}: ${cur.qty} chiếc bánh`,
                 console: `$ ./tiemBanhMi\nHOA DON TIEM BANH MI\nKhach hang: ${cur.name}\nSo luong  : ${cur.qty} chiec\nTong tien : ${cur.total} nghin dong.\n[Thanh cong: Hoa don da duoc loa phat thanh thong bao ro rang!]`,
-                explain: `Anh phụ bếp lấy số bánh trong hộp soBanh (${cur.qty}) nhân với đơn giá 15.5, múc kết quả ${cur.total} vào hộp tongTien, rồi dùng cout << đẩy từng dòng thông tin ra ngoài màn hình.`
+                explain: `Anh phụ bếp lấy số bánh trong hộp soBanh (${cur.qty}) nhân với đơn giá 15.5, múc kết quả ${cur.total} vào hộp tongTien, rồi dùng cout &lt;&lt; đẩy từng dòng thông tin ra ngoài màn hình.`
               };
             }
           }
@@ -511,27 +511,27 @@ int main() {
           },
           {
             type: 'single',
-            q: 'Một lập trình viên mới học viết dòng lệnh: cin << soBanh;. Trình biên dịch C++ sẽ phản ứng thế nào?',
+            q: 'Một lập trình viên mới học viết dòng lệnh: cin &lt;&lt; soBanh;. Trình biên dịch C++ sẽ phản ứng thế nào?',
             options: [
-              'Báo lỗi biên dịch ngay vì cin chỉ đi với mũi tên hút >> chứ không đi với <<',
-              'Vẫn chạy bình thường vì hai dấu << và >> có thể thay thế cho nhau tùy ý thích',
+              'Báo lỗi biên dịch ngay vì cin chỉ đi với mũi tên hút &gt;&gt; chứ không đi với &lt;&lt;',
+              'Vẫn chạy bình thường vì hai dấu &lt;&lt; và &gt;&gt; có thể thay thế cho nhau tùy ý thích',
               'Chương trình vẫn chạy nhưng tự động in giá trị trong hộp soBanh ra màn hình',
               'Chương trình đứng im chờ mãi mãi vì dữ liệu chảy ngược ra phía bàn phím'
             ],
             correct: 0,
-            explain: 'cin chỉ đi với toán tử trích luồng >> (stream extraction). Dùng << với cin là sai cú pháp và gây lỗi biên dịch ngay.'
+            explain: 'cin chỉ đi với toán tử trích luồng &gt;&gt; (stream extraction). Dùng &lt;&lt; với cin là sai cú pháp và gây lỗi biên dịch ngay.'
           },
           {
             type: 'multiple',
             q: 'Những phát biểu nào sau đây là ĐÚNG về luồng giao tiếp cin và cout khi làm bài trên máy chấm tự động (OJ)?',
             options: [
               'Trên máy chấm tự động, chỉ in đúng đáp án đề yêu cầu chứ không in thêm câu mời "Nhap a:"',
-              'Ta có thể nối nhiều cặp >> liên tiếp như cin >> a >> b; để đọc lần lượt hai số cách nhau bởi dấu cách',
-              'Toán tử << đẩy dữ liệu ra loa cout, còn toán tử >> hút dữ liệu từ bàn phím vào biến',
+              'Ta có thể nối nhiều cặp &gt;&gt; liên tiếp như cin &gt;&gt; a &gt;&gt; b; để đọc lần lượt hai số cách nhau bởi dấu cách',
+              'Toán tử &lt;&lt; đẩy dữ liệu ra loa cout, còn toán tử &gt;&gt; hút dữ liệu từ bàn phím vào biến',
               'Bắt buộc phải viết mỗi giá trị cần in thành một câu lệnh cout riêng rẽ ở mỗi dòng code'
             ],
             correct: [0, 1, 2],
-            explain: 'A, B và C đều đúng. Ý D sai vì băng chuyền << cho phép nối nhiều phần tử trên cùng một câu lệnh cout.'
+            explain: 'A, B và C đều đúng. Ý D sai vì băng chuyền &lt;&lt; cho phép nối nhiều phần tử trên cùng một câu lệnh cout.'
           }
         ]
       }
@@ -601,7 +601,7 @@ int main() {
         judge: 'VNOJ',
         tier: 1,
         link: 'https://oj.vnoi.info/problem/post',
-        hint: 'Giới hạn 1 <= A, B <= 1000. Mở khung #include <bits/stdc++.h> và using namespace std;, đọc cin >> a >> b; rồi in đúng cout << a + b << endl; (không in thêm chữ dẫn "Nhap a:").'
+        hint: 'Giới hạn 1 &lt;= A, B &lt;= 1000. Mở khung #include &lt;bits/stdc++.h&gt; và using namespace std;, đọc cin &gt;&gt; a &gt;&gt; b; rồi in đúng cout &lt;&lt; a + b &lt;&lt; endl; (không in thêm chữ dẫn "Nhap a:").'
       },
       {
         id: 'ABC169-A',
@@ -609,7 +609,7 @@ int main() {
         judge: 'AtCoder',
         tier: 1,
         link: 'https://atcoder.jp/contests/abc169/tasks/abc169_a',
-        hint: 'Giới hạn 1 <= A, B <= 100. Khai báo 2 hộp int a, b; đọc bằng cin >> a >> b; rồi phát ra loa tích a * b (nhớ trong C++ dùng dấu * cho phép nhân).'
+        hint: 'Giới hạn 1 &lt;= A, B &lt;= 100. Khai báo 2 hộp int a, b; đọc bằng cin &gt;&gt; a &gt;&gt; b; rồi phát ra loa tích a * b (nhớ trong C++ dùng dấu * cho phép nhân).'
       },
       {
         id: 'ABC180-A',
@@ -617,7 +617,7 @@ int main() {
         judge: 'AtCoder',
         tier: 1,
         link: 'https://atcoder.jp/contests/abc180/tasks/abc180_a',
-        hint: 'Giới hạn 1 <= N <= 100, 1 <= A, B <= 100 (A <= N). Hộp ban đầu có N bóng, lấy ra A quả rồi thêm B quả. Nhập đủ 3 hộp n, a, b và in ra n - a + b.'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 100, 1 &lt;= A, B &lt;= 100 (A &lt;= N). Hộp ban đầu có N bóng, lấy ra A quả rồi thêm B quả. Nhập đủ 3 hộp n, a, b và in ra n - a + b.'
       },
       {
         id: 'ABC205-A',
@@ -625,7 +625,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc205/tasks/abc205_a',
-        hint: 'Giới hạn 0 <= A, B <= 1000. Mỗi 100 mL có A kcal, suy ra B mL có (A * B) / 100.0 kcal. Hãy chia cho 100.0 (số thực) và lưu vào hộp double để tránh bẫy chia nguyên mất phần lẻ!'
+        hint: 'Giới hạn 0 &lt;= A, B &lt;= 1000. Mỗi 100 mL có A kcal, suy ra B mL có (A * B) / 100.0 kcal. Hãy chia cho 100.0 (số thực) và lưu vào hộp double để tránh bẫy chia nguyên mất phần lẻ!'
       },
       {
         id: 'ABC186-A',
@@ -633,7 +633,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc186/tasks/abc186_a',
-        hint: 'Giới hạn 1 <= N, W <= 1000. Xe tải chở tối đa N kg, mỗi viên gạch nặng W kg. Đây là lúc tận dụng chính phép chia nguyên N / W giữa 2 hộp int để lấy đúng số viên gạch nguyên vẹn!'
+        hint: 'Giới hạn 1 &lt;= N, W &lt;= 1000. Xe tải chở tối đa N kg, mỗi viên gạch nặng W kg. Đây là lúc tận dụng chính phép chia nguyên N / W giữa 2 hộp int để lấy đúng số viên gạch nguyên vẹn!'
       },
       {
         id: 'ABC202-A',
@@ -641,7 +641,7 @@ int main() {
         judge: 'AtCoder',
         tier: 3,
         link: 'https://atcoder.jp/contests/abc202/tasks/abc202_a',
-        hint: 'Giới hạn 1 <= a, b, c <= 6. Hai mặt đối diện của xúc xắc chuẩn có tổng bằng 7. Biết 3 mặt trên là a, b, c, tổng 3 mặt đáy là (7 - a) + (7 - b) + (7 - c) — không cần câu lệnh rẽ nhánh!'
+        hint: 'Giới hạn 1 &lt;= a, b, c &lt;= 6. Hai mặt đối diện của xúc xắc chuẩn có tổng bằng 7. Biết 3 mặt trên là a, b, c, tổng 3 mặt đáy là (7 - a) + (7 - b) + (7 - c) — không cần câu lệnh rẽ nhánh!'
       },
       {
         id: 'ABC153-A',
@@ -649,7 +649,7 @@ int main() {
         judge: 'AtCoder',
         tier: 3,
         link: 'https://atcoder.jp/contests/abc153/tasks/abc153_a',
-        hint: 'Giới hạn 1 <= H, A <= 10^4. Quái vật có H máu, mỗi đòn đánh mất A máu. Để làm tròn lên phép chia H / A mà chưa cần dùng if hay vòng lặp, hãy dùng mẹo chia nguyên (H + A - 1) / A!'
+        hint: 'Giới hạn 1 &lt;= H, A &lt;= 10^4. Quái vật có H máu, mỗi đòn đánh mất A máu. Để làm tròn lên phép chia H / A mà chưa cần dùng if hay vòng lặp, hãy dùng mẹo chia nguyên (H + A - 1) / A!'
       }
     ]
   };

@@ -437,7 +437,7 @@ function checkDebugExercises(dir, lessonData, errors) {
       errors.push(`${dir} (${label}): patches phải có ít nhất 3 phương án`);
     }
     if (
-      typeof db.correctPatch !== 'number'
+      !Number.isInteger(db.correctPatch)
       || !Array.isArray(db.patches)
       || db.correctPatch < 0
       || db.correctPatch >= db.patches.length
@@ -487,6 +487,132 @@ function checkPracticeProblems(dir, lessonData, errors) {
   });
 }
 
+const VALID_HTML_TAG_RE = /<\/?(?:a|b|br|code|details|div|em|h[1-6]|hr|i|img|kbd|li|ol|p|pre|s|small|span|strong|sub|summary|sup|svg|path|rect|circle|line|polyline|polygon|text|g|defs|marker|table|tbody|td|th|thead|tr|u|ul)(?:\s+[^>]*)?\s*\/?>/gi;
+const CPP_TEMPLATE_CALL_RE = /\b(?:std::)?(?:vector|pair|map|set|multiset|unordered_map|unordered_set|priority_queue|stack|queue|deque|greater|less|array|bitset|tuple)\s*<(?!\/|br\s*\/?>)/;
+const CPP_ANGLE_TAG_RE = /<(?:bits\/stdc\+\+\.h|iostream|iomanip|cmath|cstring|cstdio|cstdlib|cassert|climits|limits|numeric|utility|functional|algorithm|string|vector|pair|map|set|multiset|unordered_map|unordered_set|priority_queue|stack|queue|deque|list|bitset|tuple|array|int|long\s+long|long|short|unsigned|signed|char|bool|double|float|void|auto|size_t|T\d*|Key|Value)(?:\s*[,<>&*\[\]./+\s]|>|$)/;
+const INLINE_CODE_TAG_RE = /<code\b[^>]*>([\s\S]*?)<\/code>/gi;
+
+function checkRawHtmlField(dir, fieldPath, value, errors) {
+  if (typeof value !== 'string' || !value) return;
+
+  const cppMatch = value.match(CPP_TEMPLATE_CALL_RE) || value.match(CPP_ANGLE_TAG_RE);
+  if (cppMatch) {
+    errors.push(`${dir} (${fieldPath}): chứa thẻ/template C++ chưa escape HTML (${JSON.stringify(cppMatch[0])})`);
+    return;
+  }
+
+  INLINE_CODE_TAG_RE.lastIndex = 0;
+  let codeMatch;
+  while ((codeMatch = INLINE_CODE_TAG_RE.exec(value)) !== null) {
+    const inner = codeMatch[1].replace(VALID_HTML_TAG_RE, ' ');
+    if (/[<>]/.test(inner)) {
+      errors.push(`${dir} (${fieldPath}): chứa ký tự < hoặc > chưa escape bên trong <code>...</code>`);
+      return;
+    }
+  }
+
+  const stripped = value.replace(VALID_HTML_TAG_RE, ' ');
+  const badToken = stripped.match(/<[^\s<]?|>>|>=|(?:^|[^-])>(?=\s|\d|[A-Za-z_]|$)/);
+  if (badToken) {
+    errors.push(`${dir} (${fieldPath}): chứa ký tự < hoặc > thô chưa escape trong innerHTML (${JSON.stringify(badToken[0].trim())})`);
+  }
+}
+
+function getSandboxStateCombos(sbItem) {
+  const toggles = Array.isArray(sbItem && sbItem.toggles) ? sbItem.toggles : [];
+  let combos = [{}];
+  for (const t of toggles) {
+    const next = [];
+    for (const c of combos) {
+      for (const opt of (t.options || [])) {
+        next.push({ ...c, [t.key]: opt.value });
+      }
+    }
+    if (next.length > 0) combos = next;
+  }
+  return combos;
+}
+
+function checkUnescapedCppHtmlTags(dir, lessonData, errors) {
+  checkRawHtmlField(dir, 'LESSON_DATA.title', lessonData.title, errors);
+  checkRawHtmlField(dir, 'LESSON_DATA.lead', lessonData.lead, errors);
+  checkRawHtmlField(dir, 'LESSON_DATA.number', lessonData.number, errors);
+  checkRawHtmlField(dir, 'LESSON_DATA.shortTitle', lessonData.shortTitle, errors);
+
+  (lessonData.modules || []).forEach((mod, mIdx) => {
+    const mp = `modules[${mIdx}]`;
+    checkRawHtmlField(dir, `${mp}.number`, mod.number, errors);
+    checkRawHtmlField(dir, `${mp}.shortTitle`, mod.shortTitle, errors);
+    checkRawHtmlField(dir, `${mp}.title`, mod.title, errors);
+    checkRawHtmlField(dir, `${mp}.lead`, mod.lead, errors);
+    if (mod.subproblem) {
+      checkRawHtmlField(dir, `${mp}.subproblem.title`, mod.subproblem.title, errors);
+      checkRawHtmlField(dir, `${mp}.subproblem.desc`, mod.subproblem.desc, errors);
+    }
+
+    (mod.cards || []).forEach((card, cIdx) => {
+      checkRawHtmlField(dir, `${mp}.cards[${cIdx}].heading`, card.heading, errors);
+      checkRawHtmlField(dir, `${mp}.cards[${cIdx}].tag`, card.tag, errors);
+      checkRawHtmlField(dir, `${mp}.cards[${cIdx}].html`, card.html, errors);
+      if (card.split) {
+        checkRawHtmlField(dir, `${mp}.cards[${cIdx}].split.left`, card.split.left, errors);
+        checkRawHtmlField(dir, `${mp}.cards[${cIdx}].split.right`, card.split.right, errors);
+      }
+    });
+
+    (mod.sandboxes || []).forEach((sbItem, sIdx) => {
+      const sp = `${mp}.sandboxes[${sIdx}]`;
+      checkRawHtmlField(dir, `${sp}.title`, sbItem.title, errors);
+      checkRawHtmlField(dir, `${sp}.desc`, sbItem.desc, errors);
+      (sbItem.toggles || []).forEach((t, tIdx) => {
+        checkRawHtmlField(dir, `${sp}.toggles[${tIdx}].label`, t.label, errors);
+        (t.options || []).forEach((opt, oIdx) => {
+          checkRawHtmlField(dir, `${sp}.toggles[${tIdx}].options[${oIdx}].text`, opt.text, errors);
+        });
+      });
+      if (typeof sbItem.build === 'function') {
+        for (const state of getSandboxStateCombos(sbItem)) {
+          const built = sbItem.build(state);
+          if (!built || typeof built !== 'object') continue;
+          const stateLabel = JSON.stringify(state);
+          checkRawHtmlField(dir, `${sp}.build(${stateLabel}).statusText`, built.statusText, errors);
+          checkRawHtmlField(dir, `${sp}.build(${stateLabel}).explain`, built.explain, errors);
+          (built.predictions || []).forEach((pred, pIdx) => {
+            const predText = typeof pred === 'string' ? pred : (pred && pred.text);
+            checkRawHtmlField(dir, `${sp}.build(${stateLabel}).predictions[${pIdx}]`, predText, errors);
+          });
+        }
+      }
+    });
+
+    (mod.debugExercises || []).forEach((db, dIdx) => {
+      checkRawHtmlField(dir, `${mp}.debugExercises[${dIdx}].title`, db.title, errors);
+      checkRawHtmlField(dir, `${mp}.debugExercises[${dIdx}].description`, db.description, errors);
+      checkRawHtmlField(dir, `${mp}.debugExercises[${dIdx}].explain`, db.explain, errors);
+    });
+
+    (mod.quiz || []).forEach((q, qIdx) => {
+      checkRawHtmlField(dir, `${mp}.quiz[${qIdx}].q`, q.q, errors);
+      (q.options || []).forEach((opt, oIdx) => {
+        checkRawHtmlField(dir, `${mp}.quiz[${qIdx}].options[${oIdx}]`, opt, errors);
+      });
+      checkRawHtmlField(dir, `${mp}.quiz[${qIdx}].explain`, q.explain, errors);
+    });
+  });
+
+  (lessonData.debugExercises || []).forEach((db, dIdx) => {
+    checkRawHtmlField(dir, `debugExercises[${dIdx}].title`, db.title, errors);
+    checkRawHtmlField(dir, `debugExercises[${dIdx}].description`, db.description, errors);
+    checkRawHtmlField(dir, `debugExercises[${dIdx}].explain`, db.explain, errors);
+  });
+
+  (lessonData.practiceProblems || []).forEach((pr, pIdx) => {
+    checkRawHtmlField(dir, `practiceProblems[${pIdx}].title`, pr.title, errors);
+    checkRawHtmlField(dir, `practiceProblems[${pIdx}].judge`, pr.judge, errors);
+    checkRawHtmlField(dir, `practiceProblems[${pIdx}].hint`, pr.hint, errors);
+  });
+}
+
 function verifyLesson(dir, portalNode) {
   console.log(`--- VERIFYING LESSON: ${dir} ---`);
   const errors = [];
@@ -517,6 +643,7 @@ function verifyLesson(dir, portalNode) {
       checkModulesAndQuiz(dir, lessonData, errors);
       checkDebugExercises(dir, lessonData, errors);
       checkPracticeProblems(dir, lessonData, errors);
+      checkUnescapedCppHtmlTags(dir, lessonData, errors);
     }
   }
 

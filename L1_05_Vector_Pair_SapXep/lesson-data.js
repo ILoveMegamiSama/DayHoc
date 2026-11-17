@@ -21,15 +21,15 @@
         id: 'mod1',
         number: 'Phần 1',
         shortTitle: 'std::vector & Tham Chiếu',
-        title: 'Vấn Đề Nhỏ 1: std::vector<T>, Bộ Nhớ Heap & Truyền Tham Chiếu (&)',
+        title: 'Vấn Đề Nhỏ 1: std::vector&lt;T&gt;, Bộ Nhớ Heap & Truyền Tham Chiếu (&)',
         lead: 'Tại sao mảng tĩnh 2 chiều tốn hàng GB cho K câu lạc bộ kích thước không đều, cách std::vector gửi dữ liệu lên Heap để né tràn Stack 8 MB, bẫy (int)v.size() - 1 và sự khác biệt sinh tử giữa truyền tham trị O(N) vs const vector& O(1).',
         subproblem: {
-          title: 'Làm sao lưu nhiều danh sách kích thước thay đổi linh hoạt mà không tràn Stack (~8 MB) hay lãng phí RAM (> 256 MB), và truyền vào hàm xử lý mà không bị copy chậm O(N)?',
-          desc: 'Ở Pha 1, mảng tĩnh cố định kích thước sẽ gây MLE nếu K = 10^4 phòng có kích thước răng cưa, còn truyền mảng sao chép qua hàm gây TLE. Ta dùng std::vector<T> trên Heap kết hợp truyền tham chiếu vector& / const vector& trong O(1).'
+          title: 'Làm sao lưu nhiều danh sách kích thước thay đổi linh hoạt mà không tràn Stack (~8 MB) hay lãng phí RAM (&gt; 256 MB), và truyền vào hàm xử lý mà không bị copy chậm O(N)?',
+          desc: 'Ở Pha 1, mảng tĩnh cố định kích thước sẽ gây MLE nếu K = 10^4 phòng có kích thước răng cưa, còn truyền mảng sao chép qua hàm gây TLE. Ta dùng std::vector&lt;T&gt; trên Heap kết hợp truyền tham chiếu vector& / const vector& trong O(1).'
         },
         cards: [
           {
-            heading: 'std::vector<T> & vector<vector<int>> — Chiếc Balo Co Giãn Trên Heap',
+            heading: 'std::vector&lt;T&gt; & vector&lt;vector&lt;int&gt;&gt; — Chiếc Balo Co Giãn Trên Heap',
             tag: 'Mở khóa Pha 2 STL',
             html: `
               <div class="step-life">
@@ -146,15 +146,15 @@ int main() {
         sandboxes: [
           {
             id: 'sb_vector_pass_by_ref',
-            title: 'Phòng Thí Nghiệm 1: So Sánh const vector<int>& O(1) vs Copy Tham Trị O(N)',
-            desc: 'Thử gọi hàm đọc a[0] + a[idx] lặp lại Q = 20,000 lần trên một vector cỡ N = 20,000 khi truyền bằng const vector<int>& (chỉ truyền địa chỉ) so với truyền tham trị vector<int> (sao chép cả mảng mỗi lần gọi!).',
+            title: 'Phòng Thí Nghiệm 1: So Sánh const vector&lt;int&gt;& O(1) vs Copy Tham Trị O(N)',
+            desc: 'Thử gọi hàm đọc a[0] + a[idx] lặp lại Q = 20,000 lần trên một vector cỡ N = 20,000 khi truyền bằng const vector&lt;int&gt;& (chỉ truyền địa chỉ) so với truyền tham trị vector&lt;int&gt; (sao chép cả mảng mỗi lần gọi!).',
             toggles: [
               {
                 key: 'passMode',
                 label: 'Cách truyền vector vào hàm layPhanTu',
                 options: [
-                  { value: 'const_ref', text: 'const vector<int>& a — Truyền địa chỉ O(1)/lần', kind: 'ok' },
-                  { value: 'by_val', text: 'vector<int> a — Quên & nên copy O(N)/lần', kind: 'bug' }
+                  { value: 'const_ref', text: 'const vector&lt;int&gt;& a — Truyền địa chỉ O(1)/lần', kind: 'ok' },
+                  { value: 'by_val', text: 'vector&lt;int&gt; a — Quên & nên copy O(N)/lần', kind: 'bug' }
                 ]
               }
             ],
@@ -209,15 +209,15 @@ int main() {
                   ? 'NHANH O(Q): Chỉ đọc trực tiếp bản gốc qua địa chỉ, 0 lượt sao chép thừa (~0.001s AC)!'
                   : 'CHẬM O(Q * N): Tạo 20,000 bản sao vector = 4*10^8 phần tử được chép! Lên N = Q = 10^5 sẽ nổ 10^10 (TLE)!',
                 predictions: [
-                  { text: 'Chương trình in Tong = 280000 ngay tức thì với 0 phần tử bị sao chép nhờ const vector<int>&' },
+                  { text: 'Chương trình in Tong = 280000 ngay tức thì với 0 phần tử bị sao chép nhờ const vector&lt;int&gt;&' },
                   { text: 'Vẫn ra 280000 nhưng ngầm sao chép 400 triệu phần tử (4*10^8); nếu N = Q = 10^5 sẽ bị TLE ngay' }
                 ],
                 console: isOk
                   ? '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\nTong = 280000, luot copy = 0\n[Voi N = Q = 100,000: chi mat 100,000 buoc -> AC em ru!]'
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\nTong = 280000, luot copy = 400000000\n[Canh bao TLE: Voi N = Q = 100,000 se copy 10,000,000,000 phan tu -> TLE chac chan!]',
                 explain: isOk
-                  ? 'Nhờ dấu & trong const vector<int>& a, hàm chỉ nhận con trỏ/địa chỉ của vector gốc trong O(1), không hề cấp phát hay sao chép thêm bộ nhớ nào.'
-                  : 'Thiếu dấu &, tham số vector<int> a ép C++ tạo một bản sao hoàn toàn mới trên Heap ở mỗi vòng lặp for, đẩy độ phức tạp từ O(Q) vọt lên O(Q * N).'
+                  ? 'Nhờ dấu & trong const vector&lt;int&gt;& a, hàm chỉ nhận con trỏ/địa chỉ của vector gốc trong O(1), không hề cấp phát hay sao chép thêm bộ nhớ nào.'
+                  : 'Thiếu dấu &, tham số vector&lt;int&gt; a ép C++ tạo một bản sao hoàn toàn mới trên Heap ở mỗi vòng lặp for, đẩy độ phức tạp từ O(Q) vọt lên O(Q * N).'
               };
             }
           }
@@ -284,22 +284,22 @@ int main() {
             type: 'single',
             q: 'Khi giải bài có $N = 10^5$ phần tử và $Q = 10^5$ truy vấn gọi hàm đọc vector, tại sao bắt buộc dùng <code>const vector&lt;int&gt;&amp; a</code> thay vì <code>vector&lt;int&gt; a</code>?',
             options: [
-              'Vì truyền vector<int> a theo tham trị giúp hàm chạy nhanh hơn và tiết kiệm RAM hơn',
-              'Vì truyền vector<int> a sẽ xóa mất phần tử cuối của mảng gốc sau mỗi lần gọi hàm',
-              'Vì truyền const vector<int>& a cho phép hàm thay đổi trực tiếp dữ liệu mảng gốc',
-              'Vì truyền vector<int> a sao chép cả N phần tử mỗi lượt gọi làm tổng tốn O(Q * N)'
+              'Vì truyền vector&lt;int&gt; a theo tham trị giúp hàm chạy nhanh hơn và tiết kiệm RAM hơn',
+              'Vì truyền vector&lt;int&gt; a sẽ xóa mất phần tử cuối của mảng gốc sau mỗi lần gọi hàm',
+              'Vì truyền const vector&lt;int&gt;& a cho phép hàm thay đổi trực tiếp dữ liệu mảng gốc',
+              'Vì truyền vector&lt;int&gt; a sao chép cả N phần tử mỗi lượt gọi làm tổng tốn O(Q * N)'
             ],
             correct: 3,
-            explain: 'Truyền tham trị (không có &) tạo bản sao toàn bộ N phần tử ở mỗi lần gọi hàm, khiến Q truy vấn tốn O(Q * N) = 10^10 thao tác (TLE). Dùng const vector<int>& chỉ truyền địa chỉ trong O(1).'
+            explain: 'Truyền tham trị (không có &) tạo bản sao toàn bộ N phần tử ở mỗi lần gọi hàm, khiến Q truy vấn tốn O(Q * N) = 10^10 thao tác (TLE). Dùng const vector&lt;int&gt;& chỉ truyền địa chỉ trong O(1).'
           },
           {
             type: 'multiple',
             q: 'Những nhận định nào sau đây là <strong>ĐÚNG</strong> về <code>std::vector</code>, vùng nhớ Heap và cách dùng <code>size()</code>?',
             options: [
-              'Dữ liệu phần tử của vector nằm trên Heap nên vector<int> a(1000000); trong main() không tràn Stack',
+              'Dữ liệu phần tử của vector nằm trên Heap nên vector&lt;int&gt; a(1000000); trong main() không tràn Stack',
               'Khi vector rỗng, viết v.size() - 1 vẫn cho giá trị -1 an toàn như khi dùng biến kiểu int bình thường',
-              'Phải ép kiểu (int)v.size() hoặc viết i + 1 < (int)v.size() để tránh lỗi tràn số không dấu size_t',
-              'Hàm nhận vector<int>& a vẫn sao chép lại toàn bộ N phần tử giống tham trị trước khi sửa bản gốc'
+              'Phải ép kiểu (int)v.size() hoặc viết i + 1 &lt; (int)v.size() để tránh lỗi tràn số không dấu size_t',
+              'Hàm nhận vector&lt;int&gt;& a vẫn sao chép lại toàn bộ N phần tử giống tham trị trước khi sửa bản gốc'
             ],
             correct: [0, 2],
             explain: 'A và C đúng. B sai vì v.size() trả về size_t (không dấu), nên 0 - 1 tràn thành ~1.84*10^19! D sai vì tham chiếu & không sao chép mảng mà thao tác trực tiếp trên bản gốc.'
@@ -314,15 +314,15 @@ int main() {
         id: 'mod2',
         number: 'Phần 2',
         shortTitle: 'pair & std::sort O(N log N)',
-        title: 'Vấn Đề Nhỏ 2: std::pair<T1, T2> & std::sort — Từ O(N^2) Xuống O(N log N)',
+        title: 'Vấn Đề Nhỏ 2: std::pair&lt;T1, T2&gt; & std::sort — Từ O(N^2) Xuống O(N log N)',
         lead: 'Cách ghim chặt 2 thông tin gắn liền (giá trị + chỉ số gốc, hoặc sức mạnh + phần thưởng) bằng std::pair, quy tắc so sánh từ điển (.first trước, .second sau) và cách std::sort xử lý 10^5 phần tử trong O(N log N).',
         subproblem: {
           title: 'Làm sao sắp xếp danh sách 10^5 thí sinh dưới 1 giây mà không bị TLE như thuật toán O(N^2), đồng thời không làm rơi mất mã số gốc của từng người?',
-          desc: 'Dùng std::pair<T1, T2> để đóng gói thông tin đi kèm thành một cặp duy nhất trong vector<pair<...>>, rồi gọi std::sort(v.begin(), v.end()) chạy trong O(N log N).'
+          desc: 'Dùng std::pair&lt;T1, T2&gt; để đóng gói thông tin đi kèm thành một cặp duy nhất trong vector&lt;pair&lt;...&gt;&gt;, rồi gọi std::sort(v.begin(), v.end()) chạy trong O(N log N).'
         },
         cards: [
           {
-            heading: 'std::pair<T1, T2> — Chiếc Kẹp Giấy Giữ Chặt Dữ Liệu Đi Kèm',
+            heading: 'std::pair&lt;T1, T2&gt; — Chiếc Kẹp Giấy Giữ Chặt Dữ Liệu Đi Kèm',
             tag: 'Gắn cặp thông tin',
             html: `
               <div class="step-life">
@@ -424,7 +424,7 @@ int main() {
         sandboxes: [
           {
             id: 'sb_pair_sort_speed',
-            title: 'Phòng Thí Nghiệm 2: std::sort O(N log N) vs Selection Sort O(N^2) Trên vector<pair>',
+            title: 'Phòng Thí Nghiệm 2: std::sort O(N log N) vs Selection Sort O(N^2) Trên vector&lt;pair&gt;',
             desc: 'Sắp xếp một danh sách các cặp {điểm, mã thí sinh} để xem std::sort bảo toàn đúng mã thí sinh và chênh lệch số phép so sánh khổng lồ so với vòng lặp O(N^2) khi N tăng lên quy mô thi đấu.',
             toggles: [
               {
@@ -477,7 +477,7 @@ int main() {
                 changedLines: isOk ? [8] : [11, 12, 13, 14, 15, 16, 17, 18],
                 statusOk: isOk,
                 statusText: isOk
-                  ? 'CHUẨN O(N log N): Vừa giữ trọn cặp {điểm, ID}, vừa chỉ tốn ~61,500 bước ở N=5,000 (~1.7*10^6 ở N=10^5 -> AC)!'
+                  ? 'CHUẨN O(N log N): Vừa giữ trọn cặp {điểm, ID}, vừa chỉ tốn ~61,500 bước ở N=5,000 (~1.7*10^6 ở N=10^5 -&gt; AC)!'
                   : 'QUÁ CHẬM O(N^2): Tại N=5,000 đã tốn 12,497,500 bước; khi N=10^5 sẽ nhảy vọt lên 5*10^9 bước (TLE)!',
                 predictions: [
                   { text: 'std::sort sắp xếp đúng theo điểm và giữ đúng ID gốc (#4 thấp nhất, #2 cao nhất), sẵn sàng cho N = 10^5' },
@@ -541,7 +541,7 @@ int main() {
               'In ra 5 1 3 7 9 2 vì nửa khoảng [1, 5) chỉ sắp xếp các chỉ số 1, 2, 3 và 4'
             ],
             correct: 3,
-            explain: 'Nửa khoảng [a.begin() + 1, a.begin() + 5) chỉ gồm 4 phần tử ở chỉ số 1, 2, 3, 4 là {1, 9, 3, 7} -> xếp thành {1, 3, 7, 9}. Hai đầu chỉ số 0 (giá trị 5) và chỉ số 5 (giá trị 2) giữ nguyên!'
+            explain: 'Nửa khoảng [a.begin() + 1, a.begin() + 5) chỉ gồm 4 phần tử ở chỉ số 1, 2, 3, 4 là {1, 9, 3, 7} -&gt; xếp thành {1, 3, 7, 9}. Hai đầu chỉ số 0 (giá trị 5) và chỉ số 5 (giá trị 2) giữ nguyên!'
           },
           {
             type: 'single',
@@ -553,16 +553,16 @@ int main() {
               'Tạo mảng tĩnh đếm tần suất a[10^9 + 5] vì giá trị mỗi số có thể lên tới 10^9'
             ],
             correct: 2,
-            explain: 'Sau khi std::sort trong O(N log N), mọi số giống nhau đứng cạnh nhau, nên chỉ cần 1 vòng lặp O(N) đếm số lần v[i] != v[i - 1] (khởi tạo đếm = 1 nếu n > 0). Mảng 10^9 gây MLE (~4 GB), còn O(N^2) gây TLE.'
+            explain: 'Sau khi std::sort trong O(N log N), mọi số giống nhau đứng cạnh nhau, nên chỉ cần 1 vòng lặp O(N) đếm số lần v[i] != v[i - 1] (khởi tạo đếm = 1 nếu n &gt; 0). Mảng 10^9 gây MLE (~4 GB), còn O(N^2) gây TLE.'
           },
           {
             type: 'multiple',
             q: 'Những phát biểu nào sau đây là <strong>ĐÚNG</strong> về <code>std::pair</code> và <code>std::sort</code>?',
             options: [
               'Hàm std::sort chạy trong O(N log N), chỉ mất vài triệu bước với N = 10^5 nên tránh được TLE',
-              'Khi lưu {diem, id} vào vector<pair<int, int>>, sort mặc định so điểm trước rồi mới so id',
+              'Khi lưu {diem, id} vào vector&lt;pair&lt;int, int&gt;&gt;, sort mặc định so điểm trước rồi mới so id',
               'Với vector 10 phần tử a, lời gọi sort(a.begin(), a.end() - 1) sẽ sắp xếp đủ cả 10 phần tử',
-              'Để sắp xếp vector<int> theo thứ tự giảm dần nhanh gọn, có thể thêm greater<int>() vào sort'
+              'Để sắp xếp vector&lt;int&gt; theo thứ tự giảm dần nhanh gọn, có thể thêm greater&lt;int&gt;() vào sort'
             ],
             correct: [0, 1, 3],
             explain: 'A, B và D đều đúng. C sai vì a.end() - 1 trỏ vào phần tử cuối a[9], do nửa khoảng [begin, end) không tính cận phải nên phần tử cuối a[9] bị bỏ sót không được sắp xếp!'
@@ -576,12 +576,12 @@ int main() {
       {
         id: 'mod3',
         number: 'Phần 3',
-        shortTitle: 'Custom Comparator & Bẫy <=',
+        shortTitle: 'Custom Comparator & Bẫy &lt;=',
         title: 'Vấn Đề Nhỏ 3: Custom Comparator & Quy Tắc Strict Weak Ordering',
-        lead: 'Cách viết hàm so sánh tùy biến bool cmp(const T& a, const T& b) cho nhiều tiêu chí trái chiều (như số bài giảm dần, phạt tăng dần) hoặc biểu thức dẫn xuất, và lý do sống còn khiến dấu <= / >= làm sập std::sort.',
+        lead: 'Cách viết hàm so sánh tùy biến bool cmp(const T& a, const T& b) cho nhiều tiêu chí trái chiều (như số bài giảm dần, phạt tăng dần) hoặc biểu thức dẫn xuất, và lý do sống còn khiến dấu &lt;= / &gt;= làm sập std::sort.',
         subproblem: {
           title: 'Khi cần sắp xếp theo luật riêng phức tạp (nhiều tiêu chí ngược chiều nhau hoặc theo hiệu b - a), làm sao viết Custom Comparator đúng chuẩn và không làm crash chương trình?',
-          desc: 'Truyền hàm bool cmp(const T& a, const T& b) vào tham số thứ 3 của std::sort và tuân thủ tuyệt đối luật Strict Weak Ordering: chỉ dùng < hoặc >, TUYỆT ĐỐI không dùng <= hay >=.'
+          desc: 'Truyền hàm bool cmp(const T& a, const T& b) vào tham số thứ 3 của std::sort và tuân thủ tuyệt đối luật Strict Weak Ordering: chỉ dùng &lt; hoặc &gt;, TUYỆT ĐỐI không dùng &lt;= hay &gt;=.'
         },
         cards: [
           {
@@ -641,11 +641,11 @@ int main() {
             `
           },
           {
-            heading: 'Bẫy Chết Người <= và >= — Quy Tắc Strict Weak Ordering',
+            heading: 'Bẫy Chết Người &lt;= và &gt;= — Quy Tắc Strict Weak Ordering',
             tag: 'Cấm kỵ gây crash RE',
             html: `
               <div class="step-life">
-                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tại sao một dấu "=" nhỏ xíu trong <= lại làm sập cả chương trình?</span>
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Tại sao một dấu "=" nhỏ xíu trong &lt;= lại làm sập cả chương trình?</span>
                 <p>Nhiều bạn nghĩ: <em>"Nếu hai bạn bằng điểm nhau thì bạn nào đứng trước chẳng được, viết <code>return a &lt;= b;</code> hay <code>return a &gt;= b;</code> có sao đâu?"</em>. Sai lầm cực lớn!</p>
                 <ul style="margin: 8px 0 0 20px;">
                   <li><strong>Nghịch lý tự đứng trước chính mình:</strong> Nếu trọng tài dùng dấu <code>&lt;=</code>, khi bị hỏi <em>"Số 5 có đứng NGHIÊM NGẶT trước chính số 5 không?"</em>, trọng tài trả lời <code>true</code> (<code>5 &lt;= 5</code> đúng!). Sau đó hỏi ngược lại số 5 thứ hai với số 5 thứ nhất, trọng tài lại bảo <code>true</code>!</li>
@@ -697,15 +697,15 @@ int main() {
         sandboxes: [
           {
             id: 'sb_custom_cmp_strict',
-            title: 'Phòng Thí Nghiệm 3: Custom Comparator Chuẩn (< / >) vs Vi Phạm Strict Weak Ordering (<=)',
-            desc: 'Kiểm chứng phép thử cmp(x, x) và thứ tự bảng xếp hạng khi dùng dấu nghiêm ngặt (<) so với viết nhầm dấu (<=) ở điều kiện cuối.',
+            title: 'Phòng Thí Nghiệm 3: Custom Comparator Chuẩn (&lt; / &gt;) vs Vi Phạm Strict Weak Ordering (&lt;=)',
+            desc: 'Kiểm chứng phép thử cmp(x, x) và thứ tự bảng xếp hạng khi dùng dấu nghiêm ngặt (&lt;) so với viết nhầm dấu (&lt;=) ở điều kiện cuối.',
             toggles: [
               {
                 key: 'cmpMode',
                 label: 'Hàm so sánh truyền vào std::sort',
                 options: [
-                  { value: 'strict_lt', text: 'Dùng < / > nghiêm ngặt (Strict Weak Ordering)', kind: 'ok' },
-                  { value: 'non_strict_le', text: 'Dùng <= ở tiêu chí cuối (Vi phạm luật!)', kind: 'bug' }
+                  { value: 'strict_lt', text: 'Dùng &lt; / &gt; nghiêm ngặt (Strict Weak Ordering)', kind: 'ok' },
+                  { value: 'non_strict_le', text: 'Dùng &lt;= ở tiêu chí cuối (Vi phạm luật!)', kind: 'bug' }
                 ]
               }
             ],
@@ -763,7 +763,7 @@ int main() {
                   ? '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\ncmp(x, x) = 0\nHang 1: (7, 200)\nHang 2: (5, 80)'
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\ncmp(x, x) = 1\nHang 1: (7, 200)\nHang 2: (5, 80)\n[Canh bao RE/UB: Tren mang lon N = 100,000 phan tu giong nhau, dau <= lam std::sort vuot bien bo nho -> Segmentation fault (Exit 139)!]',
                 explain: isOk
-                  ? 'Dấu < nghiêm ngặt đảm bảo khi hai đối tượng bằng nhau hoàn toàn thì cmp(x, x) trả về false, giúp thuật toán phân hoạch của std::sort dừng đúng ranh giới.'
+                  ? 'Dấu &lt; nghiêm ngặt đảm bảo khi hai đối tượng bằng nhau hoàn toàn thì cmp(x, x) trả về false, giúp thuật toán phân hoạch của std::sort dừng đúng ranh giới.'
                   : 'Dù trên 4 phần tử nhỏ kết quả trông có vẻ bình thường, cmp(x, x) = 1 đã phá vỡ luật phi phản xạ của std::sort. Khi gặp 10^5 phần tử bằng nhau (hoặc bật chế độ kiểm tra debug của máy chấm), chương trình sẽ bị ép dừng (RE).'
               };
             }
@@ -825,31 +825,31 @@ int main() {
               'In ra 5 6 | 8 4 vì hiệu (second - first) lần lượt là 1, -4 rồi tới 7'
             ],
             correct: 2,
-            explain: 'Hiệu (second - first) của ba cặp lần lượt là: (3, 10) -> 7; (8, 4) -> -4; (5, 6) -> 1. Sắp tăng dần theo hiệu: {8, 4}, {5, 6}, {3, 10}. Vậy in ra: 8 4 | 5 6.'
+            explain: 'Hiệu (second - first) của ba cặp lần lượt là: (3, 10) -&gt; 7; (8, 4) -&gt; -4; (5, 6) -&gt; 1. Sắp tăng dần theo hiệu: {8, 4}, {5, 6}, {3, 10}. Vậy in ra: 8 4 | 5 6.'
           },
           {
             type: 'single',
             q: 'Tại sao viết <code>return a.diem &gt;= b.diem;</code> trong Custom Comparator truyền cho <code>std::sort</code> lại là một lỗi cực kỳ nguy hiểm?',
             options: [
-              'Vì dấu >= làm hàm sort tự động chuyển độ phức tạp từ O(N log N) xuống chậm O(N^2)',
+              'Vì dấu &gt;= làm hàm sort tự động chuyển độ phức tạp từ O(N log N) xuống chậm O(N^2)',
               'Vì khi a == b hàm trả về true, vi phạm Strict Weak Ordering và dễ gây crash RE',
-              'Vì trình biên dịch C++14 không cho phép dùng toán tử >= trong bất kỳ hàm bool nào',
-              'Vì dấu >= chỉ dùng được cho kiểu double chứ không so sánh được số nguyên int'
+              'Vì trình biên dịch C++14 không cho phép dùng toán tử &gt;= trong bất kỳ hàm bool nào',
+              'Vì dấu &gt;= chỉ dùng được cho kiểu double chứ không so sánh được số nguyên int'
             ],
             correct: 1,
-            explain: 'Khi a và b bằng điểm nhau, >= trả về true vi phạm tính phi phản xạ (cmp(x, x) phải là false) của Strict Weak Ordering, dễ khiến std::sort chạy lố biên bộ nhớ và gây crash Runtime Error.'
+            explain: 'Khi a và b bằng điểm nhau, &gt;= trả về true vi phạm tính phi phản xạ (cmp(x, x) phải là false) của Strict Weak Ordering, dễ khiến std::sort chạy lố biên bộ nhớ và gây crash Runtime Error.'
           },
           {
             type: 'multiple',
             q: 'Những lưu ý nào sau đây là <strong>ĐÚNG</strong> khi viết Custom Comparator <code>bool cmp(...)</code> cho <code>std::sort</code>?',
             options: [
-              'Luôn dùng dấu <= hoặc >= ở điều kiện cuối cùng để tránh bỏ sót hai phần tử bằng nhau',
+              'Luôn dùng dấu &lt;= hoặc &gt;= ở điều kiện cuối cùng để tránh bỏ sót hai phần tử bằng nhau',
               'Nên truyền tham số dạng const T& để tránh sao chép nặng O(N) khi T là string hay vector',
-              'Khi cần xếp nhiều tiêu chí, chỉ cần viết return a.first > b.first && a.second < b.second;',
+              'Khi cần xếp nhiều tiêu chí, chỉ cần viết return a.first &gt; b.first && a.second &lt; b.second;',
               'Hàm cmp(x, x) phải luôn trả về false (phi phản xạ) và chỉ trả true khi x đứng trước y'
             ],
             correct: [1, 3],
-            explain: 'B và D đúng. A sai vì <= / >= gây UB/crash. C sai vì nếu a.first == b.first, vế a.first > b.first sai làm cả biểu thức && trả về false bất chấp a.second có nhỏ hơn b.second hay không (vi phạm thứ tự bắc cầu)!'
+            explain: 'B và D đúng. A sai vì &lt;= / &gt;= gây UB/crash. C sai vì nếu a.first == b.first, vế a.first &gt; b.first sai làm cả biểu thức && trả về false bất chấp a.second có nhỏ hơn b.second hay không (vi phạm thứ tự bắc cầu)!'
           }
         ]
       }
@@ -896,12 +896,12 @@ int main() {
           { text: 'Đổi dòng 8 thành sort(a.begin(), a.end(), greater<int>()); để sắp xếp trực tiếp bản gốc' }
         ],
         correctPatch: 1,
-        explain: 'Ở dòng 4, tham số vector<int> a thiếu dấu & nên hàm chỉ sao chép ra một bản nháp mới, cộng bonus và sort trên bản nháp đó rồi vứt đi! Đổi thành vector<int>& a giúp sửa thẳng bản gốc mà không tốn chi phí copy O(N).'
+        explain: 'Ở dòng 4, tham số vector&lt;int&gt; a thiếu dấu & nên hàm chỉ sao chép ra một bản nháp mới, cộng bonus và sort trên bản nháp đó rồi vứt đi! Đổi thành vector&lt;int&gt;& a giúp sửa thẳng bản gốc mà không tốn chi phí copy O(N).'
       },
       {
         id: 'dbg_l105_unsigned_size_trap',
         title: 'Bẫy Tràn Số Không Dấu a.size() - 1 Khi Vector Rỗng (RE)',
-        description: 'Cho dãy có n phần tử (0 <= n <= 10^5), đếm số cặp liền kề thỏa mãn a[i] < a[i + 1]. Với mọi test n >= 1 code chạy đúng, nhưng vừa gặp test biên n = 0 (vector rỗng) thì chương trình sập Segmentation Fault!',
+        description: 'Cho dãy có n phần tử (0 &lt;= n &lt;= 10^5), đếm số cặp liền kề thỏa mãn a[i] &lt; a[i + 1]. Với mọi test n &gt;= 1 code chạy đúng, nhưng vừa gặp test biên n = 0 (vector rỗng) thì chương trình sập Segmentation Fault!',
         failingInput: '0',
         failingOutput: 'Runtime Error: Segmentation fault (a.size() - 1 tràn thành 18446744073709551615)',
         expectedOutput: '0',
@@ -929,12 +929,12 @@ int main() {
           { text: 'Đổi dòng 9 thành vector<int> a(n + 1); để giữ lại đúng kích thước vector sau khi đọc xong' }
         ],
         correctPatch: 0,
-        explain: 'Ở dòng 12, a.size() trả về kiểu size_t (số nguyên không dấu). Khi n = 0, 0 - 1 quay vòng thành 2^64 - 1 (~1.84*10^19), khiến vòng lặp đọc lố ra ngoài bộ nhớ và crash RE! Viết i + 1 < (int)a.size() hoàn toàn an toàn ngay cả khi n = 0.'
+        explain: 'Ở dòng 12, a.size() trả về kiểu size_t (số nguyên không dấu). Khi n = 0, 0 - 1 quay vòng thành 2^64 - 1 (~1.84*10^19), khiến vòng lặp đọc lố ra ngoài bộ nhớ và crash RE! Viết i + 1 &lt; (int)a.size() hoàn toàn an toàn ngay cả khi n = 0.'
       },
       {
         id: 'dbg_l105_strict_weak_cmp',
-        title: 'Dùng Dấu <= Trong Custom Comparator Gây Sập std::sort (RE)',
-        description: 'Cho N (1 <= N <= 10^5) điểm số đều nằm trong một mảng vector, hãy sắp xếp tăng dần bằng hàm so sánh tùy biến cmp. Trên test nhỏ code chạy êm, nhưng gặp test N = 10^5 thí sinh đồng loạt đạt điểm 5 thì chương trình sập Runtime Error!',
+        title: 'Dùng Dấu &lt;= Trong Custom Comparator Gây Sập std::sort (RE)',
+        description: 'Cho N (1 &lt;= N &lt;= 10^5) điểm số đều nằm trong một mảng vector, hãy sắp xếp tăng dần bằng hàm so sánh tùy biến cmp. Trên test nhỏ code chạy êm, nhưng gặp test N = 10^5 thí sinh đồng loạt đạt điểm 5 thì chương trình sập Runtime Error!',
         failingInput: '100000',
         failingOutput: 'Runtime Error: Segmentation fault (Exit 139)',
         expectedOutput: '5',
@@ -962,7 +962,7 @@ int main() {
           { text: 'Đổi dòng 5 thành return x < y; để thỏa mãn luật Strict Weak Ordering (cmp(x, x) == false)' }
         ],
         correctPatch: 2,
-        explain: 'Ở dòng 5, return x <= y; làm cmp(5, 5) == true, vi phạm tính phi phản xạ của Strict Weak Ordering. Trên mảng lớn nhiều phần tử bằng nhau, std::sort trượt con trỏ vọt ra khỏi vùng nhớ vector gây Segmentation fault! Đổi thành return x < y; giải quyết triệt để.'
+        explain: 'Ở dòng 5, return x &lt;= y; làm cmp(5, 5) == true, vi phạm tính phi phản xạ của Strict Weak Ordering. Trên mảng lớn nhiều phần tử bằng nhau, std::sort trượt con trỏ vọt ra khỏi vùng nhớ vector gây Segmentation fault! Đổi thành return x &lt; y; giải quyết triệt để.'
       }
     ],
 
@@ -976,7 +976,7 @@ int main() {
         judge: 'CSES',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1621',
-        hint: 'Giới hạn 1 <= n <= 2*10^5, 1 <= x_i <= 10^9, TL 1.0s, ML 512 MB. Chưa cần dùng set/map: đọc vào vector<int> a(n), gọi sort(a.begin(), a.end()) trong O(n log n), rồi duyệt 1 vòng từ i = 1..n-1 đếm số lần a[i] != a[i - 1] (nhớ khởi tạo ans = 1).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 2*10^5, 1 &lt;= x_i &lt;= 10^9, TL 1.0s, ML 512 MB. Chưa cần dùng set/map: đọc vào vector&lt;int&gt; a(n), gọi sort(a.begin(), a.end()) trong O(n log n), rồi duyệt 1 vòng từ i = 1..n-1 đếm số lần a[i] != a[i - 1] (nhớ khởi tạo ans = 1).'
       },
       {
         id: 'CF-230A',
@@ -984,7 +984,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/230/A',
-        hint: 'Giới hạn 1 <= s <= 10^4, 1 <= n <= 10^3, TL 2.0s, ML 256 MB. Dùng vector<pair<int, int>> lưu (x_i, y_i) với x_i là sức mạnh rồng ở .first và y_i là điểm thưởng ở .second. Gọi sort(dragons.begin(), dragons.end()) để đánh từ rồng yếu nhất trước: nếu s > x_i thì s += y_i, ngược lại in NO ngay.'
+        hint: 'Giới hạn 1 &lt;= s &lt;= 10^4, 1 &lt;= n &lt;= 10^3, TL 2.0s, ML 256 MB. Dùng vector&lt;pair&lt;int, int&gt;&gt; lưu (x_i, y_i) với x_i là sức mạnh rồng ở .first và y_i là điểm thưởng ở .second. Gọi sort(dragons.begin(), dragons.end()) để đánh từ rồng yếu nhất trước: nếu s &gt; x_i thì s += y_i, ngược lại in NO ngay.'
       },
       {
         id: 'ABC201-B',
@@ -992,7 +992,7 @@ int main() {
         judge: 'AtCoder',
         tier: 1,
         link: 'https://atcoder.jp/contests/abc201/tasks/abc201_b',
-        hint: 'Giới hạn 2 <= N <= 1000, độ dài tên <= 15, chiều cao 1 <= T_i <= 10^5 (phân biệt), TL 2.0s. Đặt chiều cao vào .first và tên núi vào .second trong vector<pair<int, string>>, gọi sort(v.begin(), v.end()) tăng dần (hoặc truyền custom comparator giảm dần) rồi in ra v[N - 2].second!'
+        hint: 'Giới hạn 2 &lt;= N &lt;= 1000, độ dài tên &lt;= 15, chiều cao 1 &lt;= T_i &lt;= 10^5 (phân biệt), TL 2.0s. Đặt chiều cao vào .first và tên núi vào .second trong vector&lt;pair&lt;int, string&gt;&gt;, gọi sort(v.begin(), v.end()) tăng dần (hoặc truyền custom comparator giảm dần) rồi in ra v[N - 2].second!'
       },
       {
         id: 'CF-166A',
@@ -1000,7 +1000,7 @@ int main() {
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/166/A',
-        hint: 'Giới hạn 1 <= k <= n <= 50, TL 2.0s, ML 256 MB. Lưu vector<pair<int, int>> gồm (p_i, t_i) và viết Custom Comparator: nếu a.first != b.first thì return a.first > b.first; ngược lại return a.second < b.second; (tuyệt đối không dùng <= / >=). Sau khi sort, đếm số đội giống hệt teams[k - 1].'
+        hint: 'Giới hạn 1 &lt;= k &lt;= n &lt;= 50, TL 2.0s, ML 256 MB. Lưu vector&lt;pair&lt;int, int&gt;&gt; gồm (p_i, t_i) và viết Custom Comparator: nếu a.first != b.first thì return a.first &gt; b.first; ngược lại return a.second &lt; b.second; (tuyệt đối không dùng &lt;= / &gt;=). Sau khi sort, đếm số đội giống hệt teams[k - 1].'
       },
       {
         id: 'ABC128-B',
@@ -1008,7 +1008,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc128/tasks/abc128_b',
-        hint: 'Giới hạn 1 <= N <= 100, tên thành phố <= 10 ký tự, điểm 0 <= P_i <= 100, TL 2.0s. Dùng vector<pair<pair<string, int>, int>> lưu {{tenThanhPho, diem}, chiSoGoc} (1-indexed) và Custom Comparator truyền const ...&: nếu thành phố khác nhau thì xếp từ điển tăng dần (a.first.first < b.first.first), cùng thành phố thì xếp điểm giảm dần (a.first.second > b.first.second).'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 100, tên thành phố &lt;= 10 ký tự, điểm 0 &lt;= P_i &lt;= 100, TL 2.0s. Dùng vector&lt;pair&lt;pair&lt;string, int&gt;, int&gt;&gt; lưu {{tenThanhPho, diem}, chiSoGoc} (1-indexed) và Custom Comparator truyền const ...&: nếu thành phố khác nhau thì xếp từ điển tăng dần (a.first.first &lt; b.first.first), cùng thành phố thì xếp điểm giảm dần (a.first.second &gt; b.first.second).'
       },
       {
         id: 'CF-1859B',
@@ -1016,7 +1016,7 @@ int main() {
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/1859/B',
-        hint: 'Giới hạn t, n <= 25,000, mỗi mảng m_i >= 2 và tổng sum(m_i) <= 50,000, a_{i,j} <= 10^9, TL 1.0s, ML 256 MB. Vì từng mảng có kích thước m_i khác nhau nên phải dùng vector<vector<int>> a(n), gọi sort từng mảng a[i], tìm min toàn cục của a[i][0] và tổng các a[i][1] (nhớ dùng long long cho đáp án!).'
+        hint: 'Giới hạn t, n &lt;= 25,000, mỗi mảng m_i &gt;= 2 và tổng sum(m_i) &lt;= 50,000, a_{i,j} &lt;= 10^9, TL 1.0s, ML 256 MB. Vì từng mảng có kích thước m_i khác nhau nên phải dùng vector&lt;vector&lt;int&gt;&gt; a(n), gọi sort từng mảng a[i], tìm min toàn cục của a[i][0] và tổng các a[i][1] (nhớ dùng long long cho đáp án!).'
       },
       {
         id: 'VNOJ-BWPOINTS',
@@ -1024,7 +1024,7 @@ int main() {
         judge: 'VNOJ',
         tier: 3,
         link: 'https://oj.vnoi.info/problem/bwpoints',
-        hint: 'Giới hạn n <= 10^5, |a_i|, |b_i| <= 10^9, TL 0.6s. Gom tất cả 2n điểm vào vector<pair<int, int>> (first là tọa độ, second là màu 0/1), gọi sort(pts.begin(), pts.end()) trong O(n log n). Duyệt từ trái sang phải: nếu 2 điểm kề nhau khác màu thì ghép thành 1 đoạn (ans++, nhảy i += 2), ngược lại dịch i += 1.'
+        hint: 'Giới hạn n &lt;= 10^5, |a_i|, |b_i| &lt;= 10^9, TL 0.6s. Gom tất cả 2n điểm vào vector&lt;pair&lt;int, int&gt;&gt; (first là tọa độ, second là màu 0/1), gọi sort(pts.begin(), pts.end()) trong O(n log n). Duyệt từ trái sang phải: nếu 2 điểm kề nhau khác màu thì ghép thành 1 đoạn (ans++, nhảy i += 2), ngược lại dịch i += 1.'
       },
       {
         id: 'VNOJ-ACMNB',
@@ -1032,7 +1032,7 @@ int main() {
         judge: 'VNOJ',
         tier: 3,
         link: 'https://oj.vnoi.info/problem/acmnb',
-        hint: 'Giới hạn n <= 4*10^5 (2n <= 8*10^5 bài toán), a_i, b_i <= 100, TL 1.0s, ML 512 MB. Giả sử ban đầu Tí làm hết 2n bài (tổng a_i). Dùng vector<pair<int, int>> và Custom Comparator cmp(x, y) so sánh (x.second - x.first) < (y.second - y.first) trong O(n log n), rồi chuyển n bài đầu (có b_i - a_i nhỏ nhất) sang cho Tèo làm!'
+        hint: 'Giới hạn n &lt;= 4*10^5 (2n &lt;= 8*10^5 bài toán), a_i, b_i &lt;= 100, TL 1.0s, ML 512 MB. Giả sử ban đầu Tí làm hết 2n bài (tổng a_i). Dùng vector&lt;pair&lt;int, int&gt;&gt; và Custom Comparator cmp(x, y) so sánh (x.second - x.first) &lt; (y.second - y.first) trong O(n log n), rồi chuyển n bài đầu (có b_i - a_i nhỏ nhất) sang cho Tèo làm!'
       }
     ]
   };

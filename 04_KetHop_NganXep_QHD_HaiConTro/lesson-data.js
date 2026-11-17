@@ -47,7 +47,7 @@
                 <p>Chuyển từ đệ quy Fibonacci sang bảng Quy hoạch động:</p>
                 <pre class="code-pre"><code>// Quy hoạch động: O(N) thời gian, O(1) bộ nhớ
 long long dp0 = 0, dp1 = 1;
-for (int i = 2; i <= n; i++) {
+for (int i = 2; i &lt;= n; i++) {
     long long dp2 = (dp0 + dp1) % MOD;
     dp0 = dp1;
     dp1 = dp2;
@@ -320,7 +320,7 @@ dp[2] = dp[L] + a[i] * (i - L);`,
               'Vì thuật toán chỉ áp dụng cho các mảng đã được sắp xếp tăng dần từ trước'
             ],
             correct: 0,
-            explain: 'Vì a[L] < a[i], đối với bất kỳ đoạn con nào vươn qua L về phía trước, phần tử nhỏ nhất vẫn do các phần tử trước L (đã gói trong dp[L]) quyết định.'
+            explain: 'Vì a[L] &lt; a[i], đối với bất kỳ đoạn con nào vươn qua L về phía trước, phần tử nhỏ nhất vẫn do các phần tử trước L (đã gói trong dp[L]) quyết định.'
           },
           {
             type: 'single',
@@ -359,7 +359,7 @@ dp[2] = dp[L] + a[i] * (i - L);`,
         title: 'Mảnh Ghép 3: Cửa Sổ Trượt Ghép Đôi Ngăn Xếp Đơn Điệu (Monotonic Deque DP)',
         lead: 'Đỉnh cao kết hợp: Khi bước chuyển DP bị giới hạn trong phạm vi K bước, ta kết hợp Hai con trỏ cửa sổ trượt và Ngăn xếp đơn điệu thành std::deque tối ưu trong O(N).',
         subproblem: {
-          title: 'Làm sao để tìm max/min dp[j] trong phạm vi cửa sổ trượt i - K <= j < i chỉ trong O(1)?',
+          title: 'Làm sao để tìm max/min dp[j] trong phạm vi cửa sổ trượt i - K &lt;= j &lt; i chỉ trong O(1)?',
           desc: 'Đầu trước của deque đóng vai trò con trỏ trái loại bỏ phần tử quá hạn, đuôi sau của deque đóng vai trò ngăn xếp đơn điệu loại bỏ các giá trị kém tối ưu.'
         },
         cards: [
@@ -469,15 +469,15 @@ int main() {
         quiz: [
           {
             type: 'trace',
-            q: 'Với K = 2 và i = 4. Trong hàng đợi deque hiện đang chứa các chỉ số [1, 2, 3]. Sau khi thực hiện vòng lặp while (!dq.empty() && dq.front() < i - K), chỉ số nào sẽ bị pop_front ra khỏi hàng đợi?',
+            q: 'Với K = 2 và i = 4. Trong hàng đợi deque hiện đang chứa các chỉ số [1, 2, 3]. Sau khi thực hiện vòng lặp while (!dq.empty() && dq.front() &lt; i - K), chỉ số nào sẽ bị pop_front ra khỏi hàng đợi?',
             options: [
-              'Chỉ số 1 bị pop_front vì 1 < 4 - 2 = 2 (đã trượt ra ngoài cửa sổ K = 2)',
+              'Chỉ số 1 bị pop_front vì 1 &lt; 4 - 2 = 2 (đã trượt ra ngoài cửa sổ K = 2)',
               'Chỉ số 3 bị pop_front vì nằm ở vị trí gần nhất so với chỉ số hiện tại 4',
               'Chỉ số 2 bị pop_front vì giá trị tại vị trí 2 là giá trị số chẵn',
               'Không có chỉ số nào bị pop_front vì cả ba chỉ số đều nhỏ hơn bốn'
             ],
             correct: 0,
-            explain: 'Điều kiện quá hạn là j < i - K, tức j < 4 - 2 = 2. Do đó chỉ số 1 (< 2) bị loại bỏ khỏi đầu hàng đợi.'
+            explain: 'Điều kiện quá hạn là j &lt; i - K, tức j &lt; 4 - 2 = 2. Do đó chỉ số 1 (&lt; 2) bị loại bỏ khỏi đầu hàng đợi.'
           },
           {
             type: 'trace',
@@ -489,7 +489,7 @@ int main() {
               'Không có phần tử nào bị loại bỏ vì hàng đợi deque chỉ cho phép thao tác ở đầu'
             ],
             correct: 0,
-            explain: 'Vòng lặp while (!dq.empty() && dp[dq.back()] <= 10) sẽ pop 6, pop 8, và dừng khi gặp 12 (> 10).'
+            explain: 'Vòng lặp while (!dq.empty() && dp[dq.back()] &lt;= 10) sẽ pop 6, pop 8, và dừng khi gặp 12 (&gt; 10).'
           },
           {
             type: 'single',
@@ -501,7 +501,7 @@ int main() {
               'Vì kích thước của cửa sổ trượt K luôn luôn bằng kích thước N của mảng đầu vào'
             ],
             correct: 0,
-            explain: 'Mỗi phần tử được push_back đúng 1 lần, và chỉ bị pop (qua pop_front hoặc pop_back) tối đa 1 lần, tổng thao tác <= 2N.'
+            explain: 'Mỗi phần tử được push_back đúng 1 lần, và chỉ bị pop (qua pop_front hoặc pop_back) tối đa 1 lần, tổng thao tác &lt;= 2N.'
           },
           {
             type: 'multiple',
@@ -526,7 +526,7 @@ int main() {
       {
         id: 'dbg_comb_1',
         title: 'Bẫy Quên Loại Bỏ Phần Tử Quá Hạn Ở Đầu Deque Trong Bài Toán Cửa Sổ K',
-        description: 'Học sinh viết thuật toán Monotonic Deque DP nhưng quên vòng lặp pop_front kiểm tra dq.front() < i - K, dẫn đến việc lấy nhầm kết quả từ một bước nhảy vượt quá giới hạn K.',
+        description: 'Học sinh viết thuật toán Monotonic Deque DP nhưng quên vòng lặp pop_front kiểm tra dq.front() &lt; i - K, dẫn đến việc lấy nhầm kết quả từ một bước nhảy vượt quá giới hạn K.',
         failingInput: 'K = 2, i = 3, dq.front() = 0 (nhảy từ 0 đến 3 là 3 bước > K)',
         failingOutput: 'Lấy dp[0] làm kết quả cho dp[3], vi phạm giới hạn bước nhảy',
         expectedOutput: 'Bắt buộc phải pop_front() loại bỏ vị trí 0 trước khi lấy kết quả',
@@ -594,7 +594,7 @@ int main() {
         judge: 'VNOJ',
         tier: 1,
         link: 'https://oj.vnoi.info/problem/mink',
-        hint: 'Giới hạn T bộ test, 1 <= K <= N <= 17,000. Bước đệm Monotonic Deque: duy trì deque<int> tăng dần lưu chỉ số để tìm giá trị nhỏ nhất của mọi cửa sổ độ dài K trong O(N) (pop_front khi dq.front() <= i - K).'
+        hint: 'Giới hạn T bộ test, 1 &lt;= K &lt;= N &lt;= 17,000. Bước đệm Monotonic Deque: duy trì deque&lt;int&gt; tăng dần lưu chỉ số để tìm giá trị nhỏ nhất của mọi cửa sổ độ dài K trong O(N) (pop_front khi dq.front() &lt;= i - K).'
       },
       {
         id: 'LC-239',
@@ -602,7 +602,7 @@ int main() {
         judge: 'LeetCode',
         tier: 1,
         link: 'https://leetcode.com/problems/sliding-window-maximum/',
-        hint: 'Giới hạn 1 <= n <= 10^5, -10^4 <= nums[i] <= 10^4, 1 <= k <= n. Duy trì deque<int> giảm dần để lấy ngay max mỗi đoạn k phần tử tại dq.front() trong O(N).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^5, -10^4 &lt;= nums[i] &lt;= 10^4, 1 &lt;= k &lt;= n. Duy trì deque&lt;int&gt; giảm dần để lấy ngay max mỗi đoạn k phần tử tại dq.front() trong O(N).'
       },
       {
         id: 'LC-907',
@@ -610,7 +610,7 @@ int main() {
         judge: 'LeetCode',
         tier: 2,
         link: 'https://leetcode.com/problems/sum-of-subarray-minimums/',
-        hint: 'Giới hạn 1 <= n, arr[i] <= 3*10^4, modulo 10^9 + 7. Áp dụng trực tiếp Mảnh ghép 2: dùng Monotonic Stack tăng dần tìm vị trí L nhỏ hơn gần nhất bên trái và chuyển trạng thái dp[i] = (dp[L] + arr[i] * (i - L)) % MOD.'
+        hint: 'Giới hạn 1 &lt;= n, arr[i] &lt;= 3*10^4, modulo 10^9 + 7. Áp dụng trực tiếp Mảnh ghép 2: dùng Monotonic Stack tăng dần tìm vị trí L nhỏ hơn gần nhất bên trái và chuyển trạng thái dp[i] = (dp[L] + arr[i] * (i - L)) % MOD.'
       },
       {
         id: 'LC-1696',
@@ -618,7 +618,7 @@ int main() {
         judge: 'LeetCode',
         tier: 2,
         link: 'https://leetcode.com/problems/jump-game-vi/',
-        hint: 'Giới hạn 1 <= n, k <= 10^5, -10^4 <= nums[i] <= 10^4. Mỗi bước nhảy tối đa k: dùng Monotonic Deque giảm dần duy trì max dp[j] trong cửa sổ [i - k, i - 1] trong O(N).'
+        hint: 'Giới hạn 1 &lt;= n, k &lt;= 10^5, -10^4 &lt;= nums[i] &lt;= 10^4. Mỗi bước nhảy tối đa k: dùng Monotonic Deque giảm dần duy trì max dp[j] trong cửa sổ [i - k, i - 1] trong O(N).'
       },
       {
         id: 'LC-1425',
@@ -626,7 +626,7 @@ int main() {
         judge: 'LeetCode',
         tier: 2,
         link: 'https://leetcode.com/problems/constrained-subsequence-sum/',
-        hint: 'Giới hạn 1 <= n <= 10^5, -10^4 <= nums[i] <= 10^4, 1 <= k <= n. Biến thể Jump Game VI cho phép bắt đầu dãy con mới nếu tổng cũ âm: dp[i] = nums[i] + max(0, dp[dq.front()]) kết hợp Monotonic Deque.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^5, -10^4 &lt;= nums[i] &lt;= 10^4, 1 &lt;= k &lt;= n. Biến thể Jump Game VI cho phép bắt đầu dãy con mới nếu tổng cũ âm: dp[i] = nums[i] + max(0, dp[dq.front()]) kết hợp Monotonic Deque.'
       },
       {
         id: 'CSES-1644',
@@ -634,7 +634,7 @@ int main() {
         judge: 'CSES Problem Set',
         tier: 3,
         link: 'https://cses.fi/problemset/task/1644',
-        hint: 'Giới hạn 1 <= a <= b <= n <= 2*10^5, |x_i| <= 10^9. Tính mảng cộng dồn P[i]: tổng đoạn [j+1..i] độ dài thuộc [a, b] đạt max khi P[j] nhỏ nhất trong [i - b, i - a]. Dùng Monotonic Deque tìm min P[j] trong O(N)!'
+        hint: 'Giới hạn 1 &lt;= a &lt;= b &lt;= n &lt;= 2*10^5, |x_i| &lt;= 10^9. Tính mảng cộng dồn P[i]: tổng đoạn [j+1..i] độ dài thuộc [a, b] đạt max khi P[j] nhỏ nhất trong [i - b, i - a]. Dùng Monotonic Deque tìm min P[j] trong O(N)!'
       },
       {
         id: 'VNOJ-KDIFF',
@@ -642,7 +642,7 @@ int main() {
         judge: 'VNOJ',
         tier: 3,
         link: 'https://oj.vnoi.info/problem/kdiff',
-        hint: 'Giới hạn 1 <= N <= 3*10^5, độ xinh đẹp <= 10^9. Kết hợp Hai con trỏ + 2 Monotonic Deque (giữ max - min <= K) tính độ dài đoạn hợp lệ dài nhất kết thúc tại i, rồi dùng bảng DP MaxL[i] / MaxR[i] chọn 2 đoạn rời nhau trong O(N).'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 3*10^5, độ xinh đẹp &lt;= 10^9. Kết hợp Hai con trỏ + 2 Monotonic Deque (giữ max - min &lt;= K) tính độ dài đoạn hợp lệ dài nhất kết thúc tại i, rồi dùng bảng DP MaxL[i] / MaxR[i] chọn 2 đoạn rời nhau trong O(N).'
       },
       {
         id: 'CF-372C',
@@ -650,7 +650,7 @@ int main() {
         judge: 'Codeforces',
         tier: 3,
         link: 'https://codeforces.com/problemset/problem/372/C',
-        hint: 'Giới hạn 1 <= n <= 150,000, 1 <= m <= 300. Trạng thái DP theo vị trí x trong phạm vi trượt |x - y| <= d * (t_i - t_{i-1}) được tối ưu từ O(m * n^2) xuống O(m * n) nhờ Monotonic Deque.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 150,000, 1 &lt;= m &lt;= 300. Trạng thái DP theo vị trí x trong phạm vi trượt |x - y| &lt;= d * (t_i - t_{i-1}) được tối ưu từ O(m * n^2) xuống O(m * n) nhờ Monotonic Deque.'
       }
     ]
   };

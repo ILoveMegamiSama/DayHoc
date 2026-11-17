@@ -219,8 +219,8 @@ int main() {
                   ? '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\n1: NO\n49: NO\n97: YES'
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\n1: NO\n49: YES\n97: YES',
                 explain: isOk
-                  ? 'Khi n = p^2 (bình phương của một số nguyên tố như 4, 9, 25, 49), ước duy nhất khác 1 và n chính là i = sqrt(n). Dấu <= đảm bảo vòng lặp chạm tới đúng i = 7.'
-                  : 'Với i * i < 49, khi i tăng tới 7 thì 7 * 7 = 49 < 49 là sai nên vòng lặp thoát sớm trước khi kịp chia thử cho 7, dẫn tới nhận nhầm mọi số p^2 thành số nguyên tố!'
+                  ? 'Khi n = p^2 (bình phương của một số nguyên tố như 4, 9, 25, 49), ước duy nhất khác 1 và n chính là i = sqrt(n). Dấu &lt;= đảm bảo vòng lặp chạm tới đúng i = 7.'
+                  : 'Với i * i &lt; 49, khi i tăng tới 7 thì 7 * 7 = 49 &lt; 49 là sai nên vòng lặp thoát sớm trước khi kịp chia thử cho 7, dẫn tới nhận nhầm mọi số p^2 thành số nguyên tố!'
               };
             }
           },
@@ -286,7 +286,7 @@ int main() {
                 changedLines: [12],
                 statusOk: isOk,
                 statusText: isOk
-                  ? 'CHÍNH XÁC (AC): Giữ nguyên 2, 3 và gạt hết hợp số, in đủ 8 số nguyên tố <= 20!'
+                  ? 'CHÍNH XÁC (AC): Giữ nguyên 2, 3 và gạt hết hợp số, in đủ 8 số nguyên tố &lt;= 20!'
                   : 'SAI THUẬT TOÁN (WA): j = i tự đánh dấu p[2] = false, p[3] = false khiến 2 và 3 biến mất!',
                 predictions: [
                   { text: 'In ra đủ 8 số nguyên tố nhỏ hơn hoặc bằng 20 là 2 3 5 7 11 13 17 19' },
@@ -296,8 +296,8 @@ int main() {
                   ? '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\n2 3 5 7 11 13 17 19 '
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\n5 7 11 13 17 19 ',
                 explain: isOk
-                  ? 'Bắt đầu từ i * i không bao giờ chạm vào chính i (vì i >= 2 nên i * i > i), đồng thời bỏ qua toàn bộ các bội nhỏ hơn đã được sàng trước đó.'
-                  : 'Vòng ngoài chạy tới i = 4 (vì 4 * 4 <= 20). Với i = 2 và i = 3, lệnh j = i tự gán p[2] = false và p[3] = false ngay ở bước đầu tiên, làm mất luôn các số nguyên tố <= sqrt(n)!'
+                  ? 'Bắt đầu từ i * i không bao giờ chạm vào chính i (vì i &gt;= 2 nên i * i &gt; i), đồng thời bỏ qua toàn bộ các bội nhỏ hơn đã được sàng trước đó.'
+                  : 'Vòng ngoài chạy tới i = 4 (vì 4 * 4 &lt;= 20). Với i = 2 và i = 3, lệnh j = i tự gán p[2] = false và p[3] = false ngay ở bước đầu tiên, làm mất luôn các số nguyên tố &lt;= sqrt(n)!'
               };
             }
           }
@@ -925,7 +925,7 @@ int main() {
                   ? '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\n999999664'
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\n49000000000',
                 explain: isOk
-                  ? 'Với 10^9 = -7 (mod 10^9 + 7), ta có (-7)^3 = -343 = 999999664 (mod 10^9 + 7). Luôn giữ res < mod giúp kết quả vừa đúng vừa không bao giờ tràn số.'
+                  ? 'Với 10^9 = -7 (mod 10^9 + 7), ta có (-7)^3 = -343 = 999999664 (mod 10^9 + 7). Luôn giữ res &lt; mod giúp kết quả vừa đúng vừa không bao giờ tràn số.'
                   : 'Ở bước b = 3: res = 10^9, a^2 % mod = 49. Ở bước b = 1: res * a = 10^9 * 49 = 49000000000 không được % mod nên sai kết quả (và nếu b có thêm 1 bit nữa sẽ tràn sạch long long!).'
               };
             }

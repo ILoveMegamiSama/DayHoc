@@ -141,7 +141,7 @@ int main() {
               'Phần tử 2 đang nằm ở đỉnh ngăn xếp vì được push thứ hai'
             ],
             correct: 0,
-            explain: 'push(1)->[1]; push(2)->[1,2]; pop()->[1]; push(3)->[1,3]; push(4)->[1,3,4]; pop()->[1,3]. Phần tử đỉnh lúc này là 3.'
+            explain: 'push(1)-&gt;[1]; push(2)-&gt;[1,2]; pop()-&gt;[1]; push(3)-&gt;[1,3]; push(4)-&gt;[1,3,4]; pop()-&gt;[1,3]. Phần tử đỉnh lúc này là 3.'
           },
           {
             type: 'trace',
@@ -308,7 +308,7 @@ int main() {
               'Ngăn xếp rỗng [] vì phần tử 5 đã làm sạch toàn bộ ngăn xếp'
             ],
             correct: 0,
-            explain: 'Tại a[0]=4 -> st=[4]. a[1]=2 -> st=[4, 2]. Tại a[2]=5: 2<=5 -> pop(2); 4<=5 -> pop(4). Cuối cùng push(5) -> st=[5].'
+            explain: 'Tại a[0]=4 -&gt; st=[4]. a[1]=2 -&gt; st=[4, 2]. Tại a[2]=5: 2&lt;=5 -&gt; pop(2); 4&lt;=5 -&gt; pop(4). Cuối cùng push(5) -&gt; st=[5].'
           },
           {
             type: 'trace',
@@ -320,7 +320,7 @@ int main() {
               'Không có phần tử nào lớn hơn vì số 6 là số lớn nhất trong cả dãy'
             ],
             correct: 0,
-            explain: 'Khi gặp 6: 2<=6 -> pop(2); 3<=6 -> pop(3). Đỉnh stack còn lại là 7 (> 6), nên đáp số là 7.'
+            explain: 'Khi gặp 6: 2&lt;=6 -&gt; pop(2); 3&lt;=6 -&gt; pop(3). Đỉnh stack còn lại là 7 (&gt; 6), nên đáp số là 7.'
           },
           {
             type: 'single',
@@ -486,7 +486,7 @@ int main() {
               'Mảng L là [-1, -1, -1] vì không có số nào nhỏ hơn các số đứng trước nó'
             ],
             correct: 0,
-            explain: 'a[0]=3: L[0]=-1. a[1]=1: 3>=1 -> pop(0), stack rỗng -> L[1]=-1. a[2]=4: top=1 (a[1]=1 < 4) -> L[2]=1. Mảng L là [-1, -1, 1].'
+            explain: 'a[0]=3: L[0]=-1. a[1]=1: 3&gt;=1 -&gt; pop(0), stack rỗng -&gt; L[1]=-1. a[2]=4: top=1 (a[1]=1 &lt; 4) -&gt; L[2]=1. Mảng L là [-1, -1, 1].'
           },
           {
             type: 'single',
@@ -510,7 +510,7 @@ int main() {
               'Vòng lặp while bên trong luôn được bảo đảm chạy đúng một số lần cố định là 10'
             ],
             correct: [0, 1, 2],
-            explain: 'A, B và C chứng minh tính chất khấu hao O(N). Ý D sai vì số lần chạy vòng while biến thiên tùy bước nhưng tổng số lần chạy <= N.'
+            explain: 'A, B và C chứng minh tính chất khấu hao O(N). Ý D sai vì số lần chạy vòng while biến thiên tùy bước nhưng tổng số lần chạy &lt;= N.'
           }
         ]
       }
@@ -582,7 +582,7 @@ for (int i = 0; i < n; i++) {
         judge: 'LeetCode',
         tier: 1,
         link: 'https://leetcode.com/problems/valid-parentheses/',
-        hint: 'Giới hạn 1 <= |s| <= 10^4. Áp dụng trực tiếp std::stack<char>: gặp ngoặc mở đẩy vào stack, gặp ngoặc đóng kiểm tra !st.empty() và đối chiếu st.top(), cuối chuỗi kiểm tra st.empty().'
+        hint: 'Giới hạn 1 &lt;= |s| &lt;= 10^4. Áp dụng trực tiếp std::stack&lt;char&gt;: gặp ngoặc mở đẩy vào stack, gặp ngoặc đóng kiểm tra !st.empty() và đối chiếu st.top(), cuối chuỗi kiểm tra st.empty().'
       },
       {
         id: 'CSES-1645',
@@ -590,7 +590,7 @@ for (int i = 0; i < n; i++) {
         judge: 'CSES Problem Set',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1645',
-        hint: 'Giới hạn 1 <= n <= 2*10^5, 1 <= x_i <= 10^9. Khuôn mẫu chuẩn Monotonic Stack tăng dần lưu chỉ số (1-based) để tìm vị trí gần nhất bên trái có giá trị nhỏ hơn trong O(N).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 2*10^5, 1 &lt;= x_i &lt;= 10^9. Khuôn mẫu chuẩn Monotonic Stack tăng dần lưu chỉ số (1-based) để tìm vị trí gần nhất bên trái có giá trị nhỏ hơn trong O(N).'
       },
       {
         id: 'LC-739',
@@ -598,7 +598,7 @@ for (int i = 0; i < n; i++) {
         judge: 'LeetCode',
         tier: 1,
         link: 'https://leetcode.com/problems/daily-temperatures/',
-        hint: 'Giới hạn 1 <= n <= 10^5, 30 <= T_i <= 100. Dùng Monotonic Stack giảm dần lưu chỉ số ngày; khi gặp ngày i ấm hơn st.top(), pop ra và tính ngay khoảng cách (i - st.top()).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^5, 30 &lt;= T_i &lt;= 100. Dùng Monotonic Stack giảm dần lưu chỉ số ngày; khi gặp ngày i ấm hơn st.top(), pop ra và tính ngay khoảng cách (i - st.top()).'
       },
       {
         id: 'CF-343B',
@@ -606,7 +606,7 @@ for (int i = 0; i < n; i++) {
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/343/B',
-        hint: 'Giới hạn 1 <= |s| <= 10^5 (gồm "+" và "-"). Dùng stack<char> khử các cặp dây giống nhau liền kề: nếu !st.empty() && st.top() == c thì pop(), ngược lại push(c). Gỡ được hết khi st.empty().'
+        hint: 'Giới hạn 1 &lt;= |s| &lt;= 10^5 (gồm "+" và "-"). Dùng stack&lt;char&gt; khử các cặp dây giống nhau liền kề: nếu !st.empty() && st.top() == c thì pop(), ngược lại push(c). Gỡ được hết khi st.empty().'
       },
       {
         id: 'VNOJ-KAGAIN',
@@ -614,7 +614,7 @@ for (int i = 0; i < n; i++) {
         judge: 'VNOJ',
         tier: 2,
         link: 'https://oj.vnoi.info/problem/kagain',
-        hint: 'Giới hạn T test, 1 <= N <= 30,000, A_i <= 30,000. Tìm biên trái L[i] và biên phải R[i] bằng Monotonic Stack để tối đa hóa A[i] * (R[i] - L[i] - 1) và xuất kèm đoạn [L[i] + 1, R[i] - 1].'
+        hint: 'Giới hạn T test, 1 &lt;= N &lt;= 30,000, A_i &lt;= 30,000. Tìm biên trái L[i] và biên phải R[i] bằng Monotonic Stack để tối đa hóa A[i] * (R[i] - L[i] - 1) và xuất kèm đoạn [L[i] + 1, R[i] - 1].'
       },
       {
         id: 'CSES-1142',
@@ -622,7 +622,7 @@ for (int i = 0; i < n; i++) {
         judge: 'CSES Problem Set',
         tier: 2,
         link: 'https://cses.fi/problemset/task/1142',
-        hint: 'Giới hạn 1 <= n <= 2*10^5, 1 <= k_i <= 10^9. Tìm diện tích bảng quảng cáo lớn nhất bằng Monotonic Stack lưu chỉ số tính L[i], R[i] (nhớ dùng long long cho k[i] * (R[i] - L[i] - 1)).'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 2*10^5, 1 &lt;= k_i &lt;= 10^9. Tìm diện tích bảng quảng cáo lớn nhất bằng Monotonic Stack lưu chỉ số tính L[i], R[i] (nhớ dùng long long cho k[i] * (R[i] - L[i] - 1)).'
       },
       {
         id: 'VNOJ-KPLANK',
@@ -630,7 +630,7 @@ for (int i = 0; i < n; i++) {
         judge: 'VNOJ',
         tier: 3,
         link: 'https://oj.vnoi.info/problem/kplank',
-        hint: 'Giới hạn 1 <= N <= 10^6, chiều cao <= 10^9. Dùng Monotonic Stack tìm độ rộng mở rộng W_i = R[i] - L[i] - 1 quanh tấm ván i; nếu W_i >= A[i] thì có thể cưa tấm vuông cạnh A[i].'
+        hint: 'Giới hạn 1 &lt;= N &lt;= 10^6, chiều cao &lt;= 10^9. Dùng Monotonic Stack tìm độ rộng mở rộng W_i = R[i] - L[i] - 1 quanh tấm ván i; nếu W_i &gt;= A[i] thì có thể cưa tấm vuông cạnh A[i].'
       },
       {
         id: 'VNOJ-QBRECT',
@@ -638,7 +638,7 @@ for (int i = 0; i < n; i++) {
         judge: 'VNOJ',
         tier: 3,
         link: 'https://oj.vnoi.info/problem/qbrect',
-        hint: 'Giới hạn 1 <= M, N <= 1000. Biến ma trận 2D thành M bài toán Histogram 1D: tại mỗi hàng cập nhật chiều cao cột số 1 liên tiếp h[j], rồi chạy Monotonic Stack tìm diện tích lớn nhất trong O(M * N).'
+        hint: 'Giới hạn 1 &lt;= M, N &lt;= 1000. Biến ma trận 2D thành M bài toán Histogram 1D: tại mỗi hàng cập nhật chiều cao cột số 1 liên tiếp h[j], rồi chạy Monotonic Stack tìm diện tích lớn nhất trong O(M * N).'
       }
     ]
   };

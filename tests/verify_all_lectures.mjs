@@ -1,34 +1,61 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
+import { fileURLToPath } from 'node:url';
 
-console.log('--- RUNNING INFRASTRUCTURE & SHARED VERIFICATION ---');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const REPO_ROOT = path.resolve(__dirname, '..');
 
-// 1. Kiểm tra .gitignore và user_progress.json
-const gitignore = fs.readFileSync('.gitignore', 'utf8');
-assert.match(gitignore, /user_progress\.json/, '.gitignore phải chứa user_progress.json');
-assert.equal(fs.existsSync('user_progress.json'), false, 'user_progress.json không được nằm sẵn trên repo');
+process.chdir(REPO_ROOT);
 
-// 2. Kiểm tra shared/styles.css
-const sharedCss = fs.readFileSync('shared/styles.css', 'utf8');
-assert.match(sharedCss, /#F6F3EC/i, 'shared/styles.css phải có màu nền sáng #F6F3EC');
-assert.match(sharedCss, /\[data-theme="dark"\]/, 'shared/styles.css phải hỗ trợ [data-theme="dark"]');
-assert.match(sharedCss, /\.knowledge-card/, 'shared/styles.css phải có .knowledge-card');
-assert.match(sharedCss, /\.card-split/, 'shared/styles.css phải có .card-split 2 cột');
-assert.match(sharedCss, /\.debug-card/, 'shared/styles.css phải có .debug-card cho bài tập debug');
-assert.match(sharedCss, /\.step-life/, 'shared/styles.css phải có .step-life');
-assert.match(sharedCss, /\.step-code/, 'shared/styles.css phải có .step-code');
-assert.match(sharedCss, /\.step-term/, 'shared/styles.css phải có .step-term');
-assert.doesNotMatch(sharedCss, /violet|lavender|#8b5cf6|#a855f7/i, 'Không được dùng màu tím');
+const PHASE1_FOLDER_PREFIX = /^(00_|00b_|L1_01_|L1_02_|L1_03_|L1_04_)/;
 
-// 3. Kiểm tra index.html cổng chính
-const indexHtml = fs.readFileSync('index.html', 'utf8');
-assert.match(indexHtml, /id="skill-tree-svg"/, 'index.html phải có #skill-tree-svg cho cây kỹ năng');
-assert.match(indexHtml, /id="progress-summary"/, 'index.html phải có #progress-summary');
-assert.match(indexHtml, /shared\/styles\.css/, 'index.html phải nhúng shared/styles.css');
-assert.match(indexHtml, /shared\/portal-data\.js/, 'index.html phải nhúng shared/portal-data.js');
+const BARE_OJ_PATTERNS = [
+  /^https?:\/\/oj\.vnoi\.info\/?(problems?\/?)?$/i,
+  /^https?:\/\/cses\.fi\/?(problemset\/?(list\/?)?)?$/i,
+  /^https?:\/\/codeforces\.com\/?(problemset\/?|contests\/?)?$/i,
+  /^https?:\/\/atcoder\.jp\/?(contests\/?|home\/?)?$/i,
+  /^https?:\/\/leetcode\.com\/?(problemset\/?|problems\/?)?$/i
+];
 
-// 4. Kiểm tra JS logic nạp trong vm giả lập
+function normalizeDir(inputDir) {
+  const rel = path.isAbsolute(inputDir)
+    ? path.relative(REPO_ROOT, inputDir)
+    : inputDir;
+  return rel.replace(/^\.\//, '').replace(/\/+$/, '');
+}
+
+function parseArgs(argv) {
+  let lessonDir = null;
+  let strictOj = false;
+
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === '--strict-oj') {
+      strictOj = true;
+    } else if (arg === '--lesson') {
+      const next = argv[i + 1];
+      if (!next || next.startsWith('--')) {
+        throw new Error('Thiếu giá trị thư mục sau cờ --lesson (ví dụ: --lesson 01_DeQuy_Va_DeQuyDuoi)');
+      }
+      lessonDir = normalizeDir(next);
+      i++;
+    } else if (arg.startsWith('--lesson=')) {
+      const val = arg.slice('--lesson='.length);
+      if (!val) {
+        throw new Error('Thiếu giá trị thư mục trong --lesson=<dir>');
+      }
+      lessonDir = normalizeDir(val);
+    } else {
+      throw new Error(`Tham số không hợp lệ: ${arg}. Cách dùng: node tests/verify_all_lectures.mjs [--lesson <dir>] [--strict-oj]`);
+    }
+  }
+
+  return { lessonDir, strictOj };
+}
+
 function createSandbox() {
   const store = {};
   return {
@@ -49,296 +76,515 @@ function createSandbox() {
   };
 }
 
-const sandbox = createSandbox();
-vm.createContext(sandbox);
+function runJsInSandbox(filePath, sandbox) {
+  const code = fs.readFileSync(filePath, 'utf8');
+  vm.runInContext(code, sandbox, { filename: filePath });
+}
 
-const iconsJs = fs.readFileSync('shared/icons.js', 'utf8');
-vm.runInContext(iconsJs, sandbox);
-assert.ok(sandbox.window.CP_ICONS, 'window.CP_ICONS phải được định nghĩa');
-assert.ok(sandbox.window.CP_ICONS.sun, 'CP_ICONS phải có sun');
-assert.ok(sandbox.window.CP_ICONS.bug, 'CP_ICONS phải có bug');
-assert.ok(sandbox.window.CP_ICONS.code, 'CP_ICONS phải có code');
+function verifySharedInfrastructure() {
+  console.log('--- RUNNING INFRASTRUCTURE & SHARED VERIFICATION ---');
 
-const progJs = fs.readFileSync('shared/progress.js', 'utf8');
-vm.runInContext(progJs, sandbox);
-assert.ok(sandbox.window.CP_PROGRESS, 'window.CP_PROGRESS phải được định nghĩa');
-assert.equal(typeof sandbox.window.CP_PROGRESS.loadProgress, 'function');
-assert.equal(typeof sandbox.window.CP_PROGRESS.saveProgress, 'function');
-assert.equal(typeof sandbox.window.CP_PROGRESS.recordQuizAnswer, 'function');
-assert.equal(typeof sandbox.window.CP_PROGRESS.recordDebugSolved, 'function');
+  const gitignore = fs.readFileSync('.gitignore', 'utf8');
+  assert.match(gitignore, /user_progress\.json/, '.gitignore phải chứa user_progress.json');
+  assert.equal(fs.existsSync('user_progress.json'), false, 'user_progress.json không được nằm sẵn trên repo');
 
-const hlJs = fs.readFileSync('shared/highlighter.js', 'utf8');
-vm.runInContext(hlJs, sandbox);
-assert.equal(typeof sandbox.window.highlightCpp, 'function');
-assert.equal(typeof sandbox.window.highlightInlineCodeSnippet, 'function');
+  const sharedCss = fs.readFileSync('shared/styles.css', 'utf8');
+  assert.match(sharedCss, /#F6F3EC/i, 'shared/styles.css phải có màu nền sáng #F6F3EC');
+  assert.match(sharedCss, /\[data-theme="dark"\]/, 'shared/styles.css phải hỗ trợ [data-theme="dark"]');
+  assert.match(sharedCss, /\.knowledge-card/, 'shared/styles.css phải có .knowledge-card');
+  assert.match(sharedCss, /\.card-split/, 'shared/styles.css phải có .card-split 2 cột');
+  assert.match(sharedCss, /\.debug-card/, 'shared/styles.css phải có .debug-card cho bài tập debug');
+  assert.match(sharedCss, /\.step-life/, 'shared/styles.css phải có .step-life');
+  assert.match(sharedCss, /\.step-code/, 'shared/styles.css phải có .step-code');
+  assert.match(sharedCss, /\.step-term/, 'shared/styles.css phải có .step-term');
+  assert.doesNotMatch(sharedCss, /violet|lavender|#8b5cf6|#a855f7/i, 'Không được dùng màu tím');
 
-const portalJs = fs.readFileSync('shared/portal-data.js', 'utf8');
-vm.runInContext(portalJs, sandbox);
-assert.ok(sandbox.window.PORTAL_DATA, 'window.PORTAL_DATA phải được định nghĩa');
-assert.ok(Array.isArray(sandbox.window.PORTAL_DATA.nodes), 'PORTAL_DATA.nodes phải là mảng');
-assert.ok(Array.isArray(sandbox.window.PORTAL_DATA.edges), 'PORTAL_DATA.edges phải là mảng');
+  const indexHtml = fs.readFileSync('index.html', 'utf8');
+  assert.match(indexHtml, /id="skill-tree-svg"/, 'index.html phải có #skill-tree-svg cho cây kỹ năng');
+  assert.match(indexHtml, /id="progress-summary"/, 'index.html phải có #progress-summary');
+  assert.match(indexHtml, /shared\/styles\.css/, 'index.html phải nhúng shared/styles.css');
+  assert.match(indexHtml, /shared\/portal-data\.js/, 'index.html phải nhúng shared/portal-data.js');
 
-const engineJs = fs.readFileSync('shared/lecture-engine.js', 'utf8');
-vm.runInContext(engineJs, sandbox);
-assert.equal(typeof sandbox.window.initLecturePage, 'function');
+  const sandbox = createSandbox();
+  vm.createContext(sandbox);
 
-// 5. Kiểm định Bài 01 — 01_DeQuy_Va_DeQuyDuoi
-console.log('--- VERIFYING LESSON 01: ĐỆ QUY & ĐỆ QUY ĐUÔI ---');
-assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/docs/bai_giang_de_quy_duoi.md'), 'Phải có docs/bai_giang_de_quy_duoi.md');
-assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/Code_Mau/01_DeQuyThuong_TranBoNho.cpp'), 'Phải có Code_Mau 01');
-assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/Code_Mau/02_DeQuyDuoi_BienTichLuy.cpp'), 'Phải có Code_Mau 02');
-assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/Code_Mau/03_BienDoi_DeQuyDuoi_Sang_VongLap.cpp'), 'Phải có Code_Mau 03');
-assert.ok(fs.existsSync('01_DeQuy_Va_DeQuyDuoi/index.html'), 'Phải có index.html');
+  runJsInSandbox('shared/icons.js', sandbox);
+  assert.ok(sandbox.window.CP_ICONS, 'window.CP_ICONS phải được định nghĩa');
+  assert.ok(sandbox.window.CP_ICONS.sun, 'CP_ICONS phải có sun');
+  assert.ok(sandbox.window.CP_ICONS.bug, 'CP_ICONS phải có bug');
+  assert.ok(sandbox.window.CP_ICONS.code, 'CP_ICONS phải có code');
 
-const l1Sandbox = createSandbox();
-vm.createContext(l1Sandbox);
-const l1DataJs = fs.readFileSync('01_DeQuy_Va_DeQuyDuoi/lesson-data.js', 'utf8');
-vm.runInContext(l1DataJs, l1Sandbox);
-const l1Data = l1Sandbox.window.LESSON_DATA;
+  runJsInSandbox('shared/progress.js', sandbox);
+  assert.ok(sandbox.window.CP_PROGRESS, 'window.CP_PROGRESS phải được định nghĩa');
+  assert.equal(typeof sandbox.window.CP_PROGRESS.loadProgress, 'function');
+  assert.equal(typeof sandbox.window.CP_PROGRESS.saveProgress, 'function');
+  assert.equal(typeof sandbox.window.CP_PROGRESS.recordQuizAnswer, 'function');
+  assert.equal(typeof sandbox.window.CP_PROGRESS.recordDebugSolved, 'function');
 
-assert.ok(l1Data, 'LESSON_DATA bài 01 phải tồn tại');
-assert.equal(l1Data.id, 'de_quy_duoi');
-assert.equal(l1Data.modules.length, 3, 'Bài 01 phải có đúng 3 module con (3 vấn đề nhỏ)');
+  runJsInSandbox('shared/highlighter.js', sandbox);
+  assert.equal(typeof sandbox.window.highlightCpp, 'function');
+  assert.equal(typeof sandbox.window.highlightInlineCodeSnippet, 'function');
 
-let totalQuizL1 = 0;
-let traceQuizL1 = 0;
+  runJsInSandbox('shared/portal-data.js', sandbox);
+  const portalData = sandbox.window.PORTAL_DATA;
+  assert.ok(portalData, 'window.PORTAL_DATA phải được định nghĩa');
+  assert.ok(Array.isArray(portalData.nodes), 'PORTAL_DATA.nodes phải là mảng');
+  assert.ok(Array.isArray(portalData.edges), 'PORTAL_DATA.edges phải là mảng');
 
-l1Data.modules.forEach((mod, mIdx) => {
-  assert.ok(mod.subproblem, `Module ${mIdx + 1} phải có định nghĩa vấn đề nhỏ (subproblem)`);
-  assert.ok(mod.subproblem.title && mod.subproblem.desc, 'subproblem phải có title và desc');
-  
-  // Kiểm tra 3 bước sư phạm
-  const modHtml = JSON.stringify(mod.cards);
-  assert.match(modHtml, /step-life|đời sống|thực tế/i, `Module ${mIdx + 1} phải có ví dụ đời sống`);
-  assert.match(modHtml, /step-code|lập trình|máy tính/i, `Module ${mIdx + 1} phải có ánh xạ lập trình`);
-  assert.match(modHtml, /step-term|thuật ngữ|tên gọi/i, `Module ${mIdx + 1} phải giải nghĩa thuật ngữ`);
+  runJsInSandbox('shared/lecture-engine.js', sandbox);
+  assert.equal(typeof sandbox.window.initLecturePage, 'function');
 
-  (mod.quiz || []).forEach((q, qIdx) => {
-    totalQuizL1++;
-    if (q.type === 'trace' || q.traceCode) traceQuizL1++;
+  return portalData;
+}
 
-    // Kiểm tra chênh lệch độ dài phương án
-    const lens = q.options.map(o => String(o).length);
-    const maxLen = Math.max(...lens);
-    const minLen = Math.min(...lens);
-    const diffRatio = (maxLen - minLen) / maxLen;
-    assert.ok(
-      diffRatio <= 0.38,
-      `Quiz Mod ${mIdx + 1} Câu ${qIdx + 1}: Chênh lệch độ dài (${diffRatio.toFixed(2)}) vượt quá 38% (max: ${maxLen}, min: ${minLen})`
-    );
+function verifySkillWorkflow() {
+  console.log('--- VERIFYING CP-LECTURE-WORKFLOW SKILL ---');
+  const skillPath = '.agents/skills/cp-lecture-workflow/SKILL.md';
+  assert.ok(fs.existsSync(skillPath), 'Phải có file .agents/skills/cp-lecture-workflow/SKILL.md');
+  const skillContent = fs.readFileSync(skillPath, 'utf8');
+  assert.match(skillContent, /name:\s*cp-lecture-workflow/, 'SKILL.md phải có name: cp-lecture-workflow');
+  assert.match(skillContent, /Problem Decomposition|Tách vấn đề/i, 'SKILL.md phải mô tả tách vấn đề nhỏ');
+  assert.match(skillContent, /Đời sống.*Lập trình.*Thuật ngữ|Life-to-Code/i, 'SKILL.md phải mô tả quy trình 3 bước sư phạm');
+  assert.match(skillContent, /debugExercises|Bài tập Debug/i, 'SKILL.md phải có chuẩn bài tập debug');
+  assert.match(skillContent, /Trace|Code Execution Tracing/i, 'SKILL.md phải có chuẩn câu hỏi trace code');
+  assert.match(skillContent, /shared\/portal-data\.js/, 'SKILL.md phải hướng dẫn cập nhật portal-data.js');
+  assert.match(skillContent, /tests\/verify_all_lectures\.mjs/, 'SKILL.md phải hướng dẫn chạy test kiểm định');
+}
+
+function verifyPortalDag(portalData) {
+  console.log('--- VERIFYING PORTAL_DATA DAG INTEGRITY ---');
+  const { nodes, edges } = portalData;
+  assert.ok(nodes.length > 0, 'PORTAL_DATA.nodes không được rỗng');
+
+  const nodeById = new Map();
+  for (const node of nodes) {
+    assert.ok(typeof node.id === 'string' && node.id.trim().length > 0, 'Mỗi node phải có id hợp lệ');
+    assert.equal(nodeById.has(node.id), false, `Trùng lặp node.id trong PORTAL_DATA: ${node.id}`);
+    nodeById.set(node.id, node);
+
+    assert.ok(typeof node.path === 'string' && node.path.endsWith('/index.html'), `Node ${node.id} phải có path dạng <dir>/index.html`);
+
+    if (node.status !== undefined) {
+      assert.ok(['ready', 'planned'].includes(node.status), `Node ${node.id} có status không hợp lệ: ${node.status}`);
+    }
+
+    const status = node.status || 'ready';
+    if (status !== 'planned') {
+      assert.ok(fs.existsSync(node.path), `Node ${node.id} (status=${status}) thiếu file ${node.path}`);
+    }
+  }
+
+  // Kiểm tra MayCham tồn tại & khoảng cách DAG nhap_mon_cpp -> may_cham
+  const nhapMon = nodeById.get('nhap_mon_cpp');
+  const mayCham = nodeById.get('may_cham');
+  assert.ok(nhapMon, 'PORTAL_DATA phải chứa node nhap_mon_cpp');
+  assert.ok(mayCham, 'PORTAL_DATA phải chứa node may_cham (MayCham)');
+  assert.equal(typeof nhapMon.x, 'number', 'nhap_mon_cpp phải có tọa độ x kiểu number');
+  assert.equal(typeof mayCham.x, 'number', 'may_cham phải có tọa độ x kiểu number');
+  assert.ok(
+    nhapMon.x - 90 >= 0,
+    `nhap_mon_cpp bị tràn mép trái SVG: x - 90 = ${nhapMon.x - 90} (yêu cầu >= 0)`
+  );
+  const gap = (mayCham.x - 90) - (nhapMon.x + 90);
+  assert.ok(
+    gap >= 60,
+    `Khoảng cách DAG giữa nhap_mon_cpp và may_cham quá hẹp: ${gap}px (yêu cầu >= 60px)`
+  );
+
+  // Kiểm tra các cạnh & phát hiện chu trình bằng thuật toán Kahn
+  const inDegree = new Map();
+  const adj = new Map();
+  for (const id of nodeById.keys()) {
+    inDegree.set(id, 0);
+    adj.set(id, []);
+  }
+
+  for (let i = 0; i < edges.length; i++) {
+    const edge = edges[i];
+    assert.ok(nodeById.has(edge.from), `Edge #${i + 1} tham chiếu node nguồn không tồn tại: from="${edge.from}"`);
+    assert.ok(nodeById.has(edge.to), `Edge #${i + 1} tham chiếu node đích không tồn tại: to="${edge.to}"`);
+    assert.notEqual(edge.from, edge.to, `Edge #${i + 1} tạo self-loop tại node "${edge.from}"`);
+    adj.get(edge.from).push(edge.to);
+    inDegree.set(edge.to, inDegree.get(edge.to) + 1);
+  }
+
+  const queue = [];
+  for (const [id, deg] of inDegree.entries()) {
+    if (deg === 0) queue.push(id);
+  }
+
+  let visited = 0;
+  while (queue.length > 0) {
+    const cur = queue.shift();
+    visited++;
+    for (const next of adj.get(cur)) {
+      const nextDeg = inDegree.get(next) - 1;
+      inDegree.set(next, nextDeg);
+      if (nextDeg === 0) queue.push(next);
+    }
+  }
+
+  if (visited !== nodes.length) {
+    const cycleNodes = [...inDegree.entries()].filter(([, deg]) => deg > 0).map(([id]) => id);
+    assert.fail(`PORTAL_DATA chứa chu trình trong DAG liên quan đến các node: ${cycleNodes.join(', ')}`);
+  }
+
+  console.log(`[PASS] DAG hợp lệ: ${nodes.length} nodes, ${edges.length} edges, 0 chu trình.`);
+}
+
+function isPhase1Lesson(dir, portalNode) {
+  const baseName = path.basename(dir);
+  return PHASE1_FOLDER_PREFIX.test(baseName) || (portalNode && portalNode.phase === 'pha1_array');
+}
+
+function isBareHomepageUrl(link) {
+  if (typeof link !== 'string' || !link.startsWith('https://') || /\s/.test(link)) {
+    return true;
+  }
+  try {
+    const parsed = new URL(link);
+    if (parsed.pathname === '' || parsed.pathname === '/') {
+      return true;
+    }
+    const cleanUrl = `${parsed.origin}${parsed.pathname}`;
+    return BARE_OJ_PATTERNS.some((re) => re.test(cleanUrl));
+  } catch {
+    return true;
+  }
+}
+
+function checkLessonFiles(dir, errors) {
+  if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) {
+    errors.push(`Không tìm thấy thư mục bài giảng: ${dir}`);
+    return { cppFiles: [], hasLessonData: false };
+  }
+
+  const docsDir = path.join(dir, 'docs');
+  const mdFiles = fs.existsSync(docsDir)
+    ? fs.readdirSync(docsDir).filter((f) => f.endsWith('.md')).sort()
+    : [];
+  if (mdFiles.length === 0) {
+    errors.push(`Thiếu file tài liệu markdown trong ${docsDir}/*.md`);
+  }
+
+  const codeDir = path.join(dir, 'Code_Mau');
+  const cppFiles = fs.existsSync(codeDir)
+    ? fs.readdirSync(codeDir).filter((f) => f.endsWith('.cpp')).sort().map((f) => path.join(codeDir, f))
+    : [];
+  if (cppFiles.length < 3) {
+    errors.push(`Thiếu code mẫu C++: ${codeDir} chỉ có ${cppFiles.length} file .cpp (yêu cầu >= 3)`);
+  }
+
+  const htmlPath = path.join(dir, 'index.html');
+  if (!fs.existsSync(htmlPath)) {
+    errors.push(`Thiếu file ${htmlPath}`);
+  } else {
+    const html = fs.readFileSync(htmlPath, 'utf8');
+    if (!html.includes('shared/lecture-engine.js')) {
+      errors.push(`${htmlPath} chưa nhúng shared/lecture-engine.js`);
+    }
+    if (!html.includes('lesson-data.js')) {
+      errors.push(`${htmlPath} chưa nhúng lesson-data.js`);
+    }
+  }
+
+  const dataPath = path.join(dir, 'lesson-data.js');
+  const hasLessonData = fs.existsSync(dataPath);
+  if (!hasLessonData) {
+    errors.push(`Thiếu file ${dataPath}`);
+  }
+
+  return { cppFiles, hasLessonData };
+}
+
+function checkCppStandardAndPhase1(dir, cppFiles, phase1, lessonDataRaw, errors) {
+  const requireFastIo = path.basename(dir) !== '00_NhapMon_LapTrinh_CPP';
+
+  for (const cppPath of cppFiles) {
+    const src = fs.readFileSync(cppPath, 'utf8');
+    if (!/#include\s*<bits\/stdc\+\+\.h>/.test(src)) {
+      errors.push(`${cppPath}: thiếu chuẩn CP "#include <bits/stdc++.h>"`);
+    }
+    if (!/using\s+namespace\s+std\s*;/.test(src)) {
+      errors.push(`${cppPath}: thiếu "using namespace std;"`);
+    }
+    if (requireFastIo && !/sync_with_stdio\s*\(\s*false\s*\)/.test(src)) {
+      errors.push(`${cppPath}: thiếu Fast I/O "sync_with_stdio(false)"`);
+    }
+    if (phase1) {
+      if (/\bvector\s*</.test(src)) {
+        errors.push(`${cppPath}: vi phạm ranh giới Pha 1 Lớp 9 (không được dùng "vector<")`);
+      }
+      if (/call\s+stack/i.test(src)) {
+        errors.push(`${cppPath}: vi phạm ranh giới Pha 1 Lớp 9 (không được dùng thuật ngữ "Call Stack")`);
+      }
+    }
+  }
+
+  if (phase1 && lessonDataRaw !== null) {
+    if (/\bvector\s*<(?!\/|br\s*\/?>)/.test(lessonDataRaw)) {
+      errors.push(`${dir}/lesson-data.js: vi phạm ranh giới Pha 1 Lớp 9 (không được dùng "vector<")`);
+    }
+    if (/call\s+stack/i.test(lessonDataRaw)) {
+      errors.push(`${dir}/lesson-data.js: vi phạm ranh giới Pha 1 Lớp 9 (không được dùng thuật ngữ "Call Stack")`);
+    }
+  }
+}
+
+function checkModulesAndQuiz(dir, lessonData, errors) {
+  const modules = lessonData.modules;
+  if (!Array.isArray(modules) || modules.length === 0) {
+    errors.push(`${dir}: LESSON_DATA.modules phải là mảng không rỗng`);
+    return;
+  }
+
+  let totalQuiz = 0;
+  let traceQuiz = 0;
+
+  modules.forEach((mod, mIdx) => {
+    const modLabel = `Module ${mIdx + 1}`;
+    if (!mod.subproblem || !String(mod.subproblem.title || '').trim() || !String(mod.subproblem.desc || '').trim()) {
+      errors.push(`${dir} (${modLabel}): thiếu subproblem.title hoặc subproblem.desc`);
+    }
+
+    const cardsText = JSON.stringify(mod.cards || []);
+    if (!Array.isArray(mod.cards) || mod.cards.length === 0) {
+      errors.push(`${dir} (${modLabel}): thiếu cards nội dung bài giảng`);
+    } else {
+      if (!cardsText.includes('step-life')) {
+        errors.push(`${dir} (${modLabel}): thiếu bước sư phạm .step-life`);
+      }
+      if (!cardsText.includes('step-code')) {
+        errors.push(`${dir} (${modLabel}): thiếu bước sư phạm .step-code`);
+      }
+      if (!cardsText.includes('step-term')) {
+        errors.push(`${dir} (${modLabel}): thiếu bước sư phạm .step-term`);
+      }
+    }
+
+    (mod.quiz || []).forEach((q, qIdx) => {
+      totalQuiz++;
+      if (q.type === 'trace' || Boolean(q.traceCode)) {
+        traceQuiz++;
+      }
+      if (!Array.isArray(q.options) || q.options.length < 2) {
+        errors.push(`${dir} (${modLabel} Câu ${qIdx + 1}): options phải có ít nhất 2 phương án`);
+        return;
+      }
+      const lens = q.options.map((o) => String(o).length);
+      const maxLen = Math.max(...lens);
+      const minLen = Math.min(...lens);
+      if (maxLen === 0) {
+        errors.push(`${dir} (${modLabel} Câu ${qIdx + 1}): phương án trả lời rỗng`);
+        return;
+      }
+      const diffRatio = (maxLen - minLen) / maxLen;
+      if (diffRatio > 0.35) {
+        errors.push(
+          `${dir} (${modLabel} Câu ${qIdx + 1}): chênh lệch độ dài phương án ${(diffRatio * 100).toFixed(1)}% vượt ngưỡng 35% (max=${maxLen}, min=${minLen})`
+        );
+      }
+
+      if (q.type === 'multiple') {
+        const valid = Array.isArray(q.correct)
+          && q.correct.length > 0
+          && q.correct.every((idx) => Number.isInteger(idx) && idx >= 0 && idx < q.options.length);
+        if (!valid) {
+          errors.push(`${dir} (${modLabel} Câu ${qIdx + 1}): đáp án multiple choice không hợp lệ`);
+        }
+      } else if (!Number.isInteger(q.correct) || q.correct < 0 || q.correct >= q.options.length) {
+        errors.push(`${dir} (${modLabel} Câu ${qIdx + 1}): đáp án correct=${q.correct} không hợp lệ`);
+      }
+    });
   });
-});
 
-assert.ok(
-  traceQuizL1 / totalQuizL1 >= 0.4,
-  `Bài 01: Tỷ lệ câu hỏi trace code (${traceQuizL1}/${totalQuizL1} = ${(traceQuizL1/totalQuizL1*100).toFixed(1)}%) phải >= 40%`
-);
-
-assert.ok(
-  (l1Data.debugExercises || []).length >= 2,
-  'Bài 01 phải có ít nhất 2 bài tập Debug tương tác'
-);
-l1Data.debugExercises.forEach((db, dIdx) => {
-  assert.ok(db.bugLine > 0, `Debug ${dIdx + 1} phải có bugLine > 0`);
-  assert.ok(db.failingInput, `Debug ${dIdx + 1} phải có failingInput`);
-  assert.ok(Array.isArray(db.patches) && db.patches.length >= 3, `Debug ${dIdx + 1} phải có ít nhất 3 bản vá`);
-  assert.ok(typeof db.correctPatch === 'number', `Debug ${dIdx + 1} phải có correctPatch`);
-});
-
-assert.ok((l1Data.practiceProblems || []).length >= 3, 'Bài 01 phải có ít nhất 3 bài tập thực chiến');
-// 6. Kiểm định Bài 02 — 02_NganXep_Va_NganXepDonDieu
-console.log('--- VERIFYING LESSON 02: NGĂN XẾP & NGĂN XẾP ĐƠN ĐIỆU ---');
-assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/docs/bai_giang_ngan_xep_don_dieu.md'), 'Phải có docs/bai_giang_ngan_xep_don_dieu.md');
-assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/Code_Mau/01_NganXepCoBan_KhopNgoac.cpp'), 'Phải có Code_Mau 01');
-assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/Code_Mau/02_NganXepDonDieu_PhanTuLonHonGanNhat.cpp'), 'Phải có Code_Mau 02');
-assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/Code_Mau/03_MoRongBienTraiPhai_HinhChuNhatLonNhat.cpp'), 'Phải có Code_Mau 03');
-assert.ok(fs.existsSync('02_NganXep_Va_NganXepDonDieu/index.html'), 'Phải có index.html');
-
-const l2Sandbox = createSandbox();
-vm.createContext(l2Sandbox);
-const l2DataJs = fs.readFileSync('02_NganXep_Va_NganXepDonDieu/lesson-data.js', 'utf8');
-vm.runInContext(l2DataJs, l2Sandbox);
-const l2Data = l2Sandbox.window.LESSON_DATA;
-
-assert.ok(l2Data, 'LESSON_DATA bài 02 phải tồn tại');
-assert.equal(l2Data.id, 'ngan_xep_don_dieu');
-assert.equal(l2Data.modules.length, 3, 'Bài 02 phải có đúng 3 module con');
-
-let totalQuizL2 = 0;
-let traceQuizL2 = 0;
-
-l2Data.modules.forEach((mod, mIdx) => {
-  assert.ok(mod.subproblem, `Module ${mIdx + 1} phải có định nghĩa vấn đề nhỏ`);
-  assert.ok(mod.subproblem.title && mod.subproblem.desc, 'subproblem phải có title và desc');
-  
-  const modHtml = JSON.stringify(mod.cards);
-  assert.match(modHtml, /step-life|đời sống|thực tế|chồng đĩa|hàng dọc/i, `Module ${mIdx + 1} phải có ví dụ đời sống`);
-  assert.match(modHtml, /step-code|lập trình|stack|ngăn xếp/i, `Module ${mIdx + 1} phải có ánh xạ lập trình`);
-  assert.match(modHtml, /step-term|thuật ngữ|tên gọi|đơn điệu/i, `Module ${mIdx + 1} phải giải nghĩa thuật ngữ`);
-
-  (mod.quiz || []).forEach((q, qIdx) => {
-    totalQuizL2++;
-    if (q.type === 'trace' || q.traceCode) traceQuizL2++;
-
-    const lens = q.options.map(o => String(o).length);
-    const maxLen = Math.max(...lens);
-    const minLen = Math.min(...lens);
-    const diffRatio = (maxLen - minLen) / maxLen;
-    assert.ok(
-      diffRatio <= 0.38,
-      `Quiz Mod ${mIdx + 1} Câu ${qIdx + 1}: Chênh lệch độ dài (${diffRatio.toFixed(2)}) vượt quá 38% (max: ${maxLen}, min: ${minLen})`
+  if (totalQuiz === 0) {
+    errors.push(`${dir}: bài giảng chưa có câu hỏi quiz nào`);
+  } else if (traceQuiz / totalQuiz < 0.4) {
+    errors.push(
+      `${dir}: tỷ lệ câu hỏi trace code (${traceQuiz}/${totalQuiz} = ${((traceQuiz / totalQuiz) * 100).toFixed(1)}%) phải >= 40%`
     );
+  }
+}
+
+function checkDebugExercises(dir, lessonData, errors) {
+  const collected = [
+    ...(Array.isArray(lessonData.debugExercises) ? lessonData.debugExercises : []),
+    ...(lessonData.modules || []).flatMap((m) => (Array.isArray(m.debugExercises) ? m.debugExercises : []))
+  ];
+
+  if (collected.length < 2) {
+    errors.push(`${dir}: chỉ có ${collected.length} debugExercises (yêu cầu >= 2)`);
+    return;
+  }
+
+  collected.forEach((db, idx) => {
+    const label = `Debug #${idx + 1}`;
+    const buggyCode = typeof db.buggyCode === 'string' ? db.buggyCode : '';
+    if (!buggyCode.trim()) {
+      errors.push(`${dir} (${label}): thiếu buggyCode`);
+    } else {
+      const lineCount = buggyCode.split('\n').length;
+      if (!Number.isInteger(db.bugLine) || db.bugLine <= 0 || db.bugLine > lineCount) {
+        errors.push(`${dir} (${label}): bugLine=${db.bugLine} không khớp số dòng code (1..${lineCount})`);
+      }
+    }
+
+    if (!String(db.failingInput || '').trim()) {
+      errors.push(`${dir} (${label}): thiếu failingInput`);
+    }
+    if (!Array.isArray(db.patches) || db.patches.length < 3) {
+      errors.push(`${dir} (${label}): patches phải có ít nhất 3 phương án`);
+    }
+    if (
+      typeof db.correctPatch !== 'number'
+      || !Array.isArray(db.patches)
+      || db.correctPatch < 0
+      || db.correctPatch >= db.patches.length
+    ) {
+      errors.push(`${dir} (${label}): correctPatch=${db.correctPatch} không hợp lệ`);
+    }
   });
-});
+}
 
-assert.ok(
-  traceQuizL2 / totalQuizL2 >= 0.4,
-  `Bài 02: Tỷ lệ câu hỏi trace code (${traceQuizL2}/${totalQuizL2} = ${(traceQuizL2/totalQuizL2*100).toFixed(1)}%) phải >= 40%`
-);
+function checkPracticeProblems(dir, lessonData, errors) {
+  const problems = lessonData.practiceProblems;
+  if (!Array.isArray(problems) || problems.length < 6) {
+    const count = Array.isArray(problems) ? problems.length : 0;
+    errors.push(`${dir}: practiceProblems chỉ có ${count} bài (yêu cầu >= 6 bài thực chiến)`);
+  }
 
-assert.ok((l2Data.debugExercises || []).length >= 2, 'Bài 02 phải có ít nhất 2 bài tập Debug tương tác');
-l2Data.debugExercises.forEach((db, dIdx) => {
-  assert.ok(db.bugLine > 0, `Debug ${dIdx + 1} phải có bugLine > 0`);
-  assert.ok(db.failingInput, `Debug ${dIdx + 1} phải có failingInput`);
-  assert.ok(Array.isArray(db.patches) && db.patches.length >= 3, `Debug ${dIdx + 1} phải có ít nhất 3 bản vá`);
-  assert.ok(typeof db.correctPatch === 'number', `Debug ${dIdx + 1} phải có correctPatch`);
-});
+  const seenIds = new Set();
+  (problems || []).forEach((pr, idx) => {
+    const label = `practiceProblems[${idx}]${pr && pr.id ? ` (${pr.id})` : ''}`;
+    if (!pr || typeof pr !== 'object') {
+      errors.push(`${dir} (${label}): phần tử bài tập không hợp lệ`);
+      return;
+    }
 
-assert.ok((l2Data.practiceProblems || []).length >= 3, 'Bài 02 phải có ít nhất 3 bài tập thực chiến');
-// 7. Kiểm định Bài 03 — 03_HaiConTro
-console.log('--- VERIFYING LESSON 03: KỸ THUẬT HAI CON TRỎ ---');
-assert.ok(fs.existsSync('03_HaiConTro/docs/bai_giang_hai_con_tro.md'), 'Phải có docs/bai_giang_hai_con_tro.md');
-assert.ok(fs.existsSync('03_HaiConTro/Code_Mau/01_HaiConTroNguocChieu_TimCapTongBangS.cpp'), 'Phải có Code_Mau 01');
-assert.ok(fs.existsSync('03_HaiConTro/Code_Mau/02_HaiConTroCungChieu_DoanConDaiNhat.cpp'), 'Phải có Code_Mau 02');
-assert.ok(fs.existsSync('03_HaiConTro/Code_Mau/03_DemSoDoanCon_ThoaManDieuKien.cpp'), 'Phải có Code_Mau 03');
-assert.ok(fs.existsSync('03_HaiConTro/index.html'), 'Phải có index.html');
+    for (const field of ['id', 'title', 'judge', 'hint']) {
+      if (typeof pr[field] !== 'string' || !pr[field].trim()) {
+        errors.push(`${dir} (${label}): thiếu trường "${field}"`);
+      }
+    }
 
-const l3Sandbox = createSandbox();
-vm.createContext(l3Sandbox);
-const l3DataJs = fs.readFileSync('03_HaiConTro/lesson-data.js', 'utf8');
-vm.runInContext(l3DataJs, l3Sandbox);
-const l3Data = l3Sandbox.window.LESSON_DATA;
+    if (typeof pr.id === 'string' && pr.id.trim()) {
+      if (seenIds.has(pr.id)) {
+        errors.push(`${dir} (${label}): trùng id "${pr.id}"`);
+      }
+      seenIds.add(pr.id);
+    }
 
-assert.ok(l3Data, 'LESSON_DATA bài 03 phải tồn tại');
-assert.equal(l3Data.id, 'hai_con_tro');
-assert.equal(l3Data.modules.length, 3, 'Bài 03 phải có đúng 3 module con');
+    if (![1, 2, 3].includes(pr.tier)) {
+      errors.push(`${dir} (${label}): tier=${pr.tier} phải thuộc [1, 2, 3]`);
+    }
 
-let totalQuizL3 = 0;
-let traceQuizL3 = 0;
-
-l3Data.modules.forEach((mod, mIdx) => {
-  assert.ok(mod.subproblem, `Module ${mIdx + 1} phải có định nghĩa vấn đề nhỏ`);
-  assert.ok(mod.subproblem.title && mod.subproblem.desc, 'subproblem phải có title và desc');
-  
-  const modHtml = JSON.stringify(mod.cards);
-  assert.match(modHtml, /step-life|đời sống|kệ sách|sâu đo|ngón tay/i, `Module ${mIdx + 1} phải có ví dụ đời sống`);
-  assert.match(modHtml, /step-code|lập trình|trai|phai|con trỏ/i, `Module ${mIdx + 1} phải có ánh xạ lập trình`);
-  assert.match(modHtml, /step-term|thuật ngữ|tên gọi|cửa sổ trượt/i, `Module ${mIdx + 1} phải giải nghĩa thuật ngữ`);
-
-  (mod.quiz || []).forEach((q, qIdx) => {
-    totalQuizL3++;
-    if (q.type === 'trace' || q.traceCode) traceQuizL3++;
-
-    const lens = q.options.map(o => String(o).length);
-    const maxLen = Math.max(...lens);
-    const minLen = Math.min(...lens);
-    const diffRatio = (maxLen - minLen) / maxLen;
-    assert.ok(
-      diffRatio <= 0.38,
-      `Quiz Mod ${mIdx + 1} Câu ${qIdx + 1}: Chênh lệch độ dài (${diffRatio.toFixed(2)}) vượt quá 38% (max: ${maxLen}, min: ${minLen})`
-    );
+    if (typeof pr.link !== 'string' || !pr.link.startsWith('https://')) {
+      errors.push(`${dir} (${label}): link "${pr.link}" phải bắt đầu bằng "https://"`);
+    } else if (isBareHomepageUrl(pr.link)) {
+      errors.push(`${dir} (${label}): link "${pr.link}" là URL trang chủ trần / không trỏ tới đề bài cụ thể`);
+    }
   });
-});
+}
 
-assert.ok(
-  traceQuizL3 / totalQuizL3 >= 0.4,
-  `Bài 03: Tỷ lệ câu hỏi trace code (${traceQuizL3}/${totalQuizL3} = ${(traceQuizL3/totalQuizL3*100).toFixed(1)}%) phải >= 40%`
-);
+function verifyLesson(dir, portalNode) {
+  console.log(`--- VERIFYING LESSON: ${dir} ---`);
+  const errors = [];
+  const { cppFiles, hasLessonData } = checkLessonFiles(dir, errors);
+  const dataPath = path.join(dir, 'lesson-data.js');
+  const lessonDataRaw = hasLessonData ? fs.readFileSync(dataPath, 'utf8') : null;
+  const phase1 = isPhase1Lesson(dir, portalNode);
 
-assert.ok((l3Data.debugExercises || []).length >= 2, 'Bài 03 phải có ít nhất 2 bài tập Debug tương tác');
-l3Data.debugExercises.forEach((db, dIdx) => {
-  assert.ok(db.bugLine > 0, `Debug ${dIdx + 1} phải có bugLine > 0`);
-  assert.ok(db.failingInput, `Debug ${dIdx + 1} phải có failingInput`);
-  assert.ok(Array.isArray(db.patches) && db.patches.length >= 3, `Debug ${dIdx + 1} phải có ít nhất 3 bản vá`);
-  assert.ok(typeof db.correctPatch === 'number', `Debug ${dIdx + 1} phải có correctPatch`);
-});
+  checkCppStandardAndPhase1(dir, cppFiles, phase1, lessonDataRaw, errors);
 
-assert.ok((l3Data.practiceProblems || []).length >= 3, 'Bài 03 phải có ít nhất 3 bài tập thực chiến');
-// 8. Kiểm định Bài 04 — 04_KetHop_NganXep_QHD_HaiConTro
-console.log('--- VERIFYING LESSON 04: KẾT HỢP NGĂN XẾP, QUY HOẠCH ĐỘNG & HAI CON TRỎ ---');
-assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/docs/bai_giang_ket_hop_ngan_xep_qhd_hai_con_tro.md'), 'Phải có docs bài kết hợp');
-assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/Code_Mau/01_TuDeQuy_Sang_NganXep_Va_QHD.cpp'), 'Phải có Code_Mau 01');
-assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/Code_Mau/02_NganXepDonDieu_ToiUu_QuyHoachDong.cpp'), 'Phải có Code_Mau 02');
-assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/Code_Mau/03_KetHop_HangDoiDonDieu_CuaSoTruot_QHD.cpp'), 'Phải có Code_Mau 03');
-assert.ok(fs.existsSync('04_KetHop_NganXep_QHD_HaiConTro/index.html'), 'Phải có index.html');
+  if (hasLessonData) {
+    let lessonData = null;
+    try {
+      const sb = createSandbox();
+      vm.createContext(sb);
+      vm.runInContext(lessonDataRaw, sb, { filename: dataPath });
+      lessonData = sb.window.LESSON_DATA;
+    } catch (err) {
+      errors.push(`${dataPath}: lỗi thực thi JavaScript (${err.message})`);
+    }
 
-const l4Sandbox = createSandbox();
-vm.createContext(l4Sandbox);
-const l4DataJs = fs.readFileSync('04_KetHop_NganXep_QHD_HaiConTro/lesson-data.js', 'utf8');
-vm.runInContext(l4DataJs, l4Sandbox);
-const l4Data = l4Sandbox.window.LESSON_DATA;
+    if (!lessonData || typeof lessonData !== 'object') {
+      errors.push(`${dataPath}: không định nghĩa window.LESSON_DATA`);
+    } else {
+      if (typeof lessonData.id !== 'string' || !lessonData.id.trim()) {
+        errors.push(`${dataPath}: thiếu LESSON_DATA.id`);
+      }
+      checkModulesAndQuiz(dir, lessonData, errors);
+      checkDebugExercises(dir, lessonData, errors);
+      checkPracticeProblems(dir, lessonData, errors);
+    }
+  }
 
-assert.ok(l4Data, 'LESSON_DATA bài 04 phải tồn tại');
-assert.equal(l4Data.id, 'ket_hop_ngan_xep_qhd_hai_con_tro');
-assert.equal(l4Data.modules.length, 3, 'Bài 04 phải có đúng 3 module con');
+  return errors;
+}
 
-let totalQuizL4 = 0;
-let traceQuizL4 = 0;
+function resolveTargets(portalData, lessonDir) {
+  const nodeByDir = new Map();
+  for (const node of portalData.nodes) {
+    const dir = node.path.replace(/\/index\.html$/, '');
+    nodeByDir.set(dir, node);
+  }
 
-l4Data.modules.forEach((mod, mIdx) => {
-  assert.ok(mod.subproblem, `Module ${mIdx + 1} phải có định nghĩa vấn đề nhỏ`);
-  assert.ok(mod.subproblem.title && mod.subproblem.desc, 'subproblem phải có title và desc');
-  
-  const modHtml = JSON.stringify(mod.cards);
-  assert.match(modHtml, /step-life|đời sống|sổ ghi chép|cửa sổ|đoàn tàu/i, `Module ${mIdx + 1} phải có ví dụ đời sống`);
-  assert.match(modHtml, /step-code|lập trình|dp|ngăn xếp|deque|con trỏ/i, `Module ${mIdx + 1} phải có ánh xạ lập trình`);
-  assert.match(modHtml, /step-term|thuật ngữ|tên gọi|quy hoạch động/i, `Module ${mIdx + 1} phải giải nghĩa thuật ngữ`);
+  if (lessonDir) {
+    if (lessonDir === 'MayCham') {
+      console.log('[SKIP] MayCham sử dụng engine riêng (kiểm tra bằng MayCham/tests/verify_web.mjs).');
+      return [];
+    }
+    return [{ dir: lessonDir, node: nodeByDir.get(lessonDir) || null }];
+  }
 
-  (mod.quiz || []).forEach((q, qIdx) => {
-    totalQuizL4++;
-    if (q.type === 'trace' || q.traceCode) traceQuizL4++;
+  const targets = [];
+  for (const node of portalData.nodes) {
+    const status = node.status || 'ready';
+    if (status === 'planned') {
+      console.log(`[SKIP planned] ${node.code || node.id} (${node.path})`);
+      continue;
+    }
+    const dir = node.path.replace(/\/index\.html$/, '');
+    if (dir === 'MayCham' || node.id === 'may_cham') {
+      console.log('[SKIP custom engine] MayCham (kiểm tra bằng MayCham/tests/verify_web.mjs)');
+      continue;
+    }
+    targets.push({ dir, node });
+  }
+  return targets;
+}
 
-    const lens = q.options.map(o => String(o).length);
-    const maxLen = Math.max(...lens);
-    const minLen = Math.min(...lens);
-    const diffRatio = (maxLen - minLen) / maxLen;
-    assert.ok(
-      diffRatio <= 0.38,
-      `Quiz Mod ${mIdx + 1} Câu ${qIdx + 1}: Chênh lệch độ dài (${diffRatio.toFixed(2)}) vượt quá 38% (max: ${maxLen}, min: ${minLen})`
-    );
-  });
-});
+function main() {
+  const { lessonDir, strictOj } = parseArgs(process.argv.slice(2));
+  if (strictOj) {
+    console.log('[INFO] Strict OJ validation enabled.');
+  }
 
-assert.ok(
-  traceQuizL4 / totalQuizL4 >= 0.4,
-  `Bài 04: Tỷ lệ câu hỏi trace code (${traceQuizL4}/${totalQuizL4} = ${(traceQuizL4/totalQuizL4*100).toFixed(1)}%) phải >= 40%`
-);
+  const portalData = verifySharedInfrastructure();
+  verifySkillWorkflow();
+  verifyPortalDag(portalData);
 
-assert.ok((l4Data.debugExercises || []).length >= 2, 'Bài 04 phải có ít nhất 2 bài tập Debug tương tác');
-l4Data.debugExercises.forEach((db, dIdx) => {
-  assert.ok(db.bugLine > 0, `Debug ${dIdx + 1} phải có bugLine > 0`);
-  assert.ok(db.failingInput, `Debug ${dIdx + 1} phải có failingInput`);
-  assert.ok(Array.isArray(db.patches) && db.patches.length >= 3, `Debug ${dIdx + 1} phải có ít nhất 3 bản vá`);
-  assert.ok(typeof db.correctPatch === 'number', `Debug ${dIdx + 1} phải có correctPatch`);
-});
+  const targets = resolveTargets(portalData, lessonDir);
+  const allErrors = [];
 
-assert.ok((l4Data.practiceProblems || []).length >= 3, 'Bài 04 phải có ít nhất 3 bài tập thực chiến');
-// 9. Kiểm định Skill Workflow chuẩn hóa
-console.log('--- VERIFYING CP-LECTURE-WORKFLOW SKILL ---');
-const skillPath = '.agents/skills/cp-lecture-workflow/SKILL.md';
-assert.ok(fs.existsSync(skillPath), 'Phải có file .agents/skills/cp-lecture-workflow/SKILL.md');
-const skillContent = fs.readFileSync(skillPath, 'utf8');
-assert.match(skillContent, /name:\s*cp-lecture-workflow/, 'SKILL.md phải có name: cp-lecture-workflow');
-assert.match(skillContent, /Problem Decomposition|Tách vấn đề/i, 'SKILL.md phải mô tả tách vấn đề nhỏ');
-assert.match(skillContent, /Đời sống.*Lập trình.*Thuật ngữ|Life-to-Code/i, 'SKILL.md phải mô tả quy trình 3 bước sư phạm');
-assert.match(skillContent, /debugExercises|Bài tập Debug/i, 'SKILL.md phải có chuẩn bài tập debug');
-assert.match(skillContent, /Trace|Code Execution Tracing/i, 'SKILL.md phải có chuẩn câu hỏi trace code');
-assert.match(skillContent, /shared\/portal-data\.js/, 'SKILL.md phải hướng dẫn cập nhật portal-data.js');
-assert.match(skillContent, /tests\/verify_all_lectures\.mjs/, 'SKILL.md phải hướng dẫn chạy test kiểm định');
+  for (const target of targets) {
+    const lessonErrors = verifyLesson(target.dir, target.node);
+    if (lessonErrors.length === 0) {
+      console.log(`[PASS] ${target.dir}`);
+    } else {
+      console.error(`[FAIL] ${target.dir} (${lessonErrors.length} lỗi):`);
+      lessonErrors.forEach((msg) => console.error(`  - ${msg}`));
+      allErrors.push(...lessonErrors);
+    }
+  }
 
-console.log('✅ PASS: All 4 Lectures & CP Workflow Skill Verified 100%!');
+  if (allErrors.length > 0) {
+    console.error(`\n❌ FAILED: Phát hiện ${allErrors.length} lỗi trong kiểm định bài giảng.`);
+    process.exit(1);
+  }
 
+  console.log(`\n✅ PASS: Đã kiểm định thành công hạ tầng chung, DAG (${portalData.nodes.length} nodes) và ${targets.length} bài giảng!`);
+}
 
-
-
-
+main();

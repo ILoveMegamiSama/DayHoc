@@ -504,6 +504,25 @@
       `;
     }
 
+    function getModuleDebugExercises(modIdx) {
+      const modules = lessonData.modules || [];
+      const mod = modules[modIdx];
+      const modDebugs = mod && Array.isArray(mod.debugExercises) ? mod.debugExercises : [];
+      const isLastMod = modules.length > 0 && modIdx === modules.length - 1;
+      const topDebugs = isLastMod && Array.isArray(lessonData.debugExercises) ? lessonData.debugExercises : [];
+      if (topDebugs.length === 0) return modDebugs;
+
+      const seenIds = new Set(modDebugs.map((d) => d && d.id).filter(Boolean));
+      const merged = [...modDebugs];
+      topDebugs.forEach((d) => {
+        if (!d) return;
+        if (d.id && seenIds.has(d.id)) return;
+        if (d.id) seenIds.add(d.id);
+        merged.push(d);
+      });
+      return merged;
+    }
+
     function renderBody() {
       const mod = lessonData.modules[currentModIdx];
       const mainEl = document.getElementById('module-main');
@@ -541,7 +560,7 @@
       }).join('');
 
       const sandboxesHtml = (mod.sandboxes || []).map((sb) => renderSandbox(sb)).join('');
-      const debugsHtml = (mod.debugExercises || []).map((db) => renderDebugExercise(db)).join('');
+      const debugsHtml = getModuleDebugExercises(currentModIdx).map((db) => renderDebugExercise(db)).join('');
       const quizHtml = renderQuiz(mod);
       const practiceHtml = currentModIdx === lessonData.modules.length - 1 ? renderPracticeProblems() : '';
 
@@ -654,7 +673,9 @@
         btn.addEventListener('click', () => {
           const dbId = btn.getAttribute('data-debug-check');
           const mod = lessonData.modules[currentModIdx];
-          const db = (mod.debugExercises || []).find((d) => d.id === dbId);
+          const modDebugs = mod && Array.isArray(mod.debugExercises) ? mod.debugExercises : [];
+          const topDebugs = Array.isArray(lessonData.debugExercises) ? lessonData.debugExercises : [];
+          const db = modDebugs.find((d) => d.id === dbId) || topDebugs.find((d) => d.id === dbId);
           if (!db) return;
           const uState = debugUserSelections[dbId] || { selectedLine: null, selectedPatch: null, checked: false };
           uState.checked = true;

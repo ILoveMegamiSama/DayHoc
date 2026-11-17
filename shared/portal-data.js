@@ -382,7 +382,7 @@
         x: 1840,
         y: 620,
         badge: 'Tầng 2',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã hiểu cơ chế chồng khay vào-sau-ra-trước từ bài Đệ Quy (MOD-01)',

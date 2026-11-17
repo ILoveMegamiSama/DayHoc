@@ -289,7 +289,7 @@
         x: 2125,
         y: 360,
         badge: 'Tầng 2',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã nắm mảng 1D/2D, độ phức tạp (L1-04) và std::vector (L1-05)'

@@ -1,59 +1,71 @@
 ---
 name: cp-lecture-workflow
-description: Quy trình chuẩn hóa 6 bước để tạo bài giảng tương tác Lập Trình Thi Đấu (CP) cho người mới bắt đầu trong repo DayHoc: từ Tách vấn đề (Problem Decomposition), 3 bước Đời sống -> Lập trình -> Thuật ngữ, Code mẫu C++14, Web tương tác (Card 1-2 cột, Sandbox, Bài tập Debug, Quiz Trace Code), đến cập nhật Cây Kỹ Năng và kiểm thử tự động.
+description: Quy trình chuẩn hóa tạo bài giảng tương tác Lập Trình Thi Đấu (CP) cho học sinh Lớp 9 trong repo DayHoc: quy tắc 2 Pha (Pha 1 mảng toàn cục, Pha 2 vector/STL), Problem Decomposition, 3 bước Đời sống -> Lập trình -> Thuật ngữ, chuẩn C++ CP (#include <bits/stdc++.h> + fast I/O), Zero-Hallucination OJ Gate (search_web, >= 6 bài 3 tier), Debug/Trace Quiz, cập nhật Cây Kỹ Năng, kiểm thử --lesson và Subagent Quality Gate (>= 90/100).
 ---
 
-# Quy Trình Chuẩn Hóa Sinh Bài Giảng Tương Tác Lập Trình Thi Đấu (CP) Cho Người Mới Bắt Đầu
+# Quy Trình Chuẩn Hóa Sinh Bài Giảng Tương Tác CP Cho Học Sinh Lớp 9
 
-Skill này định nghĩa quy trình vàng 6 bước để tạo mới bất kỳ bài giảng đơn lẻ hoặc bài giảng kết hợp nào trong kho học liệu `DayHoc`.
+Skill này định nghĩa quy trình chuẩn hóa để xây dựng và nâng cấp bài giảng trong kho học liệu `DayHoc`, thống nhất cho đối tượng **học sinh Lớp 9 (THCS)** mới học C++14 & Lập trình thi đấu (CP).
 
 ---
 
-## 1. Nguyên Tắc Sư Phạm Bắt Buộc (Core Pedagogical Principles)
+## 1. Nguyên Tắc Sư Phạm & Quy Tắc 2 Pha Ngôn Ngữ
+
+0. **Quy Tắc 2 Pha Trình Độ Trên Cây Kỹ Năng (Grade 9 Two-Phase Rules):**
+   - **Pha 1 — Nền tảng C++ (`MOD-Pre` $\rightarrow$ `L1-04`):** Chỉ dùng mảng tĩnh toàn cục (`const int N = ...; int a[N];`), hàm chỉ nhận tham số nguyên thủy; tránh thuật ngữ hàn lâm nặng (thay `Call Stack` bằng *"ngăn xếp lời gọi hàm / bộ nhớ stack"*).
+   - **Pha 2 — STL & Thuật toán (`L1-05` $\rightarrow$ hết Tầng 2 & Mở rộng):** Từ bài `L1-05`, chính thức mở khóa `std::vector`, `pair`, `sort`, truyền tham chiếu `&` cho container và bộ công cụ STL (`set`, `map`, `priority_queue`, `deque`).
 
 1. **Bước 0: Kiểm Toán Tiền Đề Theo Cây Kỹ Năng (Prerequisite Knowledge Audit):**
-   - **PHẢI LUÔN NHỚ RẰNG NGƯỜI HỌC LÀ NGƯỜI MỚI.**
-   - Trước khi viết bất kỳ bài giảng nào, bắt buộc tra cứu Cây Kỹ Năng xem bài học này nối tiếp từ bài nào, và lập danh sách:
-     * `knownConcepts`: Những hình ảnh/khái niệm người học **ĐÃ BIẾT THẬT SỰ** từ bài trước (ví dụ: từ bài MayCham, người học chỉ biết RAM là chiếc bàn làm việc, ổ cứng là tủ hồ sơ, OS, Shell, g++, hàm `main()`, mảng).
-     * `newConcepts`: Những khái niệm **MỚI TINH** cần giảng giải.
-   - **CẤM TUYỆT ĐỐI** dùng thuật ngữ mới (như Call Stack, Stack Frame, LIFO...) khi chưa dẫn dắt từ các hình ảnh cũ đã biết (ví dụ: từ "chiếc bàn làm việc RAM" ở MayCham $\rightarrow$ kê thêm "chiếc khay phụ" $\rightarrow$ chồng các khay phụ thành "Call Stack").
+   - **PHẢI LUÔN NHỚ RẰNG NGƯỜI HỌC LÀ HỌC SINH LỚP 9 MỚI BẮT ĐẦU.**
+   - Tra cứu `shared/portal-data.js` xem bài học nối tiếp từ đâu để lập danh sách:
+     * `knownConcepts`: Khái niệm/hình ảnh người học **đã biết thật sự** từ các bài trước.
+     * `newConcepts`: Khái niệm **mới tinh** cần giảng giải.
+   - **CẤM TUYỆT ĐỐI** dùng thuật ngữ mới (như `Call Stack`, `Stack Frame`, `LIFO`, `DP`...) khi chưa dẫn dắt từ hình ảnh cũ đã biết; ở Pha 1 ưu tiên cách gọi trực quan tiếng Việt (*"ngăn xếp lời gọi hàm / bộ nhớ stack"*).
 
 2. **Khởi đầu từ Vấn đề lớn & Tách vấn đề (Problem Decomposition):**
-   - Không mở đầu bằng công thức hay lý thuyết khô khan.
-   - Luôn bắt đầu bằng một **bài toán lập trình thực tế** mà cách làm thông thường (duyệt trâu, đệ quy ngây thơ) bị **bế tắc** (TLE hoặc Stack Overflow).
-   - Tách vấn đề lớn đó thành **2–3 vấn đề nhỏ độc lập ($V_1, V_2, V_3$)**, giải quyết dứt điểm từng vấn đề nhỏ rồi ghép lại thành kỹ thuật hoàn chỉnh.
+   - Luôn mở đầu bằng một **bài toán lập trình thực tế** mà cách làm ngây thơ bị **bế tắc** (TLE, WA hoặc tràn bộ nhớ).
+   - Tách vấn đề lớn thành **2–3 vấn đề nhỏ độc lập ($V_1, V_2, V_3$)**, giải quyết dứt điểm từng phần rồi ghép lại thành thuật toán hoàn chỉnh.
 
 3. **Chuẩn 3 bước trong từng mục kiến thức (Đời sống $\rightarrow$ Lập trình $\rightarrow$ Thuật ngữ):**
-   - **Bước 1 (Vấn đề & Cách giải quyết ngoài đời sống):** Đặt ra một tình huống đời thường tương tự mà ai cũng hình dung được (chồng đĩa, xếp hàng, con sâu đo, hỏi hàng ghế...).
-   - **Bước 2 (Ánh xạ vào lập trình):** Bê nguyên cách giải quyết ngoài đời đó vào máy tính và code C++ (mô hình bộ nhớ RAM, vòng lặp, điều kiện biên).
-   - **Bước 3 (Giải nghĩa tên gọi & Thuật ngữ liên kết ngược về ví dụ đời sống):** Giải thích ý nghĩa từng chữ trong tên gọi tiếng Việt và tiếng Anh, đồng thời đối chiếu rõ: *"Thuật ngữ X này chính là đồ vật/hành động Y trong ví dụ đời sống ở Bước 1"*.
+   - **Bước 1 (Đời sống):** Đặt tình huống đời thường tương tự mà học sinh Lớp 9 hình dung ngay được.
+   - **Bước 2 (Lập trình):** Ánh xạ trực tiếp cách giải quyết đó vào bộ nhớ RAM, mảng/container và code C++.
+   - **Bước 3 (Thuật ngữ):** Giải nghĩa tên gọi tiếng Việt + tiếng Anh và nối ngược về đồ vật/hành động ở Bước 1.
 
 4. **Tiêu chuẩn Giao diện & Tương tác:**
-   - Mặc định toàn hệ thống là **Giao diện Tối (Dark Mode)**, đồng bộ tức thì qua `localStorage['cp_dayhoc_theme']`.
-   - Bố cục **`.knowledge-card`** rộng rãi toàn chiều ngang, từng bước `.step-life`, `.step-code`, `.step-term` được bố trí thoáng đạt, không ép vào các cột hẹp gây chật chội.
-   - **Phòng thí nghiệm Dự đoán trước khi chạy (Prediction-First Sandbox):** Người học chọn dự đoán trước khi bấm Chạy Thử, sau đó mới quan sát kết quả thật từ console.
-   - Bắt buộc có **Bài tập Debug tương tác (`debugExercises`)** và **Câu hỏi Trace hành vi Code (`traceCode`)**.
+   - Mặc định **Giao diện Tối (Dark Mode)** qua `localStorage['cp_dayhoc_theme']`.
+   - Bố cục **`.knowledge-card`** rộng rãi, phân tách rõ `.step-life`, `.step-code`, `.step-term`.
+   - Có **Phòng thí nghiệm Dự đoán trước khi chạy (Prediction-First Sandbox)**, **Bài tập Debug tương tác (`debugExercises`)** và **Câu hỏi Trace hành vi Code (`traceCode`)**.
 
 ---
 
-## 2. Quy Trình 6 Bước Triển Khai (The 6-Step Workflow)
+## 2. Quy Trình Triển Khai & 5 Điểm Nâng Cấp Bắt Buộc
 
 ### Bước 1: Soạn Thảo Nội Dung Gốc Dạng Markdown (`docs/bai_giang_<topic>.md`)
-Tạo thư mục bài giảng (ví dụ `05_CayPhanDoan_SegmentTree/`).
-Tạo thư mục con `docs/` và viết file Markdown hoàn chỉnh gồm:
-- Vấn đề lớn cần giải quyết và chia thành các vấn đề nhỏ.
-- Phân tích chi tiết từng vấn đề nhỏ theo đúng 3 bước: Đời sống $\rightarrow$ Ánh xạ lập trình $\rightarrow$ Giải nghĩa thuật ngữ.
+Tạo thư mục bài giảng và `docs/bai_giang_<topic>.md` gồm:
+- Vấn đề lớn & phân rã thành các vấn đề nhỏ.
+- Phân tích từng vấn đề theo đúng 3 bước: Đời sống $\rightarrow$ Lập trình $\rightarrow$ Thuật ngữ.
 - Bảng phân tích độ phức tạp thời gian/bộ nhớ và các bẫy thường gặp (Pitfalls).
 
-### Bước 2: Viết Kho Code Mẫu C++14 Chạy Ngay Được (`Code_Mau/*.cpp`)
-Tạo thư mục con `Code_Mau/` chứa tối thiểu 3 file `.cpp`:
-- `01_<ChuDe>_CoBan.cpp`: Minh họa cách làm ngây thơ hoặc cấu trúc cơ bản nhất.
-- `02_<ChuDe>_ToiUu.cpp`: Minh họa thuật toán tối ưu đã qua phân tích.
-- `03_<ChuDe>_UngDung.cpp`: Minh họa bài toán ứng dụng thực tế hoặc mở rộng nâng cao.
-- **Yêu cầu:** Mọi file phải biên dịch thành công 100% với `g++ -std=c++14 -O2 -Wall`, có hàm `main()` in ra màn hình dễ hiểu cho học sinh chạy trên Code::Blocks hoặc Linux.
+### Bước 2: Viết Kho Code Mẫu Chuẩn CP C++14 (`Code_Mau/*.cpp`) — *[Nâng cấp 1: CP C++ Standard]*
+Tạo thư mục `Code_Mau/` chứa tối thiểu 3 file `.cpp` (`01_<ChuDe>_CoBan.cpp`, `02_<ChuDe>_ToiUu.cpp`, `03_<ChuDe>_UngDung.cpp`).
+- **Chuẩn CP C++ Standard bắt buộc** trong `Code_Mau/*.cpp`, `lesson-data.js` (sandbox, quiz, debug) và `docs/*.md`:
+  ```cpp
+  #include <bits/stdc++.h>
+  using namespace std;
 
-### Bước 3: Đóng Gói Dữ Liệu Tương Tác Vào `lesson-data.js`
-Tạo file `lesson-data.js` xuất ra biến `window.LESSON_DATA` theo cấu trúc chuẩn:
+  int main() {
+      ios_base::sync_with_stdio(false);
+      cin.tie(NULL);
+      // Dùng '\n' thay cho endl khi in nhiều dòng; không trộn scanf/printf với cin/cout
+      return 0;
+  }
+  ```
+- **Ngoại lệ có chủ đích:** `MOD-Pre` (`00_NhapMon_LapTrinh_CPP`) dùng `#include <bits/stdc++.h>` và `using namespace std;`, nhưng **chưa** bắt buộc `ios_base::sync_with_stdio(false); cin.tie(NULL);` cho tới ngay Chương Phụ `00b_ChuanHoa_Code_CP` (`MOD-CP0`).
+- Tuân thủ đúng Pha 1 (mảng toàn cục, tham số nguyên thủy) hoặc Pha 2 (`vector`, `&`, STL) theo vị trí bài trên lộ trình.
+- Mọi file `.cpp` phải biên dịch sạch 100% không lỗi/warning với `g++ -std=c++14 -O2 -Wall`.
+
+### Bước 3: Đóng Gói `lesson-data.js` & Xác Thực OJ — *[Nâng cấp 2 & 4: Zero-Hallucination OJ Gate + 6–8 Bài 3 Tier]*
+Tạo `lesson-data.js` xuất `window.LESSON_DATA`:
 ```javascript
 window.LESSON_DATA = {
   id: 'ma_bai_giang',
@@ -68,10 +80,7 @@ window.LESSON_DATA = {
       shortTitle: 'Tên Vấn Đề Nhỏ 1',
       title: 'Vấn Đề Nhỏ 1: ...',
       lead: '...',
-      subproblem: {
-        title: 'Câu hỏi của vấn đề nhỏ?',
-        desc: 'Mô tả bối cảnh và nút thắt cần tháo gỡ.'
-      },
+      subproblem: { title: '...', desc: '...' },
       cards: [
         {
           heading: 'Tiêu đề card',
@@ -82,41 +91,57 @@ window.LESSON_DATA = {
           }
         }
       ],
-      sandboxes: [ /* Các phòng thí nghiệm code có toggles */ ],
-      quiz: [ /* Bộ câu hỏi trắc nghiệm kiểm tra */ ]
+      sandboxes: [ /* Phòng thí nghiệm dự đoán trước khi chạy */ ],
+      quiz: [ /* Câu hỏi trace, single, multiple */ ]
     }
   ],
   debugExercises: [ /* Tối thiểu 2 bài tập debug */ ],
-  practiceProblems: [ /* Tối thiểu 3 bài tập CSES, VNOJ, Codeforces */ ]
+  practiceProblems: [ /* Tối thiểu 6 bài (khuyến nghị 6–8 bài), phân tier: 1, 2, 3 */ ]
 };
 ```
+- **Zero-Hallucination OJ Gate (`search_web` bắt buộc):**
+  - **Cấm tuyệt đối** bịa đặt mã bài (như `VNOJ-GIAITHUA`, `MOD-Pre-P01`), gắn link trang chủ chung chung (`https://oj.vnoi.info/`), hoặc gán sai thuật toán.
+  - Mọi bài trong `practiceProblems` **bắt buộc phải tra cứu và kiểm tra chéo qua `search_web`** trước khi ghi vào `lesson-data.js`:
+    1. Xác nhận mã bài, tiêu đề chính xác và URL trực tiếp tới đúng đề bài (CSES / Codeforces / VNOJ / AtCoder / LeetCode).
+    2. Xác nhận ràng buộc ($N$, $A_i$, Time Limit) khớp đúng kiến thức và độ phức tạp của bài giảng.
+- **Chuẩn số lượng & phân tầng `practiceProblems`:** Tối thiểu **6 bài tập thực chiến (khuyến nghị 6–8 bài)** mỗi bài giảng, phân 3 cấp:
+  - `tier: 1` (**Cơ bản — 2–3 bài**): Áp dụng trực tiếp khuôn mẫu vừa học.
+  - `tier: 2` (**Thông hiểu — 2–3 bài**): Biến tấu điều kiện biên, kiểu dữ liệu hoặc ghép bài trước.
+  - `tier: 3` (**Vận dụng Lớp 9 — 1–2 bài**): Chuẩn đề HSG Tin học Lớp 9 / Chuyên Tin / Div.2 A–B.
 
-### Bước 4: Kiểm Soát Chất Lượng Câu Hỏi (Quiz QC Rules)
-Bộ câu hỏi trong mỗi bài giảng bắt buộc phải tuân theo các quy tắc kiểm định sau:
-1. **Tỷ lệ câu hỏi Trace code $\ge 40\%$:** Đưa ra một đoạn mã ngắn `traceCode` và dữ liệu đầu vào cụ thể, hỏi trạng thái biến/mảng/stack sau bước $k$.
-2. **Độ tương đồng cấu trúc phương án 80–90% (Isomorphic Distractors):** Các phương án A, B, C, D trong cùng 1 câu phải có cùng khung câu văn, chỉ khác ở điều kiện biên, giá trị hoặc bản chất. Tuyệt đối không dùng phương án đùa cợt vô lý.
-3. **Cân bằng độ dài phương án:** Trong cùng một câu hỏi, độ dài phương án dài nhất và ngắn nhất không được lệch nhau quá $35\%$. Tuyệt đối không để đáp án đúng luôn là câu dài nhất.
-4. **Hỗ trợ đủ 3 loại:** `type: 'trace'`, `type: 'single'`, và `type: 'multiple'` (chọn nhiều đáp án có nút kiểm tra).
-5. **Bài tập Debug (`debugExercises`):** Cung cấp mã nguồn bị lỗi, bộ test làm code chạy sai, yêu cầu học sinh bấm chọn đúng dòng lỗi (`bugLine`) và chọn bản vá chuẩn (`correctPatch`).
+### Bước 4: Kiểm Soát Chất Lượng Câu Hỏi & Debug (`Quiz QC Rules`)
+1. **Tỷ lệ câu hỏi Trace code (`type: 'trace'`, có `traceCode`) $\ge 40\%$:** Đưa đoạn code ngắn và input cụ thể, hỏi trạng thái biến/mảng tại bước $k$.
+2. **Nhiễu đồng dạng 80–90% (Isomorphic Distractors):** Các phương án A, B, C, D dùng chung khung câu văn, chỉ khác điều kiện biên, giá trị hoặc bản chất; không có phương án đùa cợt.
+3. **Cân bằng độ dài phương án $\le 35\%$ (ưu tiên $\le 20\%$):** Độ dài phương án dài nhất và ngắn nhất không lệch quá $35\%$; phân bổ ngẫu nhiên vị trí đáp án đúng (`A/B/C/D`).
+4. **Đủ 3 loại câu hỏi:** `type: 'trace'`, `type: 'single'`, `type: 'multiple'`.
+5. **Bài tập Debug (`debugExercises`):** Tối thiểu 2 bài; mỗi bài có `bugLine > 0` khớp chính xác dòng lỗi trong code, `failingInput`, ít nhất 3 `patches`, và `correctPatch`.
 
-### Bước 5: Tạo Giao Diện Web `index.html` & Cập Nhật Cây Kỹ Năng
-1. Tạo file `index.html` trong thư mục bài giảng nạp:
-   - `../shared/styles.css`
-   - KaTeX 0.16.8 (CSS + JS + auto-render)
-   - `../shared/icons.js`, `../shared/progress.js`, `../shared/highlighter.js`, `../shared/lecture-engine.js`
-   - `lesson-data.js`
-   - Đoạn script khởi tạo: `initLecturePage(window.LESSON_DATA)`.
-2. Mở file `shared/portal-data.js` ở thư mục gốc:
-   - Thêm nút mới vào mảng `nodes`: `{ id, code, title, track, category, path, summary, x, y, badge }`.
-   - Thêm cạnh nối vào mảng `edges`: `{ from, to, label, detail }` giải thích rõ bước nhảy tư duy giữa kiến thức cũ và kiến thức mới.
+### Bước 5: Tạo Giao Diện Web `index.html` & Cập Nhật Cây Kỹ Năng (`shared/portal-data.js`)
+1. Tạo `index.html` nạp `../shared/styles.css`, KaTeX 0.16.8, `../shared/icons.js`, `../shared/progress.js`, `../shared/highlighter.js`, `../shared/lecture-engine.js`, `lesson-data.js` và gọi `initLecturePage(window.LESSON_DATA)`.
+2. Cập nhật `shared/portal-data.js`:
+   - Thêm/cập nhật node trong `nodes`: `{ id, code, title, track, phase, status, category, path, summary, x, y, badge }`.
+   - Thêm/cập nhật cạnh trong `edges`: `{ from, to, label, detail }` bảo toàn DAG không chu trình.
 
-### Bước 6: Kiểm Thử Tự Động Toàn Diện
-Chạy bộ kiểm thử tự động để bảo đảm chất lượng tuyệt đối trước khi bàn giao:
+### Bước 6: Kiểm Thử Cục Bộ & Cổng Thẩm Định Subagent — *[Nâng cấp 3 & 5]*
+- **Bước 6a — Kiểm thử cục bộ theo từng bài (`--lesson <dir>`):**
+  Không chạy lại toàn bộ bộ test repo sau mỗi chỉnh sửa nhỏ. Trong lúc phát triển, chỉ chạy kiểm định riêng thư mục bài đang làm:
+  ```bash
+  node tests/verify_all_lectures.mjs --lesson <TenThuMuc>
+  bash tests/verify_all_cpp.sh --lesson <TenThuMuc>
+  ```
+- **Bước 6b — Cổng Kiểm Định Subagent Độc Lập (`Subagent Quality Gate >= 90/100`):**
+  Sau khi hoàn thiện mỗi bài giảng (hoặc cụm bài giảng), bắt buộc chạy **subagent độc lập** (dựa trên bộ tiêu chí `tests/audit_pedagogy_subagent.sh` + rà soát kỹ thuật) để chấm điểm và phản biện:
+  1. **Sư phạm Lớp 9:** Đủ Problem-First $\rightarrow$ Tách vấn đề $\rightarrow$ 3 bước; không lọt thuật ngữ chưa dạy; tuân thủ Pha 1 (mảng toàn cục, tránh `Call Stack`) vs Pha 2 (`vector`, `&`, STL).
+  2. **Chuẩn Code C++ CP:** Đúng `#include <bits/stdc++.h>`, `using namespace std;`, `ios_base::sync_with_stdio(false); cin.tie(NULL);` (trừ `MOD-Pre`), dùng `'\n'`.
+  3. **Chất lượng Quiz & Debug:** Trace code $\ge 40\%$, nhiễu đồng dạng 80–90%, chênh lệch độ dài $\le 35\%$, đáp án phân bổ đều, `bugLine` khớp code, $\ge 2$ `debugExercises`.
+  4. **Độ tin cậy OJ:** Đủ $\ge 6$ bài phân `tier: 1, 2, 3`, đã xác thực qua `search_web`, không link trang chủ, đúng thuật toán.
+  - **Ngưỡng đạt chuẩn:** **$\ge 90/100$** và không còn lỗi logic/tiền đề nghiêm trọng.
+  - *Ghi chú quy trình SDD:* Khi thực hiện theo kế hoạch SDD, **controller điều phối subagent thẩm định này ngay sau bước triển khai** (implementer không tự spawn subagent lồng nhau).
+
+### Bước 7: Nghiệm Thu Toàn Repo 1 Lần Duy Nhất — *[Nâng cấp 3]*
+Chỉ chạy bộ kiểm định toàn repo **1 lần duy nhất** khi kết thúc toàn bộ đợt triển khai (sau mọi chỉnh sửa cuối cùng):
 ```bash
-# 1. Kiểm tra cấu trúc web, tỷ lệ trace, chênh lệch độ dài quiz và tính toàn vẹn dữ liệu
 node tests/verify_all_lectures.mjs
-
-# 2. Kiểm tra biên dịch g++ -std=c++14 -O2 -Wall cho tất cả file .cpp
 bash tests/verify_all_cpp.sh
 ```
-Nếu có bất kỳ lỗi nào xuất hiện, sửa ngay tại mã nguồn gốc cho đến khi cả hai lệnh đều báo **PASS 100%**.
+Cả hai lệnh phải đạt **PASS 100%** (gồm toàn vẹn DAG `shared/portal-data.js`, không có node non-`planned` thiếu `index.html`, và không có link OJ dạng trang chủ trần).

@@ -524,7 +524,7 @@
         x: 3265,
         y: 425,
         badge: 'Tốt nghiệp',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã hoàn thành DP Lưới 2D (L2-07) và DP Cái Túi / Tổ hợp đếm (L2-08)'

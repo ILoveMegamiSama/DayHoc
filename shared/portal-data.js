@@ -73,7 +73,7 @@
         x: 415,
         y: 56,
         badge: 'Chuẩn CP',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha1_array',
         prerequisites: [
           'Đã học xong MOD-Pre: biết hàm main(), biến cơ bản và nhập xuất bằng cin/cout'

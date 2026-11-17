@@ -124,7 +124,7 @@
         x: 700,
         y: 200,
         badge: 'Tầng 1',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha1_array',
         prerequisites: [
           'Đã nắm khung code chuẩn CP ở MOD-CP0 (Fast I/O, using namespace std;)'

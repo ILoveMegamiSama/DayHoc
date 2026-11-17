@@ -3,7 +3,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 02_DeQuyDuoi_BienTichLuy.cpp -o 02_DeQuyDuoi_BienTichLuy.exe
  */
 
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 

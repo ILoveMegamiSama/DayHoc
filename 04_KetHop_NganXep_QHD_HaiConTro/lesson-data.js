@@ -85,7 +85,7 @@ return dp1;</code></pre>
             ],
             build(state) {
               const isIter = state.impl_mode === 'iter_dp';
-              const code = `#include <iostream>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 ${isIter ? `// BẢNG DP: Duyệt từ đáy lên, O(1) không gian Stack
@@ -105,13 +105,15 @@ long long fibo(int n) {
 }`}
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     int n = 100000;
-    cout << "Fibo(" << n << ") = " << fibo(n) << "\\n";
+    cout << "Fibo(" << n << ") = " << fibo(n) << '\\n';
     return 0;
 }`;
               return {
                 code,
-                changedLines: isIter ? [5, 6, 7] : [5, 6, 7],
+                changedLines: [5, 6, 7],
                 statusOk: isIter,
                 statusText: isIter ? 'Quy hoạch động tuần tự: tính xong Fibo(100.000) trong 0.001s tuyệt đối an toàn' : 'Đệ quy có nhớ: dù có mảng nhớ memo nhưng vẫn bị sập vì Call Stack gọi sâu 100.000 tầng',
                 console: isIter
@@ -260,12 +262,12 @@ for (int i = 0; i &lt; n; i++) {
                 ? `i=0 (a=3): L=-1 -> dp[0] = 3 * 1 = 3 -> Stack: [0]\ni=1 (a=1): 3>=1 pop(0), L=-1 -> dp[1] = 1 * 2 = 2 -> Stack: [1]\ni=2 (a=2): top=1 < 2 -> L=1 -> dp[2] = dp[1] + 2*(2-1) = 2 + 2 = 4 -> Stack: [1, 2]\ni=3 (a=4): top=2 < 4 -> L=2 -> dp[3] = dp[2] + 4*(3-2) = 4 + 4 = 8 -> Stack: [1, 2, 3]\n-> Tổng kết quả: 3 + 2 + 4 + 8 = 17 trong O(N)!`
                 : `Vét cạn: Duyệt từng đoạn con:\n[3]=3; [3,1]=1, [1]=1; [3,1,2]=1, [1,2]=1, [2]=2; [3,1,2,4]=1, [1,2,4]=1, [2,4]=2, [4]=4\nTổng = 3 + 2 + 4 + 8 = 17 (Mất N*(N+1)/2 phép tính)`;
 
-              const code = `#include <iostream>
-#include <vector>
-#include <stack>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     vector<int> a = {3, 1, 2, 4};
     int n = a.size();
     vector<long long> dp(n, 0);
@@ -279,7 +281,7 @@ int main() {
         ans += dp[i];
         st.push(i);
     }
-    cout << "Tong min cac doan con: " << ans << "\\n";
+    cout << "Tong min cac doan con: " << ans << '\\n';
     return 0;
 }`;
               return {
@@ -430,12 +432,12 @@ for (int i = 1; i &lt; n; i++) {
                 ? `i=0: dp[0]=1 -> dq=[0]\ni=1: dq.front=0 (>= 1-2) -> dp[1] = -1 + 1 = 0 -> pop_back ko co -> dq=[0, 1]\ni=2: dq.front=0 (>= 2-2) -> dp[2] = -2 + 1 = -1 -> dq=[0, 1, 2]\ni=3: dq.front=0 < 3-2 -> pop_front(0)! dq.front hien tai la 1 (dp[1]=0) -> dp[3] = 4 + 0 = 4! dp[3]=4 lon hon ca dp[1], dp[2] -> pop_back(2), pop_back(1) -> dq=[3]!\n-> Kết quả cuối cùng dp[5] = 7 trong O(N)!`
                 : `K=1: Bắt buộc phải đi qua mọi vị trí: tổng = 1 + (-1) + (-2) + 4 + (-7) + 3 = -2`;
 
-              const code = `#include <iostream>
-#include <vector>
-#include <deque>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     vector<long long> a = {1, -1, -2, 4, -7, 3};
     int n = a.size();
     int K = ${kVal};
@@ -450,12 +452,12 @@ int main() {
         while (!dq.empty() && dp[dq.back()] <= dp[i]) dq.pop_back();
         dq.push_back(i);
     }
-    cout << "Diem max: " << dp[n - 1] << "\\n";
+    cout << "Diem max: " << dp[n - 1] << '\\n';
     return 0;
 }`;
               return {
                 code,
-                changedLines: [8],
+                changedLines: [9],
                 statusOk: true,
                 statusText: 'Monotonic Deque kết hợp hoàn hảo giữa Hai con trỏ và Ngăn xếp đơn điệu',
                 console: log,
@@ -571,11 +573,11 @@ int main() {
     }
     return dp[n - 1];
 }`,
-        bugLine: 9,
+        bugLine: 8,
         patches: [
-          { text: 'Sửa dòng 9 thành: if (L == -1) dp[i] = (long long)a[i] * (i + 1);' },
-          { text: 'Sửa dòng 9 thành: if (L == -1) dp[i] = dp[i - 1] + a[i];' },
-          { text: 'Sửa dòng 9 thành: if (L == -1) dp[i] = 0;' }
+          { text: 'Sửa dòng 8 thành: if (L == -1) dp[i] = (long long)a[i] * (i + 1);' },
+          { text: 'Sửa dòng 8 thành: if (L == -1) dp[i] = dp[i - 1] + a[i];' },
+          { text: 'Sửa dòng 8 thành: if (L == -1) dp[i] = 0;' }
         ],
         correctPatch: 0,
         explain: 'Khi L == -1, phần tử a[i] nhỏ nhất trong toàn bộ đoạn từ index 0 đến i (gồm đúng i + 1 vị trí). Do đó có đúng (i + 1) đoạn con kết thúc tại i nhận a[i] làm giá trị nhỏ nhất, công thức bắt buộc là a[i] * (i + 1).'
@@ -583,16 +585,32 @@ int main() {
     ],
 
     // ============================================================================
-    // BÀI TẬP THỰC CHIẾN TUYỂN CHỌN
+    // BÀI TẬP THỰC CHIẾN TUYỂN CHỌN (ĐÃ XÁC THỰC QUA SEARCH_WEB)
     // ============================================================================
     practiceProblems: [
+      {
+        id: 'VNOJ-MINK',
+        title: 'Huyền thoại Lục Vân Tiên (MINK)',
+        judge: 'VNOJ',
+        tier: 1,
+        link: 'https://oj.vnoi.info/problem/mink',
+        hint: 'Giới hạn T bộ test, 1 <= K <= N <= 17,000. Bước đệm Monotonic Deque: duy trì deque<int> tăng dần lưu chỉ số để tìm giá trị nhỏ nhất của mọi cửa sổ độ dài K trong O(N) (pop_front khi dq.front() <= i - K).'
+      },
+      {
+        id: 'LC-239',
+        title: 'Sliding Window Maximum (Tìm Max Cửa Sổ K)',
+        judge: 'LeetCode',
+        tier: 1,
+        link: 'https://leetcode.com/problems/sliding-window-maximum/',
+        hint: 'Giới hạn 1 <= n <= 10^5, -10^4 <= nums[i] <= 10^4, 1 <= k <= n. Duy trì deque<int> giảm dần để lấy ngay max mỗi đoạn k phần tử tại dq.front() trong O(N).'
+      },
       {
         id: 'LC-907',
         title: 'Sum of Subarray Minimums (DP + Monotonic Stack)',
         judge: 'LeetCode',
         tier: 2,
         link: 'https://leetcode.com/problems/sum-of-subarray-minimums/',
-        hint: 'Áp dụng công thức dp[i] = dp[L] + a[i] * (i - L) với L tìm bằng Monotonic Stack tăng dần.'
+        hint: 'Giới hạn 1 <= n, arr[i] <= 3*10^4, modulo 10^9 + 7. Áp dụng trực tiếp Mảnh ghép 2: dùng Monotonic Stack tăng dần tìm vị trí L nhỏ hơn gần nhất bên trái và chuyển trạng thái dp[i] = (dp[L] + arr[i] * (i - L)) % MOD.'
       },
       {
         id: 'LC-1696',
@@ -600,15 +618,39 @@ int main() {
         judge: 'LeetCode',
         tier: 2,
         link: 'https://leetcode.com/problems/jump-game-vi/',
-        hint: 'Mỗi bước nhảy tối đa K: dùng Monotonic Deque duy trì max dp[j] trong cửa sổ [i-K, i-1] trong O(N).'
+        hint: 'Giới hạn 1 <= n, k <= 10^5, -10^4 <= nums[i] <= 10^4. Mỗi bước nhảy tối đa k: dùng Monotonic Deque giảm dần duy trì max dp[j] trong cửa sổ [i - k, i - 1] trong O(N).'
       },
       {
-        id: 'CSES-1076',
-        title: 'Sliding Window Median (Cửa Sổ Trượt Nâng Cao)',
+        id: 'LC-1425',
+        title: 'Constrained Subsequence Sum (DP + Monotonic Deque)',
+        judge: 'LeetCode',
+        tier: 2,
+        link: 'https://leetcode.com/problems/constrained-subsequence-sum/',
+        hint: 'Giới hạn 1 <= n <= 10^5, -10^4 <= nums[i] <= 10^4, 1 <= k <= n. Biến thể Jump Game VI cho phép bắt đầu dãy con mới nếu tổng cũ âm: dp[i] = nums[i] + max(0, dp[dq.front()]) kết hợp Monotonic Deque.'
+      },
+      {
+        id: 'CSES-1644',
+        title: 'Maximum Subarray Sum II',
         judge: 'CSES Problem Set',
         tier: 3,
-        link: 'https://cses.fi/problemset/task/1076',
-        hint: 'Duy trì cửa sổ trượt độ dài K kết hợp 2 cấu trúc dữ liệu để tìm trung vị trong O(N log K).'
+        link: 'https://cses.fi/problemset/task/1644',
+        hint: 'Giới hạn 1 <= a <= b <= n <= 2*10^5, |x_i| <= 10^9. Tính mảng cộng dồn P[i]: tổng đoạn [j+1..i] độ dài thuộc [a, b] đạt max khi P[j] nhỏ nhất trong [i - b, i - a]. Dùng Monotonic Deque tìm min P[j] trong O(N)!'
+      },
+      {
+        id: 'VNOJ-KDIFF',
+        title: 'Trồng hoa (KDIFF)',
+        judge: 'VNOJ',
+        tier: 3,
+        link: 'https://oj.vnoi.info/problem/kdiff',
+        hint: 'Giới hạn 1 <= N <= 3*10^5, độ xinh đẹp <= 10^9. Kết hợp Hai con trỏ + 2 Monotonic Deque (giữ max - min <= K) tính độ dài đoạn hợp lệ dài nhất kết thúc tại i, rồi dùng bảng DP MaxL[i] / MaxR[i] chọn 2 đoạn rời nhau trong O(N).'
+      },
+      {
+        id: 'CF-372C',
+        title: '372C - Watching Fireworks is Fun',
+        judge: 'Codeforces',
+        tier: 3,
+        link: 'https://codeforces.com/problemset/problem/372/C',
+        hint: 'Giới hạn 1 <= n <= 150,000, 1 <= m <= 300. Trạng thái DP theo vị trí x trong phạm vi trượt |x - y| <= d * (t_i - t_{i-1}) được tối ưu từ O(m * n^2) xuống O(m * n) nhờ Monotonic Deque.'
       }
     ]
   };

@@ -98,18 +98,19 @@ while (trai < phai) {
                 log = `Bước 1: trai=0 (1), phai=4 (9). Tổng = 10 > 5 -> phai-- (3)\nBước 2: trai=0 (1), phai=3 (7). Tổng = 8 > 5 -> phai-- (2)\nBước 3: trai=0 (1), phai=2 (4). Tổng = 5 == 5 -> TÌM THẤY! Cặp (1, 4)`;
               }
 
-              const code = `#include <iostream>
-#include <vector>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     vector<int> a = {1, 2, 4, 7, 9};
     int S = ${sVal};
     int trai = 0, phai = a.size() - 1;
     while (trai < phai) {
         int tong = a[trai] + a[phai];
         if (tong == S) {
-            cout << "Tim thay: " << a[trai] << " + " << a[phai] << " = " << S << "\\n";
+            cout << "Tim thay: " << a[trai] << " + " << a[phai] << " = " << S << '\\n';
             return 0;
         }
         if (tong < S) trai++;
@@ -120,7 +121,7 @@ int main() {
 }`;
               return {
                 code,
-                changedLines: [7],
+                changedLines: [8],
                 statusOk: true,
                 statusText: 'Tìm thấy cặp số tối ưu sau số bước cực ngắn trong O(N)',
                 console: log,
@@ -263,11 +264,12 @@ for (int phai = 0; phai < n; phai++) {
                 ? `phai=0 (1): tong=1 <= 5 -> doDai=1, doan=[0..0]\nphai=1 (3): tong=4 <= 5 -> doDai=2, doan=[0..1]\nphai=2 (2): tong=6 > 5 -> pop a[0]=1, trai=1 -> tong=5 <= 5 -> doDai=2, doan=[1..2]\nphai=3 (1): tong=6 > 5 -> pop a[1]=3, trai=2 -> tong=3 <= 5 -> doDai=2, doan=[2..3]\nphai=4 (4): tong=7 > 5 -> pop a[2]=2, trai=3 -> tong=5 <= 5 -> doDai=2, doan=[3..4]\n-> Độ dài dài nhất là 2!`
                 : `phai=0 (1): tong=1 <= 3 -> doDai=1\nphai=1 (3): tong=4 > 3 -> pop a[0], trai=1 -> tong=3 -> doDai=1\nphai=2 (2): tong=5 > 3 -> pop a[1], trai=2 -> tong=2 -> doDai=1\nphai=3 (1): tong=3 <= 3 -> doan=[2..3] -> doDai=2!\n-> Độ dài dài nhất là 2!`;
 
-              const code = `#include <iostream>
-#include <vector>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     vector<int> a = {1, 3, 2, 1, 4};
     int S = ${sVal};
     int trai = 0, maxLen = 0, tong = 0;
@@ -279,12 +281,12 @@ int main() {
         }
         maxLen = max(maxLen, phai - trai + 1);
     }
-    cout << "Do dai max: " << maxLen << "\\n";
+    cout << "Do dai max: " << maxLen << '\\n';
     return 0;
 }`;
               return {
                 code,
-                changedLines: [7],
+                changedLines: [8],
                 statusOk: true,
                 statusText: 'Cửa sổ trượt duy trì tổng trong O(N) hoàn toàn chính xác',
                 console: log,
@@ -418,11 +420,12 @@ for (int phai = 0; phai < n; phai++) {
             ],
             build(state) {
               const isPos = state.has_negative === 'all_pos';
-              const code = `#include <iostream>
-#include <vector>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     vector<int> a = {${isPos ? '2, 1, 3, 2' : '5, -3, 2, 1'}};
     int S = 4;
     int trai = 0, tong = 0, cnt = 0;
@@ -434,12 +437,12 @@ int main() {
         }
         cnt += (phai - trai + 1);
     }
-    cout << "So doan con tim duoc: " << cnt << "\\n";
+    cout << "So doan con tim duoc: " << cnt << '\\n';
     return 0;
 }`;
               return {
                 code,
-                changedLines: [6],
+                changedLines: [7],
                 statusOk: isPos,
                 statusText: isPos ? 'Mảng toàn số dương: Hai con trỏ đếm chính xác 100% các đoạn con' : 'BẪY SỐ ÂM: Hai con trỏ bỏ sót đoạn hợp lệ vì tính đơn điệu bị phá vỡ!',
                 console: isPos
@@ -566,16 +569,24 @@ int main() {
     ],
 
     // ============================================================================
-    // BÀI TẬP THỰC CHIẾN TUYỂN CHỌN
+    // BÀI TẬP THỰC CHIẾN TUYỂN CHỌN (ĐÃ XÁC THỰC QUA SEARCH_WEB)
     // ============================================================================
     practiceProblems: [
+      {
+        id: 'CF-381A',
+        title: '381A - Sereja and Dima',
+        judge: 'Codeforces',
+        tier: 1,
+        link: 'https://codeforces.com/problemset/problem/381/A',
+        hint: 'Giới hạn 1 <= n <= 1000. Hai người lần lượt lấy lá bài lớn hơn ở hai đầu hàng: dùng 2 con trỏ ngược chiều l = 0, r = n - 1 co vào giữa trong O(N).'
+      },
       {
         id: 'CSES-1640',
         title: 'Sum of Two Values',
         judge: 'CSES Problem Set',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1640',
-        hint: 'Áp dụng Hai con trỏ ngược chiều trên mảng đã sắp xếp (lưu kèm vị trí gốc) để tìm 2 số có tổng bằng X.'
+        hint: 'Giới hạn 1 <= n <= 2*10^5, 1 <= x, a_i <= 10^9. Lưu {giá trị, vị trí gốc} vào vector<pair<long long, int>>, sort tăng dần rồi dùng Hai con trỏ ngược chiều while (trai < phai) tìm 2 số tổng bằng x.'
       },
       {
         id: 'CSES-1660',
@@ -583,15 +594,47 @@ int main() {
         judge: 'CSES Problem Set',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1660',
-        hint: 'Mảng toàn số dương: dùng Hai con trỏ cùng chiều (Cửa sổ trượt) để đếm số đoạn con có tổng đúng bằng X.'
+        hint: 'Giới hạn 1 <= n <= 2*10^5, a_i >= 1 (toàn số dương). Áp dụng Cửa sổ trượt (Hai con trỏ cùng chiều): co trai++ khi tong > x và tăng đáp án khi tong == x trong O(N).'
+      },
+      {
+        id: 'CF-279B',
+        title: '279B - Books',
+        judge: 'Codeforces',
+        tier: 2,
+        link: 'https://codeforces.com/problemset/problem/279/B',
+        hint: 'Giới hạn 1 <= n <= 10^5, 1 <= t <= 10^9, 1 <= a_i <= 10^4. Khuôn mẫu chuẩn Cửa sổ trượt tìm đoạn liên tiếp dài nhất có tổng thời gian đọc <= t (maxLen = max(maxLen, phai - trai + 1)).'
       },
       {
         id: 'VNOJ-NKSGAME',
-        title: 'Trò Chơi Với Dãy Số (Hai Con Trỏ Ngược Chiều)',
+        title: 'Trò chơi với dãy số (NKSGAME - VOI 08)',
         judge: 'VNOJ',
         tier: 2,
         link: 'https://oj.vnoi.info/problem/nksgame',
-        hint: 'Cho 2 dãy số, tìm cặp a[i] + b[j] có giá trị tuyệt đối nhỏ nhất: sort cả 2 mảng rồi dùng 2 con trỏ co hẹp khoảng cách.'
+        hint: 'Giới hạn 1 <= n <= 10^5, |b_i|, |c_i| <= 10^9. Sort cả 2 mảng b và c tăng dần. Đặt i = 0 ở đầu b, j = n - 1 ở cuối c: nếu b[i] + c[j] > 0 thì j--, ngược lại i++, cập nhật min(|b[i] + c[j]|).'
+      },
+      {
+        id: 'CSES-1141',
+        title: 'Playlist',
+        judge: 'CSES Problem Set',
+        tier: 2,
+        link: 'https://cses.fi/problemset/task/1141',
+        hint: 'Giới hạn 1 <= n <= 2*10^5. Tìm đoạn liên tiếp dài nhất gồm các bài hát phân biệt: dùng Cửa sổ trượt [trai..phai] kết hợp map<int, int> đếm tần suất; khi a[phai] bị trùng thì tăng trai++ đến khi hết trùng.'
+      },
+      {
+        id: 'CSES-1641',
+        title: 'Sum of Three Values',
+        judge: 'CSES Problem Set',
+        tier: 3,
+        link: 'https://cses.fi/problemset/task/1641',
+        hint: 'Giới hạn 1 <= n <= 5000, 1 <= x, a_i <= 10^9. Sort mảng kèm chỉ số gốc. Cố định phần tử thứ nhất i rồi dùng Hai con trỏ ngược chiều trên đoạn [i + 1 .. n - 1] tìm tổng x - a[i] trong O(N^2).'
+      },
+      {
+        id: 'CSES-2428',
+        title: 'Subarray Distinct Values',
+        judge: 'CSES Problem Set',
+        tier: 3,
+        link: 'https://cses.fi/problemset/task/2428',
+        hint: 'Giới hạn 1 <= k <= n <= 2*10^5, 1 <= x_i <= 10^9. Dùng Cửa sổ trượt + map<int, int> giữ tối đa k giá trị khác nhau trong [trai..phai]; tại mỗi phai, cộng ngay (phai - trai + 1) vào tổng (kiểu long long).'
       }
     ]
   };

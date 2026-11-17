@@ -3,9 +3,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 01_NganXepCoBan_KhopNgoac.cpp -o 01_NganXepCoBan_KhopNgoac.exe
  */
 
-#include <iostream>
-#include <string>
-#include <stack>
+#include <bits/stdc++.h>
 
 using namespace std;
 

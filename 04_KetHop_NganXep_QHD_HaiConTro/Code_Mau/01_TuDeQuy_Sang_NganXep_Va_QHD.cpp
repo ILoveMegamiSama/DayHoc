@@ -4,9 +4,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 01_TuDeQuy_Sang_NganXep_Va_QHD.cpp -o 01_TuDeQuy_Sang_NganXep_Va_QHD.exe
  */
 
-#include <iostream>
-#include <vector>
-#include <stack>
+#include <bits/stdc++.h>
 
 using namespace std;
 

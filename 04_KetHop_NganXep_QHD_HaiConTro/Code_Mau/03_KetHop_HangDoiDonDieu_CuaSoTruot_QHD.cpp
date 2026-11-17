@@ -5,9 +5,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 03_KetHop_HangDoiDonDieu_CuaSoTruot_QHD.cpp -o 03_KetHop_HangDoiDonDieu_CuaSoTruot_QHD.exe
  */
 
-#include <iostream>
-#include <vector>
-#include <deque>
+#include <bits/stdc++.h>
 
 using namespace std;
 

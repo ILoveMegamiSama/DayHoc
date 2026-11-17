@@ -92,9 +92,7 @@ bool r = st.empty(); // Kiểm tra ngăn xếp có rỗng không</code></pre>
                 consoleText = `Duyệt '(': push('(') -> Stack: ['(']\nDuyệt ')': pop() -> Stack: []\nDuyệt ')': Stack rỗng mà gặp ngoặc đóng! -> KHÔNG HỢP LỆ!`;
               }
 
-              const code = `#include <iostream>
-#include <stack>
-#include <string>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 bool hopLe(string s) {
@@ -113,13 +111,15 @@ bool hopLe(string s) {
 }
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     string s = "${inputStr}";
-    cout << s << ": " << (hopLe(s) ? "HOP LE" : "SAI") << "\\n";
+    cout << s << ": " << (hopLe(s) ? "HOP LE" : "SAI") << '\\n';
     return 0;
 }`;
               return {
                 code,
-                changedLines: [21],
+                changedLines: [22],
                 statusOk: isOk,
                 statusText: isOk ? 'Chuỗi ngoặc đóng mở đúng chuẩn LIFO' : 'Phát hiện lỗi vi phạm quy tắc đóng mở ngoặc',
                 console: consoleText,
@@ -270,18 +270,18 @@ for (int i = 0; i &lt; n; i++) {
                 log = `i=0 (1): L[0]=-1 -> Stack: [1]\ni=1 (3): pop(1) -> L[1]=-1 -> Stack: [3]\ni=2 (6): pop(3) -> L[2]=-1 -> Stack: [6]\ni=3 (8): pop(6) -> L[3]=-1 -> Stack: [8]\n(Mỗi bước đều đuổi sạch phần tử trước vì phần tử mới luôn lớn hơn!)`;
               }
 
-              const code = `#include <iostream>
-#include <vector>
-#include <stack>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     vector<int> a = {${arr.join(', ')}};
     stack<int> st;
     for (int x : a) {
         while (!st.empty() && st.top() <= x) st.pop();
         int ans = st.empty() ? -1 : st.top();
-        cout << "Phan tu " << x << " -> Lon hon gan nhat: " << ans << "\\n";
+        cout << "Phan tu " << x << " -> Lon hon gan nhat: " << ans << '\\n';
         st.push(x);
     }
     return 0;
@@ -425,12 +425,12 @@ for (int i = 0; i &lt; n; i++) {
                 ? `Cột h[2]=5: Biên trái L=1, Biên phải R=4 -> Rộng = 4-1-1 = 2 -> DT = 5 * 2 = 10\nCột h[3]=6: Biên trái L=2, Biên phải R=4 -> Rộng = 4-2-1 = 1 -> DT = 6 * 1 = 6\n-> Diện tích lớn nhất toàn bảng: 10!`
                 : `Tất cả cột cao 4, mở rộng trọn vẹn cả 4 cột -> DT = 4 * 4 = 16!`;
 
-              const code = `#include <iostream>
-#include <vector>
-#include <stack>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     vector<long long> h = {${hArr.join(', ')}};
     int n = h.size();
     vector<int> L(n), R(n);
@@ -449,7 +449,7 @@ int main() {
     }
     long long ans = 0;
     for (int i = 0; i < n; i++) ans = max(ans, h[i] * (R[i] - L[i] - 1));
-    cout << "Dien tich max: " << ans << "\\n";
+    cout << "Dien tich max: " << ans << '\\n';
     return 0;
 }`;
               return {
@@ -573,24 +573,48 @@ for (int i = 0; i < n; i++) {
     ],
 
     // ============================================================================
-    // BÀI TẬP THỰC CHIẾN TUYỂN CHỌN
+    // BÀI TẬP THỰC CHIẾN TUYỂN CHỌN (ĐÃ XÁC THỰC QUA SEARCH_WEB)
     // ============================================================================
     practiceProblems: [
+      {
+        id: 'LC-20',
+        title: 'Valid Parentheses (Khớp Ngoặc LIFO)',
+        judge: 'LeetCode',
+        tier: 1,
+        link: 'https://leetcode.com/problems/valid-parentheses/',
+        hint: 'Giới hạn 1 <= |s| <= 10^4. Áp dụng trực tiếp std::stack<char>: gặp ngoặc mở đẩy vào stack, gặp ngoặc đóng kiểm tra !st.empty() và đối chiếu st.top(), cuối chuỗi kiểm tra st.empty().'
+      },
       {
         id: 'CSES-1645',
         title: 'Nearest Smaller Values',
         judge: 'CSES Problem Set',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1645',
-        hint: 'Áp dụng trực tiếp khuôn mẫu Ngăn xếp đơn điệu tăng dần từ đáy lên đỉnh để tìm phần tử nhỏ hơn gần nhất bên trái trong O(N).'
+        hint: 'Giới hạn 1 <= n <= 2*10^5, 1 <= x_i <= 10^9. Khuôn mẫu chuẩn Monotonic Stack tăng dần lưu chỉ số (1-based) để tìm vị trí gần nhất bên trái có giá trị nhỏ hơn trong O(N).'
+      },
+      {
+        id: 'LC-739',
+        title: 'Daily Temperatures (Chờ Ngày Ấm Hơn)',
+        judge: 'LeetCode',
+        tier: 1,
+        link: 'https://leetcode.com/problems/daily-temperatures/',
+        hint: 'Giới hạn 1 <= n <= 10^5, 30 <= T_i <= 100. Dùng Monotonic Stack giảm dần lưu chỉ số ngày; khi gặp ngày i ấm hơn st.top(), pop ra và tính ngay khoảng cách (i - st.top()).'
+      },
+      {
+        id: 'CF-343B',
+        title: '343B - Alternating Current',
+        judge: 'Codeforces',
+        tier: 2,
+        link: 'https://codeforces.com/problemset/problem/343/B',
+        hint: 'Giới hạn 1 <= |s| <= 10^5 (gồm "+" và "-"). Dùng stack<char> khử các cặp dây giống nhau liền kề: nếu !st.empty() && st.top() == c thì pop(), ngược lại push(c). Gỡ được hết khi st.empty().'
       },
       {
         id: 'VNOJ-KAGAIN',
-        title: 'Khởi Nghĩa (Dãy Cột Tầm Nhìn)',
+        title: 'Chiến trường Ô qua (KAGAIN)',
         judge: 'VNOJ',
         tier: 2,
         link: 'https://oj.vnoi.info/problem/kagain',
-        hint: 'Tìm biên trái và biên phải mở rộng từ mỗi vị trí i bằng cách tìm phần tử nhỏ hơn gần nhất về hai phía.'
+        hint: 'Giới hạn T test, 1 <= N <= 30,000, A_i <= 30,000. Tìm biên trái L[i] và biên phải R[i] bằng Monotonic Stack để tối đa hóa A[i] * (R[i] - L[i] - 1) và xuất kèm đoạn [L[i] + 1, R[i] - 1].'
       },
       {
         id: 'CSES-1142',
@@ -598,7 +622,23 @@ for (int i = 0; i < n; i++) {
         judge: 'CSES Problem Set',
         tier: 2,
         link: 'https://cses.fi/problemset/task/1142',
-        hint: 'Tìm diện tích bảng quảng cáo lớn nhất: tính L[i] và R[i] bằng Monotonic Stack lưu chỉ số, rồi max hóa h[i] * (R[i] - L[i] - 1).'
+        hint: 'Giới hạn 1 <= n <= 2*10^5, 1 <= k_i <= 10^9. Tìm diện tích bảng quảng cáo lớn nhất bằng Monotonic Stack lưu chỉ số tính L[i], R[i] (nhớ dùng long long cho k[i] * (R[i] - L[i] - 1)).'
+      },
+      {
+        id: 'VNOJ-KPLANK',
+        title: 'Bán dừa (KPLANK - Cạnh Hình Vuông Lớn Nhất)',
+        judge: 'VNOJ',
+        tier: 3,
+        link: 'https://oj.vnoi.info/problem/kplank',
+        hint: 'Giới hạn 1 <= N <= 10^6, chiều cao <= 10^9. Dùng Monotonic Stack tìm độ rộng mở rộng W_i = R[i] - L[i] - 1 quanh tấm ván i; nếu W_i >= A[i] thì có thể cưa tấm vuông cạnh A[i].'
+      },
+      {
+        id: 'VNOJ-QBRECT',
+        title: 'Hình chữ nhật 0 1 (QBRECT)',
+        judge: 'VNOJ',
+        tier: 3,
+        link: 'https://oj.vnoi.info/problem/qbrect',
+        hint: 'Giới hạn 1 <= M, N <= 1000. Biến ma trận 2D thành M bài toán Histogram 1D: tại mỗi hàng cập nhật chiều cao cột số 1 liên tiếp h[j], rồi chạy Monotonic Stack tìm diện tích lớn nhất trong O(M * N).'
       }
     ]
   };

@@ -4,55 +4,57 @@
  *
  * MỤC TIÊU HỌC TẬP:
  * 1. Hiểu khái niệm Biến (Variable) là những chiếc hộp dán nhãn đặt trên kệ RAM.
- * 2. Phân loại kích cỡ và tính chất từng loại hộp: int, double, std::string, char, bool.
+ * 2. Phân loại kích cỡ và tính chất từng loại hộp: int, double, string, char, bool.
  * 3. Hiểu bản chất phép gán (=) là hành động múc đồ bên phải bỏ vào hộp bên trái.
  * 4. Thấu hiểu hiện tượng chia nguyên (5 / 2 = 2) và cách chia đúng ra số lẻ (5.0 / 2.0 = 2.5).
  */
 
-#include <iostream>
-#include <string>
+// Tủ đồ nghề đa năng: gom cả iostream (cin/cout) và string vào cùng 1 dòng
+#include <bits/stdc++.h>
+// Mở xưởng chung std để dùng thẳng cout, endl, string
+using namespace std;
 
 int main() {
-    std::cout << "=== KHÁM PHÁ DÀN HỘP DÁN NHÃN TRONG GIAN BẾP ===" << std::endl;
+    cout << "=== KHÁM PHÁ DÀN HỘP DÁN NHÃN TRONG GIAN BẾP ===" << endl;
 
     // 1. HỘP SỐ NGUYÊN (int): Đựng con số đếm nguyên vẹn chiếc
     int soLuongBanh = 10;
-    std::cout << "1. Hop so nguyen (int) 'soLuongBanh' chua: " << soLuongBanh << " chiec banh." << std::endl;
-    std::cout << "   -> Kich thuoc hop nay tren ban RAM la: " << sizeof(int) << " byte." << std::endl;
+    cout << "1. Hop so nguyen (int) 'soLuongBanh' chua: " << soLuongBanh << " chiec banh." << endl;
+    cout << "   -> Kich thuoc hop nay tren ban RAM la: " << sizeof(int) << " byte." << endl;
 
     // 2. HỘP SỐ LẺ (double): Đựng số có phần lẻ thập phân
     double giaTienMotChiec = 15.5; // 15.5 nghìn đồng
-    std::cout << "2. Hop so le (double) 'giaTienMotChiec' chua: " << giaTienMotChiec << " nghin dong." << std::endl;
-    std::cout << "   -> Kich thuoc hop nay tren ban RAM la: " << sizeof(double) << " byte." << std::endl;
+    cout << "2. Hop so le (double) 'giaTienMotChiec' chua: " << giaTienMotChiec << " nghin dong." << endl;
+    cout << "   -> Kich thuoc hop nay tren ban RAM la: " << sizeof(double) << " byte." << endl;
 
-    // 3. HỘP CHUỖI CHỮ (std::string): Đựng một đoạn văn bản dài
-    std::string tenKhachHang = "Nguyen Van An";
-    std::cout << "3. Hop chuoi chu (string) 'tenKhachHang' chua: " << tenKhachHang << std::endl;
+    // 3. HỘP CHUỖI CHỮ (string): Đựng một đoạn văn bản dài
+    string tenKhachHang = "Nguyen Van An";
+    cout << "3. Hop chuoi chu (string) 'tenKhachHang' chua: " << tenKhachHang << endl;
 
     // 4. HỘP KÝ TỰ ĐƠN (char): Chỉ đựng đúng 1 chữ cái đặt trong nháy đơn '...'
     char sizeCocNuoc = 'L'; // Cỡ cốc lớn (Large)
-    std::cout << "4. Hop ky tu (char) 'sizeCocNuoc' chua: " << sizeCocNuoc << std::endl;
+    cout << "4. Hop ky tu (char) 'sizeCocNuoc' chua: " << sizeCocNuoc << endl;
 
     // 5. HỘP CÔNG TẮC ĐÚNG/SAI (bool): Chỉ có 2 trạng thái: true (1) hoặc false (0)
     bool conBanhKhong = true;
-    std::cout << "5. Hop logic (bool) 'conBanhKhong' chua: " << conBanhKhong << " (1 = Dung, con banh)." << std::endl;
+    cout << "5. Hop logic (bool) 'conBanhKhong' chua: " << conBanhKhong << " (1 = Dung, con banh)." << endl;
 
-    std::cout << "\n--------------------------------------------------" << std::endl;
-    std::cout << "=== THỰC NGHIỆM SỐ HỌC: BÀI TOÁN CHIA BÁNH MÌ ===" << std::endl;
+    cout << "\n--------------------------------------------------" << endl;
+    cout << "=== THỰC NGHIỆM SỐ HỌC: BÀI TOÁN CHIA BÁNH MÌ ===" << endl;
 
     // BÀI TOÁN: Có 5 ổ bánh mì chia đều cho 2 người bạn đói bụng
     int phepChiaNguyen = 5 / 2;
-    std::cout << "- Phep chia giua 2 so nguyen: 5 / 2 = " << phepChiaNguyen << std::endl;
-    std::cout << "  (Giai thich: Vi hop int khong co ngan dung phan le, mau banh 0.5 bi roi mat!)" << std::endl;
+    cout << "- Phep chia giua 2 so nguyen: 5 / 2 = " << phepChiaNguyen << endl;
+    cout << "  (Giai thich: Vi hop int khong co ngan dung phan le, mau banh 0.5 bi roi mat!)" << endl;
 
     double phepChiaThuc = 5.0 / 2.0;
-    std::cout << "- Phep chia voi so le (double): 5.0 / 2.0 = " << phepChiaThuc << std::endl;
-    std::cout << "  (Giai thich: Hop double giu tron ven phan thap phan 2.5!)" << std::endl;
+    cout << "- Phep chia voi so le (double): 5.0 / 2.0 = " << phepChiaThuc << endl;
+    cout << "  (Giai thich: Hop double giu tron ven phan thap phan 2.5!)" << endl;
 
     // Phép nhân (*) tính tổng tiền 3 cái bánh:
     int mua = 3;
     double thanhTien = mua * giaTienMotChiec;
-    std::cout << "\n- Tinh tien: " << mua << " chiec * " << giaTienMotChiec << " nghin = " << thanhTien << " nghin dong." << std::endl;
+    cout << "\n- Tinh tien: " << mua << " chiec * " << giaTienMotChiec << " nghin = " << thanhTien << " nghin dong." << endl;
 
     return 0;
 }

@@ -4,10 +4,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 03_MoRongBienTraiPhai_HinhChuNhatLonNhat.cpp -o 03_MoRongBienTraiPhai_HinhChuNhatLonNhat.exe
  */
 
-#include <iostream>
-#include <vector>
-#include <stack>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 

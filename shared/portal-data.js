@@ -406,7 +406,7 @@
         x: 1840,
         y: 490,
         badge: 'Tầng 2',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã hiểu rõ Đệ quy và điểm dừng (MOD-01)',

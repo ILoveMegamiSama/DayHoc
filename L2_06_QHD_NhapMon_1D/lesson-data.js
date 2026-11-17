@@ -41,7 +41,7 @@
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Vấn đề &amp; Cách giải quyết trong đời sống</span>
                 <p>Cô giáo đố tính số cách leo hết cầu thang $N$ bậc (mỗi bước lên $1$ hoặc $2$ bậc). Để tính $f(6)$, bạn phải nhờ hai bạn dưới tính giúp $f(5)$ và $f(4)$. Nhưng bạn $f(5)$ lại đi hỏi tiếp $f(4)$ và $f(3)$, còn $f(4)$ lại hỏi $f(3)$ và $f(2)$...</p>
                 <ul style="margin: 8px 0 0 20px;">
-                  <li><strong>Lãng phí khổng lồ trên cây đệ quy:</strong> Chỉ mới $N = 25$, cây đệ quy ngây thơ gọi hàm tới <strong><code>242,785</code> lần</strong> vì cứ gặp lại <code>f(3)</code> hay <code>f(2)</code> là ngồi tính lại từ đầu. Nếu $N = 45$, số lời gọi vọt lên hơn $2$ tỷ lần và TLE ngay!</li>
+                  <li><strong>Lãng phí khổng lồ trên cây đệ quy:</strong> Chỉ mới $N = 25$, cây đệ quy ngây thơ gọi hàm tới <strong><code>242,785</code> lần</strong> vì cứ gặp lại <code>f(3)</code> hay <code>f(2)</code> là ngồi tính lại từ đầu. Nếu $N = 45$, số lời gọi vọt lên tới <strong><code>3,672,623,805</code> lần</strong> ($\\approx 3{,}67 \\times 10^9$) và TLE ngay!</li>
                   <li><strong>Chiến lược kẹp sổ nháp <code>memo[]</code>:</strong> Ta dán một bảng nháp gồm $N + 1$ ô, ban đầu ghi hết số <code>-1</code> (nghĩa là <em>"chưa từng giải"</em>). Ai hỏi <code>f(k)</code> lần đầu thì chịu khó tính theo công thức rồi <strong>ghi ngay đáp án vào ô <code>memo[k]</code></strong>. Ai hỏi lại <code>f(k)</code> từ lần thứ hai trở đi chỉ cần liếc sổ nháp thấy khác <code>-1</code> là trả lời ngay trong $O(1)$! Với $N = 25$, tổng lời gọi sập từ <code>242,785</code> xuống chỉ còn <strong><code>49</code> lần</strong>!</li>
                   <li><strong>Giải cứu Đổi tiền <code>{1, 3, 4}</code> ở <code>L2-05</code>:</strong> Đặt <code>memo[s] == -1</code> là chưa tính, còn nếu một số tiền <code>s</code> <em>đã tính xong nhưng vô nghiệm</em> (như $S = 5$ với xu <code>{2, 4}</code>), ta lưu <code>memo[s] = INF</code> (khác <code>-1</code>!) để lần sau không tính lại nhánh vô nghiệm nữa.</li>
                 </ul>
@@ -109,7 +109,7 @@ int main() {
               </div>
 
               <div class="step-code">
-                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Truyền Tham Chiếu &amp; Đúng Chuẩn Cho Leo Cầu Thang</span>
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Truyền Tham Chiếu <code>&amp;</code> Đúng Chuẩn Cho Leo Cầu Thang</span>
                 <pre class="code-pre"><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
@@ -308,11 +308,11 @@ int main() {
             options: [
               'In ra 8 15 vì nhánh i - 2 luôn phải tính lại từ đầu do chưa lưu vào memo',
               'In ra 5 9 vì giá trị cơ sở của f(0) và f(1) trả về 0 ở bước cuối cùng',
-              'In ra 8 9 vì mỗi i = 2..5 chỉ tính mới 1 lần và có 4 lần đọc lại từ memo',
+              'In ra 8 9 vì i = 2..5 chỉ tính 1 lần, đọc lại từ memo 2 lần và base case 3 lần',
               'In ra 13 11 vì hàm đệ quy chạy xuống tới i = 6 trước khi dừng'
             ],
             correct: 2,
-            explain: 'Chuỗi gọi đầu tiên đi xuống 5 &rarr; 4 &rarr; 3 &rarr; 2 &rarr; 1 (1 lần), 2 gọi 0 (1 lần) tính memo[2]=2. Khi quay lên tính memo[3], gọi f(1) (đã gặp ở base case), lên memo[4] gọi f(2) (đọc memo[2]=2 ngay!), lên memo[5] gọi f(3) (đọc memo[3]=3 ngay!). Tổng: ans = 8, calls = 2*5 - 1 = 9.'
+            explain: 'Cây gọi f(5): nhánh đi xuống 5 &rarr; 4 &rarr; 3 &rarr; 2 (4 lần tính mới i = 2..5). Các lời gọi base case (i &lt;= 1) xảy ra 3 lần: f(1) ở f(2), f(0) ở f(2), và f(1) ở f(3). Sau đó có đúng 2 lần đọc lại từ memo (f(2) ở f(4) và f(3) ở f(5)). Tổng: ans = 8, calls = 4 + 3 + 2 = 9.'
           },
           {
             type: 'trace',
@@ -642,7 +642,7 @@ int main() {
 }`;
               return {
                 code,
-                changedLines: [13, 14, 15, 16],
+                changedLines: isPull ? [13, 14, 15, 16] : [13, 14, 15, 16, 17],
                 statusOk: true,
                 statusText: isPull
                   ? 'CHÍNH XÁC (AC — Pull DP): Tính xong từng ô i từ trái sang phải, đáp án dp[4] = 20!'
@@ -686,10 +686,10 @@ int main() {
 }`,
             q: 'Cho tập xu <code>{1, 3, 5}</code> và chạy bảng DP Đổi tiền tới <code>S = 7</code>. Ba giá trị <code>dp[4]</code>, <code>dp[6]</code> và <code>dp[7]</code> in ra là gì?',
             options: [
-              'In ra 2 2 3 vì cần 4 xu cho tổng 7 bằng cách lấy 5 + 1 + 1',
-              'In ra 1 2 2 vì chương trình nhầm số xu cho tổng 4 bằng 1 đồng',
-              'In ra 2 3 2 vì tổng 6 buộc phải chọn 5 + 1 hoặc 3 + 3 là 3 đồng',
-              'In ra 2 2 3 vì dp[4]=2 (3+1), dp[6]=2 (3+3 hoặc 5+1), dp[7]=3 (5+1+1)'
+              'In ra 4 2 3 vì tổng 4 chọn bốn đồng 1 + 1 + 1 + 1 thay vì ghép hai đồng 3 + 1',
+              'In ra 2 4 3 vì tổng 6 chọn 3 + 1 + 1 + 1 (4 xu) thay vì ghép 5 + 1 hay 3 + 3',
+              'In ra 2 2 5 vì tổng 7 chọn năm đồng 1 + 1 + 1 + 1 + 3 thay vì lấy xu mệnh giá 5',
+              'In ra 2 2 3 vì dp[4]=2 (3+1), dp[6]=2 (3+3 hoặc 5+1), dp[7]=3 (5+1+1 là 3 xu)'
             ],
             correct: 3,
             explain: 'Lần lượt tính: dp[0]=0, dp[1]=1 (1), dp[2]=2 (1+1), dp[3]=1 (3), dp[4]=min(dp[3]+1, dp[1]+1)=2, dp[5]=1 (5), dp[6]=min(dp[5]+1, dp[3]+1, dp[1]+1)=2, dp[7]=min(dp[6]+1, dp[4]+1, dp[2]+1)=3. Vậy in ra: 2 2 3.'

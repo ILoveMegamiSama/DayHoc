@@ -39,7 +39,7 @@ Bí mật nằm ở một câu hỏi duy nhất: **Tại sao phải tính đi t�
 - Nếu dùng đệ quy thuần túy (`ways(n) = ways(n - 1) + ways(n - 2)`):
   - Để tính `ways(6)`, bạn phải gọi `ways(5)` và `ways(4)`.
   - Trong `ways(5)`, bạn lại gọi `ways(4)` và `ways(3)`.
-  - Cả hai nhánh đều tính `ways(4)`, rồi `ways(3)` bị tính lặp 3 lần, `ways(2)` bị tính lặp 5 lần... Với $N = 45$, số lời gọi hàm vọt lên gần **$2{,}3 \times 10^9$ lần** — chạy mất nhiều giây và TLE ngay!
+  - Cả hai nhánh đều tính `ways(4)`, rồi `ways(3)` bị tính lặp 3 lần, `ways(2)` bị tính lặp 5 lần... Với $N = 45$, số lời gọi hàm vọt lên tới **`3,672,623,805` lần** ($\approx 3{,}67 \times 10^9$) — chạy mất nhiều giây và TLE ngay!
 - **Cách giải quyết bằng sổ nháp:** Kẹp thêm một **tờ giấy nháp `memo`** gồm $N + 1$ ô trống (đánh dấu `-1` nghĩa là *"chưa từng tính"*).
   - Lần **đầu tiên** gặp `ways(k)`: ta chịu khó tính theo công thức đệ quy, rồi **viết ngay đáp án vào ô `memo[k]`**.
   - Mọi lần **sau đó** gặp lại `ways(k)`: thấy `memo[k] != -1`, ta **đọc thẳng đáp án trên sổ nháp** trong $O(1)$ mà không chui xuống cây đệ quy nữa!

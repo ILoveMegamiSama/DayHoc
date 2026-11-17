@@ -147,7 +147,7 @@
         x: 985,
         y: 200,
         badge: 'Tầng 1',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha1_array',
         prerequisites: [
           'Đã thành thạo vòng lặp for/while và kiểu long long ở L1-01'

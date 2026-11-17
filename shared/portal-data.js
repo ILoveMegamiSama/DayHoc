@@ -216,7 +216,7 @@
         x: 1840,
         y: 200,
         badge: 'Mở STL',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã hoàn thành Pha 1 (đến L1-04): vững mảng tĩnh toàn cục, tham chiếu & và phân tích Big-O'

@@ -170,7 +170,7 @@
         x: 1270,
         y: 200,
         badge: 'Tầng 1',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha1_array',
         prerequisites: [
           'Đã biết khai báo và thao tác trên mảng tĩnh toàn cục, xâu ký tự ở L1-02'

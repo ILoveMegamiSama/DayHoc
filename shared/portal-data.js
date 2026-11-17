@@ -454,7 +454,7 @@
         x: 2695,
         y: 490,
         badge: 'Core DP',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã thấy giới hạn bế tắc của Tham lam (L2-05)',

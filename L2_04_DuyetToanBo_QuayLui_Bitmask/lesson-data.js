@@ -605,7 +605,7 @@ int main() {
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\n0',
                 explain: isOk
                   ? 'Với n = 4, r - c chạy từ -3 đến +3; cộng thêm n = 4 đưa về đoạn [1..7], vừa khớp kích thước mảng và giữ song ánh 1-1 cho tất cả 7 đường chéo chính.'
-                  : 'Khi đặt hậu ở ô (0, 1), hiệu abs(0 - 1) = 1 đánh dấu diag1[1] = true. Sang hàng 1 và hàng 2, ô (2, 3) có đúng hiệu 2 - 3 = -1 (khác hẳn đường chéo kia) nhưng abs(-1) lại ra đúng 1 nên bị cấm oan!'
+                  : 'Khi đặt hậu ở ô (0, 1), hiệu r - c = -1 nên abs(-1) = 1 đánh dấu diag1[1] = true. Tới hàng 3 trong nghiệm hợp lệ [(0,1), (1,3), (2,0), (3,2)], ô (3, 2) có hiệu r - c = +1 (khác hẳn đường chéo -1 kia), nhưng abs(+1) lại ra đúng 1 nên bị cấm oan!'
               };
             }
           },
@@ -667,7 +667,7 @@ int main() {
                   ? '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\nbest=100 calls=5951'
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\nbest=100 calls=131071',
                 explain: isOk
-                  ? 'Nhánh bên trái nhanh chóng đạt best = 100 ngay từ những bước đầu. Kể từ đó, mọi nhánh vượt 100 hoặc tổng phần còn lại không vượt nổi 100 đều bị chặt bỏ tức thì.'
+                  ? 'Nhánh bên trái nhanh chóng đạt best = 100 ngay từ những bước đầu. Kể từ đó, mọi nhánh vượt 100 hoặc tổng phần còn lại không vượt nổi 100 đều bị chặt bỏ tức thì (nếu thêm điều kiện dừng sớm khi best == S như ở Card 2.2 và Code Mẫu 02 thì chỉ còn 33 lời gọi!).'
                   : 'Dù curSum đã lên tới 141 (&gt; 100) từ độ sâu thứ 4, code vẫn mù quáng rẽ nhánh thêm 12 tầng nữa cho cả 2^12 = 4,096 nhánh con vô ích!'
               };
             }
@@ -744,7 +744,7 @@ int main() {
             options: [
               'In ra 8 15 vì thuật toán đi hết trọn cây nhị phân 15 nút của 3 phần tử và chọn giá trị 8',
               'In ra 9 7 vì ngay sau khi vượt S ở nhánh 8 + 5 hàm lập tức dừng toàn bộ chương trình ở lần gọi 7',
-              'In ra 9 11 vì nhánh 8 + 5 bị cắt tại calls=3 và nhánh bỏ 8+5 còn tổng 4 bị cắt tại calls=7',
+              'In ra 9 11 vì nhánh 8 + 5 bị cắt tại calls=3 và nhánh bỏ 8+5 còn tổng 4 bị cắt tại calls=11',
               'In ra 9 9 vì sau khi chọn 5 + 4 = 9 mọi nhánh tiếp theo có tổng nhỏ hơn đều bị cắt trước khi tăng calls'
             ],
             correct: 2,

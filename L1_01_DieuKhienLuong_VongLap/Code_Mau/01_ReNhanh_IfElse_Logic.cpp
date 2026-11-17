@@ -40,7 +40,12 @@ int main() {
     // 2. Kết hợp điều kiện với && (VÀ) — CẢNH BÁO: Không viết 6.5 <= diemThi < 8.0!
     //    Trong C++, 6.5 <= diemThi trả về 0 hoặc 1 (bool), rồi so tiếp với 8.0 luôn đúng!
     bool namTrongKhoangKha = (6.5 <= diemThi && diemThi < 8.0);
-    cout << "Diem nam trong [6.5, 8.0)? " << (namTrongKhoangKha ? "Co" : "Khong") << '\n';
+    cout << "Diem nam trong [6.5, 8.0)? ";
+    if (namTrongKhoangKha) {
+        cout << "Co" << '\n';
+    } else {
+        cout << "Khong" << '\n';
+    }
 
     // 3. Toán tử logic &&, ||, ! qua bài toán kiểm tra Năm Nhuận:
     //    Năm nhuận nếu chia hết cho 400, HOẶC (chia hết cho 4 VÀ không chia hết cho 100).
@@ -53,11 +58,11 @@ int main() {
     }
 
     // 4. Toán tử phủ định ! (NOT):
-    //    Ví dụ: Chỉ được vào vòng chung kết nếu điểm >= 5.0 và KHÔNG phải năm không hợp lệ
-    if (!(diemThi < 5.0)) {
+    //    Ví dụ: Chỉ được vào vòng chung kết nếu điểm >= 5.0 (trong [5.0, 10.0]) và năm hợp lệ (nam > 0)
+    if (!(diemThi < 5.0) && diemThi <= 10.0 && nam > 0) {
         cout << "Trang thai: Du dieu kien xet thuong." << '\n';
     } else {
-        cout << "Trang thai: Can thi lai." << '\n';
+        cout << "Trang thai: Chua du dieu kien xet thuong." << '\n';
     }
 
     return 0;

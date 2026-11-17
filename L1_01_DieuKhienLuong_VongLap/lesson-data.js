@@ -118,6 +118,7 @@ int main() {
     }
 
     // 3. Toán tử || (HOẶC), &amp;&amp; (VÀ), ! (PHỦ ĐỊNH) cho Năm Nhuận
+    //    % lấy phần dư của phép chia nguyên (chia hết cho 400 tức là dư == 0; xem chi tiết ở Phần 3)
     bool laNhuan = (nam % 400 == 0) || (nam % 4 == 0 &amp;&amp; nam % 100 != 0);
     if (!laNhuan) {
         cout &lt;&lt; nam &lt;&lt; " KHONG phai nam nhuan" &lt;&lt; '\\n';
@@ -278,7 +279,7 @@ int main() {
           },
           {
             type: 'single',
-            q: 'Để kiểm tra xem số nguyên nam có phải là Năm Nhuận (chia hết cho 400, hoặc chia hết cho 4 nhưng không chia hết cho 100), biểu thức C++ nào sau đây đúng chuẩn?',
+            q: 'Để kiểm tra xem số nguyên nam có phải là Năm Nhuận (chia hết cho 400, hoặc chia hết cho 4 nhưng không chia hết cho 100; dùng % lấy phần dư), biểu thức C++ nào sau đây đúng chuẩn?',
             options: [
               '(nam % 400 == 0) || (nam % 4 == 0 && nam % 100 != 0)',
               '(nam % 400 == 0) && (nam % 4 == 0 || nam % 100 != 0)',
@@ -286,7 +287,7 @@ int main() {
               '(nam % 400 = 0) || (nam % 4 = 0 && nam % 100 != 0)'
             ],
             correct: 0,
-            explain: 'Năm nhuận thỏa mãn: chia hết cho 400 (nam % 400 == 0) HOẶC (||) thỏa mãn đồng thời chia hết cho 4 (nam % 4 == 0) VÀ (&&) không chia hết cho 100 (nam % 100 != 0).'
+            explain: 'Năm nhuận thỏa mãn: chia hết cho 400 (nam % 400 == 0, tức chia 400 dư 0) HOẶC (||) thỏa mãn đồng thời chia hết cho 4 (nam % 4 == 0) VÀ (&&) không chia hết cho 100 (nam % 100 != 0). (Phép chia lấy dư % sẽ được phân tích kỹ hơn ở Phần 3.)'
           },
           {
             type: 'multiple',
@@ -378,7 +379,7 @@ int main() {
                 <ul style="margin: 8px 0 0 20px;">
                   <li><strong>Vòng lặp <code>for (khởi_tạo; điều_kiện; bước_nhảy)</code>:</strong> Thực hiện khởi tạo 1 lần duy nhất, sau đó lặp lại chu trình: <em>Kiểm tra điều kiện &rarr; Chạy thân vòng lặp &rarr; Thực hiện bước nhảy</em>.</li>
                   <li><strong>Vòng lặp <code>while (điều_kiện)</code>:</strong> Kiểm tra điều kiện trước mỗi lượt; nếu đúng thì chạy thân vòng lặp, sai thì thoát ngay.</li>
-                  <li><strong><code>while (t--)</code>:</strong> Dùng giá trị hiện tại của <code>t</code> để kiểm tra (<code>t != 0</code> là đúng), rồi giảm <code>t</code> đi 1. Nếu <code>t = 3</code>, vòng lặp chạy đúng 3 lượt (khi <code>t</code> là 3, 2, 1) rồi dừng khi <code>t</code> về 0.</li>
+                  <li><strong><code>while (t--)</code>:</strong> Dùng giá trị hiện tại của <code>t</code> để kiểm tra (<code>t != 0</code> là đúng), rồi giảm <code>t</code> đi 1 ngay trong bước kiểm tra. Nếu <code>t = 3</code>, vòng lặp chạy đúng 3 lượt (bên trong thân vòng lặp <code>t</code> lần lượt mang giá trị <code>2, 1, 0</code>) và khi điều kiện <code>0 != 0</code> sai thì giảm tiếp thành <code>-1</code> rồi thoát.</li>
                   <li><strong>Vòng lặp vô tận (<code>Infinite Loop</code>):</strong> Vòng lặp có điều kiện không bao giờ trở thành sai (thường do quên cập nhật biến điều kiện), dẫn đến <code>TLE</code>.</li>
                 </ul>
               </div>

@@ -262,7 +262,7 @@
         x: 2410,
         y: 200,
         badge: 'Tầng 1',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã học độ phức tạp (L1-04), vector (L1-05) và kiến thức modulo cơ bản (L1-01)'

@@ -35,7 +35,7 @@ int main() {
     cout << "=== " << tenTiem << " ===" << '\n';
     cout << "Ca dong khach nhat: " << donNhieuNhat << " don" << '\n';
     cout << "Ca vang khach nhat: " << donItNhat << " don" << '\n';
-    cout << fixed << setprecision(2);
+    cout << fixed << setprecision(2); // In dung 2 chu so thap phan
     cout << "Canh khay vuong (can bac 2 cua 50): " << canhKhay << " cm" << '\n';
 
     return 0;

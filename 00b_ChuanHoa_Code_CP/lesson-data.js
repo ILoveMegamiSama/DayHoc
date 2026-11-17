@@ -91,7 +91,7 @@ int main() {
 
 int main() {
     double canhKhay = std::sqrt(50.0);
-    std::cout << std::fixed << std::setprecision(2) << canhKhay << '\\n';
+    std::cout << std::fixed << std::setprecision(2) << canhKhay << '\\n'; // In dung 2 chu so thap phan
     return 0;
 }`;
               return {
@@ -121,18 +121,18 @@ int main() {
             traceCode: `#include <iostream>
 int main() {
     int a = 9;
-    std::cout << sqrt(a) << '\\n';
+    std::cout << std::sqrt(a) << '\\n';
     return 0;
 }`,
             q: 'Quan sát đoạn mã trên khi biên dịch bằng g++ -std=c++14. Kết quả thực tế sẽ như thế nào?',
             options: [
-              'Chương trình biên dịch thành công và in ra giá trị 3 rồi xuống dòng bằng ký tự mới',
+              'Chương trình biên dịch thành công và in ra giá trị 3 rồi xuống dòng mới',
               'Chương trình biên dịch thành công nhưng in ra giá trị 9 do chưa ép kiểu về số thực',
               'Trình biên dịch báo lỗi vì thiếu thư viện chứa hàm sqrt như cmath hay bits/stdc++.h',
               'Trình biên dịch tự động tải thêm thư viện toán học từ hệ thống để chạy ra kết quả 3'
             ],
             correct: 2,
-            explain: 'Hàm sqrt() nằm trong thư viện toán học <cmath> (được gói sẵn trong <bits/stdc++.h>). Chỉ nạp <iostream> sẽ khiến g++ báo lỗi \'sqrt\' was not declared in this scope.'
+            explain: 'Hàm std::sqrt() nằm trong thư viện toán học <cmath> (được gói sẵn trong <bits/stdc++.h>). Chỉ nạp <iostream> sẽ khiến g++ báo lỗi \'sqrt\' is not a member of \'std\'.'
           },
           {
             type: 'single',
@@ -204,7 +204,7 @@ int main() {
     return 0;
 }</code></pre>
                 <p style="margin-top: 8px; font-size: 13.5px; color: var(--muted);">
-                  <strong>Hai kiểu lỗi hay gặp nhất ở Lớp 9:</strong> (1) Khai báo biến toàn cục <code>int count = 0;</code> rồi in <code>cout &lt;&lt; count;</code> $\rightarrow$ lỗi <code>ambiguous</code>; (2) Khai báo <code>int max = 10;</code> trong <code>main()</code> rồi gọi <code>max(3, 7)</code> $\rightarrow$ lỗi <code>'max' cannot be used as a function</code>!
+                  <strong>Hai kiểu lỗi hay gặp nhất ở Lớp 9:</strong> (1) Khai báo biến toàn cục <code>int count = 0;</code> rồi in <code>cout &lt;&lt; count;</code> &rarr; lỗi <code>ambiguous</code>; (2) Khai báo <code>int max = 10;</code> trong <code>main()</code> rồi gọi <code>max(3, 7)</code> &rarr; lỗi <code>'max' cannot be used as a function</code>!
                 </p>
               </div>
 
@@ -373,7 +373,7 @@ int main() {
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Vấn đề &amp; Cách giải quyết trong đời sống</span>
                 <p>Trước khi C++ ra đời, ngôn ngữ lập trình cũ hơn là C dùng thư viện nhập xuất thế hệ cũ <code>&lt;cstdio&gt;</code> (gọi tắt là <code>stdio</code> — gồm lệnh <code>printf</code> để in và <code>scanf</code> để đọc). Khi tiệm bánh tiếp đón hàng trăm nghìn đơn hàng trong 1 giây, <strong>Anh Thật Thà</strong> bị chậm vì 2 quy trình kiểm tra thừa thãi:</p>
                 <ul style="margin: 8px 0 0 20px;">
-                  <li><strong>Trạm gác đồng bộ (<code>sync_with_stdio</code>):</strong> Cứ mỗi lần dùng loa mới <code>cout</code> hay khe mới <code>cin</code>, anh ấy lại chạy qua đối chiếu sổ với bộ <code>stdio</code> cũ (<code>printf/scanf</code>) để phòng có người dùng trộn hai bộ cùng lúc $\rightarrow$ tốn thời gian gấp bội!</li>
+                  <li><strong>Trạm gác đồng bộ (<code>sync_with_stdio</code>):</strong> Cứ mỗi lần dùng loa mới <code>cout</code> hay khe mới <code>cin</code>, anh ấy lại chạy qua đối chiếu sổ với bộ <code>stdio</code> cũ (<code>printf/scanf</code>) để phòng có người dùng trộn hai bộ cùng lúc &rarr; tốn thời gian gấp bội!</li>
                   <li><strong>Dây buộc dọn bàn (<code>cin.tie</code>):</strong> Hễ chuẩn bị nhận phiếu mới ở khe <code>cin</code>, anh ấy lại dừng bếp bắt loa <code>cout</code> phải dọn sạch chữ đang chờ ra màn hình rồi mới đọc số tiếp theo!</li>
                 </ul>
                 <p style="margin-top: 8px;"><strong>Giải pháp:</strong> Cắt trạm gác đối chiếu và cởi dây buộc dọn bàn — nhưng từ giây phút đó, <strong>TUYỆT ĐỐI KHÔNG ĐƯỢC DÙNG TRỘN</strong> bộ loa cũ <code>printf/scanf</code> nữa, vì hai sổ tách rời nhau sẽ đọc/in lộn xộn thứ tự!</p>
@@ -657,7 +657,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc211/tasks/abc211_a',
-        hint: 'Giới hạn 50 <= B <= A <= 300. Tính huyết áp trung bình (A - B) / 3.0 + B. Lưu ý dùng số thực 3.0 (kiểu double) để không dính bẫy chia nguyên từ MOD-Pre!'
+        hint: 'Giới hạn 50 <= B <= A <= 300. Tính huyết áp trung bình (A - B) / 3.0 + B (dùng 3.0 để không dính bẫy chia nguyên từ MOD-Pre), và nhớ thêm cout << fixed << setprecision(6) để in đủ độ chính xác thập phân theo yêu cầu AtCoder.'
       },
       {
         id: 'ABC184-A',

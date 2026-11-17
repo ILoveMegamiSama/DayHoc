@@ -103,7 +103,7 @@ int main() {
             html: `
               <div class="step-life">
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Chiếc bàn gấp chật hẹp trong phòng vs Nhà kho khổng lồ bên ngoài</span>
-                <p>Hãy nhớ lại bài <code>MOD-00</code> về chiếc bàn làm việc RAM. Bên trong căn phòng <code>main()</code>, Anh Thật Thà chỉ có một chiếc <strong>bàn gấp cục bộ rất nhỏ (~8 MB)</strong>. Còn ở bên ngoài và phía trên <code>main()</code> là <strong>nhà kho dữ liệu tĩnh cực rộng (~256 MB)</strong>:</p>
+                <p>Hãy nhớ lại hình ảnh chiếc bàn làm việc RAM. Bên trong căn phòng <code>main()</code>, Anh Thật Thà chỉ có một chiếc <strong>bàn gấp cục bộ rất nhỏ (~8 MB)</strong>. Còn ở bên ngoài và phía trên <code>main()</code> là <strong>nhà kho dữ liệu tĩnh cực rộng (~256 MB)</strong>:</p>
                 <ul style="margin: 8px 0 0 20px;">
                   <li><strong>Tai họa 1 — Kê tủ khổng lồ lên bàn gấp trong <code>main()</code>:</strong> Một số <code>int</code> chiếm 4 byte. Một tủ <code>3.000.000</code> số <code>int</code> nặng tới <strong>~12 MB</strong> — đặt lên chiếc bàn 8 MB trong <code>main()</code> làm bàn sập gãy ngay lập tức (lỗi <code>Segmentation Fault</code> / <code>Runtime Error</code>)! Còn đặt ra nhà kho ngoài <code>main()</code> thì chứa thoải mái hàng chục triệu số!</li>
                   <li><strong>Tai họa 2 — Tủ trong <code>main()</code> đầy rác vs Kho ngoài tự dọn sạch:</strong> Bất kỳ mảng nào đặt trong <code>main()</code> mà quên gán <code>= 0</code> đều chứa sẵn <em>giá trị rác ngẫu nhiên</em> từ lượt làm việc cũ. Ngược lại, mảng toàn cục ngoài <code>main()</code> luôn được hệ thống <strong>tự động dọn sạch bằng <code>0</code></strong>!</li>
@@ -333,7 +333,7 @@ int main() {
 using namespace std;
 
 const int MAXR = 505;
-int grid[MAXR][MAXR]; // 505 * 505 * 4 byte &approx; 1 MB (an toàn!)
+int grid[MAXR][MAXR]; // 505 * 505 * 4 byte ~ 1 MB (an toàn!)
 // CẢNH BÁO MLE: Đừng khai báo int grid[10005][10005]; (tốn ~400 MB &gt; 256 MB)!
 
 // 4 hướng đi chuẩn CP: Lên (-1, 0), Xuống (+1, 0), Trái (0, -1), Phải (0, +1)
@@ -469,9 +469,10 @@ int cnt[MAXV]; // Chi tu khoi tao = 0 MOT LAN khi bat dau chuong trinh!
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    // Gia su chay 2 test: Test 1 = {5, 5}, Test 2 = {3, 3, 5}
-    // Sau Test 1: cnt[5] = 2. Sang Test 2: them cnt[3] = 2, cnt[5]++
+    // Test 1 doc day {5, 5}
+    cnt[5] += 2;
 ${isOk ? '    for (int v = 0; v <= 5; v++) cnt[v] = 0; // Don sach sau Test 1!' : '    // QUEN xoa cnt[v] = 0 sau Test 1 -> cnt[5] van giu gia tri 2!'}
+    // Test 2 doc day {3, 3, 5}
     cnt[3] += 2;
     cnt[5] += 1;
     cout << "cnt[3]=" << cnt[3] << " cnt[5]=" << cnt[5] << '\\n';
@@ -576,10 +577,10 @@ int main() {
               'Trong khai báo int a[R][C], chỉ số thứ nhất R biểu diễn số hàng và chỉ số thứ hai C biểu diễn số cột',
               'Khai báo mảng 2 chiều int a[10005][10005] tốn khoảng 400 MB RAM, vượt ngưỡng 256 MB gây lỗi MLE',
               'Có thể dùng mảng đếm int cnt[1000000005] cho bài toán có giá trị x lên tới 10^9 để tra cứu nhanh',
-              'Dùng mảng hướng đi dr[4], dc[4] kết hợp kiểm tra biên bảng giúp duyệt 4 hướng ngắn gọn và ít sai sót'
+              'Mảng toàn cục cnt[] tự động đặt lại toàn bộ các phần tử về 0 sau mỗi lượt của vòng lặp while (t--)'
             ],
-            correct: [0, 1, 3],
-            explain: 'A, B và D đều chính xác. C sai vì một mảng 10^9 số int cần 4.000 MB (~4 GB) RAM, lập tức gây tràn bộ nhớ (MLE).'
+            correct: [0, 1],
+            explain: 'A và B đều chính xác. C sai vì một mảng 10^9 số int tốn ~4 GB RAM gây MLE; D sai vì mảng toàn cục chỉ tự động gán 0 một lần trước khi vào main(), không tự reset giữa các bộ test.'
           }
         ]
       },
@@ -625,7 +626,7 @@ int main() {
 
     int n;
     cin &gt;&gt; n;
-    cin.ignore(); // BẮT BUỘC: Bỏ dấu '\n' còn sót lại trước khi dùng getline!
+    cin.ignore(); // BẮT BUỘC: Bỏ dấu '\\n' còn sót lại trước khi dùng getline!
 
     for (int dong = 1; dong &lt;= n; dong++) {
         string s;
@@ -934,11 +935,11 @@ int main() {
 }`,
         bugLine: 14,
         patches: [
-          { text: 'Sửa dòng 14 thành for (int i = 1; i < n; i++) { để chỉ xét cặp tới (n - 1, n)' },
           { text: 'Sửa dòng 14 thành for (int i = 0; i <= n; i++) { để tính luôn phần tử đầu tiên a[0]' },
+          { text: 'Sửa dòng 14 thành for (int i = 1; i < n; i++) { để chỉ xét cặp tới (n - 1, n)' },
           { text: 'Sửa dòng 15 thành if (a[i] <= a[i + 1]) dem++; để bổ sung trường hợp hai số bằng nhau' }
         ],
-        correctPatch: 0,
+        correctPatch: 1,
         explain: 'Ở dòng 14, i chạy tới n làm dòng 15 đọc sang phần tử a[n + 1] = a[4] (bằng 0 do mảng toàn cục khởi tạo sẵn). Vì -9 < 0 đúng nên dem bị cộng oan thêm 1! Sửa thành i < n sẽ dừng đúng ở cặp cuối (n - 1, n).'
       },
       {
@@ -963,11 +964,11 @@ int main() {
 }`,
         bugLine: 10,
         patches: [
-          { text: 'Thêm cin.ignore(); ngay trước dòng 10 để xóa ký tự xuống dòng \'\\n\' sót lại sau cin >> n' },
           { text: 'Thay dòng 10 bằng cin >> hoTen; để đọc trực tiếp toàn bộ họ tên gồm cả dấu cách' },
-          { text: 'Đổi dòng 9 thành char hoTen[100]; để lưu được chuỗi ký tự có chứa khoảng trắng' }
+          { text: 'Đổi dòng 9 thành char hoTen[100]; để lưu được chuỗi ký tự có chứa khoảng trắng' },
+          { text: 'Thêm cin.ignore(); ngay trước dòng 10 để xóa ký tự xuống dòng \'\\n\' sót lại sau cin >> n' }
         ],
-        correctPatch: 0,
+        correctPatch: 2,
         explain: 'Lệnh cin >> n ở dòng 8 chỉ đọc số 1 và để lại dấu Enter \'\\n\' trong bộ đệm. Khi dòng 10 gọi getline(cin, hoTen), nó chạm ngay dấu \'\\n\' đó và trả về xâu rỗng! Thêm cin.ignore(); trước getline sẽ gỡ bỏ dấu \'\\n\' thừa.'
       }
     ],
@@ -1014,7 +1015,7 @@ int main() {
         judge: 'VNOJ',
         tier: 2,
         link: 'https://oj.vnoi.info/problem/bones',
-        hint: 'Giới hạn 1 <= S1, S2, S3 <= 20. Dùng 3 vòng lặp for (i=1..S1, j=1..S2, k=1..S3) cộng dồn vào mảng đếm tần suất toàn cục int cnt[85]; tại vị trí cnt[i + j + k]++. Sau đó quét từ tổng 3 đến S1+S2+S3 bằng dấu > để tự động giữ tổng nhỏ nhất nếu tần suất bằng nhau.'
+        hint: 'Giới hạn 2 <= S1, S2 <= 20, 2 <= S3 <= 40. Dùng 3 vòng lặp for (i=1..S1, j=1..S2, k=1..S3) cộng dồn vào mảng đếm tần suất toàn cục int cnt[85]; tại vị trí cnt[i + j + k]++. Sau đó quét từ tổng 3 đến S1+S2+S3 bằng dấu > để tự động giữ tổng nhỏ nhất nếu tần suất bằng nhau.'
       },
       {
         id: 'ABC197-B',
@@ -1038,7 +1039,7 @@ int main() {
         judge: 'CSES',
         tier: 3,
         link: 'https://cses.fi/problemset/task/1755',
-        hint: 'Giới hạn độ dài xâu |s| <= 10^6 gồm chữ in hoa A..Z. Dùng mảng đếm cnt[26] theo mã ASCII (c - \'A\'). Chia trường hợp (Casework): đếm số chữ cái xuất hiện lẻ lần; nếu > 1 in "NO SOLUTION". Ngược lại ghép nửa trái (mỗi chữ lấy cnt[c]/2 lần), đặt 1 ký tự lẻ (nếu có) vào giữa, rồi ghép ngược lại nửa trái!'
+        hint: 'Giới hạn độ dài xâu |s| <= 10^6 gồm chữ in hoa A..Z. Dùng mảng đếm cnt[26] theo mã ASCII (c - \'A\'). Chia trường hợp (Casework): đếm số chữ cái xuất hiện lẻ lần; nếu > 1 in "NO SOLUTION". Ngược lại tạo nửa trái bằng toán tử += (tránh viết s = s + c gây tốn O(N^2)!) hoặc in trực tiếp từng ký tự bằng cout << (char)(\'A\' + c) cho cnt[c]/2 lần, in ký tự lẻ ở giữa, rồi in ngược nửa trái!'
       }
     ]
   };

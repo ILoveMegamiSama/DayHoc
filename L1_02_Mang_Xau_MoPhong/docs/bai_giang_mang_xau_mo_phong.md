@@ -1,10 +1,10 @@
 # Bài Giảng `L1-02` — Mảng 1D/2D, Xâu Ký Tự & Tư Duy Mô Phỏng
 
 - **Mã chuyên đề:** `L1-02` (Tầng 1 — Pha 1: Nền tảng C++ Lớp 9)
-- **Kiến thức tiền đề đã có (`MOD-Pre` + `MOD-CP0` + `MOD-00` + `L1-01`):**
+- **Kiến thức tiền đề đã có (`MOD-Pre` + `MOD-CP0` + `L1-01`):**
   - Đã thuộc lòng **Bộ Khung Chuẩn CP**: `#include <bits/stdc++.h>`, `using namespace std;`, `ios_base::sync_with_stdio(false); cin.tie(NULL);`, dùng `'\n'` thay cho `endl`.
   - Đã nắm vững rẽ nhánh `if / else if / else`, vòng lặp `for`, `while`, `while (t--)`, `break`, `continue`, kiểu `long long`, ép kiểu `1LL` và chia lấy dư `%`.
-  - Đã hiểu từ `MOD-00`: RAM là chiếc bàn làm việc tốc độ cao có giới hạn dung lượng.
+  - Đã hiểu RAM là chiếc bàn làm việc tốc độ cao có giới hạn dung lượng.
 - **Ranh giới Pha 1 Lớp 9:** Bài giảng này viết toàn bộ mã nguồn bên trong cửa chính `main()` và khai báo **mảng tĩnh toàn cục (`const int N = ...; int a[N];`)** ở phía trên `main()`, chỉ sử dụng mảng tĩnh, xâu `string`, vòng lặp và rẽ nhánh cơ bản.
 
 ---
@@ -34,7 +34,7 @@ Thay vì mua 1 triệu chiếc hộp lẻ rồi dán 1 triệu cái tên riêng 
 - Nếu quy ước đánh số từ `1` (`1-based`) cho khớp đề bài CP: ta đặt đóng dư vài ngăn (ví dụ `1e6 + 5` ngăn) rồi chỉ dùng các ngăn `a[1]` đến `a[n]`.
 
 **Tại sao PHẢI đặt chiếc tủ khổng lồ bên ngoài `main()`?**
-Hãy nhớ lại chiếc bàn làm việc RAM (`MOD-00`). Bên trong căn phòng `main()`, Anh Thật Thà chỉ có một chiếc **bàn gấp cục bộ rất nhỏ (~8 MB)** — chỉ đủ đặt khoảng 2 triệu số `int` (tương đương ~8 MB). Nếu bạn kê một chiếc tủ `3.000.000` số `int` (~12 MB) hoặc `10.000.000` số `int` (~40 MB) ngay lên cái bàn nhỏ trong `main()`, mặt bàn sập gãy ngay lập tức (`Stack Overflow` / `Segmentation Fault`)!
+Hãy nhớ lại hình ảnh chiếc bàn làm việc RAM. Bên trong căn phòng `main()`, Anh Thật Thà chỉ có một chiếc **bàn gấp cục bộ rất nhỏ (~8 MB)** — chỉ đủ đặt khoảng 2 triệu số `int` (tương đương ~8 MB). Nếu bạn kê một chiếc tủ `3.000.000` số `int` (~12 MB) hoặc `10.000.000` số `int` (~40 MB) ngay lên cái bàn nhỏ trong `main()`, mặt bàn sập gãy ngay lập tức (*tràn ngăn xếp* / `Segmentation Fault`)!
 Ngược lại, nếu đặt chiếc tủ **bên ngoài và phía trên `main()`** (gọi là khai báo toàn cục), chiếc tủ được cất trong **nhà kho dữ liệu tĩnh cực rộng (~256 MB)** của hệ thống, vừa chứa thoải mái hàng chục triệu số vừa được ban quản lý **dọn sạch toàn bộ về `0`** trước khi `main()` bắt đầu chạy!
 
 **Cảnh báo Bẫy Ngoài Biên (`Out of Bounds`):**
@@ -183,7 +183,7 @@ int main() {
    - `'0'` tới `'9'` nằm liên tiếp (`48..57`) &rarr; đổi ký tự `'7'` thành số `7`: lấy `'7' - '0'`.
    - `'A'` tới `'Z'` nằm liên tiếp (`65..90`) &rarr; đổi chữ hoa `c` thành thường: `c - 'A' + 'a'`.
    - `'a'` tới `'z'` nằm liên tiếp (`97..122`) &rarr; đếm tần suất 26 chữ cái: dùng mảng `int cnt[26]` tại vị trí `c - 'a'`!
-   *Cẩn thận kiểu trả về của `s.size()`:* Trong C++, `s.size()` trả về số **không dấu** (`size_t` / không thể âm). Nếu `s` rỗng (`s.size() == 0`) mà bạn viết `s.size() - 1`, phép trừ số không dấu bị "lật vòng" thành một số dương khổng lồ ($\approx 1.8 \times 10^{19}$) khiến vòng lặp chạy loạn! **Thói quen vàng:** Luôn ép `(int)s.size()` khi làm phép trừ hoặc so sánh với số nguyên `int`!
+   *Cẩn thận kiểu trả về của `s.size()`:* Trong C++, `s.size()` trả về kiểu **số nguyên không dấu** (không thể mang giá trị âm). Nếu `s` rỗng (`s.size() == 0`) mà bạn viết `s.size() - 1`, phép trừ số không dấu bị "lật vòng" thành một số dương khổng lồ ($\approx 1.8 \times 10^{19}$) khiến vòng lặp chạy loạn! **Thói quen vàng:** Luôn ép `(int)s.size()` khi làm phép trừ hoặc so sánh với số nguyên `int`!
 
 2. **Bẫy `getline(cin, s)` ngay sau `cin >> n`:**
    Khi người dùng nhập số `3` rồi nhấn phím **Enter (`\n`)**, lệnh `cin >> n` chỉ gắp mỗi số `3`, bỏ lại ký tự `\n` nằm chắn ngay đầu khe đọc! Nếu ngay sau đó bạn gọi `getline(cin, s)` để đọc một câu có dấu cách, `getline` chạm ngay dấu `\n` thừa đó tưởng đã hết dòng nên trả về **xâu rỗng `""`**!

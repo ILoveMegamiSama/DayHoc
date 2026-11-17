@@ -14,7 +14,7 @@
     number: 'Bài Học L1-06',
     shortTitle: 'set, map, PQ & deque',
     title: 'Bài L1-06: Bộ Công Cụ STL (set, map, priority_queue, deque)',
-    lead: 'Nâng cấp từ sắp xếp tĩnh của L1-05 sang xử lý dữ liệu biến động liên tục: giữ trật tự và tra cứu trong O(\\log N) với set/multiset, đếm khóa khổng lồ tới 10^9 không tốn RAM thừa với map, né bẫy anti-hash O(N^2) của unordered_map, cùng priority_queue (Heap) và deque hai đầu O(1).',
+    lead: 'Nâng cấp từ sắp xếp tĩnh của L1-05 sang xử lý dữ liệu biến động liên tục: giữ trật tự và tra cứu trong $O(\\log N)$ với set/multiset, đếm khóa khổng lồ tới $10^9$ không tốn RAM thừa với map, né bẫy anti-hash $O(N^2)$ của unordered_map, cùng priority_queue (Heap) và deque hai đầu $O(1)$.',
     modules: [
       // ============================================================================
       // MODULE 1: STD::SET & STD::MULTISET — TỦ HỒ SƠ TỰ SẮP XẾP O(LOG N)
@@ -23,15 +23,15 @@
         id: 'mod1',
         number: 'Phần 1',
         shortTitle: 'set & multiset O(log N)',
-        title: 'Vấn Đề Nhỏ 1: std::set, std::multiset & Hai Cạm Bẫy Kinh Điển',
-        lead: 'Cách duy trì tập hợp luôn sắp xếp tăng dần qua từng truy vấn thêm/xóa trong O(\\log N), gọi đúng s.lower_bound(x) để tránh TLE O(N), và phân biệt ms.erase(x) xóa sạch mọi bản sao với ms.erase(ms.find(x)) chỉ xóa đúng 1 phần tử.',
+        title: 'Vấn Đề Nhỏ 1: std::set, std::multiset &amp; Hai Cạm Bẫy Kinh Điển',
+        lead: 'Cách duy trì tập hợp luôn sắp xếp tăng dần qua từng truy vấn thêm/xóa trong $O(\\log N)$, gọi đúng s.lower_bound(x) để tránh TLE $O(N)$, và phân biệt ms.erase(x) xóa sạch mọi bản sao với ms.erase(ms.find(x)) chỉ xóa đúng 1 phần tử.',
         subproblem: {
           title: 'Khi $Q = 10^5$ người chơi liên tục vào và rời phòng, làm sao luôn tìm được đối thủ có Elo $\\ge X$ nhỏ nhất trong $O(\\log N)$ và xóa đúng 1 tấm vé khi có nhiều vé trùng giá?',
           desc: 'Nếu dùng vector rồi gọi sort() sau mỗi lượt thêm/xóa thì tốn $O(Q \\cdot N \\log N)$ (TLE!). Ta dùng std::set (loại trùng) hoặc std::multiset (cho phép trùng) để thêm, xóa và tra cứu trực tiếp trong $O(\\log N)$.'
         },
         cards: [
           {
-            heading: 'std::set<T> & s.lower_bound(x) — Tủ Hồ Sơ Tự Xếp Thứ Tự O(log N)',
+            heading: 'std::set&lt;T&gt; &amp; s.lower_bound(x) — Tủ Hồ Sơ Tự Xếp Thứ Tự $O(\\log N)$',
             tag: 'Loại trùng & Tra cứu nhanh',
             html: `
               <div class="step-life">
@@ -85,7 +85,7 @@ int main() {
             `
           },
           {
-            heading: 'std::multiset<T> & Bẫy Kinh Điển ms.erase(x) vs ms.erase(ms.find(x))',
+            heading: 'std::multiset&lt;T&gt; &amp; Bẫy Kinh Điển ms.erase(x) vs ms.erase(ms.find(x))',
             tag: 'Bẫy xóa sạch bản sao',
             html: `
               <div class="step-life">
@@ -223,7 +223,7 @@ int main() {
               'In ra 4 30 30 vì set giữ lại cả hai số 30 trước khi thực hiện lệnh xóa 20'
             ],
             correct: 1,
-            explain: 'set tự loại trùng 30 thành {10, 20, 30, 40}. Sau s.erase(20) còn {10, 30, 40} (size = 3). s.lower_bound(25) tìm phần tử >= 25 là 30. s.upper_bound(30) tìm phần tử > 30 là 40, lùi 1 bước --it2 về 30. In ra: 3 30 30.'
+            explain: 'set tự loại trùng 30 thành {10, 20, 30, 40}. Sau s.erase(20) còn {10, 30, 40} (size = 3). s.lower_bound(25) tìm phần tử $\\ge 25$ là 30. s.upper_bound(30) tìm phần tử $&gt; 30$ là 40, lùi 1 bước --it2 về 30. In ra: 3 30 30.'
           },
           {
             type: 'trace',
@@ -257,10 +257,10 @@ int main() {
               'Vì s.lower_bound(x) nhảy theo cây trong O(log N), còn std::lower_bound đi bộ tuần tự O(N)',
               'Vì hàm std::lower_bound toàn cục không thể biên dịch được khi truyền iterator của set',
               'Vì s.lower_bound(x) tự động xóa luôn phần tử vừa tìm thấy ngay sau khi trả về kết quả',
-              'Vì hàm std::lower_bound toàn cục luôn trả về phần tử lớn nhất thay vì phần tử >= x'
+              'Vì hàm std::lower_bound toàn cục luôn trả về phần tử lớn nhất thay vì phần tử &gt;= x'
             ],
             correct: 0,
-            explain: 'Iterator của set không hỗ trợ nhảy ngẫu nhiên O(1) như vector. Vì vậy std::lower_bound(s.begin(), s.end(), x) phải duyệt từng bước mất O(N) mỗi truy vấn (O(Q * N) TLE), còn s.lower_bound(x) đi thẳng theo cây Đỏ-Đen mất đúng O(log N).'
+            explain: 'Iterator của set không hỗ trợ nhảy ngẫu nhiên $O(1)$ như vector. Vì vậy std::lower_bound(s.begin(), s.end(), x) phải duyệt từng bước mất $O(N)$ mỗi truy vấn ($O(Q \\cdot N)$ TLE), còn s.lower_bound(x) đi thẳng theo cây Đỏ-Đen mất đúng $O(\\log N)$.'
           },
           {
             type: 'multiple',
@@ -284,15 +284,15 @@ int main() {
         id: 'mod2',
         number: 'Phần 2',
         shortTitle: 'map & Anti-Hash',
-        title: 'Vấn Đề Nhỏ 2: std::map, Bẫy Khóa Rác mp[x] & Anti-Hash unordered_map',
-        lead: 'Dùng std::map để đếm và ánh xạ khóa số lớn tới 10^9 hoặc chuỗi string trong O(\\log N), né bẫy tạo khóa rác của toán tử mp[x], và hiểu vì sao Codeforces dễ đánh sập unordered_map xuống O(N^2) TLE.',
+        title: 'Vấn Đề Nhỏ 2: std::map, Bẫy Khóa Rác mp[x] &amp; Anti-Hash unordered_map',
+        lead: 'Dùng std::map để đếm và ánh xạ khóa số lớn tới $10^9$ hoặc chuỗi string trong $O(\\log N)$, né bẫy tạo khóa rác của toán tử mp[x], và hiểu vì sao Codeforces dễ đánh sập unordered_map xuống $O(N^2)$ TLE.',
         subproblem: {
           title: 'Khi cần đếm tần suất hoặc lưu điểm theo khóa lên tới $10^9$ hoặc xâu ký tự string qua $10^5$ truy vấn, làm sao không bị tràn bộ nhớ MLE, không sinh khóa rác và không chết TLE vì anti-hash?',
-          desc: 'Mảng đếm tĩnh cnt[10^9] bị MLE (4 GB), còn unordered_map dễ bị test anti-hash đánh sập thành $O(N^2)$. Ta dùng std::map&lt;Key, Value&gt; chạy đảm bảo $O(N \\log N)$ và kiểm tra tồn tại sạch bằng .count() / .find().'
+          desc: 'Mảng đếm tĩnh cnt[$10^9$] bị MLE (4 GB), còn unordered_map dễ bị test anti-hash đánh sập thành $O(N^2)$. Ta dùng std::map&lt;Key, Value&gt; chạy đảm bảo $O(N \\log N)$ và kiểm tra tồn tại sạch bằng .count() / .find().'
         },
         cards: [
           {
-            heading: 'std::map<Key, Value> — Từ Điển Ánh Xạ Cho Khóa 10^9 & string',
+            heading: 'std::map&lt;Key, Value&gt; — Từ Điển Ánh Xạ Cho Khóa $10^9$ &amp; string',
             tag: 'Ánh xạ khóa bất kỳ',
             html: `
               <div class="step-life">
@@ -305,7 +305,7 @@ int main() {
               </div>
 
               <div class="step-code">
-                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Đếm tần suất khóa 10^9 và chuỗi string trong C++14</span>
+                <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Đếm tần suất khóa $10^9$ và chuỗi string trong C++14</span>
                 <pre class="code-pre"><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
@@ -336,7 +336,7 @@ int main() {
             `
           },
           {
-            heading: 'Bẫy Tạo Khóa Rác mp[x] & Bẫy Anti-Hash O(N^2) Của unordered_map',
+            heading: 'Bẫy Tạo Khóa Rác mp[x] &amp; Bẫy Anti-Hash $O(N^2)$ Của unordered_map',
             tag: 'Bẫy RAM & TLE Codeforces',
             html: `
               <div class="step-life">
@@ -446,8 +446,8 @@ int main() {
                   ? '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\nSo ten chua co: 3, mp.size() = 2'
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\nSo ten chua co: 3, mp.size() = 5',
                 explain: isOk
-                  ? 'Phương thức mp.count(s) (hoặc mp.find(s) != mp.end()) chỉ đọc cấu trúc cây của map trong O(log N), tuyệt đối không làm thay đổi nội dung hay kích thước của map.'
-                  : 'Toán tử mp[s] luôn đảm bảo trả về một ô nhớ có thể gán được; nếu s chưa có, map tự tạo mới cặp (s, 0). Làm vậy qua 10^5 truy vấn sẽ ngốn RAM và làm sai kết quả dựa trên mp.size()!'
+                  ? 'Phương thức mp.count(s) (hoặc mp.find(s) != mp.end()) chỉ đọc cấu trúc cây của map trong $O(\\log N)$, tuyệt đối không làm thay đổi nội dung hay kích thước của map.'
+                  : 'Toán tử mp[s] luôn đảm bảo trả về một ô nhớ có thể gán được; nếu s chưa có, map tự tạo mới cặp (s, 0). Làm vậy qua $10^5$ truy vấn sẽ ngốn RAM và làm sai kết quả dựa trên mp.size()!'
               };
             }
           }
@@ -505,7 +505,7 @@ int main() {
               'In ra 3 3 vì khóa 2 không cần xóa phần tử nào còn khóa 4 và 10^9 xóa tổng là 3'
             ],
             correct: 0,
-            explain: 'cnt chứa 3 khóa: {2: 3, 4: 1, 10^9: 2}. Với p=(2, 3): 3 >= 2 -> xóa 3 - 2 = 1. Với p=(4, 1): 1 < 4 -> xóa hết 1. Với p=(10^9, 2): 2 < 10^9 -> xóa hết 2. Tổng xóa = 1 + 1 + 2 = 4. In ra: 3 4.'
+            explain: 'cnt chứa 3 khóa: {2: 3, 4: 1, $10^9$: 2}. Với p=(2, 3): 3 &gt;= 2 &rarr; xóa 3 - 2 = 1. Với p=(4, 1): 1 &lt; 4 &rarr; xóa hết 1. Với p=($10^9$, 2): 2 &lt; $10^9$ &rarr; xóa hết 2. Tổng xóa = 1 + 1 + 2 = 4. In ra: 3 4.'
           },
           {
             type: 'single',
@@ -517,7 +517,7 @@ int main() {
               'Vì std::map chạy trong O(1) tuyệt đối còn unordered_map chạy trong O(N log N) chậm hơn'
             ],
             correct: 1,
-            explain: 'unordered_map mặc định dùng hàm băm cố định rất dễ bị các bộ test anti-hash gài xung đột bucket, làm thời gian thoái hóa thành O(N^2) -> TLE. std::map luôn đảm bảo O(N log N) trong mọi trường hợp.'
+            explain: 'unordered_map mặc định dùng hàm băm cố định rất dễ bị các bộ test anti-hash gài xung đột bucket, làm thời gian thoái hóa thành $O(N^2)$ &rarr; TLE. std::map luôn đảm bảo $O(N \\log N)$ trong mọi trường hợp.'
           },
           {
             type: 'multiple',
@@ -529,7 +529,7 @@ int main() {
               'Khi khai báo map&lt;int, int&gt; mp; rồi gọi if (mp[10^9] == 0), bộ nhớ tăng vọt lên ngay 4 GB RAM'
             ],
             correct: [0, 1, 2],
-            explain: 'A, B và C đều đúng. D sai vì map chỉ cấp phát nút cho đúng những khóa được chạm tới (chỉ thêm 1 nút cho khóa 10^9 chứ không cấp phát cả mảng 10^9 phần tử như mảng tĩnh!).'
+            explain: 'A, B và C đều đúng. D sai vì map chỉ cấp phát nút cho đúng những khóa được chạm tới (chỉ thêm 1 nút cho khóa $10^9$ chứ không cấp phát cả mảng $10^9$ phần tử như mảng tĩnh!).'
           }
         ]
       },
@@ -541,16 +541,16 @@ int main() {
         id: 'mod3',
         number: 'Phần 3',
         shortTitle: 'priority_queue & deque',
-        title: 'Vấn Đề Nhỏ 3: std::priority_queue (Max/Min-Heap) & std::deque Hai Đầu O(1)',
-        lead: 'Luôn lấy được phần tử lớn nhất hoặc nhỏ nhất trong O(\\log N) qua mỗi bước cập nhật bằng priority_queue (Max-Heap & Min-Heap), và thêm/xóa linh hoạt hai đầu trong O(1) với std::deque.',
+        title: 'Vấn Đề Nhỏ 3: std::priority_queue (Max/Min-Heap) &amp; std::deque Hai Đầu $O(1)$',
+        lead: 'Luôn lấy được phần tử lớn nhất hoặc nhỏ nhất trong $O(\\log N)$ qua mỗi bước cập nhật bằng priority_queue (Max-Heap &amp; Min-Heap), và thêm/xóa linh hoạt hai đầu trong $O(1)$ với std::deque.',
         subproblem: {
           title: 'Làm sao vừa liên tục bốc phần tử lớn nhất/nhỏ nhất rồi đẩy giá trị mới vào trong $O(\\log N)$ (thay vì gọi sort() lại mỗi bước), và vừa thêm/xóa ở cả đầu lẫn cuối dãy trong $O(1)$?',
           desc: 'Dùng std::priority_queue (Max-Heap mặc định hoặc Min-Heap với greater&lt;T&gt;) để luôn giữ phần tử ưu tiên nhất ở .top(), và dùng std::deque&lt;T&gt; để push_front/push_back/pop_front/pop_back đều chạy trong $O(1)$.'
         },
         cards: [
           {
-            heading: 'std::priority_queue — Max-Heap Mặc Định & Min-Heap Với greater<T>',
-            tag: 'Hàng đợi ưu tiên O(log N)',
+            heading: 'std::priority_queue — Max-Heap Mặc Định &amp; Min-Heap Với greater&lt;T&gt;',
+            tag: 'Hàng đợi ưu tiên $O(\\log N)$',
             html: `
               <div class="step-life">
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Vấn đề &amp; Cách giải quyết trong đời sống</span>
@@ -603,8 +603,8 @@ int main() {
             `
           },
           {
-            heading: 'std::deque<T> — Hàng Đợi Hai Đầu O(1) Đánh Bại vector.insert(begin()) O(N)',
-            tag: 'Thao tác hai đầu O(1)',
+            heading: 'std::deque&lt;T&gt; — Hàng Đợi Hai Đầu $O(1)$ Đánh Bại vector.insert(begin()) $O(N)$',
+            tag: 'Thao tác hai đầu $O(1)$',
             html: `
               <div class="step-life">
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.book : ''} Bước 1: Vấn đề &amp; Cách giải quyết trong đời sống</span>
@@ -627,8 +627,8 @@ int main() {
     deque&lt;int&gt; dq;
     vector&lt;int&gt; a = {4, 2, 5, 1};
     for (int x : a) {
-        // Muốn kết quả nhỏ nhất theo từ điển: số nhỏ hơn đầu -&gt; đẩy lên đầu!
-        if (dq.empty() || x &lt; dq.front()) dq.push_front(x);
+        // Muốn kết quả nhỏ nhất theo từ điển: số nhỏ hơn hoặc bằng đầu -&gt; đẩy lên đầu!
+        if (dq.empty() || x &lt;= dq.front()) dq.push_front(x);
         else dq.push_back(x);
     }
     // dq đang là {1, 2, 4, 5}
@@ -716,18 +716,18 @@ int main() {
                 changedLines: isOk ? [8, 10, 11, 12, 13, 14, 15] : [4, 5, 6, 7, 8, 18],
                 statusOk: isOk,
                 statusText: isOk
-                  ? 'NHANH O(N log N): Chỉ tốn ~1.7*10^6 bước cho N=10^5 -> AC êm ru dưới 0.1s!'
-                  : 'QUÁ CHẬM O(N^2 log N): Mới N=1,000 đã tốn > 10 triệu phép so sánh; lên N=10^5 sẽ vượt 10^11 bước -> TLE!',
+                  ? 'NHANH $O(N \\log N)$: Chỉ tốn ~$1.7 \\times 10^6$ bước cho $N=10^5$ &rarr; AC êm ru dưới 0.1s!'
+                  : 'QUÁ CHẬM $O(N^2 \\log N)$: Mới $N=1\\,000$ đã tốn hơn 10 triệu phép so sánh; lên $N=10^5$ sẽ vượt $10^{11}$ bước &rarr; TLE!',
                 predictions: [
-                  { text: 'Min-Heap nối {4, 6, 8, 12} ra chi phí tối thiểu 58 trong O(N log N), sẵn sàng cho N = 10^5' },
-                  { text: 'Gọi sort() lại ở mỗi lượt khiến ngay cả N = 1,000 đã tốn hơn 10 triệu phép so sánh và chắc chắn TLE ở N = 10^5' }
+                  { text: 'Min-Heap nối {4, 6, 8, 12} ra chi phí tối thiểu 58 trong $O(N \\log N)$, sẵn sàng cho $N = 10^5$' },
+                  { text: 'Gọi sort() lại ở mỗi lượt khiến ngay cả $N = 1\\,000$ đã tốn hơn 10 triệu phép so sánh và chắc chắn TLE ở $N = 10^5$' }
                 ],
                 console: isOk
                   ? '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\nTong chi phi nho nhat = 58\n[Voi N = 100,000: chi mat ~1.7*10^6 phep tinh -> AC em ru!]'
                   : '$ g++ -std=c++14 -O2 main.cpp -o main && ./main\nChi phi = 4862448, so phep so sanh (N=1000): 10139108\n[Canh bao TLE: Voi N = 100,000 se vuot 10^11 phep tinh -> TLE chac chan!]',
                 explain: isOk
-                  ? 'Min-Heap chỉ đẩy số nhỏ nhất lên đỉnh mỗi khi pop() và push(), tốn O(log N) mỗi thao tác nên tổng cả vòng lặp while chỉ là O(N log N).'
-                  : 'Mỗi lần gọi sort() trên phần còn lại đều sắp xếp lại từ đầu mất O(N log N), lặp N lần tạo thành O(N^2 log N) vượt xa ngưỡng 10^8 phép/giây.'
+                  ? 'Min-Heap chỉ đẩy số nhỏ nhất lên đỉnh mỗi khi pop() và push(), tốn $O(\\log N)$ mỗi thao tác nên tổng cả vòng lặp while chỉ là $O(N \\log N)$.'
+                  : 'Mỗi lần gọi sort() trên phần còn lại đều sắp xếp lại từ đầu mất $O(N \\log N)$, lặp $N$ lần tạo thành $O(N^2 \\log N)$ vượt xa ngưỡng $10^8$ phép/giây.'
               };
             }
           }
@@ -759,7 +759,7 @@ int main() {
               'In ra 14 12 vì Min-Heap lấy 5 và 9 ra cộng thành 14 rồi giữ nguyên 12 ở đỉnh'
             ],
             correct: 3,
-            explain: 'Min-Heap chứa {5, 9, 12}. Lần 1 bốc a = 5; lần 2 bốc b = 9; tổng a + b = 14 rồi đẩy 14 vào lại -> Heap còn {12, 14}, nên pq.top() là 12! Kết quả: 14 12.'
+            explain: 'Min-Heap chứa {5, 9, 12}. Lần 1 bốc a = 5; lần 2 bốc b = 9; tổng a + b = 14 rồi đẩy 14 vào lại &rarr; Heap còn {12, 14}, nên pq.top() là 12! Kết quả: 14 12.'
           },
           {
             type: 'trace',
@@ -786,7 +786,7 @@ int main() {
               'In ra 4 2 3 vì deque luôn đẩy các phần tử mới nhất về phía cuối dãy'
             ],
             correct: 2,
-            explain: 'Các bước thay đổi deque: {4} -> {2, 4} -> {2, 4, 7} -> {1, 2, 4, 7} -> pop_back() bỏ 7 còn {1, 2, 4}. Vậy dq.front() = 1, dq[1] = 2, size = 3. In ra: 1 2 3.'
+            explain: 'Các bước thay đổi deque: {4} &rarr; {2, 4} &rarr; {2, 4, 7} &rarr; {1, 2, 4, 7} &rarr; pop_back() bỏ 7 còn {1, 2, 4}. Vậy dq.front() = 1, dq[1] = 2, size = 3. In ra: 1 2 3.'
           },
           {
             type: 'single',
@@ -798,7 +798,7 @@ int main() {
               'Vì deque tự động loại bỏ các phần tử trùng nhau ở hai đầu nên không tốn bộ nhớ phụ'
             ],
             correct: 1,
-            explain: 'vector chèn vào đầu phải dịch toàn bộ N phần tử sang phải mất O(N) mỗi lần (O(Q * N) TLE). deque hỗ trợ push_front, push_back, pop_front, pop_back và truy cập dq[k] đều trong O(1).'
+            explain: 'vector chèn vào đầu phải dịch toàn bộ $N$ phần tử sang phải mất $O(N)$ mỗi lần ($O(Q \\cdot N)$ TLE). deque hỗ trợ push_front, push_back, pop_front, pop_back và truy cập dq[k] đều trong $O(1)$.'
           },
           {
             type: 'multiple',
@@ -895,7 +895,7 @@ int main() {
           { text: 'Đổi dòng 22 thành cout << (int)mp.size() - q << \'\\n\'; để trừ đi toàn bộ số truy vấn hỏi' }
         ],
         correctPatch: 0,
-        explain: 'Ở dòng 20, biểu thức mp[s] tự động chèn thêm ("chi", 0), ("dung", 0), ("hoa", 0) vào map khiến mp.size() tăng từ 2 lên 5! Kiểm tra mp.count(s) > 0 trước (nhờ tính chất đoản mạch &&, nếu count == 0 thì vế sau không chạy) giúp tuyệt đối không tạo khóa rác.'
+        explain: 'Ở dòng 20, biểu thức mp[s] tự động chèn thêm ("chi", 0), ("dung", 0), ("hoa", 0) vào map khiến mp.size() tăng từ 2 lên 5! Kiểm tra mp.count(s) &gt; 0 trước (nhờ tính chất đoản mạch &amp;&amp;, nếu count == 0 thì vế sau không chạy) giúp tuyệt đối không tạo khóa rác.'
       },
       {
         id: 'dbg_l106_pq_max_vs_min',
@@ -935,7 +935,7 @@ int main() {
           { text: 'Đổi dòng 13 thành pq.push(-x); mà giữ nguyên dòng 9 và cộng ans += a + b ở dòng 19' }
         ],
         correctPatch: 1,
-        explain: 'Ở dòng 9, priority_queue<int> mặc định là Max-Heap nên luôn bốc hai số lớn nhất trước (12 + 8 = 20 -> 20 + 6 = 26 -> 26 + 4 = 30, tổng sai thành 76). Đổi sang priority_queue<int, vector<int>, greater<int>> pq; để dùng Min-Heap sẽ luôn bốc 2 số nhỏ nhất trước (4 + 6 = 10 -> 8 + 10 = 18 -> 12 + 18 = 30, tổng tối ưu đúng bằng 58).'
+        explain: 'Ở dòng 9, priority_queue&lt;int&gt; mặc định là Max-Heap nên luôn bốc hai số lớn nhất trước (12 + 8 = 20 &rarr; 20 + 6 = 26 &rarr; 26 + 4 = 30, tổng sai thành 76). Đổi sang priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; pq; để dùng Min-Heap sẽ luôn bốc 2 số nhỏ nhất trước (4 + 6 = 10 &rarr; 8 + 10 = 18 &rarr; 12 + 18 = 30, tổng tối ưu đúng bằng 58).'
       }
     ],
 
@@ -949,7 +949,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/22/A',
-        hint: 'Giới hạn 1 <= n <= 100, |a_i| <= 100. Đưa tất cả n số vào set&lt;int&gt; s để tự động loại trùng và xếp tăng dần. Nếu (int)s.size() < 2 thì in "NO", ngược lại lấy phần tử thứ 2 bằng auto it = s.begin(); ++it; cout << *it << \'\\n\';.'
+        hint: 'Giới hạn $1 \\le n \\le 100$, $|a_i| \\le 100$. Đưa tất cả $n$ số vào <code>set&lt;int&gt; s</code> để tự động loại trùng và xếp tăng dần. Nếu <code>(int)s.size() &lt; 2</code> thì in "NO", ngược lại lấy phần tử thứ 2 bằng <code>auto it = s.begin(); ++it; cout &lt;&lt; *it &lt;&lt; \'\\n\';</code>.'
       },
       {
         id: 'CF-4C',
@@ -957,7 +957,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/4/C',
-        hint: 'Giới hạn 1 <= n <= 10^5, độ dài tên <= 32, TL 5.0s, ML 64 MB. Dùng map&lt;string, int&gt; db (tránh unordered_map vì bẫy anti-hash trên Codeforces). Nếu db.count(s) == 0 thì in "OK" và gán db[s] = 1; ngược lại in s << db[s] rồi tăng db[s]++.'
+        hint: 'Giới hạn $1 \\le n \\le 10^5$, độ dài tên $\\le 32$, TL 5.0s, ML 64 MB. Dùng <code>map&lt;string, int&gt; db</code> (tránh <code>unordered_map</code> vì bẫy anti-hash trên Codeforces). Nếu <code>db.count(s) == 0</code> thì in "OK" và gán <code>db[s] = 1</code>; ngược lại in <code>s &lt;&lt; db[s]</code> rồi tăng <code>db[s]++</code>.'
       },
       {
         id: 'CF-1579E1',
@@ -965,7 +965,7 @@ int main() {
         judge: 'Codeforces',
         tier: 1,
         link: 'https://codeforces.com/problemset/problem/1579/E1',
-        hint: 'Giới hạn sum(n) <= 2*10^5, TL 2.0s, ML 256 MB. Dùng deque&lt;int&gt; dq: với mỗi số x đọc được, nếu dq.empty() || x < dq.front() thì dq.push_front(x), ngược lại dq.push_back(x) trong O(1)!'
+        hint: 'Giới hạn $\\sum n \\le 2 \\cdot 10^5$, TL 2.0s, ML 256 MB. Dùng <code>deque&lt;int&gt; dq</code>: với mỗi số $x$ đọc được, nếu <code>dq.empty() || x &lt; dq.front()</code> thì <code>dq.push_front(x)</code>, ngược lại <code>dq.push_back(x)</code> trong $O(1)$!'
       },
       {
         id: 'ABC082-C',
@@ -973,7 +973,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc082/tasks/arc087_a',
-        hint: 'Giới hạn 1 <= N <= 10^5, 1 <= a_i <= 10^9. Không thể tạo mảng đếm tới 10^9 (MLE)! Dùng map&lt;int, int&gt; cnt đếm tần suất mỗi giá trị trong O(N log N). Duyệt từng cặp (x, c): nếu c < x thì xóa hết c, nếu c > x thì xóa c - x.'
+        hint: 'Giới hạn $1 \\le N \\le 10^5$, $1 \\le a_i \\le 10^9$. Không thể tạo mảng đếm tới $10^9$ (MLE)! Dùng <code>map&lt;int, int&gt; cnt</code> đếm tần suất mỗi giá trị trong $O(N \\log N)$. Duyệt từng cặp $(x, c)$: nếu $c \\lt x$ thì xóa hết $c$, nếu $c \\gt x$ thì xóa $c - x$.'
       },
       {
         id: 'ABC141-D',
@@ -981,7 +981,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc141/tasks/abc141_d',
-        hint: 'Giới hạn 1 <= N, M <= 10^5, 1 <= A_i <= 10^9. Dùng Max-Heap priority_queue&lt;long long&gt; pq: mỗi lượt lấy món đắt nhất x = pq.top(), pop rồi đẩy lại x / 2 trong O(log N) -> tổng O((N + M) log N). Nhớ tính tổng bằng long long vì tổng có thể tới 10^14!'
+        hint: 'Giới hạn $1 \\le N, M \\le 10^5$, $1 \\le A_i \\le 10^9$. Dùng Max-Heap <code>priority_queue&lt;long long&gt; pq</code>: mỗi lượt lấy món đắt nhất <code>x = pq.top()</code>, pop rồi đẩy lại <code>x / 2</code> trong $O(\\log N)$ &rarr; tổng $O((N + M) \\log N)$. Nhớ tính tổng bằng <code>long long</code> vì tổng có thể tới $10^{14}$!'
       },
       {
         id: 'ABC158-D',
@@ -989,7 +989,7 @@ int main() {
         judge: 'AtCoder',
         tier: 2,
         link: 'https://atcoder.jp/contests/abc158/tasks/abc158_d',
-        hint: 'Giới hạn 1 <= |S| <= 10^5, 1 <= Q <= 2*10^5, TL 2.0s, ML 1024 MB. Nạp S vào deque&lt;char&gt; dq và giữ một biến cờ bool rev = false. Truy vấn đảo chỉ bật rev = !rev trong O(1); truy vấn thêm ký tự dựa vào rev để gọi push_front hoặc push_back trong O(1)!'
+        hint: 'Giới hạn $1 \\le |S| \\le 10^5$, $1 \\le Q \\le 2 \\cdot 10^5$, TL 2.0s, ML 1024 MB. Nạp $S$ vào <code>deque&lt;char&gt; dq</code> và giữ một biến cờ <code>bool rev = false</code>. Truy vấn đảo chỉ bật <code>rev = !rev</code> trong $O(1)$; truy vấn thêm ký tự dựa vào <code>rev</code> để gọi <code>push_front</code> hoặc <code>push_back</code> trong $O(1)$!'
       },
       {
         id: 'CSES-1163',
@@ -997,7 +997,7 @@ int main() {
         judge: 'CSES',
         tier: 3,
         link: 'https://cses.fi/problemset/task/1163',
-        hint: 'Giới hạn 1 <= x <= 10^9, 1 <= n <= 2*10^5, TL 1.00s, ML 512 MB. Dùng set&lt;int&gt; lights = {0, x} lưu vị trí đèn và multiset&lt;int&gt; lens = {x} lưu độ dài các đoạn. Khi thêm đèn p: tìm r = *lights.upper_bound(p) và l = *prev(lights.upper_bound(p)), gọi lens.erase(lens.find(r - l)) để xóa ĐÚNG 1 đoạn cũ, chèn (p - l) và (r - p), rồi in *lens.rbegin()!'
+        hint: 'Giới hạn $1 \\le x \\le 10^9$, $1 \\le n \\le 2 \\cdot 10^5$, TL 1.00s, ML 512 MB. Dùng <code>set&lt;int&gt; lights = {0, x}</code> lưu vị trí đèn và <code>multiset&lt;int&gt; lens = {x}</code> lưu độ dài các đoạn. Khi thêm đèn $p$: lấy <code>auto it = lights.upper_bound(p); int r = *it; --it; int l = *it;</code> (lùi 1 bước đúng như Phần 1), gọi <code>lens.erase(lens.find(r - l))</code> để xóa ĐÚNG 1 đoạn cũ, chèn $(p - l)$ và $(r - p)$, rồi in <code>*lens.rbegin()</code>!'
       },
       {
         id: 'VNOJ-KMIN',
@@ -1005,7 +1005,7 @@ int main() {
         judge: 'VNOJ',
         tier: 3,
         link: 'https://oj.vnoi.info/problem/kmin',
-        hint: 'Giới hạn 1 <= M, N, K <= 50,000, K <= M*N, 1 <= A_i, B_i <= 10^9, TL 1.0s, ML 512 MB. Sort hai mảng A và B (L1-05), đẩy các cặp ban đầu {A[i] + B[0], {i, 0}} vào Min-Heap priority_queue với greater&lt;...&gt;. Lặp K lần: lấy cặp nhỏ nhất (sum, i, j) ra in sum, rồi đẩy tiếp {A[i] + B[j + 1], {i, j + 1}} nếu j + 1 < N!'
+        hint: 'Giới hạn $1 \\le M, N, K \\le 50\\,000$, $K \\le M \\cdot N$, $1 \\le A_i, B_i \\le 10^9$, TL 1.0s, ML 512 MB. Sort hai mảng $A$ và $B$ (L1-05), đẩy các cặp ban đầu <code>{A[i] + B[0], {i, 0}}</code> vào Min-Heap <code>priority_queue</code> với <code>greater&lt;...&gt;</code>. Lặp $K$ lần: lấy cặp nhỏ nhất $(sum, i, j)$ ra in $sum$, rồi đẩy tiếp <code>{A[i] + B[j + 1], {i, j + 1}}</code> nếu $j + 1 \\lt N$!'
       }
     ]
   };

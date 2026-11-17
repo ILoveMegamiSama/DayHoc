@@ -77,7 +77,9 @@ int main() {
              << ", Cuoi hang q.back() = " << q.back() << '\n';
         q.pop(); // Xóa 100 ở đầu hàng
     }
-    cout << "Sau pop, dau hang moi = " << q.front() << '\n';
+    if (!q.empty()) {
+        cout << "Sau pop, dau hang moi = " << q.front() << '\n';
+    }
 
     // 2. Sinh số nhị phân tăng dần bằng FIFO
     printFirstNBinary(6);

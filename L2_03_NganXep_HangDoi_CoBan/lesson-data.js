@@ -1035,7 +1035,7 @@ int main() {
 }`;
               return {
                 code,
-                changedLines: isOk ? [9, 15] : [8, 9, 12, 13, 14, 15, 18],
+                changedLines: isOk ? [8, 9, 15] : [8, 9, 12, 13, 14, 15, 18],
                 statusOk: isOk,
                 statusText: isOk
                   ? 'TỐI ƯU O(N): Đánh dấu ngay khi push giúp 10 số [1..10] chỉ đẩy vào hàng đợi đúng 10 lần!'
@@ -1178,12 +1178,12 @@ int main() {
 }`,
         bugLine: 9,
         patches: [
-          { text: 'Đổi dòng 9 thành } else { if (st.empty()) return false; st.pop();' },
-          { text: 'Đổi dòng 13 thành return true; thay cho return st.empty();' },
+          { text: 'Đổi dòng 9 thành } else { if (st.empty()) return false;' },
+          { text: 'Đổi dòng 9 thành } else if (st.empty()) { return true;' },
           { text: 'Đổi dòng 9 thành } else if (st.empty()) { st.push(c);' }
         ],
         correctPatch: 0,
-        explain: 'Ở dòng 9, khi viết else if (!st.empty()) mà bỏ trống nhánh else, lúc gặp \')\' khi stack đang rỗng thì chương trình im lặng bỏ qua chứ không trả về false! Sửa thành } else { if (st.empty()) return false; st.pop(); sẽ bắt đúng mọi ngoặc đóng dư thừa.'
+        explain: 'Ở dòng 9, khi viết else if (!st.empty()) mà bỏ trống nhánh else, lúc gặp \')\' khi stack đang rỗng thì chương trình im lặng bỏ qua chứ không trả về false! Sửa dòng 9 thành } else { if (st.empty()) return false; để giữ nguyên st.pop(); ở dòng 10 khi stack không rỗng và trả về false ngay khi stack rỗng.'
       },
       {
         id: 'dbg_l203_rpn_swap_operands',

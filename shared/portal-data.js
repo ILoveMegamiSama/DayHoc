@@ -193,7 +193,7 @@
         x: 1555,
         y: 200,
         badge: 'Tầng 1',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha1_array',
         prerequisites: [
           'Đã nắm vững vòng lặp lồng nhau (L1-01), mảng (L1-02) và hàm (L1-03)'

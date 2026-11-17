@@ -239,7 +239,7 @@
         x: 2125,
         y: 200,
         badge: 'Tầng 1',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã thành thạo std::vector, pair và std::sort (L1-05)'

@@ -430,7 +430,7 @@
         x: 2410,
         y: 620,
         badge: 'Tầng 2',
-        status: 'planned',
+        status: 'ready',
         phase: 'pha2_stl',
         prerequisites: [
           'Đã thành thạo std::sort với Comparator (L1-05) và priority_queue (L1-06)',

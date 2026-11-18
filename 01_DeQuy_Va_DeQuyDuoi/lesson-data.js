@@ -83,7 +83,7 @@
             ],
             build(state) {
               const ok = state.mode === 'has_base';
-              const code = `#include <iostream>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 int timHang(int n) {
@@ -92,7 +92,9 @@ ${ok ? '    if (n == 1) return 1; // Base case' : '    // BUG: Thieu dieu kien d
 }
 
 int main() {
-    cout << "Hang cua nguoi thu 4 la: " << timHang(4) << "\\n";
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout << "Hang cua nguoi thu 4 la: " << timHang(4) << '\\n';
     return 0;
 }`;
               return {
@@ -202,14 +204,14 @@ int main() {
                 <ol style="margin: 8px 0 0 20px; font-size: 14.5px;">
                   <li>Hàm <code>main()</code> <strong>chưa làm xong việc của nó</strong>, nên nó <strong>không được phép xóa đồ trên bàn làm việc</strong>.</li>
                   <li>Để hàm con <code>tinhTong(3)</code> có chỗ làm việc, CPU phải lấy một <strong>"Chiếc khay phụ nhỏ"</strong> kê lên trên chiếc bàn làm việc RAM. Chiếc khay này chứa biến <code>n = 3</code> và tờ giấy nợ: <em>"Sau khi tính xong phải lấy kết quả cộng với 3 rồi báo về main()"</em>.</li>
-                  <li>Hàm <code>tinhTong(3)</code> lại gọi <code>tinhTong(2)</code> $\\rightarrow$ CPU lại lấy thêm <strong>chiếc khay phụ thứ hai chồng lên trên chiếc khay thứ nhất</strong>!</li>
+                  <li>Hàm <code>tinhTong(3)</code> lại gọi <code>tinhTong(2)</code> &rarr; CPU lại lấy thêm <strong>chiếc khay phụ thứ hai chồng lên trên chiếc khay thứ nhất</strong>!</li>
                   <li>Cứ mỗi lần gọi đệ quy, CPU lại phải kê thêm một chiếc khay phụ chồng cao dần lên trên chiếc bàn làm việc RAM!</li>
                 </ol>
                 <pre class="code-diagram-box"><code>┌────────────────────────────────────────────────────────┐
-│ [Khay phụ 3]: n = 3 (chờ n = 2) nợ phép "+ 3"          │ <- Đỉnh ngăn xếp (Top)
+│ [Khay phụ 3]: n = 3 (chờ n = 2) nợ phép "+ 3"          │ &lt;- Đỉnh ngăn xếp (Top)
 │ [Khay phụ 2]: n = 2 (chờ n = 1) nợ phép "+ 2"          │
 │ [Khay phụ 1]: n = 1 (chờ n = 0) nợ phép "+ 1"          │
-│ [Khay phụ 0]: main() đang chờ kết quả cuối cùng       │ <- Đáy ngăn xếp (Bottom)
+│ [Khay phụ 0]: main() đang chờ kết quả cuối cùng       │ &lt;- Đáy ngăn xếp (Bottom)
 └────────────────────────────────────────────────────────┘</code></pre>
               </div>
 
@@ -242,7 +244,7 @@ int main() {
             build(state) {
               const isSafe = state.depth === 'safe';
               const nVal = isSafe ? '10000' : '1000000';
-              const code = `#include <iostream>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 long long tongThuong(long long n) {
@@ -251,13 +253,15 @@ long long tongThuong(long long n) {
 }
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     long long n = ${nVal};
-    cout << "Tong 1 den " << n << " la: " << tongThuong(n) << "\\n";
+    cout << "Tong 1 den " << n << " la: " << tongThuong(n) << '\\n';
     return 0;
 }`;
               return {
                 code,
-                changedLines: [10],
+                changedLines: [12],
                 statusOk: isSafe,
                 statusText: isSafe ? 'N = 10.000: Chiều sâu Call Stack an toàn, tính ra 50005000' : 'N = 1.000.000: Tràn bộ nhớ Call Stack (Exit code 0xC00000FD)',
                 console: isSafe
@@ -364,7 +368,7 @@ int main() {
                 <span class="step-badge">${window.CP_ICONS ? window.CP_ICONS.code : ''} Bước 2: Ánh xạ vào lập trình C++</span>
                 <p>Cú pháp đệ quy đuôi chuẩn mực với tham số tích lũy <code>tichLuy</code>:</p>
                 <pre class="code-pre"><code>long long tongDuoi(long long n, long long tichLuy = 0) {
-    if (n <= 0) return tichLuy; // Co san ket qua trong so
+    if (n &lt;= 0) return tichLuy; // Co san ket qua trong so
 
     // Lời gọi đệ quy là hành động CUỐI CÙNG TUYỆT ĐỐI!
     // Phep cong duoc thuc hien TRUOC khi goi ham:
@@ -403,7 +407,7 @@ int main() {
             ],
             build(state) {
               const isTail = state.type === 'tail';
-              const code = `#include <iostream>
+              const code = `#include <bits/stdc++.h>
 using namespace std;
 
 ${isTail ? `// ĐỆ QUY ĐUÔI: Không nợ phép tính sau lời gọi
@@ -417,13 +421,15 @@ long long tinh(long long n) {
 }`}
 
 int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     long long n = 10000000LL; // 10 trieu
-    cout << "Ket qua: " << tinh(n${isTail ? ', 0' : ''}) << "\\n";
+    cout << "Ket qua: " << tinh(n${isTail ? ', 0' : ''}) << '\\n';
     return 0;
 }`;
               return {
                 code,
-                changedLines: isTail ? [5, 6, 7] : [5, 6, 7],
+                changedLines: [5, 6, 7],
                 statusOk: isTail,
                 statusText: isTail ? 'Đệ quy đuôi + cờ -O2: 10 triệu bước chạy trong 0.01s không tốn thêm 1 byte Stack' : 'Đệ quy thường: 10 triệu tầng gọi lập tức tràn bộ nhớ Stack',
                 console: isTail
@@ -445,10 +451,10 @@ int main() {
     return f(n - 1, tichLuy * n);
 }`,
             options: [
-              'Bước 1: (3, 1) -> Bước 2: (2, 3) -> Bước 3: (1, 6) và trả về 6',
-              'Bước 1: (3, 1) -> Bước 2: (2, 2) -> Bước 3: (1, 3) và trả về 3',
-              'Bước 1: (3, 3) -> Bước 2: (2, 6) -> Bước 3: (1, 6) và trả về 6',
-              'Bước 1: (3, 1) -> Bước 2: (2, 1) -> Bước 3: (1, 1) và trả về 1'
+              'Bước 1: (3, 1) -&gt; Bước 2: (2, 3) -&gt; Bước 3: (1, 6) và trả về 6',
+              'Bước 1: (3, 1) -&gt; Bước 2: (2, 2) -&gt; Bước 3: (1, 3) và trả về 3',
+              'Bước 1: (3, 3) -&gt; Bước 2: (2, 6) -&gt; Bước 3: (1, 6) và trả về 6',
+              'Bước 1: (3, 1) -&gt; Bước 2: (2, 1) -&gt; Bước 3: (1, 1) và trả về 1'
             ],
             correct: 0,
             explain: 'Ban đầu n=3, tichLuy=1. Lời gọi tiếp theo: n=2, tichLuy=1*3=3. Lời gọi tiếp: n=1, tichLuy=3*2=6. Tại n=1, hàm trả về ngay 6.'
@@ -535,37 +541,77 @@ int main() {
           { text: 'Sửa dòng 2 thành: if (n < 0) return -1; để báo lỗi số âm' }
         ],
         correctPatch: 0,
-        explain: 'Trong đệ quy đuôi, kết quả cuối cùng nằm trọn vẹn trong biến tichLuy! Nếu viết "return 0;" hoặc "return 1;" tại điểm dừng, bạn sẽ vứt bỏ toàn bộ công sức cộng dồn từ trước. Phải trả về chính biến tichLuy khi n <= 0.'
+        explain: 'Trong đệ quy đuôi, kết quả cuối cùng nằm trọn vẹn trong biến tichLuy! Nếu viết "return 0;" hoặc "return 1;" tại điểm dừng, bạn sẽ vứt bỏ toàn bộ công sức cộng dồn từ trước. Phải trả về chính biến tichLuy khi n &lt;= 0.'
       }
     ],
 
     // ============================================================================
-    // BÀI TẬP THỰC CHIẾN TUYỂN CHỌN
+    // BÀI TẬP THỰC CHIẾN TUYỂN CHỌN (ĐÃ XÁC THỰC QUA SEARCH_WEB)
     // ============================================================================
     practiceProblems: [
+      {
+        id: 'ABC273-A',
+        title: 'A - A Recursive Function',
+        judge: 'AtCoder',
+        tier: 1,
+        link: 'https://atcoder.jp/contests/abc273/tasks/abc273_a',
+        hint: 'Giới hạn 0 &lt;= N &lt;= 10. Đề cho sẵn định nghĩa f(0) = 1 và f(k) = k * f(k - 1). Hãy thử viết cả 2 bản: đệ quy thường và đệ quy đuôi có biến tichLuy!'
+      },
       {
         id: 'CSES-1068',
         title: 'Weird Algorithm (Dãy Collatz)',
         judge: 'CSES Problem Set',
         tier: 1,
         link: 'https://cses.fi/problemset/task/1068',
-        hint: 'Mỗi bước n chẵn -> n / 2, n lẻ -> 3n + 1. Viết bằng đệ quy đuôi void inDay(long long n) và quan sát compiler khử đệ quy.'
+        hint: 'Giới hạn 1 &lt;= n &lt;= 10^6. Mỗi bước n chẵn -&gt; n / 2, n lẻ -&gt; 3 * n + 1 (nhớ dùng long long vì 3n + 1 có thể vượt int). Cài đặt bằng đệ quy đuôi void inDay(long long n).'
       },
       {
-        id: 'VNOJ-GIAITHUA',
-        title: 'Tính Giai Thừa Số Lớn & Đệ Quy Đuôi',
-        judge: 'VNOJ',
+        id: 'ABC247-C',
+        title: 'C - 1 2 1 3 1 2 1',
+        judge: 'AtCoder',
         tier: 1,
-        link: 'https://oj.vnoi.info/',
-        hint: 'Chuyển hàm tính n! từ đệ quy thường sang đệ quy đuôi có biến tích lũy để tránh Stack Overflow khi n lớn.'
+        link: 'https://atcoder.jp/contests/abc247/tasks/abc247_c',
+        hint: 'Giới hạn 1 &lt;= N &lt;= 16. Dãy S_n = S_{n-1} + n + S_{n-1}. Viết hàm đệ quy in trực tiếp inDay(n - 1), in số n, rồi gọi inDay(n - 1) với điểm dừng n == 1.'
+      },
+      {
+        id: 'CSES-2165',
+        title: 'Tower of Hanoi (Tháp Hà Nội)',
+        judge: 'CSES Problem Set',
+        tier: 2,
+        link: 'https://cses.fi/problemset/task/2165',
+        hint: 'Giới hạn 1 &lt;= n &lt;= 16. Tổng số bước là 2^n - 1. Chia việc chuyển n đĩa thành 3 bước: chuyển n - 1 đĩa sang cọc phụ, chuyển đĩa lớn nhất sang đích, chuyển n - 1 đĩa về đích.'
+      },
+      {
+        id: 'CF-1829D',
+        title: '1829D - Gold Rush',
+        judge: 'Codeforces',
+        tier: 2,
+        link: 'https://codeforces.com/problemset/problem/1829/D',
+        hint: 'Giới hạn 1 &lt;= t &lt;= 10^4, 1 &lt;= m &lt;= n &lt;= 10^7. Đống vàng x chia hết cho 3 tách thành x / 3 và 2 * x / 3. Đệ quy bool coThe(int x, int m) với điểm dừng x == m hoặc x &lt; m || x % 3 != 0 (sâu tối đa ~log n tầng).'
       },
       {
         id: 'CF-1033A',
-        title: 'King Escape (Loang Đệ Quy & Khử Tràn Stack)',
+        title: '1033A - King Escape (Loang Đệ Quy & Khử Tràn Stack)',
         judge: 'Codeforces',
         tier: 2,
         link: 'https://codeforces.com/problemset/problem/1033/A',
-        hint: 'Khi loang trên lưới 1000x1000 bằng DFS đệ quy, nếu không tối ưu sẽ bị tràn Call Stack. Hãy áp dụng tư duy khử đệ quy.'
+        hint: 'Giới hạn 3 &lt;= n &lt;= 1000. Khi loang trên lưới 1000x1000 bằng DFS đệ quy thường có thể sâu tới 10^6 tầng và gây tràn Call Stack! Hãy áp dụng tư duy khử đệ quy hoặc nhận xét 4 góc phần tư quanh quân Hậu.'
+      },
+      {
+        id: 'CF-727A',
+        title: '727A - Transformation: from A to B',
+        judge: 'Codeforces',
+        tier: 3,
+        link: 'https://codeforces.com/problemset/problem/727/A',
+        hint: 'Giới hạn 1 &lt;= a &lt; b &lt;= 10^9. Đi xuôi từ a có 2 nhánh, nhưng đi ngược từ b về a chỉ có tối đa 1 cách! Dùng đệ quy đuôi (hoặc vòng lặp while (b &gt; a)) kiểm tra b chẵn (chia 2) hay tận cùng là 1 ((b - 1) / 10).'
+      },
+      {
+        id: 'CF-768B',
+        title: '768B - Code For 1',
+        judge: 'Codeforces',
+        tier: 3,
+        link: 'https://codeforces.com/problemset/problem/768/B',
+        hint: 'Giới hạn 0 &lt;= n &lt; 2^50, 0 &lt;= r - l &lt;= 10^5. Mảng kết quả quá lớn để lưu hết, nhưng độ sâu đệ quy chia đôi n -&gt; n/2 tối đa 50 tầng. Tính kích thước cây con và chỉ đệ quy vào nhánh giao với đoạn [l, r].'
       }
     ]
   };

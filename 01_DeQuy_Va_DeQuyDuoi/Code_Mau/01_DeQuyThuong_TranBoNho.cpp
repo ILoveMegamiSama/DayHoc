@@ -3,7 +3,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 01_DeQuyThuong_TranBoNho.cpp -o 01_DeQuyThuong_TranBoNho.exe
  */
 
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 

@@ -3,7 +3,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 03_BienDoi_DeQuyDuoi_Sang_VongLap.cpp -o 03_BienDoi_DeQuyDuoi_Sang_VongLap.exe
  */
 
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 

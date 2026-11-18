@@ -131,10 +131,30 @@
       });
     });
 
+    const allDebugs = [];
+    const seenDebugIds = new Set();
+    const collectDebug = (db) => {
+      if (!db) return;
+      if (db.id) {
+        if (seenDebugIds.has(db.id)) return;
+        seenDebugIds.add(db.id);
+      }
+      allDebugs.push(db);
+    };
+    (lessonData.modules || []).forEach((mod) => {
+      if (mod && Array.isArray(mod.debugExercises)) {
+        mod.debugExercises.forEach(collectDebug);
+      }
+    });
+    if (Array.isArray(lessonData.debugExercises)) {
+      lessonData.debugExercises.forEach(collectDebug);
+    }
+
     let debugSolved = 0;
-    let debugTotal = (lessonData.debugExercises || []).length;
-    (lessonData.debugExercises || []).forEach((db) => {
-      if (p.debugs[`${lessonData.id}_${db.id}`]) debugSolved++;
+    const debugTotal = allDebugs.length;
+    const debugs = p.debugs || {};
+    allDebugs.forEach((db) => {
+      if (debugs[`${lessonData.id}_${db.id}`]) debugSolved++;
     });
 
     let probSolved = 0;

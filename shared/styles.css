@@ -308,13 +308,38 @@ html, body {
   display: block;
 }
 
+.svg-stage {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  height: 440px;
+}
+
+.svg-stage .graph-svg {
+  height: 100%;
+}
+
 .graph-node {
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.15s ease;
 }
-.graph-node:hover rect {
+.graph-node:hover rect.graph-node-box,
+.graph-node:hover > rect:first-child {
   stroke: var(--accent);
-  stroke-width: 2px;
+  stroke-width: 2.2px;
+}
+.graph-node.planned {
+  opacity: 0.84;
+}
+.graph-node.planned rect.graph-node-box {
+  stroke-dasharray: 6 4;
+}
+.graph-node.planned:hover {
+  opacity: 1;
 }
 
 /* Subproblem Banner */
@@ -960,6 +985,121 @@ p code, li code, td code, th code {
 .practice-tier.tier-1 { background: var(--ok-soft); color: var(--ok); }
 .practice-tier.tier-2 { background: var(--amber-soft); color: var(--amber); }
 .practice-tier.tier-3 { background: var(--warn-soft); color: var(--warn); }
+
+/* Track Filters & Lesson Cards */
+.track-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.track-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.track-pill:hover {
+  background: var(--surface-card);
+  border-color: var(--border-strong);
+}
+
+.track-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.track-pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.track-pill.active .track-pill-dot {
+  background: #fff !important;
+}
+
+.track-pill-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.lesson-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 0;
+  transition: border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.lesson-card.planned {
+  border-style: dashed;
+  background: var(--surface);
+  opacity: 0.9;
+}
+
+.lesson-card.planned:hover {
+  opacity: 1;
+  border-color: var(--border-strong);
+}
+
+.lesson-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.lesson-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.phase-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: var(--surface);
+}
+
+.lesson-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 4px;
+  background: var(--surface-card);
+  border: 1px dashed var(--border-strong);
+  color: var(--muted);
+  cursor: default;
+  user-select: none;
+}
 
 /* Footer Nav */
 .module-footer-nav {

@@ -75,17 +75,20 @@ Tại sao lại tê liệt? Bởi vì giữa bạn và anh Thật Thà lập t�
 Mọi chương trình C++ trên thế giới đều bắt đầu chính xác từ 3 quy tắc đời sống này:
 
 ```cpp
-#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
 
 int main() {
     // 1. Dặn anh phụ bếp in lời chào và GÕ CHUÔNG KẾT THÚC CÂU LỆNH (dấu ;)
-    std::cout << "Xin chao! Toi la nguoi phu viec cham chi cua ban!";
+    cout << "Xin chao! Toi la nguoi phu viec cham chi cua ban!" << endl;
 
     // 2. Báo cáo ca làm việc hoàn thành mỹ mãn không có lỗi (mã số 0)
     return 0;
 }
 ```
 
+- **`#include <bits/stdc++.h>` (Tủ đồ nghề đa năng):** Dòng mở tủ đặt ở đầu file để mượn trọn bộ dụng cụ chuẩn của C++ (loa `cout`, khe `cin`, chuỗi `string`, toán học...) chỉ trong 1 dòng, thay vì phải nhớ và gọi rời rạc từng tủ riêng lẻ. *(Ở bài nhập môn đầu tiên này, ta giữ nhịp nhẹ nhàng chưa cần bật lệnh tăng tốc nhập xuất `ios_base` — bạn sẽ được giải mã kỹ ở **Chương Phụ `MOD-CP0`** ngay sau bài này!)*
+- **`using namespace std;` (Mở xưởng chung `std`):** Dặn anh phụ bếp lấy thẳng dụng cụ trong xưởng chuẩn quốc tế (*Standard*) để viết gọn `cout`, `cin`, `endl`, `string` mà không phải lặp lại tiền tố `std::` ở mọi nơi.
 - **`int main() { ... }` (Cánh Cửa Chính):** Là điểm khởi đầu duy nhất mà máy tính luôn bước vào đầu tiên khi mở tiệm. Dấu mở ngoặc `{` là bước chân vào phòng, dấu đóng ngoặc `}` là bước chân ra khỏi phòng.
   - *Tại sao lại có chữ `int` đứng trước chữ `main`?* Vì khi kết thúc ca làm việc, anh phụ bếp sẽ báo cáo một **con số nguyên** (mã số 0 an toàn ở lệnh `return 0;`). Do đó, trước cửa phòng chỉ huy bắt buộc phải gắn biển `int` để thông báo trước: "Căn phòng này khi đóng cửa sẽ trả về một con số nguyên!".
   - *Cặp ngoặc tròn `()` sau chữ `main` để làm gì?* Đây là chiếc "túi nhận dặn dò bổ sung" khi bắt đầu ca làm. Vì ở bài nhập môn này ta chưa cần truyền thêm thông tin đặc biệt gì từ bên ngoài nên cặp ngoặc được để rỗng.
@@ -96,7 +99,7 @@ int main() {
 - **Câu lệnh (Statement):** Một chỉ thị trọn vẹn gửi tới máy tính, luôn kết thúc bằng dấu chấm phẩy `;`.
 - **Hàm `main` (Main Function):** Từ *"main"* trong tiếng Anh nghĩa là *"chính yếu, quan trọng nhất"*. Đây là căn phòng chỉ huy, nơi điều hành toàn bộ công việc của chương trình.
 - **Lỗi cú pháp (Syntax Error / Expected ';'):** Lỗi khi bạn viết thiếu dấu `;` hoặc sai quy tắc từ ngữ, tương đương việc bạn quên gõ chuông làm anh phụ việc đứng bối rối không hiểu khẩu lệnh.
-- **Tiền tố `std::` là gì?** Bạn sẽ thấy chữ `std::` xuất hiện trước `cout`, `cin`, `endl`, `string`. Chữ `std` là viết tắt của **Standard** (nghĩa là *"Bộ Tiêu Chuẩn Quốc Tế"*). Khi viết `std::cout`, bạn đang dặn anh phụ việc: *"Hãy dùng chiếc Loa Chuẩn Quốc Tế có sẵn trong hộp đồ nghề của C++ nhé!"*. Hai dấu hai chấm `::` giống như một sợi dây nối chỉ xuất xứ của dụng cụ.
+- **Tủ đồ nghề `<bits/stdc++.h>` & xưởng chung `using namespace std;`:** `std` là viết tắt của **Standard** (*Bộ Tiêu Chuẩn Quốc Tế*). Khi mở xưởng chung `std`, ta dùng thẳng `cout`, `cin`, `endl`, `string`; sang **Chương Phụ `MOD-CP0`** ta sẽ học thêm bẫy trùng tên trong xưởng chung này và cách bật Fast I/O (`ios_base`).
 
 ---
 
@@ -116,8 +119,8 @@ int main() {
 Trong C++, chiếc kệ gỗ đựng đồ chính là bộ nhớ máy tính, và những chiếc hộp dán nhãn chính là **Biến số (Variables)**:
 
 ```cpp
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
+using namespace std;
 
 int main() {
     // 1. Tạo chiếc hộp chứa số nguyên có nhãn là 'soBanh', đặt số 3 vào hộp
@@ -127,11 +130,14 @@ int main() {
     double giaTien = 15.5;
 
     // 3. Tạo chiếc hộp chứa chuỗi chữ có nhãn là 'tenKhach', đặt chữ "An" vào hộp
-    std::string tenKhach = "An";
+    string tenKhach = "An";
 
     // 4. Bài học chia nguyên:
     int phepChiaNguyen = 5 / 2;      // Kết quả là 2 (mất phần .5)
     double phepChiaDung = 5.0 / 2.0; // Kết quả là 2.5 (giữ trọn vẹn phần lẻ)
+
+    cout << tenKhach << " mua " << soBanh << " banh gia " << giaTien << endl;
+    cout << "5 / 2 = " << phepChiaNguyen << ", 5.0 / 2.0 = " << phepChiaDung << endl;
 
     return 0;
 }
@@ -140,7 +146,7 @@ int main() {
 - **Các kiểu dữ liệu cơ bản (Các loại hộp):**
   - **`int` (Integer):** Chiếc hộp chứa số nguyên (như `1`, `2`, `-10`, `100`).
   - **`double`:** Chiếc hộp chứa số thực có phần lẻ thập phân (như `15.5`, `3.14`, `-0.75`).
-  - **`std::string`:** Chiếc hộp chứa cả một chuỗi chữ viết đặt trong dấu nháy kép `" ... "` (như `"Nguyen Van An"`, `"Banh mi pate"`).
+  - **`string`:** Chiếc hộp chứa cả một chuỗi chữ viết đặt trong dấu nháy kép `" ... "` (như `"Nguyen Van An"`, `"Banh mi pate"`).
   - **`char` (Character):** Chiếc hộp nhỏ xíu chỉ chứa đúng 1 ký tự đặt trong nháy đơn `' ... '` (như `'A'`, `'M'`, `'x'`).
   - **`bool` (Boolean):** Chiếc hộp công tắc chỉ có 2 trạng thái: `true` (Đúng / Bật) hoặc `false` (Sai / Tắt).
 - **Phép gán (Dấu bằng `=`):** Trong lập trình, dấu `=` mang ý nghĩa là **hành động xúc giá trị bên tay phải bỏ vào chiếc hộp bên tay trái** (chứ không phải so sánh bằng nhau trong toán học). Ví dụ: `soBanh = 5;` nghĩa là xúc số 5 bỏ vào hộp `soBanh`.
@@ -173,20 +179,20 @@ Bế tắc cuối cùng cần giải quyết là **Giao tiếp giữa gian bếp
    - Khi dặn anh ấy nhận đồ từ khe: Mũi tên chĩa về phía chiếc hộp nhận (`>>`).
 
 #### Bước 2: Ánh xạ vào lập trình C++
-Trong C++, việc giao tiếp giữa chương trình và con người được thực hiện thông qua thư viện Nhập/Xuất chuẩn (`iostream` = Input/Output Stream):
+Trong C++, việc giao tiếp giữa chương trình và con người được thực hiện thông qua bộ công cụ Nhập/Xuất chuẩn có sẵn trong tủ đồ nghề `#include <bits/stdc++.h>` (và mở xưởng chung `using namespace std;`):
 
-- **Mượn bộ loa và khe nhận: `#include <iostream>`** ở ngay đầu cuốn sổ dặn việc. 
-  - Dấu thăng `#` giống như một chiếc cờ hiệu lệnh: "Hãy chuẩn bị đồ nghề này TRƯỚC KHI mở cửa tiệm!". 
-  - Cặp ngoặc nhọn `<iostream>` là chiếc hộp niêm phong dụng cụ mượn từ kho thư viện tiêu chuẩn (`Input/Output Stream`).
+- **Mở tủ đồ nghề đa năng: `#include <bits/stdc++.h>`** ở ngay đầu cuốn sổ dặn việc. 
+  - Dấu thăng `#` giống như một chiếc cờ hiệu lệnh: "Hãy chuẩn bị tủ đồ nghề này TRƯỚC KHI mở cửa tiệm!". 
+  - Cặp ngoặc nhọn `<bits/stdc++.h>` là chiếc tủ tổng hợp mọi công cụ chuẩn (bao gồm loa `cout`, khe `cin`, chuỗi `string`...).
   - *Tại sao dòng này không có dấu chấm phẩy `;`?* Vì những dòng có dấu thăng `#` là khâu chuẩn bị đồ nghề TRƯỚC KHI mở cửa tiệm, chưa phải khẩu lệnh dặn việc trong ca làm, nên không cần gõ chuông `;`!
-- **Chiếc loa phát thanh hướng ra màn hình: `std::cout` (Console Output)**
-  - Cú pháp: `std::cout << "Thong bao" << std::endl;`
+- **Chiếc loa phát thanh hướng ra màn hình: `cout` (Console Output)**
+  - Cú pháp: `cout << "Thong bao" << endl;`
   - Dấu mũi tên `<<`: Mô phỏng hướng đẩy thông tin từ trong chương trình bắn thẳng vào miệng loa `cout` để hiện lên màn hình.
-  - **Băng chuyền nối nhiều mũi tên `<<`:** Chiếc loa này rất xịn! Bạn có thể nối nhiều mũi tên `<<` liên tiếp như các toa tàu trên một băng chuyền (ví dụ: `std::cout << "Chao ban " << tenKhach << "!" << std::endl;`). Nó sẽ đẩy liên tù tì: lời chào $\rightarrow$ tên trong chiếc hộp $\rightarrow$ dấu chấm than $\rightarrow$ lệnh xuống dòng ra ngoài loa mà không cần bạn phải gõ lại chữ `std::cout` nhiều lần.
-  - `std::endl` (End Line): Lệnh xuống dòng và nghỉ thở, giúp câu tiếp theo được in ở dòng mới phía dưới.
+  - **Băng chuyền nối nhiều mũi tên `<<`:** Chiếc loa này rất xịn! Bạn có thể nối nhiều mũi tên `<<` liên tiếp như các toa tàu trên một băng chuyền (ví dụ: `cout << "Chao ban " << tenKhach << "!" << endl;`). Nó sẽ đẩy liên tù tì: lời chào $\rightarrow$ tên trong chiếc hộp $\rightarrow$ dấu chấm than $\rightarrow$ lệnh xuống dòng ra ngoài loa mà không cần bạn phải gõ lại chữ `cout` nhiều lần.
+  - `endl` (End Line): Lệnh xuống dòng và nghỉ thở, giúp câu tiếp theo được in ở dòng mới phía dưới. (Sang **Chương Phụ `MOD-CP0`**, khi cần tăng tốc độ bằng `ios_base::sync_with_stdio(false); cin.tie(NULL);`, ta sẽ nâng cấp từ `endl` sang `'\n'`).
   - **Cảnh báo cực kỳ quan trọng:** Ký tự cuối cùng của chữ `endl` là **chữ 'L' thường** (viết tắt của từ *Line* = Dòng kẻ), **tuyệt đối không phải là số 1 (một)** đâu nhé! Nếu gõ nhầm thành `end1`, máy tính sẽ báo lỗi ngay.
-- **Khe nhận dữ liệu từ bàn phím: `std::cin` (Console Input)**
-  - Cú pháp: `std::cin >> tenHop;`
+- **Khe nhận dữ liệu từ bàn phím: `cin` (Console Input)**
+  - Cú pháp: `cin >> tenHop;`
   - Dấu mũi tên `>>` mô phỏng hướng dữ liệu từ bàn phím người dùng gõ vào, chảy xuôi dòng và rót thẳng vào chiếc hộp mang tên `tenHop`.
 
 ---
@@ -196,14 +202,14 @@ Trong C++, việc giao tiếp giữa chương trình và con người được t
 Bây giờ, chúng ta ghép trọn vẹn cả 3 giải pháp trên vào một chương trình C++ hoàn chỉnh. Đây chính là bản hướng dẫn từng li từng tí giúp anh Thật Thà vận hành tiệm bánh mì một cách xuất sắc:
 
 ```cpp
-#include <iostream>  // Mượn bộ loa phát thanh (cout) và khe nhận phiếu (cin)
-#include <string>    // Mượn hộp đựng chữ viết dài (string)
+#include <bits/stdc++.h>  // Tủ đồ nghề đa năng (loa cout, khe cin, hộp string...)
+using namespace std;      // Mở xưởng chung std để dùng thẳng cout, cin, endl, string
 
 int main() {
     // =========================================================================
     // GIẢI PHÁP 2: Chuẩn bị sẵn các chiếc hộp dán nhãn trên kệ gỗ
     // =========================================================================
-    std::string tenKhach;      // Hộp đựng họ tên khách
+    string tenKhach;           // Hộp đựng họ tên khách
     int soBanh;                // Hộp đựng số lượng bánh mì (số nguyên cái)
     double giaMotBanh = 15.5;  // Hộp số lẻ: Giá một chiếc bánh là 15.5 nghìn đồng
 
@@ -211,16 +217,16 @@ int main() {
     // GIẢI PHÁP 1 & 3: Loa chào khách và Khe nhận thông tin từ bên ngoài
     // =========================================================================
     // Bật loa chào khách (kết thúc câu lệnh bằng tiếng chuông ;)
-    std::cout << "=== TIEM BANH MI CHU THIEN XIN CHAO! ===" << std::endl;
-    std::cout << "Xin moi quy khach nhap ten cua ban: ";
+    cout << "=== TIEM BANH MI CHU THIEN XIN CHAO! ===" << endl;
+    cout << "Xin moi quy khach nhap ten cua ban: ";
     
     // Khe nhận phiếu: Hút tên khách vừa gõ từ bàn phím rót vào hộp tenKhach
-    std::cin >> tenKhach;
+    cin >> tenKhach;
 
-    std::cout << "Chao ban " << tenKhach << "! Ban muon mua bao nhieu chiec banh mi? ";
+    cout << "Chao ban " << tenKhach << "! Ban muon mua bao nhieu chiec banh mi? ";
     
     // Khe nhận phiếu: Hút số lượng bánh rót vào hộp soBanh
-    std::cin >> soBanh;
+    cin >> soBanh;
 
     // =========================================================================
     // GIẢI PHÁP 2: Tính toán tiền nong và xúc vào hộp tongTien (Dấu * là phép nhân)
@@ -230,14 +236,14 @@ int main() {
     // =========================================================================
     // GIẢI PHÁP 3: Loa thông báo hóa đơn ra ngoài cửa sổ cho khách
     // =========================================================================
-    std::cout << std::endl;
-    std::cout << "----------------------------------------" << std::endl;
-    std::cout << "HOA DON CUA KHACH HANG: " << tenKhach << std::endl;
-    std::cout << "So luong banh: " << soBanh << " chiec" << std::endl;
-    std::cout << "Don gia: " << giaMotBanh << " nghin dong/chiec" << std::endl;
-    std::cout << "TONG TIEN THANH TOAN: " << tongTien << " nghin dong." << std::endl;
-    std::cout << "----------------------------------------" << std::endl;
-    std::cout << "Cam on ban da ung ho tiem banh mi!" << std::endl;
+    cout << endl;
+    cout << "----------------------------------------" << endl;
+    cout << "HOA DON CUA KHACH HANG: " << tenKhach << endl;
+    cout << "So luong banh: " << soBanh << " chiec" << endl;
+    cout << "Don gia: " << giaMotBanh << " nghin dong/chiec" << endl;
+    cout << "TONG TIEN THANH TOAN: " << tongTien << " nghin dong." << endl;
+    cout << "----------------------------------------" << endl;
+    cout << "Cam on ban da ung ho tiem banh mi!" << endl;
 
     // =========================================================================
     // GIẢI PHÁP 1: Báo cáo kết thúc ca làm việc thành công mỹ mãn
@@ -255,11 +261,13 @@ Sau bài học này, bạn đã làm chủ được những viên gạch nền m
 | Khái niệm trong Lập trình | Hình tượng trong Tiệm Bánh Mì Đời Sống | Ý nghĩa thực tế |
 | :--- | :--- | :--- |
 | **Lập trình (Programming)** | Viết cuốn sổ dặn việc cho anh phụ bếp ngây ngô | Đưa ra các chỉ dẫn tường minh, chính xác, không mập mờ để máy tính làm việc thay con người. |
+| **`#include <bits/stdc++.h>`** | Chiếc Tủ Đồ Nghề Đa Năng | Nạp sẵn toàn bộ thư viện chuẩn (nhập xuất, chuỗi chữ, toán học...) chỉ với một dòng. |
+| **`using namespace std;`** | Mở Cánh Cửa Xưởng Chung `std` | Cho phép gọi thẳng `cout`, `cin`, `endl`, `string` mà không cần viết `std::` phía trước. |
 | **Hàm `int main()`** | Cánh Cửa Chính bước vào Ca Sáng | Nơi máy tính luôn bắt đầu thực thi chương trình đầu tiên. |
 | **Dấu chấm phẩy `;`** | Tiếng Chuông Đồng dứt câu lệnh | Đánh dấu kết thúc một mệnh lệnh dứt khoát. Quên `;` máy tính sẽ không biết lệnh dừng ở đâu. |
 | **Biến số (Variable)** | Chiếc Hộp Dán Nhãn trên kệ | Vùng nhớ lưu trữ dữ liệu tạm thời để tính toán. |
 | **Kiểu dữ liệu (`int, double...`)** | Chủng loại và kích cỡ của chiếc hộp | Hộp đựng số nguyên (`int`), hộp đựng số lẻ (`double`), hộp đựng chữ (`string`). |
 | **Phép gán (`=`)** | Hành động xúc đồ bên phải bỏ vào hộp bên trái | Đưa giá trị vào biến để cất giữ. |
-| **`std::cout <<`** | Loa Phát Thanh đẩy thông điệp ra ngoài | Xuất dữ liệu từ chương trình ra màn hình cho con người nhìn thấy. |
-| **`std::cin >>`** | Khe Nhận Phiếu hút thông tin vào trong hộp | Nhận dữ liệu do con người gõ từ bàn phím rót vào biến. |
+| **`cout <<`** | Loa Phát Thanh đẩy thông điệp ra ngoài | Xuất dữ liệu từ chương trình ra màn hình cho con người nhìn thấy. |
+| **`cin >>`** | Khe Nhận Phiếu hút thông tin vào trong hộp | Nhận dữ liệu do con người gõ từ bàn phím rót vào biến. |
 | **`return 0;`** | Báo Cáo Hoàn Thành ca làm việc an toàn | Báo cho hệ thống biết chương trình đã chạy xong xuôi và không gặp lỗi. |

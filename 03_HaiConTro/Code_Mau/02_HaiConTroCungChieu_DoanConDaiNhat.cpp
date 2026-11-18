@@ -4,9 +4,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 02_HaiConTroCungChieu_DoanConDaiNhat.cpp -o 02_HaiConTroCungChieu_DoanConDaiNhat.exe
  */
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 

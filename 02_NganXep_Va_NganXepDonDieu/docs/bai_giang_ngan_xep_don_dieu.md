@@ -40,7 +40,9 @@ Hãy hình dung một **chồng đĩa rửa bát** hoặc một **ống đựng 
 #### Bước 2: Ánh xạ vào lập trình C++
 C++ cung cấp cấu trúc `std::stack` (thư viện `<stack>`) hoặc ta có thể dùng `std::vector` với các thao tác ở cuối:
 ```cpp
-#include <stack>
+#include <bits/stdc++.h>
+using namespace std;
+
 stack<int> st;
 
 st.push(x);   // Đặt đĩa x lên đỉnh

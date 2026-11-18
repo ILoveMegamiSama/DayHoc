@@ -67,8 +67,8 @@
         <div style="font-size: 12.5px; color: var(--muted); margin-bottom: 8px;">
           💡 Bấm vào một <strong>Nút bài học</strong> để xem kiến thức tiền đề • Bấm vào <strong>Cạnh nối (?)</strong> để xem bước nhảy tư duy • Kéo chuột để di chuyển bản đồ.
         </div>
-        <div id="svg-container" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; overflow: hidden; cursor: grab; user-select: none;">
-          <svg id="skill-tree-svg" class="graph-svg" viewBox="0 0 1320 380" preserveAspectRatio="xMidYMid meet"></svg>
+        <div id="svg-container" class="svg-stage">
+          <svg id="skill-tree-svg" class="graph-svg" viewBox="0 0 3400 885" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
         <div id="edge-detail-box" style="margin-top: 14px; display: none; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border-strong); border-left: 4px solid var(--accent); border-radius: var(--radius); font-size: 14px;"></div>
       </section>
@@ -76,7 +76,8 @@
       <!-- Danh Mục Bài Giảng Theo Phân Vùng -->
       <section style="margin-top: 32px;">
         <div class="module-kicker">DANH MỤC CÁC BÀI HỌC TƯƠNG TÁC</div>
-        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">Chọn Bài Giảng Để Bắt Đầu</h2>
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 14px;">Chọn Bài Giảng Để Bắt Đầu</h2>
+        <div id="track-filters" class="track-filters" role="tablist" aria-label="Lọc bài giảng theo Track"></div>
         <div id="lesson-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px;"></div>
       </section>
     </div>
@@ -154,9 +155,30 @@
         setTimeout(() => t.classList.remove('show'), 2200);
       }
 
+      let activeTrackFilter = 'all';
+
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function getTrackTheme(trackId) {
+        const themes = {
+          foundations: { stroke: 'var(--muted)', soft: 'var(--surface)', text: 'var(--ink)' },
+          tier1_core: { stroke: 'var(--ok)', soft: 'var(--ok-soft)', text: 'var(--ok)' },
+          tier2_dp: { stroke: 'var(--accent)', soft: 'var(--accent-soft)', text: 'var(--accent)' },
+          extension: { stroke: 'var(--amber)', soft: 'var(--amber-soft)', text: 'var(--amber)' }
+        };
+        return themes[trackId] || themes.tier1_core;
+      }
+
       function renderAll() {
         renderProgressSummary();
         renderSkillTree();
+        renderTrackFilters();
         renderLessonCards();
       }
 
@@ -195,7 +217,8 @@
       }
 
       // Biến lưu trạng thái Pan & Zoom của SVG
-      let vbX = 0, vbY = 0, vbW = 1320, vbH = 380;
+      const DEFAULT_VB = { x: 0, y: 0, w: 3400, h: 885 };
+      let vbX = DEFAULT_VB.x, vbY = DEFAULT_VB.y, vbW = DEFAULT_VB.w, vbH = DEFAULT_VB.h;
       let isPanning = false, startX = 0, startY = 0;
 
       function updateSvgViewBox() {
@@ -238,7 +261,7 @@
           const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
           const newW = vbW * zoomFactor;
           const newH = vbH * zoomFactor;
-          if (newW >= 500 && newW <= 3000) {
+          if (newW >= 600 && newW <= 5000) {
             vbX -= (newW - vbW) / 2;
             vbY -= (newH - vbH) / 2;
             vbW = newW;
@@ -250,6 +273,7 @@
         document.getElementById('btn-zoom-in').addEventListener('click', () => {
           const newW = vbW * 0.85;
           const newH = vbH * 0.85;
+          if (newW < 600) return;
           vbX -= (newW - vbW) / 2;
           vbY -= (newH - vbH) / 2;
           vbW = newW;
@@ -260,6 +284,7 @@
         document.getElementById('btn-zoom-out').addEventListener('click', () => {
           const newW = vbW * 1.15;
           const newH = vbH * 1.15;
+          if (newW > 5000) return;
           vbX -= (newW - vbW) / 2;
           vbY -= (newH - vbH) / 2;
           vbW = newW;
@@ -268,7 +293,10 @@
         });
 
         document.getElementById('btn-zoom-reset').addEventListener('click', () => {
-          vbX = 0; vbY = 0; vbW = 1320; vbH = 380;
+          vbX = DEFAULT_VB.x;
+          vbY = DEFAULT_VB.y;
+          vbW = DEFAULT_VB.w;
+          vbH = DEFAULT_VB.h;
           updateSvgViewBox();
         });
       }
@@ -279,6 +307,26 @@
         if (!svgEl || !window.PORTAL_DATA) return;
 
         const data = window.PORTAL_DATA;
+        const TRACK_LANES = [
+          { id: 'foundations', y: 14, h: 132, labelY: 34 },
+          { id: 'tier1_core', y: 158, h: 134, labelY: 178 },
+          { id: 'tier2_dp', y: 306, h: 404, labelY: 328 },
+          { id: 'extension', y: 724, h: 142, labelY: 746 }
+        ];
+
+        const lanesSvg = TRACK_LANES.map((lane) => {
+          const track = (data.tracks || []).find(t => t.id === lane.id);
+          const theme = getTrackTheme(lane.id);
+          const title = escapeHtml(track ? track.title : lane.id);
+          return `
+            <g class="graph-lane" data-track-lane="${lane.id}">
+              <rect x="14" y="${lane.y}" width="3372" height="${lane.h}" rx="10" fill="var(--surface-card)" fill-opacity="0.58" stroke="var(--border)" stroke-width="1" />
+              <rect x="14" y="${lane.y}" width="6" height="${lane.h}" rx="3" fill="${theme.stroke}" />
+              <text x="30" y="${lane.labelY}" font-size="13" font-weight="800" fill="${theme.text}">${title}</text>
+            </g>
+          `;
+        }).join('');
+
         let edgesSvg = '';
         data.edges.forEach((ed, idx) => {
           const fromNode = data.nodes.find(n => n.id === ed.from);
@@ -289,39 +337,45 @@
           const x2 = toNode.x - 90;
           const y2 = toNode.y + 35;
           const midX = (x1 + x2) / 2;
-          const midY = (y1 + y2) / 2;
+          const cy1 = ed.curveY !== undefined ? ed.curveY : y1;
+          const cy2 = ed.curveY !== undefined ? ed.curveY : y2;
+          const midY = 0.125 * y1 + 0.375 * cy1 + 0.375 * cy2 + 0.125 * y2;
+          const tagText = ed.shortTag || '?';
+          const badgeW = Math.max(72, Math.min(92, tagText.length * 6.2 + 16));
 
           edgesSvg += `
             <g class="graph-edge" data-edge-idx="${idx}" style="cursor: pointer;">
-              <path class="edge-path" d="M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}" fill="none" stroke="var(--border-strong)" stroke-width="2.2" stroke-dasharray="4,4" />
-              <!-- Badge ngắn gọn trên cạnh nối, tránh chữ dài đè nhau -->
-              <rect x="${midX - 35}" y="${midY - 12}" width="70" height="24" rx="12" fill="var(--surface-card)" stroke="var(--accent)" stroke-width="1.5" />
-              <text x="${midX}" y="${midY + 4}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--accent)">${ed.shortTag || '?'}</text>
+              <path class="edge-path" d="M ${x1} ${y1} C ${midX} ${cy1}, ${midX} ${cy2}, ${x2} ${y2}" fill="none" stroke="var(--border-strong)" stroke-width="2.2" stroke-dasharray="4,4" />
+              <rect x="${midX - badgeW / 2}" y="${midY - 12}" width="${badgeW}" height="24" rx="12" fill="var(--surface-card)" stroke="var(--accent)" stroke-width="1.5" />
+              <text x="${midX}" y="${midY + 4}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--accent)">${escapeHtml(tagText)}</text>
             </g>
           `;
         });
 
         let nodesSvg = '';
         data.nodes.forEach(node => {
-          const isCombined = node.category === 'combined';
-          const isFoundation = node.category === 'foundation';
-          const strokeCol = isCombined ? 'var(--accent)' : (isFoundation ? 'var(--muted)' : 'var(--ok)');
-          const badgeBg = isCombined ? 'var(--accent-soft)' : (isFoundation ? 'var(--surface)' : 'var(--ok-soft)');
-          const badgeCol = isCombined ? 'var(--accent)' : (isFoundation ? 'var(--ink)' : 'var(--ok)');
+          const theme = getTrackTheme(node.track);
+          const isPlanned = node.status === 'planned';
+          const badgeText = isPlanned ? 'Sắp mở' : (node.badge || 'Bài học');
+          const badgeW = isPlanned ? 56 : Math.max(54, Math.min(84, badgeText.length * 6.4 + 14));
+          const badgeBg = isPlanned ? 'var(--surface)' : theme.soft;
+          const badgeCol = isPlanned ? 'var(--muted)' : theme.text;
+          const subLine = isPlanned ? 'Đang biên soạn • Xem tiền đề' : 'Xem tiền đề & Vào học →';
+          const shortTitle = node.title.length > 22 ? node.title.slice(0, 20) + '...' : node.title;
 
           nodesSvg += `
-            <g class="graph-node" data-node-id="${node.id}" data-node-path="${node.path}" transform="translate(${node.x - 90}, ${node.y})" style="cursor: pointer;">
-              <rect width="180" height="70" rx="6" fill="var(--surface-card)" stroke="${strokeCol}" stroke-width="1.8" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.06))" />
-              <rect x="8" y="8" width="54" height="18" rx="3" fill="${badgeBg}" />
-              <text x="35" y="21" text-anchor="middle" font-size="10" font-weight="700" fill="${badgeCol}">${node.badge}</text>
-              <text x="170" y="21" text-anchor="end" font-size="10" font-family="monospace" fill="var(--muted)">${node.code}</text>
-              <text x="12" y="44" font-size="12" font-weight="700" fill="var(--ink)">${node.title.length > 22 ? node.title.slice(0, 20) + '...' : node.title}</text>
-              <text x="12" y="58" font-size="10" fill="var(--muted)">Xem tiền đề & Vào học →</text>
+            <g class="graph-node ${isPlanned ? 'planned' : ''}" data-node-id="${escapeHtml(node.id)}" data-node-path="${escapeHtml(node.path)}" data-status="${escapeHtml(node.status || 'ready')}" transform="translate(${node.x - 90}, ${node.y})" style="cursor: pointer;">
+              <rect class="graph-node-box" width="180" height="70" rx="6" fill="var(--surface-card)" stroke="${theme.stroke}" stroke-width="1.8" ${isPlanned ? 'stroke-dasharray="6,4"' : ''} filter="drop-shadow(0 2px 4px rgba(0,0,0,0.06))" />
+              <rect x="8" y="8" width="${badgeW}" height="18" rx="3" fill="${badgeBg}" />
+              <text x="${8 + badgeW / 2}" y="21" text-anchor="middle" font-size="10" font-weight="700" fill="${badgeCol}">${escapeHtml(badgeText)}</text>
+              <text x="170" y="21" text-anchor="end" font-size="10" font-family="monospace" fill="var(--muted)">${escapeHtml(node.code)}</text>
+              <text x="12" y="44" font-size="12" font-weight="700" fill="var(--ink)">${escapeHtml(shortTitle)}</text>
+              <text x="12" y="58" font-size="10" fill="var(--muted)">${escapeHtml(subLine)}</text>
             </g>
           `;
         });
 
-        svgEl.innerHTML = edgesSvg + nodesSvg;
+        svgEl.innerHTML = lanesSvg + edgesSvg + nodesSvg;
 
         // Click vào Nút: Hiển thị Kiến thức tiền đề và Khái niệm mới
         svgEl.querySelectorAll('.graph-node').forEach(g => {
@@ -330,25 +384,31 @@
             const node = data.nodes.find(n => n.id === nodeId);
             if (!node) return;
 
-            const prereqsHtml = (node.prerequisites || []).map(p => `<li>${p}</li>`).join('');
-            const newHtml = (node.newConcepts || []).map(c => `<li><strong>${c}</strong></li>`).join('');
+            const isPlanned = node.status === 'planned';
+            const phaseLabel = node.phase === 'pha1_array' ? 'Pha 1: Mảng tĩnh' : 'Pha 2: STL';
+            const prereqsHtml = (node.prerequisites || []).map(p => `<li>${escapeHtml(p)}</li>`).join('');
+            const newHtml = (node.newConcepts || []).map(c => `<li><strong>${escapeHtml(c)}</strong></li>`).join('');
+            const actionHtml = isPlanned
+              ? `<span class="lesson-status-pill" aria-disabled="true">${window.CP_ICONS.info} <span>Đang biên soạn (Lộ trình chuẩn)</span></span>`
+              : `<a href="${escapeHtml(node.path)}" class="btn-pill primary"><span>Vào Học Ngay</span> ${window.CP_ICONS.arrowRight}</a>`;
 
             detailBox.style.display = 'block';
             detailBox.innerHTML = `
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                <div>
-                  <span class="concept-tag" style="margin-right: 6px;">${node.code}</span>
-                  <strong style="font-size: 16px;">${node.title}</strong>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <span class="concept-tag">${escapeHtml(node.code)}</span>
+                  <span class="phase-tag">${escapeHtml(phaseLabel)}</span>
+                  <strong style="font-size: 16px;">${escapeHtml(node.title)}</strong>
                 </div>
-                <a href="${node.path}" class="btn-pill primary"><span>Vào Học Ngay</span> ${window.CP_ICONS.arrowRight}</a>
+                ${actionHtml}
               </div>
               <div class="card-split" style="gap: 16px;">
                 <div style="background: var(--surface-card); padding: 12px 14px; border-radius: 4px; border: 1px solid var(--border);">
-                  <div style="font-weight: 700; color: var(--ok); margin-bottom: 6px; font-size: 13px;">✔ Bạn CẦN BIẾT gì trước khi học bài này?</div>
+                  <div style="font-weight: 700; color: var(--ok); margin-bottom: 6px; font-size: 13px; display: flex; align-items: center; gap: 6px;">${window.CP_ICONS.check} <span>Bạn CẦN BIẾT gì trước khi học bài này?</span></div>
                   <ul style="padding-left: 18px; font-size: 13px; color: var(--muted);">${prereqsHtml || '<li>Không có tiên quyết phức tạp</li>'}</ul>
                 </div>
                 <div style="background: var(--surface-card); padding: 12px 14px; border-radius: 4px; border: 1px solid var(--border);">
-                  <div style="font-weight: 700; color: var(--accent); margin-bottom: 6px; font-size: 13px;">✨ Khái niệm MỚI sẽ được xây dựng từ con số 0:</div>
+                  <div style="font-weight: 700; color: var(--accent); margin-bottom: 6px; font-size: 13px; display: flex; align-items: center; gap: 6px;">${window.CP_ICONS.layers} <span>Khái niệm MỚI sẽ được xây dựng từ con số 0:</span></div>
                   <ul style="padding-left: 18px; font-size: 13px; color: var(--muted);">${newHtml || '<li>Kiến thức nền tảng</li>'}</ul>
                 </div>
               </div>
@@ -372,17 +432,17 @@
             detailBox.innerHTML = `
               <div style="margin-bottom: 10px;">
                 <span class="concept-tag" style="background: var(--accent); color: #fff;">CẦU NỐI TƯ DUY</span>
-                <strong style="font-size: 15px; margin-left: 8px;">${ed.fromTitle} → ${ed.toTitle}</strong>
+                <strong style="font-size: 15px; margin-left: 8px;">${escapeHtml(ed.fromTitle)} → ${escapeHtml(ed.toTitle)}</strong>
               </div>
               <div style="display: flex; flex-direction: column; gap: 10px;">
                 <div style="padding: 10px 14px; background: var(--ok-soft); border-left: 4px solid var(--ok); border-radius: 4px; font-size: 13.5px;">
-                  <strong>1. Nền tảng đã có từ bài trước:</strong> ${ed.fromKnown}
+                  <strong>1. Nền tảng đã có từ bài trước:</strong> ${escapeHtml(ed.fromKnown)}
                 </div>
                 <div style="padding: 10px 14px; background: var(--warn-soft); border-left: 4px solid var(--warn); border-radius: 4px; font-size: 13.5px;">
-                  <strong>2. Nút thắt bế tắc (Tại sao cần chuyển đổi?):</strong> ${ed.bottleneck}
+                  <strong>2. Nút thắt bế tắc (Tại sao cần chuyển đổi?):</strong> ${escapeHtml(ed.bottleneck)}
                 </div>
                 <div style="padding: 10px 14px; background: var(--amber-soft); border-left: 4px solid var(--amber); border-radius: 4px; font-size: 13.5px;">
-                  <strong>3. Bước đột phá của bài mới:</strong> ${ed.solution}
+                  <strong>3. Bước đột phá của bài mới:</strong> ${escapeHtml(ed.solution)}
                 </div>
               </div>
             `;
@@ -391,24 +451,70 @@
         });
       }
 
+      function renderTrackFilters() {
+        const filterWrap = document.getElementById('track-filters');
+        if (!filterWrap || !window.PORTAL_DATA) return;
+
+        const nodes = window.PORTAL_DATA.nodes || [];
+        const tracks = window.PORTAL_DATA.tracks || [];
+        const filterItems = [
+          { id: 'all', label: 'Tất cả', count: nodes.length, color: 'var(--accent)' },
+          ...tracks.map(t => ({
+            id: t.id,
+            label: t.shortTitle || t.title,
+            count: nodes.filter(n => n.track === t.id).length,
+            color: getTrackTheme(t.id).stroke
+          }))
+        ];
+
+        filterWrap.innerHTML = filterItems.map(item => `
+          <button type="button" class="track-pill ${activeTrackFilter === item.id ? 'active' : ''}" data-track-filter="${escapeHtml(item.id)}" role="tab" aria-selected="${activeTrackFilter === item.id}">
+            ${item.id !== 'all' ? `<span class="track-pill-dot" style="background: ${item.color};"></span>` : ''}
+            <span>${escapeHtml(item.label)}</span>
+            <span class="track-pill-count">(${item.count})</span>
+          </button>
+        `).join('');
+
+        filterWrap.querySelectorAll('[data-track-filter]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            activeTrackFilter = btn.getAttribute('data-track-filter') || 'all';
+            renderTrackFilters();
+            renderLessonCards();
+          });
+        });
+      }
+
       function renderLessonCards() {
         const grid = document.getElementById('lesson-cards-grid');
         if (!grid || !window.PORTAL_DATA) return;
 
-        grid.innerHTML = window.PORTAL_DATA.nodes.map(node => {
+        const visibleNodes = window.PORTAL_DATA.nodes.filter(
+          node => activeTrackFilter === 'all' || node.track === activeTrackFilter
+        );
+
+        grid.innerHTML = visibleNodes.map(node => {
+          const isPlanned = node.status === 'planned';
+          const theme = getTrackTheme(node.track);
+          const phaseLabel = node.phase === 'pha1_array' ? 'Pha 1: Mảng tĩnh' : 'Pha 2: STL';
+          const statusBadge = isPlanned ? 'Sắp mở' : node.badge;
+          const footerAction = isPlanned
+            ? `<div class="lesson-status-pill" aria-disabled="true">${window.CP_ICONS.info} <span>Đang biên soạn (Lộ trình chuẩn)</span></div>`
+            : `<a href="${escapeHtml(node.path)}" class="btn-pill primary" style="justify-content: center; text-align: center;"><span>Vào Bài Giảng Tương Tác</span> ${window.CP_ICONS.arrowRight}</a>`;
+
           return `
-            <div class="knowledge-card" style="display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 0;">
+            <div class="knowledge-card lesson-card ${isPlanned ? 'planned' : ''}" data-track="${escapeHtml(node.track)}" data-status="${escapeHtml(node.status || 'ready')}" style="border-top: 3px solid ${theme.stroke};">
               <div>
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                  <span class="concept-tag">${node.code}</span>
-                  <span class="quiz-badge">${node.badge}</span>
+                <div class="lesson-card-meta">
+                  <div class="lesson-card-badges">
+                    <span class="concept-tag">${escapeHtml(node.code)}</span>
+                    <span class="phase-tag">${escapeHtml(phaseLabel)}</span>
+                  </div>
+                  <span class="quiz-badge">${escapeHtml(statusBadge)}</span>
                 </div>
-                <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">${node.title}</h3>
-                <p style="font-size: 14px; color: var(--muted); margin-bottom: 14px;">${node.summary}</p>
+                <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 8px;">${escapeHtml(node.title)}</h3>
+                <p style="font-size: 14px; color: var(--muted); margin-bottom: 14px;">${escapeHtml(node.summary)}</p>
               </div>
-              <a href="${node.path}" class="btn-pill primary" style="justify-content: center; text-align: center;">
-                <span>Vào Bài Giảng Tương Tác</span> ${window.CP_ICONS.arrowRight}
-              </a>
+              ${footerAction}
             </div>
           `;
         }).join('');

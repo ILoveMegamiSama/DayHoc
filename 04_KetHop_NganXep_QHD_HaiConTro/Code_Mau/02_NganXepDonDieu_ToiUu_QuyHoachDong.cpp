@@ -5,9 +5,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 02_NganXepDonDieu_ToiUu_QuyHoachDong.cpp -o 02_NganXepDonDieu_ToiUu_QuyHoachDong.exe
  */
 
-#include <iostream>
-#include <vector>
-#include <stack>
+#include <bits/stdc++.h>
 
 using namespace std;
 

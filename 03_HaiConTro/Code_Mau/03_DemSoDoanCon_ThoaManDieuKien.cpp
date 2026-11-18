@@ -3,8 +3,7 @@
  * Biên dịch: g++ -std=c++14 -O2 -Wall 03_DemSoDoanCon_ThoaManDieuKien.cpp -o 03_DemSoDoanCon_ThoaManDieuKien.exe
  */
 
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
